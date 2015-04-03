@@ -41,7 +41,7 @@
     <string name="electricity">Electricity</string>
     <string name="miscellaneous">Miscellanous</string>
     <string name="next"><![CDATA[Next >>]]></string>
-    <string name="enter_room_expenses">Enter Room Expenses</string>
+    <string name="specify_room_budget">Specify Room Budget</string>
     <string name="finish">FINISH</string>
     <string name="title_activity_get_started_wizard">GetStartedWizard</string>
     <string name="get_started">Get Started</string>

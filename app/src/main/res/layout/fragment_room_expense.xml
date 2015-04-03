@@ -28,7 +28,7 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="@string/enter_room_expenses"
+			android:text="@string/specify_room_budget"
 			android:layout_gravity="center"
 			android:textSize="20sp"
 			android:layout_marginBottom="20dp"
@@ -41,7 +41,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dp">
 
-			<ToggleButton
+			<!--<ToggleButton
 				android:layout_width="75dip"
 				android:layout_height="wrap_content"
 				android:layout_alignParentStart="true"
@@ -51,7 +51,7 @@
 				style="@style/ToggleRoomies"
 				android:id="@+id/room_rent_toggle"
 				android:textColor="@color/white"
-				android:checked="true"/>
+				android:checked="true"/>-->
 
 			<EditText
 				android:layout_width="match_parent"
@@ -64,8 +64,6 @@
 				android:enabled="true"
 				android:maxLength="5"
 				android:inputType="number"
-				android:layout_toRightOf="@+id/room_rent_toggle"
-				android:layout_toEndOf="@+id/room_rent_toggle"
 				android:layout_centerInParent="true"/>
 
 			<TextView
@@ -84,7 +82,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dp">
 
-			<ToggleButton
+			<!--<ToggleButton
 				android:layout_width="75dip"
 				android:layout_height="wrap_content"
 				android:layout_alignParentStart="true"
@@ -93,7 +91,7 @@
 				android:textOff="@string/variable"
 				style="@style/ToggleRoomies"
 				android:id="@+id/room_maid_toggle"
-				android:textColor="@color/white"/>
+				android:textColor="@color/white"/>-->
 
 			<EditText
 				android:layout_width="match_parent"
@@ -105,9 +103,7 @@
 				style="@style/EditTextRoomies"
 				android:maxLength="5"
 				android:inputType="number"
-				android:enabled="false"
-				android:layout_toRightOf="@+id/room_maid_toggle"
-				android:layout_toEndOf="@+id/room_maid_toggle"/>
+				android:enabled="true" />
 
 			<TextView
 				android:layout_width="wrap_content"
@@ -124,7 +120,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dp">
 
-			<ToggleButton
+			<!--<ToggleButton
 				android:layout_width="75dip"
 				android:layout_height="wrap_content"
 				android:layout_alignParentStart="true"
@@ -133,7 +129,7 @@
 				android:textOff="@string/variable"
 				style="@style/ToggleRoomies"
 				android:id="@+id/room_electricity_toggle"
-				android:textColor="@color/white"/>
+				android:textColor="@color/white"/>-->
 
 			<EditText
 				android:layout_width="match_parent"
@@ -143,11 +139,9 @@
 				android:textColorHint="@color/white"
 				android:textColor="@color/white"
 				style="@style/EditTextRoomies"
-				android:enabled="false"
+				android:enabled="true"
 				android:maxLength="5"
-				android:inputType="number"
-				android:layout_toRightOf="@+id/room_electricity_toggle"
-				android:layout_toEndOf="@+id/room_electricity_toggle"/>
+				android:inputType="number"/>
 
 			<TextView
 				android:layout_width="wrap_content"
@@ -164,7 +158,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="10dp">
 
-			<ToggleButton
+			<!--<ToggleButton
 				android:layout_width="75dip"
 				android:layout_height="wrap_content"
 				android:layout_alignParentStart="true"
@@ -174,7 +168,7 @@
 				android:checked="true"
 				style="@style/ToggleRoomies"
 				android:id="@+id/room_misc_toggle"
-				android:textColor="@color/white"/>
+				android:textColor="@color/white"/>-->
 
 			<EditText
 				android:layout_width="match_parent"
@@ -186,9 +180,7 @@
 				style="@style/EditTextRoomies"
 				android:enabled="true"
 				android:maxLength="5"
-				android:inputType="number"
-				android:layout_toRightOf="@+id/room_misc_toggle"
-				android:layout_toEndOf="@+id/room_misc_toggle"/>
+				android:inputType="number"/>
 
 			<TextView
 				android:layout_width="wrap_content"

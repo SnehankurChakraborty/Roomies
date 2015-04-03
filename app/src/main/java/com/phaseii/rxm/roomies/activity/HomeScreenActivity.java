@@ -17,12 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.fragments.CurrentRoomStatusFragment;
+import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
 
 public class HomeScreenActivity extends ActionBarActivity
-		implements CurrentRoomStatusFragment.OnFragmentInteractionListener {
+		implements CurrentBudgetStatus.OnFragmentInteractionListener {
 
 /*	FragmentManager mFragmentManager;
 	FragmentTransaction mTransaction;
@@ -34,7 +34,7 @@ public class HomeScreenActivity extends ActionBarActivity
 	ViewPager pager;
 	RoomiesPagerAdapter adapter;
 	RoomiesSlidingTabLayout tabs;
-	CharSequence Titles[] = {"Home", "Events"};
+	CharSequence Titles[] = {"Budget Report", "Expense Report"};
 	int Numboftabs = 2;
 
 	@Override

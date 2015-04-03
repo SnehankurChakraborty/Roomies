@@ -228,20 +228,21 @@ public class GetStartedWizard extends FragmentActivity {
 		                         Bundle savedInstanceState) {
 			rootView = inflater.inflate(R.layout.fragment_room_expense, container,
 					false);
-			final ToggleButton toggleRent = (ToggleButton) rootView.findViewById(
+			final EditText roomRent = (EditText) rootView.findViewById(R.id.room_rent);
+			final EditText roomMaid = (EditText) rootView.findViewById(R.id.room_maid);
+			final EditText roomElectricity = (EditText) rootView.findViewById(
+					R.id.room_electricity);
+			final EditText roomMisc = (EditText) rootView.findViewById(R.id.room_misc);
+
+			/*final ToggleButton toggleRent = (ToggleButton) rootView.findViewById(
 					R.id.room_rent_toggle);
 			final ToggleButton toggleMaid = (ToggleButton) rootView.findViewById(
 					R.id.room_maid_toggle);
 			final ToggleButton toggleElectricity = (ToggleButton) rootView.findViewById(R.id
 					.room_electricity_toggle);
 			final ToggleButton toggleMisc = (ToggleButton) rootView.findViewById(
-					R.id.room_misc_toggle);
-			final EditText roomRent = (EditText) rootView.findViewById(R.id.room_rent);
-			final EditText roomMaid = (EditText) rootView.findViewById(R.id.room_maid);
-			final EditText roomElectricity = (EditText) rootView.findViewById(
-					R.id.room_electricity);
-			final EditText roomMisc = (EditText) rootView.findViewById(R.id.room_misc);
-			toggleRent.setOnClickListener(new View.OnClickListener() {
+					R.id.room_misc_toggle);*/
+			/*toggleRent.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					if (!toggleRent.isChecked()) {
@@ -281,7 +282,7 @@ public class GetStartedWizard extends FragmentActivity {
 						toggleMisc.setChecked(true);
 					}
 				}
-			});
+			});*/
 			return rootView;
 
 		}

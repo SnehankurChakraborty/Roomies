@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
 
 import java.util.ArrayList;
@@ -25,22 +23,15 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENSE_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
 
 
-public class CurrentRoomStatusFragment extends Fragment {
-
-
-	private View mView;
+public class CurrentBudgetStatus extends RoomiesFragment {
 
 	private OnFragmentInteractionListener mListener;
 
-	public static CurrentRoomStatusFragment getInstance() {
-		CurrentRoomStatusFragment currentRoomStatusFragment = new CurrentRoomStatusFragment();
-		return currentRoomStatusFragment;
-	}
-
-	public CurrentRoomStatusFragment() {
-		// Required empty public constructor
+	public static CurrentBudgetStatus getInstance() {
+		return new CurrentBudgetStatus();
 	}
 
 	@Override
@@ -51,10 +42,9 @@ public class CurrentRoomStatusFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		mView = inflater.inflate(R.layout.tab_current_room_status, container, false);
+		rootView = inflater.inflate(R.layout.tab_current_budget_status, container, false);
 		showBarGraph(getActivity().getBaseContext());
-		return mView;
+		return rootView;
 	}
 
 
@@ -74,6 +64,11 @@ public class CurrentRoomStatusFragment extends Fragment {
 	public void onDetach() {
 		super.onDetach();
 		mListener = null;
+	}
+
+	@Override
+	public View getFragmentView() {
+		return rootView;
 	}
 
 	/**
@@ -98,9 +93,15 @@ public class CurrentRoomStatusFragment extends Fragment {
 		float maid = Float.valueOf(sharedPreferences.getString(MAID, "0"));
 		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY, "0"));
 		float misc = Float.valueOf(sharedPreferences.getString(MISC, "0"));
-		ArrayList<Entry> entries = new ArrayList<>();
+		float spent=Float.valueOf(sharedPreferences.getString(SPENT, "0"));
+		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<String>();
-
+		float total = rent + maid + electricity + misc;
+		entries.add(new Entry(total, 0));
+		labels.add("Remaining");
+		entries.add(new Entry(spent, 1));
+		labels.add("Spent");
+/*
 		if (rent > 0) {
 			entries.add(new Entry(rent, 0));
 			labels.add(RENT);
@@ -121,20 +122,26 @@ public class CurrentRoomStatusFragment extends Fragment {
 			entries.add(new Entry(100f, 0));
 			labels.add("EMPTY");
 		}
+*/
 		PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS,
 				null));
-		PieChart mChart = (PieChart) mView.findViewById(R.id.pie);
-		dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+		PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
+		dataSet.setColors(ROOMIES_RAG_COLORS);
 		PieData data = new PieData(labels, dataSet);
-		mChart.setUsePercentValues(true);
 		mChart.setData(data);
 		mChart.animateXY(1000, 1000);
 		mChart.setDrawCenterText(true);
-		mChart.setCenterText("Room Status");
+		mChart.setCenterText(getPercentageLeft(total, 0));
 		mChart.setDescription("");
 		mChart.setClickable(true);
 		return mChart;
 	}
 
-
+	private String getPercentageLeft(float total, float expense) {
+		float percent = 100f;
+		if (expense > 0) {
+			percent = (expense / total) * 100;
+		}
+		return percent + "% Budget Availaible";
+	}
 }

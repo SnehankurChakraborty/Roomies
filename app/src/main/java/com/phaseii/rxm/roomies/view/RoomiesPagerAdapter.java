@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.phaseii.rxm.roomies.fragments.CurrentRoomStatusFragment;
-import com.phaseii.rxm.roomies.fragments.Tab2;
+import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
+import com.phaseii.rxm.roomies.fragments.CurrentExpenseReport;
 
 /**
  * Created by Snehankur on 4/3/2015.
@@ -26,12 +26,12 @@ public class RoomiesPagerAdapter extends FragmentStatePagerAdapter {
 
 		if(position == 0) // if the position is 0 we are returning the First tab
 		{
-			CurrentRoomStatusFragment tab1 = new CurrentRoomStatusFragment();
+			CurrentBudgetStatus tab1 = new CurrentBudgetStatus();
 			return tab1;
 		}
 		else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
 		{
-			Tab2 tab2 = new Tab2();
+			CurrentExpenseReport tab2 = new CurrentExpenseReport();
 			return tab2;
 		}
 

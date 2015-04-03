@@ -27,6 +27,7 @@ public final class RoomiesConstants {
 	public static final String MAID="MAID";
 	public static final String ELECTRICITY="ELECTRICITY";
 	public static final String MISC="MISC";
+	public static final String SPENT="SPENT";
 	public static final String ROOM_INFO_FILE_KEY="ROOM_INFO";
 	public static final String ROOM_EXPENSE_FILE_KEY="ROOM_EXPENSE";
 	public static final String ROOM_ALIAS = "ROOM_ALIAS";
