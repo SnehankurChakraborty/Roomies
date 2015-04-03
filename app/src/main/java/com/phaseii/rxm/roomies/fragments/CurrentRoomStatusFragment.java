@@ -52,7 +52,7 @@ public class CurrentRoomStatusFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		mView = inflater.inflate(R.layout.fragment_current_room_status, container, false);
+		mView = inflater.inflate(R.layout.tab_current_room_status, container, false);
 		showBarGraph(getActivity().getBaseContext());
 		return mView;
 	}

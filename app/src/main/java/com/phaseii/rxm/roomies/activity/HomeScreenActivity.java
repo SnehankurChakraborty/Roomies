@@ -4,10 +4,7 @@ package com.phaseii.rxm.roomies.activity;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,16 +18,24 @@ import android.widget.ListView;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.CurrentRoomStatusFragment;
+import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
+import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
 
 public class HomeScreenActivity extends ActionBarActivity
 		implements CurrentRoomStatusFragment.OnFragmentInteractionListener {
 
-	FragmentManager mFragmentManager;
+/*	FragmentManager mFragmentManager;
 	FragmentTransaction mTransaction;
-	Fragment mFragment;
+	Fragment mFragment;*/
 	ActionBarDrawerToggle mDrawerTogggle;
 	DrawerLayout mDrawerLayout;
 	ListView mDrawerList;
+	Toolbar mtoolbar;
+	ViewPager pager;
+	RoomiesPagerAdapter adapter;
+	RoomiesSlidingTabLayout tabs;
+	CharSequence Titles[] = {"Home", "Events"};
+	int Numboftabs = 2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +46,14 @@ public class HomeScreenActivity extends ActionBarActivity
 		* Initializing fragment
 		* */
 
-		if (savedInstanceState == null) {
+		/*if (savedInstanceState == null) {
 			mFragment = CurrentRoomStatusFragment.getInstance();
 			mFragmentManager = getSupportFragmentManager();
 			mTransaction = mFragmentManager.beginTransaction();
 			mTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
 			mTransaction.add(R.id.home_screen_content_frame, mFragment).commit();
 		}
-
+*/
 		/*
 		* Initializing navigation drawer
 		* */
@@ -58,11 +63,11 @@ public class HomeScreenActivity extends ActionBarActivity
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				R.layout.drawer_list_item, mDrawerOptions));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		if (toolbar != null) {
-			setSupportActionBar(toolbar);
+		mtoolbar = (Toolbar) findViewById(R.id.toolbar);
+		if (mtoolbar != null) {
+			setSupportActionBar(mtoolbar);
 		}
-		mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar
+		mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, mtoolbar
 				, R.string.open_drawer, R.string.close_drawer) {
 
 			/** Called when a drawer has settled in a completely closed state. */
@@ -76,6 +81,25 @@ public class HomeScreenActivity extends ActionBarActivity
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerTogggle);
+		adapter = new RoomiesPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+		pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(adapter);
+
+		// Assiging the Sliding Tab Layout View
+		tabs = (RoomiesSlidingTabLayout) findViewById(R.id.tabs);
+		tabs.setDistributeEvenly(
+				true); // To make the Tabs Fixed set this true, This makes the tabs Space Evenly in Available width
+
+		// Setting Custom Color for the Scroll bar indicator of the Tab View
+		tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
+			@Override
+			public int getIndicatorColor(int position) {
+				return getResources().getColor(R.color.material_deep_teal_200);
+			}
+		});
+
+		// Setting the ViewPager For the SlidingTabsLayout
+		tabs.setViewPager(pager);
 
 	}
 
