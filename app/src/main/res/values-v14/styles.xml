@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+
+	<style name="ErrorButton">
+		<item name="android:visibility">invisible</item>
+		<item name="android:color">#f2f2f2</item>
+		<item name="android:text">@string/error_symbol</item>
+		<item name="android:background">@drawable/error_shape</item>
+		<item name="android:textSize">20sp</item>
+		<item name="android:textColor">#ffffff</item>
+	</style>
+
+</resources>

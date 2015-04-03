@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="Roomies" parent="@style/_Roomies"/>
+
+  <style name="_Roomies" parent="Theme.AppCompat.Light">
+
+    <item name="android:editTextStyle">@style/EditTextRoomies</item>
+
+    <item name="android:textColorHighlight">#995ebdad</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewRoomies</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxRoomies</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonRoomies</item>
+
+    <item name="android:buttonStyle">@style/ButtonRoomies</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonRoomies</item>
+
+    <item name="android:spinnerStyle">@style/SpinnerRoomies</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemRoomies</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarRoomies</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarRoomies</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarRoomies</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigRoomies</item>
+
+    <item name="android:ratingBarStyleSmall">@style/RatingBarSmallRoomies</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleRoomies</item>
+
+    <item name="android:listViewStyle">@style/ListViewRoomies</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewRoomies.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemRoomies</item>
+
+  </style>
+
+</resources>
