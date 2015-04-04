@@ -15,6 +15,7 @@
   limitations under the License.
   -->
 
+<!--
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:id="@android:id/text1"
@@ -27,4 +28,29 @@
           android:textColor="#8D8C87"
           android:background="?android:attr/activatedBackgroundIndicator"
           android:minHeight="?android:attr/listPreferredItemHeightSmall"
-          tools:ignore="NewApi"/>
+          tools:ignore="NewApi"/>-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:paddingTop="8dp"
+              android:paddingBottom="8dp"
+              android:layout_height="wrap_content"
+              android:background="#ffffff"
+              android:orientation="horizontal">
+
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/rowIcon"
+		android:paddingLeft="16dp"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="12dp"
+		android:paddingTop="4dp"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:id="@+id/rowText"/>
+
+</LinearLayout>

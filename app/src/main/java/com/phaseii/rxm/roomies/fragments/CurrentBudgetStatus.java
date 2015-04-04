@@ -142,6 +142,6 @@ public class CurrentBudgetStatus extends RoomiesFragment {
 		if (expense > 0) {
 			percent = (expense / total) * 100;
 		}
-		return percent + "% Budget Availaible";
+		return percent + "% Availaible";
 	}
 }
