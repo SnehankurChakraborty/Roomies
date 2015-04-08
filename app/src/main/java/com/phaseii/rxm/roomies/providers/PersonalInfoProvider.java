@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.database;
+package com.phaseii.rxm.roomies.providers;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -13,7 +13,7 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.*;
 /**
  * Created by Snehankur on 3/19/2015.
  */
-public class PersonalExpenseProvider extends ContentProvider {
+public class PersonalInfoProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		return false;
@@ -45,20 +45,20 @@ public class PersonalExpenseProvider extends ContentProvider {
 		return 0;
 	}
 
-	private class PersonalExpense extends SQLiteOpenHelper {
+	private class PersonalInfo extends SQLiteOpenHelper {
 
-		public PersonalExpense(Context context) {
+		public PersonalInfo(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			db.execSQL(PersonalExpenses.SQL_CREATE_ENTRIES);
+			db.execSQL(Person.SQL_CREATE_ENTRIES);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			db.execSQL(PersonalExpenses.SQL_DELETE_ENTRIES);
+			db.execSQL(Person.SQL_DELETE_ENTRIES);
 			onCreate(db);
 		}
 	}

@@ -18,10 +18,11 @@ public class RoomiesContract {
 	public static final String DATABASE_NAME = "Roomies.db";
 	public static final int DATABASE_VERSION = 1;
 	public static final String TEXT_TYPE = " TEXT";
+	public static final String DATETIME_TYPE = " DATETIME DEFAULT CURRENT_TIMESTAMP";
 	public static final String COMMA_SEP = ",";
 	public static final String NOT_NULL = " NOT NULL";
 	public static final String INTEGER_TYPE = " INTEGER";
-	public static final String INTEGER_PRIMARY_KEY_AUTOINCREMENT = " INTEGER PRIMARY KEY AUTOINCREMENT,";
+	public static final String INTEGER_PRIMARY_KEY_AUTOINCREMENT = " INTEGER PRIMARY KEY AUTOINCREMENT";
 
 	/**
 	 * ***********************************************************************************
@@ -117,17 +118,38 @@ public class RoomiesContract {
 	public static abstract class Room_Expenses implements BaseColumns {
 		public static final String TABLE_NAME = "room_expenses";
 		public static final String COLUMN_ROOM_ID = "room_id";
+		public static final String COLUMN_MONTH = "month";
 		public static final String COLUMN_RENT = "rent";
+		public static final String COLUMN_RENT_MARGIN = "rent_margin";
 		public static final String COLUMN_MAID = "maid";
+		public static final String COLUMN_MAID_MARGIN = "maid_margin";
 		public static final String COLUMN_ELECTRICITY = "elec";
+		public static final String COLUMN_ELECTRICITY_MARGIN = "elec_margin";
+		public static final String COLUMN_MISCELLANEOUS = "misc";
+		public static final String COLUMN_MISCELLANEOUS_MARGIN = "misc_margin";
+		public static final String COLUMN_TOTAL = "total";
+
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
-				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + NOT_NULL +
-				COLUMN_ROOM_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
+				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + COMMA_SEP +
+				COLUMN_MONTH + TEXT_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_RENT + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_RENT_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_MAID + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_MAID_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_ELECTRICITY + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_ELECTRICITY_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
+				COLUMN_MISCELLANEOUS + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_MISCELLANEOUS_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
+				COLUMN_TOTAL + INTEGER_TYPE + NOT_NULL/*+ COMMA_SEP +
 				FOREIGN_KEY + COLUMN_ROOM_ID + ") " +
-				REFERENCES + Room.TABLE_NAME + " (" + Room._ID + ") )";
+				REFERENCES + Room.TABLE_NAME + " (" + Room._ID + ")"*/ + " )";
+		public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER UPDATE_COLUMN_TOTAL_TRG"
+				+ " BEFORE UPDATE ON " + TABLE_NAME +
+				" BEGIN" +
+				" UPDATE " + TABLE_NAME + " SET " + COLUMN_TOTAL + " = " + "new." + COLUMN_RENT + "+ " +
+				"new." +
+				COLUMN_MAID + "+ new." + COLUMN_MISCELLANEOUS + "+ new." + COLUMN_ELECTRICITY +
+				" WHERE _ID = new._ID; END;";
 
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 	}
@@ -141,21 +163,24 @@ public class RoomiesContract {
 		public static final String TABLE_NAME = "misc_expenses";
 		public static final String COLUMN_ROOM_EXPENSE_ID = "room_expense_id";
 		public static final String COLUMN_PERSON_ID = "person_id";
-		public static final String COLUMN_ITEM = "misc_item";
+		public static final String COLUMN_DESCRIPTION = "misc_desc";
 		public static final String COLUMN_TYPE = "misc_type";
 		public static final String COLUMN_AMOUNT = "misc_amount";
+		public static final String COLUMN_QUANTITY = "misc_quantity";
 		public static final String COLUMN_DATE = "misc_date";
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
-				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + NOT_NULL +
-				COLUMN_ROOM_EXPENSE_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-				COLUMN_PERSON_ID + INTEGER_TYPE + COMMA_SEP + NOT_NULL +
-				COLUMN_ITEM + TEXT_TYPE + COMMA_SEP +
+				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + NOT_NULL + COMMA_SEP +
+				/*COLUMN_ROOM_EXPENSE_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
+				COLUMN_PERSON_ID + INTEGER_TYPE + COMMA_SEP + NOT_NULL +*/
+				COLUMN_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
 				COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
-				COLUMN_AMOUNT + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_QUANTITY + TEXT_TYPE + COMMA_SEP +
+				COLUMN_AMOUNT + TEXT_TYPE + COMMA_SEP +
+				COLUMN_DATE + DATETIME_TYPE /*+ COMMA_SEP +
 				FOREIGN_KEY + COLUMN_ROOM_EXPENSE_ID + ") " +
 				REFERENCES + Room_Expenses.TABLE_NAME + " (" + Room_Expenses._ID + ")" + COMMA_SEP +
 				FOREIGN_KEY + COLUMN_PERSON_ID + ") " +
-				REFERENCES + Person.TABLE_NAME + " (" + Person._ID + ") )";
+				REFERENCES + Person.TABLE_NAME + " (" + Person._ID + ")"*/ + " )";
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 	}
 }

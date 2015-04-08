@@ -3,4 +3,5 @@
     <color name="roomies_color">#5ebdad</color>
 	<color name="primaryColor">#1a979e</color>
 	<color name="primaryColorDark">#116A6F</color>
+	<color name="spinnerColor">#0a7148</color>
 </resources>

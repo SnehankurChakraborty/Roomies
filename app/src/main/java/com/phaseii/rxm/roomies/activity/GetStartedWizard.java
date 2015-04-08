@@ -13,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.service.RoomiesService;
+import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
 
@@ -28,6 +29,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
 
 public class GetStartedWizard extends FragmentActivity {
 
+
 	FragmentTransaction transaction;
 	Toast mToast;
 	EditText roomName;
@@ -36,10 +38,12 @@ public class GetStartedWizard extends FragmentActivity {
 	EditText maid;
 	EditText electricity;
 	EditText miscellaneous;
+	SharedPreferences mSharedPref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_get_started_wizard);
 		if (savedInstanceState == null) {
 			transaction = getSupportFragmentManager().beginTransaction();
@@ -113,7 +117,7 @@ public class GetStartedWizard extends FragmentActivity {
 		if (isValidRent && isValidMaid && isValidElec && isValidMisc) {
 			storeRoomInfo();
 			try {
-				startActivityHelper(this, getString(R.string.HomeScreen_Activity));
+				startActivityHelper(this, getString(R.string.HomeScreen_Activity), null);
 			} catch (RoomXpnseMngrException e) {
 				createToast(this, APP_ERROR, mToast);
 			}
@@ -124,13 +128,14 @@ public class GetStartedWizard extends FragmentActivity {
 
 
 	private void storeRoomInfo() {
-		SharedPreferences mSharedPref = getSharedPreferences(
+		mSharedPref=getSharedPreferences(
 				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = mSharedPref.edit();
 		mEditor.putString("ROOM_ALIAS", roomName.getText().toString());
 		mEditor.putString("ROOM_NO_OF_MEMBERS", noOfMembers.getText().toString());
+		mEditor.putBoolean(IS_LOGGED_IN, true);
 		mEditor.apply();
-		SharedPreferences sharedPreferences = getSharedPreferences(ROOM_EXPENSE_FILE_KEY,
+		SharedPreferences sharedPreferences = getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				MODE_PRIVATE);
 		mEditor = sharedPreferences.edit();
 		mEditor.putString(RENT,
@@ -141,7 +146,10 @@ public class GetStartedWizard extends FragmentActivity {
 				electricity.getText().toString()) ? "0" : electricity.getText().toString());
 		mEditor.putString(MISC, TextUtils.isEmpty(
 				miscellaneous.getText().toString()) ? "0" : miscellaneous.getText().toString());
+
 		mEditor.apply();
+		RoomiesService room = new RoomiesServiceImpl(this);
+		room.insertRoomDetails(null, null, null);
 	}
 
 
@@ -233,56 +241,6 @@ public class GetStartedWizard extends FragmentActivity {
 			final EditText roomElectricity = (EditText) rootView.findViewById(
 					R.id.room_electricity);
 			final EditText roomMisc = (EditText) rootView.findViewById(R.id.room_misc);
-
-			/*final ToggleButton toggleRent = (ToggleButton) rootView.findViewById(
-					R.id.room_rent_toggle);
-			final ToggleButton toggleMaid = (ToggleButton) rootView.findViewById(
-					R.id.room_maid_toggle);
-			final ToggleButton toggleElectricity = (ToggleButton) rootView.findViewById(R.id
-					.room_electricity_toggle);
-			final ToggleButton toggleMisc = (ToggleButton) rootView.findViewById(
-					R.id.room_misc_toggle);*/
-			/*toggleRent.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (!toggleRent.isChecked()) {
-						roomRent.setEnabled(false);
-						roomRent.setText("");
-					} else {
-						roomRent.setEnabled(true);
-					}
-				}
-			});
-			toggleMaid.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (!toggleMaid.isChecked()) {
-						roomMaid.setEnabled(false);
-						roomMaid.setText("");
-					} else {
-						roomMaid.setEnabled(true);
-					}
-				}
-			});
-			toggleElectricity.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (!toggleElectricity.isChecked()) {
-						roomElectricity.setEnabled(false);
-						roomElectricity.setText("");
-					} else {
-						roomElectricity.setEnabled(true);
-					}
-				}
-			});
-			toggleMisc.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (!toggleMisc.isChecked()) {
-						toggleMisc.setChecked(true);
-					}
-				}
-			});*/
 			return rootView;
 
 		}

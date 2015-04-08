@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.fragments.CurrentExpenseReport;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 
 /**
  * Created by Snehankur on 4/3/2015.
@@ -23,19 +24,13 @@ public class RoomiesPagerAdapter extends FragmentStatePagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-
-		if(position == 0) // if the position is 0 we are returning the First tab
-		{
-			CurrentBudgetStatus tab1 = new CurrentBudgetStatus();
-			return tab1;
+		RoomiesFragment tab;
+		if (position == 0) {
+			tab = CurrentBudgetStatus.getInstance();
+		} else {
+			tab = CurrentExpenseReport.getInstance();
 		}
-		else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
-		{
-			CurrentExpenseReport tab2 = new CurrentExpenseReport();
-			return tab2;
-		}
-
-
+		return tab;
 	}
 
 	@Override

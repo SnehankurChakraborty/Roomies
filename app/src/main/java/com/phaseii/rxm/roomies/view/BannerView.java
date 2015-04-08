@@ -38,7 +38,6 @@ public class BannerView extends TextView {
 			this.setTypeface(Typeface.createFromAsset(context.getAssets(),
 					"fonts/LilyScriptOne-Regular.otf"), Typeface.BOLD);
 		}
-		this.setText(context.getString(R.string.roomies));
 		this.setTextColor(Color.WHITE);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			this.setTextIsSelectable(false);

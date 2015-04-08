@@ -28,8 +28,11 @@ public final class RoomiesConstants {
 	public static final String ELECTRICITY="ELECTRICITY";
 	public static final String MISC="MISC";
 	public static final String SPENT="SPENT";
+	public static final String TOTAL="TOTAL";
 	public static final String ROOM_INFO_FILE_KEY="ROOM_INFO";
-	public static final String ROOM_EXPENSE_FILE_KEY="ROOM_EXPENSE";
+	public static final String ROOM_BUDGET_FILE_KEY ="ROOMIES_BUDGET";
+	public static final String ROOM_EXPENDITURE_FILE_KEY="ROOMIES_EXPENDITURE";
 	public static final String ROOM_ALIAS = "ROOM_ALIAS";
+	public static final String IS_LOGGED_IN = "isLoggedIn";
 }
 

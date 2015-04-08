@@ -16,7 +16,8 @@
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="89dp"
 		android:layout_above="@+id/get_started_button"
-		android:layout_centerHorizontal="true"/>
+		android:layout_centerHorizontal="true"
+		android:text="@string/roomies"/>
 
 	<Button
 		android:text="@string/get_started"

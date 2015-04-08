@@ -17,6 +17,10 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
 
 /**
@@ -45,11 +49,20 @@ public class RoomiesHelper {
 		helper.delayToast(mToast);
 	}
 
-	public static void startActivityHelper(Context context, String activity) throws
+	public static void startActivityHelper(Context context, String activity, Map<String,
+			String> extras) throws
 			RoomXpnseMngrException {
 		try {
 			Class activityClass = Class.forName(activity);
 			Intent intent = new Intent(context, activityClass);
+			if (extras != null) {
+				Set<String> keySet = extras.keySet();
+				Iterator<String> keyIterator = keySet.iterator();
+				while (keyIterator.hasNext()) {
+					String key = keyIterator.next();
+					intent.putExtra(key, extras.get(key));
+				}
+			}
 			context.startActivity(intent);
 		} catch (ClassNotFoundException e) {
 			throw new RoomXpnseMngrException(activity + " class not found", e);
@@ -103,7 +116,7 @@ public class RoomiesHelper {
 				} else {
 					errorFeild.setVisibility(View.INVISIBLE);
 				}
-			}else{
+			} else {
 				errorFeild.setVisibility(View.INVISIBLE);
 			}
 		} else {

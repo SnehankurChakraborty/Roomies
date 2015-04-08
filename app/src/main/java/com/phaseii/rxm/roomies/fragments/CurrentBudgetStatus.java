@@ -3,6 +3,7 @@ package com.phaseii.rxm.roomies.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.service.RoomiesService;
+import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 
 import java.util.ArrayList;
 
@@ -22,7 +25,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENSE_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
 
 
@@ -60,6 +63,7 @@ public class CurrentBudgetStatus extends RoomiesFragment {
 		}
 	}
 
+
 	@Override
 	public void onDetach() {
 		super.onDetach();
@@ -87,17 +91,17 @@ public class CurrentBudgetStatus extends RoomiesFragment {
 	}
 
 	private PieChart showBarGraph(Context context) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(ROOM_EXPENSE_FILE_KEY,
+		SharedPreferences sharedPreferences = context.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				context.MODE_PRIVATE);
 		float rent = Float.valueOf(sharedPreferences.getString(RENT, "0"));
 		float maid = Float.valueOf(sharedPreferences.getString(MAID, "0"));
 		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY, "0"));
 		float misc = Float.valueOf(sharedPreferences.getString(MISC, "0"));
-		float spent=Float.valueOf(sharedPreferences.getString(SPENT, "0"));
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<String>();
 		float total = rent + maid + electricity + misc;
-		entries.add(new Entry(total, 0));
+		float spent = getSpentDetails();
+		entries.add(new Entry(total - spent, 0));
 		labels.add("Remaining");
 		entries.add(new Entry(spent, 1));
 		labels.add("Spent");
@@ -131,17 +135,22 @@ public class CurrentBudgetStatus extends RoomiesFragment {
 		mChart.setData(data);
 		mChart.animateXY(1000, 1000);
 		mChart.setDrawCenterText(true);
-		mChart.setCenterText(getPercentageLeft(total, 0));
+		mChart.setCenterText(getPercentageLeft(total, spent));
 		mChart.setDescription("");
 		mChart.setClickable(true);
 		return mChart;
 	}
 
-	private String getPercentageLeft(float total, float expense) {
+	private String getPercentageLeft(float total, float spent) {
 		float percent = 100f;
-		if (expense > 0) {
-			percent = (expense / total) * 100;
+		if (spent > 0) {
+			percent = 100 - ((spent / total) * 100);
 		}
 		return percent + "% Availaible";
+	}
+
+	private float getSpentDetails() {
+		RoomiesService roomiesService = new RoomiesServiceImpl(getActivity().getBaseContext());
+		return roomiesService.getTotalSpent();
 	}
 }

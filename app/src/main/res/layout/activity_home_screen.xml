@@ -6,14 +6,6 @@
                 tools:context="com.phaseii.rxm.roomies.activity.HomeScreenActivity">
 
 
-	<android.support.v7.widget.Toolbar
-		android:id="@+id/toolbar"
-		android:minHeight="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		android:layout_width="match_parent"
-		android:layout_height="150dp"
-		/>
-
 	<android.support.v4.widget.DrawerLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/home_screen_drawer_layout"
@@ -22,14 +14,23 @@
 
 		<RelativeLayout
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" >
+			android:layout_height="wrap_content">
+
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:minHeight="?attr/actionBarSize"
+				android:background="?attr/colorPrimary"
+				android:layout_width="match_parent"
+				android:layout_height="150dp"
+				android:title=""/>
 
 			<com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
 				android:id="@+id/tabs"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:elevation="2dp"
-				android:background="@color/primaryColor"/>
+				android:background="@color/primaryColor"
+				android:layout_below="@id/toolbar"/>
 
 			<android.support.v4.view.ViewPager
 				android:id="@+id/pager"
@@ -37,6 +38,30 @@
 				android:layout_width="match_parent"
 				android:layout_weight="1"
 				android:layout_below="@id/tabs"/>
+
+			<com.phaseii.rxm.roomies.view.BannerView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/toolbartitle"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"
+				android:layout_marginTop="58dp"
+				/>
+
+			<ImageButton
+				android:layout_width="70dp"
+				android:layout_height="70dp"
+				android:src="@drawable/ic_expense_invert"
+				android:background="@drawable/add_expense"
+				android:id="@+id/addexpense"
+				android:layout_gravity="left|bottom"
+				android:layout_marginRight="40dp"
+				android:layout_marginBottom="40dp"
+				android:layout_marginEnd="40dp"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentEnd="true"/>
+
 		</RelativeLayout>
 
 		<!-- The navigation drawer -->
