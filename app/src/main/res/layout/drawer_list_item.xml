@@ -31,12 +31,12 @@
           tools:ignore="NewApi"/>-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:paddingTop="8dp"
               android:paddingBottom="8dp"
               android:layout_height="wrap_content"
-              android:background="#ffffff"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+              android:background="@drawable/tab_indicator_ab_roomies">
 
 
 	<ImageView
@@ -51,6 +51,7 @@
 		android:paddingLeft="12dp"
 		android:paddingTop="4dp"
 		android:textAppearance="?android:attr/textAppearanceMedium"
-		android:id="@+id/rowText"/>
+		android:id="@+id/rowText"
+		/>
 
 </LinearLayout>

@@ -7,7 +7,9 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -28,6 +30,7 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.view.BannerView;
 import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesRecyclerViewAdapter;
@@ -65,72 +68,79 @@ public class HomeScreenActivity extends ActionBarActivity
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		mSharedPref=getSharedPreferences(
+		super.onCreate(savedInstanceState);
+		mSharedPref = getSharedPreferences(
 				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
 		boolean isLoggedIn = mSharedPref.getBoolean(IS_LOGGED_IN, false);
 		if (!isLoggedIn) {
 			try {
+
 				startActivityHelper(this,
-						getResources().getString(R.string.GetStartedWizard), null);
+						getResources().getString(R.string.GetStartedWizard), null, true);
 			} catch (RoomXpnseMngrException e) {
 				createToast(this, APP_ERROR, mToast);
 				System.exit(0);
 			}
+		} else {
+
+			setContentView(R.layout.activity_home_screen);
+			mSharedPref = getSharedPreferences(
+					ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+			mtoolbar = (Toolbar) findViewById(R.id.toolbar);
+			mtoolbar.setTitle("");
+			if (mtoolbar != null) {
+				setSupportActionBar(mtoolbar);
+			}
+			BannerView title = (BannerView) findViewById(R.id.toolbartitle);
+			title.setText(" " + mSharedPref.getString(ROOM_ALIAS, "Room") + " ");
+			ImageView addExpenseButton = (ImageView) findViewById(R.id.addexpense);
+			addExpenseButton.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					DialogFragment dialog = AddExpenseDialog.getInstance(R.id.pager);
+					dialog.show(getSupportFragmentManager(), "addexpense");
+					/*adapter.getItemPosition(adapter.getItem(0));
+					adapter.getItemPosition(adapter.getItem(1));*/
+
+				}
+
+			});
+
+			RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+			mRecyclerView.hasFixedSize();
+			RecyclerView.Adapter mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
+					drawerIcons, name, email, profile);
+			mRecyclerView.setAdapter(mRecylerAdapter);
+			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+			mRecyclerView.setLayoutManager(mLayoutManager);
+			mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
+			mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, mtoolbar
+					, R.string.open_drawer, R.string.close_drawer) {
+				public void onDrawerClosed(View view) {
+					super.onDrawerClosed(view);
+				}
+
+				public void onDrawerOpened(View drawerView) {
+					super.onDrawerOpened(drawerView);
+				}
+			};
+			mDrawerLayout.setDrawerListener(mDrawerTogggle);
+			mDrawerTogggle.syncState();
+			adapter = new RoomiesPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
+			pager = (ViewPager) findViewById(R.id.pager);
+			pager.setAdapter(adapter);
+			tabs = (RoomiesSlidingTabLayout) findViewById(R.id.tabs);
+			tabs.setDistributeEvenly(true);
+			tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
+				@Override
+				public int getIndicatorColor(int position) {
+					return getResources().getColor(R.color.material_deep_teal_200);
+				}
+			});
+			tabs.setViewPager(pager);
+
 		}
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_home_screen);
-		mSharedPref = getSharedPreferences(
-				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-		mtoolbar = (Toolbar) findViewById(R.id.toolbar);
-		mtoolbar.setTitle("");
-		if (mtoolbar != null) {
-			setSupportActionBar(mtoolbar);
-		}
-		BannerView title = (BannerView) findViewById(R.id.toolbartitle);
-		title.setText(" " + mSharedPref.getString(ROOM_ALIAS, "Room") + " ");
-		ImageView addExpenseButton = (ImageView) findViewById(R.id.addexpense);
-		addExpenseButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				DialogFragment dialog = new AddExpenseDialog();
-				dialog.show(getSupportFragmentManager(), "addexpense");
-			}
-		});
-
-		RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-		mRecyclerView.hasFixedSize();
-		RecyclerView.Adapter mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
-				drawerIcons, name, email, profile);
-		mRecyclerView.setAdapter(mRecylerAdapter);
-		RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-		mRecyclerView.setLayoutManager(mLayoutManager);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
-		mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, mtoolbar
-				, R.string.open_drawer, R.string.close_drawer) {
-			public void onDrawerClosed(View view) {
-				super.onDrawerClosed(view);
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerTogggle);
-		mDrawerTogggle.syncState();
-		adapter = new RoomiesPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
-		pager = (ViewPager) findViewById(R.id.pager);
-		pager.setAdapter(adapter);
-		tabs = (RoomiesSlidingTabLayout) findViewById(R.id.tabs);
-		tabs.setDistributeEvenly(true);
-		tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
-			@Override
-			public int getIndicatorColor(int position) {
-				return getResources().getColor(R.color.material_deep_teal_200);
-			}
-		});
-		tabs.setViewPager(pager);
-
 	}
 
 	@Override
@@ -171,6 +181,10 @@ public class HomeScreenActivity extends ActionBarActivity
 	@Override
 	public void onFragmentInteraction(Uri uri) {
 
+	}
+
+	public ViewPager getViewPager(){
+		return pager;
 	}
 
 	private class DrawerItemClickListener

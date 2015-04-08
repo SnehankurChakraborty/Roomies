@@ -1,9 +1,12 @@
 package com.phaseii.rxm.roomies.helper;
 
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
@@ -50,7 +53,7 @@ public class RoomiesHelper {
 	}
 
 	public static void startActivityHelper(Context context, String activity, Map<String,
-			String> extras) throws
+			String> extras, boolean isFinish) throws
 			RoomXpnseMngrException {
 		try {
 			Class activityClass = Class.forName(activity);
@@ -62,6 +65,9 @@ public class RoomiesHelper {
 					String key = keyIterator.next();
 					intent.putExtra(key, extras.get(key));
 				}
+			}
+			if(isFinish){
+				ActivityCompat.finishAffinity((Activity)context);
 			}
 			context.startActivity(intent);
 		} catch (ClassNotFoundException e) {

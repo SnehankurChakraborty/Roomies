@@ -28,6 +28,10 @@ public abstract class RoomiesFragment extends Fragment {
 			GREEN_STATUS, RED_STATUS, SEGMENT_THREE, AMBER_STATUS
 	};
 
+	public interface UpdatableFragment{
+		public void update();
+	}
+
 }
 
 

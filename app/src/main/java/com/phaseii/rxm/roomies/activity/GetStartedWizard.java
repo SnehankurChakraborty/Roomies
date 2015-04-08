@@ -117,7 +117,7 @@ public class GetStartedWizard extends FragmentActivity {
 		if (isValidRent && isValidMaid && isValidElec && isValidMisc) {
 			storeRoomInfo();
 			try {
-				startActivityHelper(this, getString(R.string.HomeScreen_Activity), null);
+				startActivityHelper(this, getString(R.string.HomeScreen_Activity), null, true);
 			} catch (RoomXpnseMngrException e) {
 				createToast(this, APP_ERROR, mToast);
 			}
@@ -128,16 +128,10 @@ public class GetStartedWizard extends FragmentActivity {
 
 
 	private void storeRoomInfo() {
-		mSharedPref=getSharedPreferences(
-				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-		SharedPreferences.Editor mEditor = mSharedPref.edit();
-		mEditor.putString("ROOM_ALIAS", roomName.getText().toString());
-		mEditor.putString("ROOM_NO_OF_MEMBERS", noOfMembers.getText().toString());
-		mEditor.putBoolean(IS_LOGGED_IN, true);
-		mEditor.apply();
+
 		SharedPreferences sharedPreferences = getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				MODE_PRIVATE);
-		mEditor = sharedPreferences.edit();
+		SharedPreferences.Editor mEditor = sharedPreferences.edit();
 		mEditor.putString(RENT,
 				TextUtils.isEmpty(rent.getText().toString()) ? "0" : rent.getText().toString());
 		mEditor.putString(MAID,
@@ -148,6 +142,19 @@ public class GetStartedWizard extends FragmentActivity {
 				miscellaneous.getText().toString()) ? "0" : miscellaneous.getText().toString());
 
 		mEditor.apply();
+		mSharedPref = getSharedPreferences(
+				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+		mEditor = mSharedPref.edit();
+		mEditor.putString("ROOM_ALIAS", roomName.getText().toString());
+		mEditor.putString("ROOM_NO_OF_MEMBERS", noOfMembers.getText().toString());
+		mEditor.putBoolean(IS_LOGGED_IN, true);
+		float total = Float.valueOf(rent.getText().toString()) + Float.valueOf(maid.getText()
+				.toString()) + Float.valueOf(electricity.getText().toString()) + Float.valueOf(
+				miscellaneous.getText().toString());
+
+		mEditor.putFloat(TOTAL, total);
+		mEditor.apply();
+
 		RoomiesService room = new RoomiesServiceImpl(this);
 		room.insertRoomDetails(null, null, null);
 	}

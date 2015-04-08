@@ -1,13 +1,23 @@
 package com.phaseii.rxm.roomies.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 /**
  * Created by Snehankur on 4/4/2015.
@@ -42,8 +52,42 @@ public class RoomiesRecyclerViewAdapter
 		TextView name;
 		TextView email;
 
-		public ViewHolder(View itemView, int ViewType) {
+		public ViewHolder(View itemView, int ViewType, final Context mContext) {
 			super(itemView);
+			itemView.setClickable(true);
+			itemView.setOnClickListener(new View.OnClickListener() {
+				Toast mToast;
+
+				@Override
+				public void onClick(View v) {
+					int pos = getPosition();
+					if (pos == 5) {
+						SharedPreferences mSharedPref = mContext.getSharedPreferences(
+								ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+						SharedPreferences.Editor mEditor = mSharedPref.edit();
+						mEditor.clear();
+						mEditor.apply();
+						mSharedPref = mContext.getSharedPreferences(
+								ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
+						mEditor = mSharedPref.edit();
+						mEditor.clear();
+						mEditor.apply();
+						mSharedPref = mContext.getSharedPreferences(
+								ROOM_EXPENDITURE_FILE_KEY, Context.MODE_PRIVATE);
+						mEditor = mSharedPref.edit();
+						mEditor.clear();
+						mEditor.apply();
+						try {
+							RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
+									.getString(R.string.HomeScreen_Activity), null,true);
+						} catch (RoomXpnseMngrException e) {
+							RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
+							System.exit(0);
+						}
+					}
+
+				}
+			});
 			if (ViewType == TYPE_ITEM) {
 				textView = (TextView) itemView.findViewById(
 						R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
@@ -71,7 +115,8 @@ public class RoomiesRecyclerViewAdapter
 					parent,
 					false); //Inflating the layout
 			ViewHolder vhItem = new ViewHolder(v,
-					viewType); //Creating ViewHolder and passing the object of type view
+					viewType,
+					parent.getContext()); //Creating ViewHolder and passing the object of type view
 			return vhItem; // Returning the created object
 			//inflate your layout and pass it to view holder
 		} else if (viewType == TYPE_HEADER) {
@@ -79,7 +124,8 @@ public class RoomiesRecyclerViewAdapter
 					parent,
 					false); //Inflating the layout
 			ViewHolder vhHeader = new ViewHolder(v,
-					viewType); //Creating ViewHolder and passing the object of type view
+					viewType,
+					parent.getContext()); //Creating ViewHolder and passing the object of type view
 			return vhHeader; //returning the object created
 		}
 		return null;

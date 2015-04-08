@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,9 +17,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 
 /**
  * Created by Snehankur on 4/5/2015.
@@ -36,7 +39,12 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	EditText description;
 	Button positive;
 	Button negative;
+	static int pagerId;
 
+	public static AddExpenseDialog getInstance(int pagerId){
+		AddExpenseDialog.pagerId=pagerId;
+		return new AddExpenseDialog();
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -109,10 +117,18 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		positive.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				RoomiesService room = new RoomiesServiceImpl(mContext);
 				if (RoomiesConstants.RENT.equals(category)) {
-					RoomiesService room=new RoomiesServiceImpl(mContext);
 					room.updateRoomExpenses(amount.getText().toString(), null, null);
+				}else if(RoomiesConstants.MAID.equals(category)){
+					room.updateRoomExpenses(null, amount.getText().toString(), null);
+				}else if(RoomiesConstants.ELECTRICITY.equals(category)){
+					room.updateRoomExpenses(null, null, amount.getText().toString());
 				}
+				((RoomiesFragment.UpdatableFragment)getActivity().getSupportFragmentManager()
+						.getFragments().get(0)).update();
+				((RoomiesFragment.UpdatableFragment)getActivity().getSupportFragmentManager()
+						.getFragments().get(1)).update();
 				dialog.dismiss();
 			}
 		});

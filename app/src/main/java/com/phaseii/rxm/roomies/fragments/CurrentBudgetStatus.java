@@ -29,7 +29,8 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_K
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
 
 
-public class CurrentBudgetStatus extends RoomiesFragment {
+public class CurrentBudgetStatus extends RoomiesFragment
+		implements RoomiesFragment.UpdatableFragment {
 
 	private OnFragmentInteractionListener mListener;
 
@@ -46,6 +47,7 @@ public class CurrentBudgetStatus extends RoomiesFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.tab_current_budget_status, container, false);
+		rootView.setTag("BUDGET");
 		showBarGraph(getActivity().getBaseContext());
 		return rootView;
 	}
@@ -73,6 +75,11 @@ public class CurrentBudgetStatus extends RoomiesFragment {
 	@Override
 	public View getFragmentView() {
 		return rootView;
+	}
+
+	@Override
+	public void update() {
+		showBarGraph(getActivity().getBaseContext());
 	}
 
 	/**
