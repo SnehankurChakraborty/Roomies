@@ -1,73 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- A C T I V I T Y   N A M E S -->
+    <!-- A C T I V I T Y   N A M E S -->
 
-	<string name="HomeScreen_Activity">com.phaseii.rxm.roomies.activity.HomeScreenActivity</string>
-	<string name="GetStartedWizard">com.phaseii.rxm.roomies.activity.GetStartedWizard</string>
-	<!--  -->
+    <string name="HomeScreen_Activity">com.phaseii.rxm.roomies.activity.HomeScreenActivity</string>
+    <string name="GetStartedWizard">com.phaseii.rxm.roomies.activity.GetStartedWizard</string>
+    <string name="LoginActivity">com.phaseii.rxm.roomies.activity.LoginActivity</string>
+    <!--  -->
 
-	<string name="app_name">Roomies</string>
-	<string name="action_settings">Settings</string>
-	<string name="login">Login</string>
-	<string name="signup">Signup</string>
-	<string name="or">---------( or )---------</string>
-	<string name="roomxpnsemngr">RoomXpnseManager</string>
-	<string name="roomies">Roomies </string>
-	<string name="title_activity_login">LoginActivity</string>
-	<string name="title_activity_signup">SignupActivity</string>
-	<string name="emailaddress">Email Address</string>
-	<string name="password">Password</string>
-	<string name="forgot_password">Forgot Password</string>
-	<string name="username">Username</string>
-	<string name="phone_number">Phone Number</string>
-	<string name="male">Male</string>
-	<string name="female">Female</string>
-	<string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="app_name">Roomies</string>
+    <string name="action_settings">Settings</string>
+    <string name="login">Login</string>
+    <string name="signup">Signup</string>
+    <string name="or">---------( or )---------</string>
+    <string name="roomxpnsemngr">RoomXpnseManager</string>
+    <string name="roomies">Roomies </string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="emailaddress">Email Address</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="username">Username</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="title_activity_home_screen">HomeScreenActivity</string>
 
-	<!-- N A VI G A T I O N    D R A W E R -->
-	<string-array name="home_screen_drawer_options">
-		<item>Room Expenses</item>
-		<item>Logout</item>
-	</string-array>
+    <!-- N A VI G A T I O N    D R A W E R -->
+    <string-array name="home_screen_drawer_options">
+        <item>Room Expenses</item>
+        <item>Logout</item>
+    </string-array>
 
-	<!-- W I Z A R D -->
+    <!-- W I Z A R D -->
 
-	<string name="title_activity_create_room_wizard">CreateRoomWizard</string>
-	<string name="create_room">Create A Room</string>
-	<string name="start_wizard">Start</string>
-	<string name="rent">Rent</string>
-	<string name="maid">Maid</string>
-	<string name="electricity">Electricity</string>
-	<string name="miscellaneous">Miscellanous</string>
-	<string name="next"><![CDATA[Next >>]]></string>
-	<string name="specify_room_budget">Specify Room Budget</string>
-	<string name="finish">FINISH</string>
-	<string name="title_activity_get_started_wizard">GetStartedWizard</string>
-	<string name="get_started">Get Started</string>
-	<string name="join_room">Join A Room</string>
-	<string name="error_symbol">  !  </string>
-	<string name="fixed">Fixed</string>
-	<string name="variable">Variable</string>
-	<string name="hello_blank_fragment">Hello blank fragment</string>
-	<string name="open_drawer">open drawer</string>
-	<string name="close_drawer">close drawer</string>
+    <string name="title_activity_create_room_wizard">CreateRoomWizard</string>
+    <string name="create_room">Create A Room</string>
+    <string name="start_wizard">Start</string>
+    <string name="rent">Rent</string>
+    <string name="maid">Maid</string>
+    <string name="electricity">Electricity</string>
+    <string name="miscellaneous">Miscellanous</string>
+    <string name="next"><![CDATA[Next >>]]></string>
+    <string name="specify_room_budget">Specify Room Budget</string>
+    <string name="finish">FINISH</string>
+    <string name="title_activity_get_started_wizard">GetStartedWizard</string>
+    <string name="get_started">Get Started</string>
+    <string name="join_room">Join A Room</string>
+    <string name="error_symbol">  !  </string>
+    <string name="fixed">Fixed</string>
+    <string name="variable">Variable</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_drawer">open drawer</string>
+    <string name="close_drawer">close drawer</string>
 
-	<!-- A D D  E X P E N S E   D I A L O G -->
+    <!-- A D D  E X P E N S E   D I A L O G -->
 
-	<string name="submit">Submit</string>
-	<string name="cancel">Cancel</string>
-	<string-array name="category">
-		<item>RENT</item>
-		<item>MAID</item>
-		<item>ELECTRICITY</item>
-		<item>MISCELLANEOUS</item>
-	</string-array>
-	<string-array name="subcategory">
-		<item>NA</item>
-		<item>GROCERY</item>
-		<item>VEGETABLES</item>
-		<item>OTHERS</item>
-	</string-array>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="category">
+        <item>RENT</item>
+        <item>MAID</item>
+        <item>ELECTRICITY</item>
+        <item>MISCELLANEOUS</item>
+    </string-array>
+    <string-array name="subcategory">
+        <item>NA</item>
+        <item>GROCERY</item>
+        <item>VEGETABLES</item>
+        <item>OTHERS</item>
+    </string-array>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

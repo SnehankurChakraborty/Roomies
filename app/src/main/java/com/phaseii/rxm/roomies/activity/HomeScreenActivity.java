@@ -74,15 +74,13 @@ public class HomeScreenActivity extends ActionBarActivity
 		boolean isLoggedIn = mSharedPref.getBoolean(IS_LOGGED_IN, false);
 		if (!isLoggedIn) {
 			try {
-
 				startActivityHelper(this,
-						getResources().getString(R.string.GetStartedWizard), null, true);
+						getResources().getString(R.string.LoginActivity), null, true);
 			} catch (RoomXpnseMngrException e) {
 				createToast(this, APP_ERROR, mToast);
 				System.exit(0);
 			}
 		} else {
-
 			setContentView(R.layout.activity_home_screen);
 			mSharedPref = getSharedPreferences(
 					ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);

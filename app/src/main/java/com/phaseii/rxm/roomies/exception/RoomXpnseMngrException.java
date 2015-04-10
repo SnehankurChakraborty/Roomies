@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class RoomXpnseMngrException extends Exception {
 
-	public static final String RXMEXCEPTION = "RXMEXCEPTION :";
+	public static final String RXMEXCEPTION = "ROOMIESEXCEPTION :";
 
 	public RoomXpnseMngrException(Throwable t) {
 		super(t);

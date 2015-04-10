@@ -10,6 +10,7 @@ public class RoomiesContract {
 
 	public static final String FOREIGN_KEY = "FOREIGN KEY (";
 	public static final String REFERENCES = "REFERENCES ";
+	public static final String UNIQUE_KEY = " UNIQUE";
 
 	/*empty constructor to prevent someone from accidentally instantiating the contract class,*/
 	private RoomiesContract() {
@@ -30,7 +31,7 @@ public class RoomiesContract {
 	 * *************************************************************************************
 	 */
 
-	public static abstract class UserCredential implements BaseColumns {
+	public static abstract class UserCredentials implements BaseColumns {
 		public static final String TABLE_NAME = "user_credentials";
 		public static final String COLUMN_PERSON_ID = "person_id";
 		public static final String COLUMN_NAME_EMAIL_ID = "email_id";
@@ -38,10 +39,10 @@ public class RoomiesContract {
 		public static final String COLUMN_NAME_PASSWORD = "password";
 
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME +
-				" (" + _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT +
+				" (" + _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + COMMA_SEP +
 				/*COLUMN_PERSON_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +*/
+				COLUMN_NAME_USERNAME + TEXT_TYPE + UNIQUE_KEY + COMMA_SEP +
 				COLUMN_NAME_EMAIL_ID + TEXT_TYPE + COMMA_SEP +
-				COLUMN_NAME_USERNAME + TEXT_TYPE + COMMA_SEP +
 				COLUMN_NAME_PASSWORD + TEXT_TYPE + /*COMMA_SEP +
 				"FOREIGN KEY (" + COLUMN_PERSON_ID + ") " +
 				"REFERENCES " + Person.TABLE_NAME + "(" + Person._ID + ") "+*/")";

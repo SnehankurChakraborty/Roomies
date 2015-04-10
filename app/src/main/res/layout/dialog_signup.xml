@@ -1,27 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context="com.phaseii.rxm.roomies.fragments.Registeration"
+              android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="30dp"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:orientation="vertical"
-              android:id="@+id/login_page">
+              android:paddingBottom="@dimen/activity_vertical_margin">
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="LOGIN"
+		android:text="SIGNUP"
 		android:textSize="40sp"
 		android:textColor="@color/primaryColor"/>
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="into your room"
-		android:layout_marginBottom="20dp"
+		android:text="for your room"
 		android:textColor="@color/primaryColor"/>
 
 	<RelativeLayout
@@ -31,9 +28,9 @@
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="Enter Username"
-			style="@style/EditTextRoomies"
-			android:id="@+id/username"/>
+			android:hint="Enter name/username"
+			android:id="@+id/name"
+			style="@style/EditTextRoomies"/>
 
 		<TextView
 			android:layout_width="wrap_content"
@@ -42,10 +39,7 @@
 			android:layout_centerVertical="true"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentEnd="true"
-			android:id="@+id/username_error"
-			/>
-
-
+			android:id="@+id/name_error"/>
 	</RelativeLayout>
 
 	<RelativeLayout
@@ -55,9 +49,9 @@
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="@string/password"
-			style="@style/EditTextRoomies"
-			android:id="@+id/password"/>
+			android:hint="Enter email address"
+			android:id="@+id/email"
+			style="@style/EditTextRoomies"/>
 
 		<TextView
 			android:layout_width="wrap_content"
@@ -66,33 +60,35 @@
 			android:layout_centerVertical="true"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentEnd="true"
-			android:id="@+id/password_error"/>
+			android:id="@+id/email_error"/>
+	</RelativeLayout>
 
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Enter password"
+			android:id="@+id/password"
+			style="@style/EditTextRoomies"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/ErrorButton"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:id="@+id/password_error"
+			/>
 	</RelativeLayout>
 
 	<Button
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/login"
-		style="@style/ButtonRoomies"
-		android:id="@+id/submit"/>
-
-
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="@string/signup"
-		android:gravity="center_horizontal"
-		android:id="@+id/signuplink"
-		android:layout_marginTop="20dp"
-		android:textColor="@color/roomies_color"/>
-
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="@string/or"
-		android:layout_gravity="center"
-		android:layout_marginTop="30dp"/>
-
-
+		android:text="SignUP"
+		android:id="@+id/signup"
+		style="@style/ButtonRoomies"/>
 </LinearLayout>
