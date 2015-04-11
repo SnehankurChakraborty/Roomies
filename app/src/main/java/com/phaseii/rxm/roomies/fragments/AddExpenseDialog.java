@@ -40,9 +40,11 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	Button positive;
 	Button negative;
 	static int pagerId;
+	static String username;
 
-	public static AddExpenseDialog getInstance(int pagerId){
-		AddExpenseDialog.pagerId=pagerId;
+	public static AddExpenseDialog getInstance(int pagerId, String username) {
+		AddExpenseDialog.pagerId = pagerId;
+		AddExpenseDialog.username = username;
 		return new AddExpenseDialog();
 	}
 
@@ -119,15 +121,15 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 			public void onClick(View v) {
 				RoomiesService room = new RoomiesServiceImpl(mContext);
 				if (RoomiesConstants.RENT.equals(category)) {
-					room.updateRoomExpenses(amount.getText().toString(), null, null);
-				}else if(RoomiesConstants.MAID.equals(category)){
-					room.updateRoomExpenses(null, amount.getText().toString(), null);
-				}else if(RoomiesConstants.ELECTRICITY.equals(category)){
-					room.updateRoomExpenses(null, null, amount.getText().toString());
+					room.updateRoomExpenses(amount.getText().toString(), null, null, username);
+				} else if (RoomiesConstants.MAID.equals(category)) {
+					room.updateRoomExpenses(null, amount.getText().toString(), null, username);
+				} else if (RoomiesConstants.ELECTRICITY.equals(category)) {
+					room.updateRoomExpenses(null, null, amount.getText().toString(), username);
 				}
-				((RoomiesFragment.UpdatableFragment)getActivity().getSupportFragmentManager()
+				((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
 						.getFragments().get(0)).update();
-				((RoomiesFragment.UpdatableFragment)getActivity().getSupportFragmentManager()
+				((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
 						.getFragments().get(1)).update();
 				dialog.dismiss();
 			}

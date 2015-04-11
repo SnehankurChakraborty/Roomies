@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 
@@ -156,7 +157,9 @@ public class GetStartedWizard extends FragmentActivity {
 		mEditor.apply();
 
 		RoomiesService room = new RoomiesServiceImpl(this);
-		room.insertRoomDetails(null, null, null);
+		room.insertRoomDetails(null, null, null,
+				mSharedPref.getString(RoomiesConstants.NAME, null),
+				roomName.getText().toString());
 	}
 
 

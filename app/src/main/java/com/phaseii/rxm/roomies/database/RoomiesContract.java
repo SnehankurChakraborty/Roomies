@@ -129,9 +129,13 @@ public class RoomiesContract {
 		public static final String COLUMN_MISCELLANEOUS = "misc";
 		public static final String COLUMN_MISCELLANEOUS_MARGIN = "misc_margin";
 		public static final String COLUMN_TOTAL = "total";
+		public static final String COLUMN_USERNAME = "username";
+		public static final String COLUMN_ROOM_ALIAS = "room_alias";
 
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
 				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + COMMA_SEP +
+				COLUMN_USERNAME + TEXT_TYPE + NOT_NULL + UNIQUE_KEY + COMMA_SEP +
+				COLUMN_ROOM_ALIAS + TEXT_TYPE + NOT_NULL + UNIQUE_KEY + COMMA_SEP +
 				COLUMN_MONTH + TEXT_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_RENT + INTEGER_TYPE + COMMA_SEP +
 				COLUMN_RENT_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +

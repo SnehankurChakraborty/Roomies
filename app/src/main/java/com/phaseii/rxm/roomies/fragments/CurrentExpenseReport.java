@@ -30,6 +30,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_F
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 
 /**
  * Created by Snehankur on 4/3/2015.
@@ -68,9 +69,9 @@ public class CurrentExpenseReport extends RoomiesFragment
 		float misc = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
 				.COLUMN_MISCELLANEOUS));
 		SharedPreferences sharedPreferences = context.getSharedPreferences(
-				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+				ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
 
-		float spent=rent+maid+electricity+misc;
+		float spent = rent + maid + electricity + misc;
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<String>();
 		if (rent > 0) {
@@ -89,13 +90,15 @@ public class CurrentExpenseReport extends RoomiesFragment
 			entries.add(new Entry(misc, 3));
 			labels.add(MISC);
 		}
-		float total = sharedPreferences.getFloat(TOTAL, 0.0f);
+		float total = Float.valueOf(sharedPreferences.getString(TOTAL_MARGIN, "0.0"));
 		if (total <= 0) {
 			entries.add(new Entry(0, 0));
 			labels.add("NO SPENDS");
 		}
-		PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS,
-				""));
+		sharedPreferences = context.getSharedPreferences(
+				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+		PieDataSet dataSet = new PieDataSet(entries,
+				sharedPreferences.getString(ROOM_ALIAS, ""));
 		dataSet.setColors(ROOMIES_ALL_COLORS);
 		PieData data = new PieData(labels, dataSet);
 		mChart.setData(data);

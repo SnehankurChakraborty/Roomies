@@ -31,6 +31,7 @@ import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.view.BannerView;
 import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesRecyclerViewAdapter;
@@ -62,8 +63,8 @@ public class HomeScreenActivity extends ActionBarActivity
 			R.drawable.ic_coins,
 			R.drawable.ic_profile,
 			R.drawable.ic_logout};
-	String name = "Snehankur Chakr";
-	String email = "snehankurchakraborty@gmail.com";
+	String name;
+	String email;
 	int profile = R.drawable.ic_percent;
 
 	@Override
@@ -84,6 +85,8 @@ public class HomeScreenActivity extends ActionBarActivity
 			setContentView(R.layout.activity_home_screen);
 			mSharedPref = getSharedPreferences(
 					ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+			name = mSharedPref.getString(RoomiesConstants.NAME, null);
+			email = mSharedPref.getString(RoomiesConstants.EMAIL_ID, null);
 			mtoolbar = (Toolbar) findViewById(R.id.toolbar);
 			mtoolbar.setTitle("");
 			if (mtoolbar != null) {
@@ -96,11 +99,8 @@ public class HomeScreenActivity extends ActionBarActivity
 
 				@Override
 				public void onClick(View v) {
-					DialogFragment dialog = AddExpenseDialog.getInstance(R.id.pager);
+					DialogFragment dialog = AddExpenseDialog.getInstance(R.id.pager, name);
 					dialog.show(getSupportFragmentManager(), "addexpense");
-					/*adapter.getItemPosition(adapter.getItem(0));
-					adapter.getItemPosition(adapter.getItem(1));*/
-
 				}
 
 			});
@@ -181,7 +181,7 @@ public class HomeScreenActivity extends ActionBarActivity
 
 	}
 
-	public ViewPager getViewPager(){
+	public ViewPager getViewPager() {
 		return pager;
 	}
 

@@ -19,6 +19,9 @@ import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.SignupDialog;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.service.RoomiesService;
+import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 
 public class LoginActivity extends ActionBarActivity {
@@ -59,20 +62,17 @@ public class LoginActivity extends ActionBarActivity {
 				dialog.show(getSupportFragmentManager(), "signup");
 			}
 		});
-
 	}
 
 
 	private void checkValidUser(EditText usernameFeild, EditText passwordFeild) throws
 			RoomXpnseMngrException {
-		UserServiceImpl user = new UserServiceImpl(getBaseContext());
+		UserService user = new UserServiceImpl(getBaseContext());
+		RoomiesService room = new RoomiesServiceImpl(getBaseContext());
 		String password = user.getPassword(usernameFeild.getText().toString());
-		if (password.equals(passwordFeild.getText().toString())) {
-			SharedPreferences mshared = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-					Context.MODE_PRIVATE);
-			SharedPreferences.Editor mEditor = mshared.edit();
-			mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
-			mEditor.apply();
+		if (null != password && password.equals(passwordFeild.getText().toString())) {
+			user.retrieveUserData();
+			room.getRoomDetailsWithMargin(usernameFeild.getText().toString());
 			RoomiesHelper.startActivityHelper(this, getResources().getString(R
 					.string.HomeScreen_Activity), null, true);
 		} else {

@@ -21,9 +21,13 @@ import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 import java.util.ArrayList;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
@@ -100,10 +104,10 @@ public class CurrentBudgetStatus extends RoomiesFragment
 	private PieChart showBarGraph(Context context) {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				context.MODE_PRIVATE);
-		float rent = Float.valueOf(sharedPreferences.getString(RENT, "0"));
-		float maid = Float.valueOf(sharedPreferences.getString(MAID, "0"));
-		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY, "0"));
-		float misc = Float.valueOf(sharedPreferences.getString(MISC, "0"));
+		float rent = Float.valueOf(sharedPreferences.getString(RENT_MARGIN, "0"));
+		float maid = Float.valueOf(sharedPreferences.getString(MAID_MARGIN, "0"));
+		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY_MARGIN, "0"));
+		float misc = Float.valueOf(sharedPreferences.getString(MISC_MARGIN, "0"));
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<String>();
 		float total = rent + maid + electricity + misc;

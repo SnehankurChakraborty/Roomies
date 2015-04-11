@@ -23,6 +23,7 @@ import com.phaseii.rxm.roomies.service.UserServiceImpl;
  */
 public class SignupDialog extends DialogFragment {
 
+
 	static Context mContext;
 	UserServiceImpl user;
 	Toast mToast;
@@ -58,8 +59,8 @@ public class SignupDialog extends DialogFragment {
 						SharedPreferences sharedPref = mContext.getSharedPreferences
 								(RoomiesConstants.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
 						SharedPreferences.Editor mEditor = sharedPref.edit();
-						mEditor.putString("USERNAME", username.getText().toString());
-						mEditor.putString("EMAIL", email.getText().toString());
+						mEditor.putString(RoomiesConstants.NAME, username.getText().toString());
+						mEditor.putString(RoomiesConstants.EMAIL_ID, email.getText().toString());
 						mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
 						mEditor.apply();
 						try {

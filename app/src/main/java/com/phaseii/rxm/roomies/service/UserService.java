@@ -9,4 +9,6 @@ public interface UserService {
 	String getPassword(String username);
 
 	boolean registerUser(EditText username, EditText email, EditText password);
+
+	void retrieveUserData();
 }

@@ -24,9 +24,13 @@ public final class RoomiesConstants {
 	public static final String ROOM_NAME = "room_name";
 	public static final String ROOM_NO_OF_MEMBERS = "no_of_members";
 	public static final String RENT="RENT";
+	public static final String RENT_MARGIN="RENT_MARGIN";
 	public static final String MAID="MAID";
+	public static final String MAID_MARGIN="MAID_MARGIN";
 	public static final String ELECTRICITY="ELECTRICITY";
+	public static final String ELECTRICITY_MARGIN="ELECTRICITY_MARGIN";
 	public static final String MISC="MISC";
+	public static final String MISC_MARGIN="MISC_MARGIN";
 	public static final String SPENT="SPENT";
 	public static final String TOTAL="TOTAL";
 	public static final String ROOM_INFO_FILE_KEY="ROOM_INFO";
@@ -34,5 +38,7 @@ public final class RoomiesConstants {
 	public static final String ROOM_EXPENDITURE_FILE_KEY="ROOMIES_EXPENDITURE";
 	public static final String ROOM_ALIAS = "ROOM_ALIAS";
 	public static final String IS_LOGGED_IN = "isLoggedIn";
+	public static final String NAME = "NAME";
+	public static final String TOTAL_MARGIN ="TOTAL_MARGIN" ;
 }
 

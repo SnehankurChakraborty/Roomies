@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.providers.RoomExpenseProvider;
 
@@ -14,9 +15,17 @@ import java.util.Calendar;
 
 import static com.phaseii.rxm.roomies.database.RoomiesContract.Room_Expenses;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 
 /**
  * Created by Snehankur on 3/19/2015.
@@ -36,10 +45,11 @@ public class RoomiesServiceImpl implements RoomiesService {
 	}
 
 	@Override
-	public void insertRoomDetails(String rent, String maid, String electricity) {
+	public void insertRoomDetails(String rent, String maid, String electricity, String username,
+	                              String roomAlias) {
 		ContentValues values = new ContentValues();
 		SharedPreferences mSharedPref = mContext.getSharedPreferences(
-				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+				ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
 		values.put(Room_Expenses.COLUMN_RENT, null != rent ? Float.valueOf(rent) : 0.0);
 		values.put(Room_Expenses.COLUMN_ELECTRICITY, null != electricity ? Float.valueOf
 				(electricity) : 0.0);
@@ -48,18 +58,20 @@ public class RoomiesServiceImpl implements RoomiesService {
 		values.put(Room_Expenses.COLUMN_MONTH, currentMonth);
 		values.put(Room_Expenses.COLUMN_RENT_MARGIN, Float.valueOf(mSharedPref.getString(RENT,
 				"0.0")));
-		values.put(Room_Expenses.COLUMN_MAID_MARGIN, Float.valueOf(mSharedPref.getString(RENT,
+		values.put(Room_Expenses.COLUMN_MAID_MARGIN, Float.valueOf(mSharedPref.getString(MAID,
 				"0.0")));
 		values.put(Room_Expenses.COLUMN_ELECTRICITY_MARGIN, Float.valueOf(mSharedPref.getString
-				(RENT, "0.0")));
+				(ELECTRICITY, "0.0")));
 		values.put(Room_Expenses.COLUMN_MISCELLANEOUS_MARGIN, Float.valueOf(mSharedPref.getString
-				(RENT, "0.0")));
+				(MISC, "0.0")));
 		values.put(Room_Expenses.COLUMN_TOTAL, "0.0");
+		values.put(Room_Expenses.COLUMN_USERNAME, username);
+		values.put(Room_Expenses.COLUMN_ROOM_ALIAS, roomAlias);
 		mContext.getContentResolver().insert(RoomExpenseProvider.CONTENT_URI, values);
 	}
 
 	@Override
-	public void updateRoomExpenses(String rent, String maid, String electricity) {
+	public void updateRoomExpenses(String rent, String maid, String electricity, String username) {
 		mexpenditurePref = mContext.getSharedPreferences(RoomiesConstants
 				.ROOM_EXPENDITURE_FILE_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = mexpenditurePref.edit();
@@ -77,8 +89,9 @@ public class RoomiesServiceImpl implements RoomiesService {
 			values.put(Room_Expenses.COLUMN_ELECTRICITY, Float.valueOf(electricity));
 		}
 		if (values.size() != 0) {
-			String selection = Room_Expenses.COLUMN_MONTH + "=?";
-			String selectionArgs[] = {currentMonth};
+			String selection = Room_Expenses.COLUMN_MONTH + "=? AND " + Room_Expenses
+					.COLUMN_USERNAME + "=?";
+			String selectionArgs[] = {currentMonth, username};
 			mContext.getContentResolver().update(monthUri, values, selection, selectionArgs);
 		}
 	}
@@ -89,31 +102,84 @@ public class RoomiesServiceImpl implements RoomiesService {
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_MAID,
 				Room_Expenses.COLUMN_ELECTRICITY, Room_Expenses.COLUMN_MISCELLANEOUS,
 		};
-		Cursor cursor = mContext.getContentResolver().query(monthUri, projection, null, null, null);
+		String username = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+				Context.MODE_PRIVATE).getString
+				(RoomiesConstants.NAME, null);
+		String selection = Room_Expenses.COLUMN_MONTH + " =? AND " + Room_Expenses.COLUMN_USERNAME + " =?";
+		String[] selectionArgs = {currentMonth, username};
+		Cursor cursor = mContext.getContentResolver().query(monthUri, projection, selection,
+				selectionArgs,
+				null);
 		return cursor;
 	}
 
 	@Override
-	public Cursor getRoomDetailsWithMargin() {
+	public Cursor getRoomDetailsWithMargin(String username) {
 		String[] projection = {Room_Expenses.COLUMN_MONTH,
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_RENT_MARGIN,
 				Room_Expenses.COLUMN_MAID, Room_Expenses.COLUMN_MAID_MARGIN,
 				Room_Expenses.COLUMN_ELECTRICITY, Room_Expenses.COLUMN_ELECTRICITY_MARGIN,
-				Room_Expenses.COLUMN_MISCELLANEOUS, Room_Expenses.COLUMN_MISCELLANEOUS_MARGIN};
-		String[] selectionArgs = {currentMonth};
+				Room_Expenses.COLUMN_MISCELLANEOUS, Room_Expenses.COLUMN_MISCELLANEOUS_MARGIN,
+				Room_Expenses.COLUMN_TOTAL, Room_Expenses.COLUMN_USERNAME, Room_Expenses.COLUMN_ROOM_ALIAS};
+		String selection = Room_Expenses.COLUMN_MONTH + "=? AND " + Room_Expenses.COLUMN_USERNAME
+				+ "=?";
+		String[] selectionArgs = {currentMonth, username};
 		Cursor cursor = mContext.getContentResolver().query(monthUri, projection,
-				Room_Expenses.COLUMN_MONTH + "=?",
-				selectionArgs, null);
+				selection, selectionArgs, null);
+		SharedPreferences sharedPreferences = mContext.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
+				Context.MODE_PRIVATE);
+		if (cursor != null) {
+			cursor.moveToFirst();
+			SharedPreferences.Editor mEditor = sharedPreferences.edit();
+			float rent_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
+					.COLUMN_RENT_MARGIN));
+			float maid_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
+					.COLUMN_MAID_MARGIN));
+			float electricity_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
+					.COLUMN_ELECTRICITY_MARGIN));
+			float misc_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
+					.COLUMN_MISCELLANEOUS_MARGIN));
+			float total_margin = rent_margin + maid_margin + electricity_margin + misc_margin;
+			float rent = cursor.getFloat(
+					cursor.getColumnIndex(RoomiesContract.Room_Expenses.COLUMN_RENT));
+			float maid = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
+					.COLUMN_MAID));
+			float electricity = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
+					.COLUMN_ELECTRICITY));
+			float misc = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
+					.COLUMN_MISCELLANEOUS));
+			mEditor.putString(RENT_MARGIN, String.valueOf(rent_margin));
+			mEditor.putString(MAID_MARGIN, String.valueOf(maid_margin));
+			mEditor.putString(ELECTRICITY_MARGIN, String.valueOf(electricity_margin));
+			mEditor.putString(MISC_MARGIN, String.valueOf(misc_margin));
+			mEditor.putString(TOTAL_MARGIN, String.valueOf(total_margin));
+			mEditor.putString(RENT, String.valueOf(rent));
+			mEditor.putString(MAID, String.valueOf(maid));
+			mEditor.putString(ELECTRICITY, String.valueOf(electricity));
+			mEditor.putString(MISC, String.valueOf(misc));
+			mEditor.apply();
+			sharedPreferences = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+					Context.MODE_PRIVATE);
+			mEditor = sharedPreferences.edit();
+			mEditor.putString(ROOM_ALIAS, cursor.getString(cursor.getColumnIndex
+					(Room_Expenses.COLUMN_ROOM_ALIAS)));
+			mEditor.apply();
+		}
+
 		return cursor;
 	}
 
 	@Override
 	public float getTotalSpent() {
+		String username = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+				Context.MODE_PRIVATE).getString
+				(RoomiesConstants.NAME, null);
 		String projection[] = {Room_Expenses.COLUMN_TOTAL};
-		String[] selectionArgs = {currentMonth};
+		String selection = Room_Expenses.COLUMN_MONTH + "=? AND " + Room_Expenses.COLUMN_USERNAME
+				+ " =?";
+		String[] selectionArgs = {currentMonth, username};
 		Cursor cursor = mContext.getContentResolver().query(monthUri, projection,
-				Room_Expenses.COLUMN_MONTH + "=?",
-				selectionArgs, null);
+				selection, selectionArgs, null);
 		cursor.moveToFirst();
 		float total = cursor.getFloat(cursor.getColumnIndex(Room_Expenses.COLUMN_TOTAL));
 		return total;

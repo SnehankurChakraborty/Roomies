@@ -3,6 +3,7 @@ package com.phaseii.rxm.roomies.service;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.widget.EditText;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.providers.UserCredentialsProvider;
 
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
 	Context mContext;
 	Uri userUri;
 	Toast mToast;
+	Cursor mCursor;
 
 	public UserServiceImpl(Context mContext) {
 		this.mContext = mContext;
@@ -35,11 +38,13 @@ public class UserServiceImpl implements UserService {
 				RoomiesContract.UserCredentials.COLUMN_NAME_PASSWORD,
 				RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID};
 		String selection = RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME + "=?";
-		Cursor cursor = mContext.getContentResolver().query(userUri, projection, selection, null,
+		mCursor = mContext.getContentResolver().query(userUri, projection, selection, null,
 				null);
-		cursor.moveToFirst();
-		password = cursor.getString(
-				cursor.getColumnIndex(RoomiesContract.UserCredentials.COLUMN_NAME_PASSWORD));
+		mCursor.moveToFirst();
+		if (!mCursor.isAfterLast()) {
+			password = mCursor.getString(
+					mCursor.getColumnIndex(RoomiesContract.UserCredentials.COLUMN_NAME_PASSWORD));
+		}
 		return password;
 	}
 
@@ -55,10 +60,29 @@ public class UserServiceImpl implements UserService {
 				password.getText().toString());
 		try {
 			mContext.getContentResolver().insert(UserCredentialsProvider.CONTENT_URI, values);
+			isUserRegistered = true;
 		} catch (RoomiesStateException e) {
 			RoomiesHelper.createToast(mContext, "USER ALREADY EXISTS", mToast);
-			return false;
 		}
-		return true;
+		return isUserRegistered;
+	}
+
+	@Override
+	public void retrieveUserData() {
+		if (null != mCursor) {
+			SharedPreferences mSharedPreferences = mContext.getSharedPreferences(RoomiesConstants
+					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+			SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+			mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
+			mCursor.moveToFirst();
+			mEditor.putString(RoomiesConstants.NAME, mCursor.getString(mCursor.getColumnIndex(
+					RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME)));
+			mEditor.putString(RoomiesConstants.EMAIL_ID, mCursor.getString(mCursor.getColumnIndex(
+					RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID)));
+			mEditor.apply();
+		} else {
+			RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
+			System.exit(0);
+		}
 	}
 }

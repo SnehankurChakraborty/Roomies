@@ -71,8 +71,6 @@ public class RoomExpenseProvider extends ContentProvider {
 				qb.appendWhere(Room_Expenses._ID + "=" + uri.getLastPathSegment());
 				break;
 			case SPECIFIC_MONTH_DETAILS:
-				/*qb.appendWhere(Room_Expenses.COLUMN_MONTH + "=" + uri.getLastPathSegment());*/
-
 				break;
 			default:
 				throw new IllegalStateException("Unknown URI " + uri);
