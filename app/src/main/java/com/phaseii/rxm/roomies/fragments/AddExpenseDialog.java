@@ -15,10 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
@@ -37,10 +39,12 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	String subCategory;
 	EditText amount;
 	EditText description;
+	EditText quantity;
 	Button positive;
 	Button negative;
 	static int pagerId;
 	static String username;
+
 
 	public static AddExpenseDialog getInstance(int pagerId, String username) {
 		AddExpenseDialog.pagerId = pagerId;
@@ -56,6 +60,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		final View dialogView = inflater.inflate(R.layout.add_expense_dilog, null);
 		description = (EditText) dialogView.findViewById(R.id.description);
 		amount = (EditText) dialogView.findViewById(R.id.amount);
+		quantity=(EditText)dialogView.findViewById(R.id.quantity);
 		categorySpinner = (Spinner) dialogView.findViewById(R.id
 				.categoryspinner);
 		subCategorySpinner = (Spinner) dialogView.findViewById(R.id
@@ -92,6 +97,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		mSubCategoryAdapter.setDropDownViewResource(R.layout.roomies_spinner_dropdown);
 		subCategorySpinner.setAdapter(mSubCategoryAdapter);
 		subCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 			                           int position, long id) {
@@ -99,8 +105,10 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 				String subCategories[] = getResources().getStringArray(R.array.subcategory);
 				if (!subCategory.equals(subCategories[subCategories.length - 1])) {
 					description.setEnabled(false);
+					quantity.setEnabled(false);
 				} else {
 					description.setEnabled(true);
+					quantity.setEnabled(true);
 				}
 			}
 
@@ -119,19 +127,45 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		positive.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				SharedPreferences mSharedPreferences = getActivity().getSharedPreferences
+						(RoomiesConstants.ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
 				RoomiesService room = new RoomiesServiceImpl(mContext);
-				if (RoomiesConstants.RENT.equals(category)) {
-					room.updateRoomExpenses(amount.getText().toString(), null, null, username);
-				} else if (RoomiesConstants.MAID.equals(category)) {
-					room.updateRoomExpenses(null, amount.getText().toString(), null, username);
-				} else if (RoomiesConstants.ELECTRICITY.equals(category)) {
-					room.updateRoomExpenses(null, null, amount.getText().toString(), username);
+				Toast mToast = null;
+				boolean isValidAmount = RoomiesHelper.setNumeriError("amount",
+						getActivity().getBaseContext(), dialogView);
+				if (isValidAmount) {
+					if (RoomiesConstants.RENT.equals(category)) {
+						if (!mSharedPreferences.getBoolean(RoomiesConstants.IS_RENT_PAID, false)) {
+							room.updateRoomExpenses(amount.getText().toString(), null, null,
+									username);
+							updateGraphs(dialog);
+						} else {
+							RoomiesHelper.createToast(getActivity(),
+									"Category already paid for this " +
+											"month", mToast);
+						}
+					} else if (RoomiesConstants.MAID.equals(category)) {
+						if (!mSharedPreferences.getBoolean(RoomiesConstants.IS_MAID_PAID, false)) {
+							room.updateRoomExpenses(null, amount.getText().toString(), null,
+									username);
+							updateGraphs(dialog);
+						} else {
+							RoomiesHelper.createToast(getActivity(),
+									"Category already paid for this " +
+											"month", mToast);
+						}
+					} else if (RoomiesConstants.ELECTRICITY.equals(category)) {
+						if (!mSharedPreferences.getBoolean(RoomiesConstants.IS_ELEC_PAID, false)) {
+							room.updateRoomExpenses(null, null, amount.getText().toString(),
+									username);
+							updateGraphs(dialog);
+						} else {
+							RoomiesHelper.createToast(getActivity(),
+									"Category already paid for this " +
+											"month", mToast);
+						}
+					}
 				}
-				((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
-						.getFragments().get(0)).update();
-				((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
-						.getFragments().get(1)).update();
-				dialog.dismiss();
 			}
 		});
 		negative.setOnClickListener(new View.OnClickListener() {
@@ -147,5 +181,15 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	@Override
 	public void onShow(DialogInterface dialog) {
 
+	}
+
+	private void updateGraphs(AlertDialog dialog) {
+		((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
+				.getFragments().get(0).getChildFragmentManager().getFragments().get(0))
+				.update();
+		((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
+				.getFragments().get(0).getChildFragmentManager().getFragments().get(1))
+				.update();
+		dialog.dismiss();
 	}
 }

@@ -11,4 +11,8 @@ public interface UserService {
 	boolean registerUser(EditText username, EditText email, EditText password);
 
 	void retrieveUserData();
+
+	void completeSetup(String username);
+
+	boolean  isSetupCompleted(String username);
 }

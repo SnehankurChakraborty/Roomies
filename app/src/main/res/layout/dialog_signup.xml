@@ -11,7 +11,8 @@
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="SIGNUP"
+		android:text="@string/signup"
+		android:textAllCaps="true"
 		android:textSize="40sp"
 		android:textColor="@color/primaryColor"/>
 
@@ -28,7 +29,7 @@
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="Enter name/username"
+			android:hint="@string/enter_name_username"
 			android:id="@+id/name"
 			style="@style/EditTextRoomies"
 			android:inputType="text"/>
@@ -50,7 +51,7 @@
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="Enter email address"
+			android:hint="@string/enter_email"
 			android:id="@+id/email"
 			style="@style/EditTextRoomies"
 			android:inputType="textEmailAddress"/>
@@ -72,7 +73,7 @@
 		<EditText
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:hint="Enter password"
+			android:hint="@string/enter_password"
 			android:id="@+id/password"
 			style="@style/EditTextRoomies"
 			android:inputType="textPassword"/>
@@ -91,7 +92,8 @@
 	<Button
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="SignUP"
+		android:text="@string/signup"
+		android:textAllCaps="true"
 		android:id="@+id/signup"
 		style="@style/ButtonRoomies"/>
 </LinearLayout>

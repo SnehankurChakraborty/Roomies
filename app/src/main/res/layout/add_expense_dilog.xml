@@ -66,37 +66,100 @@
 
 	</LinearLayout>
 
-	<EditText
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="Description"
-		android:textColorHint="@color/spinnerColor"
-		android:layout_centerHorizontal="true"
-		android:id="@+id/description"
-		style="@style/EditTextRoomies"
-		android:textColor="@color/spinnerColor"
-		android:layout_below="@id/subcatgeory_layout"
-		android:enabled="false"
-		android:gravity="center"/>
+		android:id="@+id/description_layout"
+		android:layout_below="@id/subcatgeory_layout">
 
-	<EditText
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Description"
+			android:textColorHint="@color/spinnerColor"
+			android:layout_centerHorizontal="true"
+			android:id="@+id/description"
+			style="@style/EditTextRoomies"
+			android:textColor="@color/spinnerColor"
+			android:enabled="false"
+			android:gravity="center"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/ErrorButton"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:id="@+id/description_error"/>
+
+
+	</RelativeLayout>
+
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="Amount"
-		android:textColorHint="@color/spinnerColor"
-		android:layout_centerHorizontal="true"
-		android:id="@+id/amount"
-		android:numeric="decimal"
-		style="@style/EditTextRoomies"
-		android:textColor="@color/spinnerColor"
-		android:layout_below="@id/description"
-		android:gravity="center"/>
+		android:layout_below="@id/description_layout"
+		android:id="@+id/quantity_layout">
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Quantity"
+			android:textColorHint="@color/spinnerColor"
+			android:layout_centerHorizontal="true"
+			android:id="@+id/quantity"
+			android:numeric="decimal"
+			android:enabled="false"
+			style="@style/EditTextRoomies"
+			android:textColor="@color/spinnerColor"
+			android:gravity="center"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/ErrorButton"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:id="@+id/quantity_error"/>
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/quantity_layout"
+		android:id="@+id/amount_layout">
+
+		<EditText
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="Amount"
+			android:textColorHint="@color/spinnerColor"
+			android:layout_centerHorizontal="true"
+			android:id="@+id/amount"
+			android:numeric="decimal"
+			style="@style/EditTextRoomies"
+			android:textColor="@color/spinnerColor"
+			android:gravity="center"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/ErrorButton"
+			android:layout_centerVertical="true"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:id="@+id/amount_error"/>
+	</RelativeLayout>
+
+
 
 	<TableLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_below="@id/amount"
+		android:layout_below="@id/amount_layout"
 		android:layout_centerHorizontal="true"
 		android:stretchColumns="0,1">
 

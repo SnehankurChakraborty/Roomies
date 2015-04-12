@@ -56,14 +56,14 @@ public class RoomiesServiceImpl implements RoomiesService {
 		values.put(Room_Expenses.COLUMN_MAID, null != maid ? Float.valueOf(maid) : 0.0);
 		values.put(Room_Expenses.COLUMN_MISCELLANEOUS, 0.0);
 		values.put(Room_Expenses.COLUMN_MONTH, currentMonth);
-		values.put(Room_Expenses.COLUMN_RENT_MARGIN, Float.valueOf(mSharedPref.getString(RENT,
+		values.put(Room_Expenses.COLUMN_RENT_MARGIN, Float.valueOf(mSharedPref.getString(RENT_MARGIN,
 				"0.0")));
-		values.put(Room_Expenses.COLUMN_MAID_MARGIN, Float.valueOf(mSharedPref.getString(MAID,
+		values.put(Room_Expenses.COLUMN_MAID_MARGIN, Float.valueOf(mSharedPref.getString(MAID_MARGIN,
 				"0.0")));
 		values.put(Room_Expenses.COLUMN_ELECTRICITY_MARGIN, Float.valueOf(mSharedPref.getString
-				(ELECTRICITY, "0.0")));
+				(ELECTRICITY_MARGIN, "0.0")));
 		values.put(Room_Expenses.COLUMN_MISCELLANEOUS_MARGIN, Float.valueOf(mSharedPref.getString
-				(MISC, "0.0")));
+				(MISC_MARGIN, "0.0")));
 		values.put(Room_Expenses.COLUMN_TOTAL, "0.0");
 		values.put(Room_Expenses.COLUMN_USERNAME, username);
 		values.put(Room_Expenses.COLUMN_ROOM_ALIAS, roomAlias);

@@ -73,5 +73,10 @@
     </string-array>
 
     <string name="hello_world">Hello world!</string>
+	<string name="into_your_room">into your room</string>
+	<string name="enter_username">Enter Username</string>
+	<string name="enter_password">Enter Password</string>
+	<string name="enter_name_username">Enter name/username</string>
+	<string name="enter_email">Enter email address</string>
 
 </resources>

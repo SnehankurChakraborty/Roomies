@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
+import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
@@ -36,7 +38,8 @@ public class UserServiceImpl implements UserService {
 				"username/" + username);
 		String[] projection = {RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME,
 				RoomiesContract.UserCredentials.COLUMN_NAME_PASSWORD,
-				RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID};
+				RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID,
+				RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED};
 		String selection = RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME + "=?";
 		mCursor = mContext.getContentResolver().query(userUri, projection, selection, null,
 				null);
@@ -58,6 +61,7 @@ public class UserServiceImpl implements UserService {
 				email.getText().toString());
 		values.put(RoomiesContract.UserCredentials.COLUMN_NAME_PASSWORD,
 				password.getText().toString());
+		values.put(RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED, "false");
 		try {
 			mContext.getContentResolver().insert(UserCredentialsProvider.CONTENT_URI, values);
 			isUserRegistered = true;
@@ -84,5 +88,31 @@ public class UserServiceImpl implements UserService {
 			RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
 			System.exit(0);
 		}
+	}
+
+	@Override
+	public void completeSetup(String username) {
+		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
+				"username/" + username);
+		String selection = RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME + " =?";
+		String selectionArgs[] = {username};
+		ContentValues values = new ContentValues();
+		values.put(RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED, "true");
+		mContext.getContentResolver().update(userUri, values, selection, selectionArgs);
+	}
+
+	@Override
+	public boolean isSetupCompleted(String username) {
+		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
+				"username/" + username);
+		String selection = RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME + " =?";
+		String selectionArgs[] = {username};
+		String projection[] = {RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME,
+				RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED};
+		Cursor mCursor = mContext.getContentResolver().query(userUri, projection, selection,
+				selectionArgs, null);
+		mCursor.moveToFirst();
+		return Boolean.valueOf(mCursor.getString(
+				mCursor.getColumnIndex(RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED)));
 	}
 }

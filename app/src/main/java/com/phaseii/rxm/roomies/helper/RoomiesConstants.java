@@ -40,5 +40,9 @@ public final class RoomiesConstants {
 	public static final String IS_LOGGED_IN = "isLoggedIn";
 	public static final String NAME = "NAME";
 	public static final String TOTAL_MARGIN ="TOTAL_MARGIN" ;
+	public static final String IS_RENT_PAID = "isRentPaid";
+	public static final String IS_MAID_PAID = "isMaidPaid";
+	public static final String IS_ELEC_PAID = "isElecPaid";
+	public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
 }
 

@@ -21,15 +21,15 @@ import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 import java.util.ArrayList;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_ELEC_PAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_MAID_PAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_RENT_PAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 
 /**
@@ -37,6 +37,8 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
  */
 public class CurrentExpenseReport extends RoomiesFragment
 		implements RoomiesFragment.UpdatableFragment {
+
+
 
 	public static CurrentExpenseReport getInstance() {
 		return new CurrentExpenseReport();
@@ -70,21 +72,27 @@ public class CurrentExpenseReport extends RoomiesFragment
 				.COLUMN_MISCELLANEOUS));
 		SharedPreferences sharedPreferences = context.getSharedPreferences(
 				ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
-
+		SharedPreferences.Editor mEditor = sharedPreferences.edit();
 		float spent = rent + maid + electricity + misc;
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<String>();
 		if (rent > 0) {
 			entries.add(new Entry(rent, 0));
 			labels.add(RENT);
+			mEditor.putBoolean(IS_RENT_PAID, true);
+			mEditor.apply();
 		}
 		if (maid > 0) {
 			entries.add(new Entry(maid, 1));
 			labels.add(MAID);
+			mEditor.putBoolean(IS_MAID_PAID, true);
+			mEditor.apply();
 		}
 		if (electricity > 0) {
 			entries.add(new Entry(electricity, 2));
 			labels.add(ELECTRICITY);
+			mEditor.putBoolean(IS_ELEC_PAID, true);
+			mEditor.apply();
 		}
 		if (misc > 0) {
 			entries.add(new Entry(misc, 3));

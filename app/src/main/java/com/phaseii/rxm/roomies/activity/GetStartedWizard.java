@@ -20,6 +20,8 @@ import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.UserService;
+import com.phaseii.rxm.roomies.service.UserServiceImpl;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
 
@@ -133,15 +135,22 @@ public class GetStartedWizard extends FragmentActivity {
 		SharedPreferences sharedPreferences = getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = sharedPreferences.edit();
-		mEditor.putString(RENT,
-				TextUtils.isEmpty(rent.getText().toString()) ? "0" : rent.getText().toString());
-		mEditor.putString(MAID,
-				TextUtils.isEmpty(maid.getText().toString()) ? "0" : maid.getText().toString());
-		mEditor.putString(ELECTRICITY, TextUtils.isEmpty(
-				electricity.getText().toString()) ? "0" : electricity.getText().toString());
-		mEditor.putString(MISC, TextUtils.isEmpty(
-				miscellaneous.getText().toString()) ? "0" : miscellaneous.getText().toString());
-
+		String rentVal = TextUtils.isEmpty(rent.getText().toString()) ? "0" : rent.getText()
+				.toString();
+		String maidVal = TextUtils.isEmpty(maid.getText().toString()) ? "0" : maid.getText()
+				.toString();
+		String miscVal = TextUtils.isEmpty(miscellaneous.getText().toString()) ? "0" :
+				miscellaneous.getText().toString();
+		String elecVal = TextUtils.isEmpty(electricity.getText().toString()) ? "0" :
+				electricity.getText().toString();
+		String totalVal = String.valueOf(
+				Float.valueOf(rentVal) + Float.valueOf(maidVal) + Float.valueOf
+						(elecVal) + Float.valueOf(miscVal));
+		mEditor.putString(RENT_MARGIN, rentVal);
+		mEditor.putString(MAID_MARGIN, maidVal);
+		mEditor.putString(ELECTRICITY_MARGIN, elecVal);
+		mEditor.putString(MISC_MARGIN, miscVal);
+		mEditor.putString(TOTAL_MARGIN, totalVal);
 		mEditor.apply();
 		mSharedPref = getSharedPreferences(
 				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
@@ -157,9 +166,11 @@ public class GetStartedWizard extends FragmentActivity {
 		mEditor.apply();
 
 		RoomiesService room = new RoomiesServiceImpl(this);
+		UserService user = new UserServiceImpl(this);
 		room.insertRoomDetails(null, null, null,
 				mSharedPref.getString(RoomiesConstants.NAME, null),
 				roomName.getText().toString());
+		user.completeSetup(mSharedPref.getString(RoomiesConstants.NAME, null));
 	}
 
 

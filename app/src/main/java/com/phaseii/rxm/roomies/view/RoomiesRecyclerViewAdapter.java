@@ -11,10 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
@@ -25,13 +28,16 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY
 public class RoomiesRecyclerViewAdapter
 		extends RecyclerView.Adapter<RoomiesRecyclerViewAdapter.ViewHolder> {
 
+	Context mContext;
+
 	public RoomiesRecyclerViewAdapter(String Titles[], int Icons[], String Name,
-	                                  String Email, int Profile) {
+	                                  String Email, int Profile, Context mContext) {
 		mNavTitles = Titles;
 		mIcons = Icons;
 		name = Name;
 		email = Email;
 		profile = Profile;
+		this.mContext = mContext;
 	}
 
 	private static final int TYPE_HEADER = 0;
@@ -85,6 +91,10 @@ public class RoomiesRecyclerViewAdapter
 							RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
 							System.exit(0);
 						}
+					} else if (pos == 1) {
+						((HomeScreenActivity) mContext).nextFragment(
+								new HomeFragment(), HOME_FRAGMENT);
+
 					}
 				}
 			});

@@ -66,8 +66,8 @@ public class RoomiesHelper {
 					intent.putExtra(key, extras.get(key));
 				}
 			}
-			if(isFinish){
-				ActivityCompat.finishAffinity((Activity)context);
+			if (isFinish) {
+				ActivityCompat.finishAffinity((Activity) context);
 			}
 			context.startActivity(intent);
 		} catch (ClassNotFoundException e) {
@@ -135,6 +135,41 @@ public class RoomiesHelper {
 		}
 		return isValid;
 	}
+
+	public static boolean setNumeriError(String feildId, Context context, View view) {
+		boolean isValid = true;
+		String errorId = feildId + "_error";
+		String togglId = feildId + "_toggle";
+		Resources resources = context.getResources();
+		String packageName = context.getPackageName();
+		int resId = resources.getIdentifier(feildId, "id", packageName);
+		int resErrorId = resources.getIdentifier(errorId, "id", packageName);
+		int resToggleId = resources.getIdentifier(togglId, "id", packageName);
+		EditText feild = (EditText) view.findViewById(resId);
+		TextView errorFeild = (TextView) view.findViewById(resErrorId);
+		if (resToggleId > 0) {
+			ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
+			if (toggleButton.isChecked()) {
+				if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
+					isValid = false;
+					errorFeild.setVisibility(View.VISIBLE);
+				} else {
+					errorFeild.setVisibility(View.INVISIBLE);
+				}
+			} else {
+				errorFeild.setVisibility(View.INVISIBLE);
+			}
+		} else {
+			if (isFieldBlankOrEmpty(feild)) {
+				isValid = false;
+				errorFeild.setVisibility(View.VISIBLE);
+			} else {
+				errorFeild.setVisibility(View.INVISIBLE);
+			}
+		}
+		return isValid;
+	}
+
 
 
 }

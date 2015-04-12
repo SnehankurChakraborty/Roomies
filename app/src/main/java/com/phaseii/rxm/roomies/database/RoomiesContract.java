@@ -37,15 +37,16 @@ public class RoomiesContract {
 		public static final String COLUMN_NAME_EMAIL_ID = "email_id";
 		public static final String COLUMN_NAME_USERNAME = "username";
 		public static final String COLUMN_NAME_PASSWORD = "password";
-
+		public static final String COLUMN_SETUP_COMPLETED = "setup_completed";
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME +
 				" (" + _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + COMMA_SEP +
 				/*COLUMN_PERSON_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +*/
 				COLUMN_NAME_USERNAME + TEXT_TYPE + UNIQUE_KEY + COMMA_SEP +
 				COLUMN_NAME_EMAIL_ID + TEXT_TYPE + COMMA_SEP +
-				COLUMN_NAME_PASSWORD + TEXT_TYPE + /*COMMA_SEP +
+				COLUMN_NAME_PASSWORD + TEXT_TYPE + COMMA_SEP +
+				COLUMN_SETUP_COMPLETED + TEXT_TYPE +/*COMMA_SEP +
 				"FOREIGN KEY (" + COLUMN_PERSON_ID + ") " +
-				"REFERENCES " + Person.TABLE_NAME + "(" + Person._ID + ") "+*/")";
+				"REFERENCES " + Person.TABLE_NAME + "(" + Person._ID + ") "+*/" )";
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 	}
 
@@ -166,8 +167,6 @@ public class RoomiesContract {
 	 */
 	public static abstract class Misc_Expenses implements BaseColumns {
 		public static final String TABLE_NAME = "misc_expenses";
-		public static final String COLUMN_ROOM_EXPENSE_ID = "room_expense_id";
-		public static final String COLUMN_PERSON_ID = "person_id";
 		public static final String COLUMN_DESCRIPTION = "misc_desc";
 		public static final String COLUMN_TYPE = "misc_type";
 		public static final String COLUMN_AMOUNT = "misc_amount";
@@ -175,8 +174,6 @@ public class RoomiesContract {
 		public static final String COLUMN_DATE = "misc_date";
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
 				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + NOT_NULL + COMMA_SEP +
-				/*COLUMN_ROOM_EXPENSE_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-				COLUMN_PERSON_ID + INTEGER_TYPE + COMMA_SEP + NOT_NULL +*/
 				COLUMN_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
 				COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
 				COLUMN_QUANTITY + TEXT_TYPE + COMMA_SEP +

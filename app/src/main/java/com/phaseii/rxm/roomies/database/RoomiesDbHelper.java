@@ -8,6 +8,7 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_NAME;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_VERSION;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.Room_Expenses;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserCredentials;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.Misc_Expenses;
 
 /**
  * Created by Snehankur on 4/10/2015.
@@ -22,6 +23,7 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
 		db.execSQL(Room_Expenses.SQL_CREATE_ENTRIES);
 		db.execSQL(Room_Expenses.SQL_CREATE_TRIGGER);
 		db.execSQL(UserCredentials.SQL_CREATE_ENTRIES);
+		db.execSQL(Misc_Expenses.SQL_CREATE_ENTRIES);
 	}
 
 	@Override
@@ -31,5 +33,7 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
 		db.execSQL(Room_Expenses.SQL_CREATE_TRIGGER);
 		db.execSQL(UserCredentials.SQL_DELETE_ENTRIES);
 		db.execSQL(UserCredentials.SQL_CREATE_ENTRIES);
+		db.execSQL(Misc_Expenses.SQL_DELETE_ENTRIES);
+		db.execSQL(Misc_Expenses.SQL_CREATE_ENTRIES);
 	}
 }
