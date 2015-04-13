@@ -24,16 +24,20 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
 		db.execSQL(Room_Expenses.SQL_CREATE_TRIGGER);
 		db.execSQL(UserCredentials.SQL_CREATE_ENTRIES);
 		db.execSQL(Misc_Expenses.SQL_CREATE_ENTRIES);
+		db.execSQL(Misc_Expenses.SQL_CREATE_TRIGGER);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL(Room_Expenses.SQL_DELETE_ENTRIES);
+		db.execSQL(Room_Expenses.SQL_DROP_TRIGGER);
 		db.execSQL(Room_Expenses.SQL_CREATE_ENTRIES);
 		db.execSQL(Room_Expenses.SQL_CREATE_TRIGGER);
 		db.execSQL(UserCredentials.SQL_DELETE_ENTRIES);
 		db.execSQL(UserCredentials.SQL_CREATE_ENTRIES);
 		db.execSQL(Misc_Expenses.SQL_DELETE_ENTRIES);
+		db.execSQL(Misc_Expenses.SQL_DROP_TRIGGER);
 		db.execSQL(Misc_Expenses.SQL_CREATE_ENTRIES);
+		db.execSQL(Misc_Expenses.SQL_CREATE_TRIGGER);
 	}
 }

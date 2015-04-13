@@ -2,10 +2,15 @@ package com.phaseii.rxm.roomies.activity;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +32,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
@@ -56,6 +62,7 @@ public class HomeScreenActivity extends ActionBarActivity
 	Toolbar mtoolbar;
 	ViewPager pager;
 	SharedPreferences mSharedPref;
+	RecyclerView.Adapter mRecylerAdapter;
 	FragmentTransaction transaction;
 	String drawerTitles[] = {"Home", "Trends", "Savings", "Profile", "Logout"};
 	int drawerIcons[] = {R.drawable.ic_home,
@@ -65,7 +72,7 @@ public class HomeScreenActivity extends ActionBarActivity
 			R.drawable.ic_logout};
 	String name;
 	String email;
-	int profile = R.drawable.ic_percent;
+	int profile = R.drawable.ic_camera;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +125,7 @@ public class HomeScreenActivity extends ActionBarActivity
 
 			RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
 			mRecyclerView.hasFixedSize();
-			RecyclerView.Adapter mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
+			mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
 					drawerIcons, name, email, profile, this);
 			mRecyclerView.setAdapter(mRecylerAdapter);
 			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -209,6 +216,16 @@ public class HomeScreenActivity extends ActionBarActivity
 			} catch (RoomXpnseMngrException e) {
 				createToast(this, APP_ERROR, mToast);
 			}
+		}
+	}
+
+	public void updateProfilePic(Bitmap profilePic, int profile) {
+		View headerView = ((RoomiesRecyclerViewAdapter) mRecylerAdapter).getHeaderView();
+		ImageView profileFrame = (ImageView) headerView.findViewById(R.id.profileFrame);
+		if (null != profilePic) {
+			profileFrame.setImageBitmap(profilePic);
+		}else{
+			profileFrame.setImageResource(profile);
 		}
 	}
 }

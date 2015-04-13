@@ -2,6 +2,9 @@ package com.phaseii.rxm.roomies.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,15 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.fragments.ProfileFragment;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+
+import java.io.File;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PROFILE_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
@@ -29,6 +37,7 @@ public class RoomiesRecyclerViewAdapter
 		extends RecyclerView.Adapter<RoomiesRecyclerViewAdapter.ViewHolder> {
 
 	Context mContext;
+	private View headerView;
 
 	public RoomiesRecyclerViewAdapter(String Titles[], int Icons[], String Name,
 	                                  String Email, int Profile, Context mContext) {
@@ -54,12 +63,15 @@ public class RoomiesRecyclerViewAdapter
 		int holderId;
 		TextView textView;
 		ImageView imageView;
-		ImageView profile;
+		ImageView profileFrame;
 		TextView name;
 		TextView email;
+		View itemView;
+
 
 		public ViewHolder(View itemView, int ViewType, final Context mContext) {
 			super(itemView);
+			this.itemView = itemView;
 			itemView.setClickable(true);
 			itemView.setOnClickListener(new View.OnClickListener() {
 				Toast mToast;
@@ -95,6 +107,9 @@ public class RoomiesRecyclerViewAdapter
 						((HomeScreenActivity) mContext).nextFragment(
 								new HomeFragment(), HOME_FRAGMENT);
 
+					} else if (pos == 4) {
+						((HomeScreenActivity) mContext).nextFragment(
+								new ProfileFragment(), PROFILE_FRAGMENT);
 					}
 				}
 			});
@@ -105,13 +120,29 @@ public class RoomiesRecyclerViewAdapter
 			} else {
 				name = (TextView) itemView.findViewById(R.id.name);
 				email = (TextView) itemView.findViewById(R.id.email);
-				profile = (ImageView) itemView.findViewById(R.id.circleView);
+				profileFrame = (ImageView) itemView.findViewById(R.id.profileFrame);
+				profileFrame.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						((HomeScreenActivity) mContext).nextFragment(
+								new ProfileFragment(), PROFILE_FRAGMENT);
+					}
+				});
+				String username = mContext.getSharedPreferences(RoomiesConstants
+						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
+						getString(RoomiesConstants.NAME, null);
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 4;
+				Bitmap bitmap = BitmapFactory.decodeFile(new File(mContext.getFilesDir(),
+						username + mContext.getResources().getString(
+								R.string.PROFILEJPG)).getAbsolutePath(), options);
+				((HomeScreenActivity) mContext).updateProfilePic(bitmap, R.drawable.ic_profile_pic);
 				holderId = 0;
 			}
 		}
 
-
 	}
+
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -123,9 +154,9 @@ public class RoomiesRecyclerViewAdapter
 					parent.getContext());
 			return vhItem;
 		} else if (viewType == TYPE_HEADER) {
-			View v = LayoutInflater.from(parent.getContext()).
+			headerView = LayoutInflater.from(parent.getContext()).
 					inflate(R.layout.drawer_header, parent, false);
-			ViewHolder vhHeader = new ViewHolder(v,
+			ViewHolder vhHeader = new ViewHolder(headerView,
 					viewType, parent.getContext());
 			return vhHeader;
 		}
@@ -135,12 +166,9 @@ public class RoomiesRecyclerViewAdapter
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int position) {
 		if (viewHolder.holderId == 1) {
-			viewHolder.textView.setText(
-					mNavTitles[position - 1]);
-			viewHolder.imageView.setImageResource(
-					mIcons[position - 1]);
+			viewHolder.textView.setText(mNavTitles[position - 1]);
+			viewHolder.imageView.setImageResource(mIcons[position - 1]);
 		} else {
-			viewHolder.profile.setImageResource(profile);
 			viewHolder.name.setText(name);
 			viewHolder.email.setText(email);
 		}
@@ -158,6 +186,10 @@ public class RoomiesRecyclerViewAdapter
 			return TYPE_HEADER;
 
 		return TYPE_ITEM;
+	}
+
+	public View getHeaderView() {
+		return headerView;
 	}
 
 	private boolean isPositionHeader(int position) {

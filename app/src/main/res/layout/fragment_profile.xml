@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context="com.phaseii.rxm.roomies.fragments.ProfileFragment"
+              android:orientation="vertical">
+
+	<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		android:src="@drawable/ic_camera"
+		android:layout_gravity="center_horizontal"
+		android:id="@+id/profilepic"/>
+
+</LinearLayout>

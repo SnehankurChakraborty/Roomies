@@ -136,7 +136,7 @@ public class RoomiesHelper {
 		return isValid;
 	}
 
-	public static boolean setNumeriError(String feildId, Context context, View view) {
+	public static boolean setNumericError(String feildId, Context context, View view) {
 		boolean isValid = true;
 		String errorId = feildId + "_error";
 		String togglId = feildId + "_toggle";

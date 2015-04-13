@@ -42,7 +42,7 @@
 			<ImageButton
 				android:layout_width="70dp"
 				android:layout_height="70dp"
-				android:src="@drawable/ic_expense_invert"
+				android:src="@drawable/ic_add"
 				android:background="@drawable/add_expense"
 				android:id="@+id/addexpense"
 				android:layout_gravity="left|bottom"

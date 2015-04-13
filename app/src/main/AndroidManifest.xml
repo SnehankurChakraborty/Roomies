@@ -34,6 +34,10 @@
             android:name=".providers.UserCredentialsProvider"
             android:authorities="com.phaseii.rxm.roomies.providers.UserCredentialsProvider"
             android:exported="false" />
+	    <provider
+		    android:name=".providers.MiscellaneousProvider"
+		    android:authorities="com.phaseii.rxm.roomies.providers.MiscellaneousProvider"
+		    android:exported="false" />
     </application>
 
 </manifest>

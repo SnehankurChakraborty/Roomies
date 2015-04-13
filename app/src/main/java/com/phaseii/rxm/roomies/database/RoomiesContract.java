@@ -119,6 +119,7 @@ public class RoomiesContract {
 	 */
 	public static abstract class Room_Expenses implements BaseColumns {
 		public static final String TABLE_NAME = "room_expenses";
+		public static final String TRIGGER_NAME = "UPDATE_COLUMN_TOTAL_TRG";
 		public static final String COLUMN_ROOM_ID = "room_id";
 		public static final String COLUMN_MONTH = "month";
 		public static final String COLUMN_RENT = "rent";
@@ -149,15 +150,15 @@ public class RoomiesContract {
 				COLUMN_TOTAL + INTEGER_TYPE + NOT_NULL/*+ COMMA_SEP +
 				FOREIGN_KEY + COLUMN_ROOM_ID + ") " +
 				REFERENCES + Room.TABLE_NAME + " (" + Room._ID + ")"*/ + " )";
-		public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER UPDATE_COLUMN_TOTAL_TRG"
+		public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER " + TRIGGER_NAME
 				+ " BEFORE UPDATE ON " + TABLE_NAME +
 				" BEGIN" +
 				" UPDATE " + TABLE_NAME + " SET " + COLUMN_TOTAL + " = " + "new." + COLUMN_RENT + "+ " +
-				"new." +
-				COLUMN_MAID + "+ new." + COLUMN_MISCELLANEOUS + "+ new." + COLUMN_ELECTRICITY +
+				"new." + COLUMN_MAID + "+ new." + COLUMN_MISCELLANEOUS + "+ new." + COLUMN_ELECTRICITY +
 				" WHERE _ID = new._ID; END;";
 
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
+		public static final String SQL_DROP_TRIGGER = "DROP TRIGGER " + TRIGGER_NAME;
 	}
 
 	/**
@@ -167,22 +168,35 @@ public class RoomiesContract {
 	 */
 	public static abstract class Misc_Expenses implements BaseColumns {
 		public static final String TABLE_NAME = "misc_expenses";
+		public static final String TRIGGER_NAME = "UPDATE_TOTAL_MISC_TRG ";
 		public static final String COLUMN_DESCRIPTION = "misc_desc";
 		public static final String COLUMN_TYPE = "misc_type";
 		public static final String COLUMN_AMOUNT = "misc_amount";
 		public static final String COLUMN_QUANTITY = "misc_quantity";
 		public static final String COLUMN_DATE = "misc_date";
+		public static final String COLUMN_MONTH = "month";
+		public static final String COLUMN_USERNAME = "username";
 		public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
 				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + NOT_NULL + COMMA_SEP +
 				COLUMN_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
 				COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
-				COLUMN_QUANTITY + TEXT_TYPE + COMMA_SEP +
-				COLUMN_AMOUNT + TEXT_TYPE + COMMA_SEP +
+				COLUMN_QUANTITY + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_AMOUNT + INTEGER_TYPE + COMMA_SEP +
+				COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
+				COLUMN_USERNAME + TEXT_TYPE + COMMA_SEP +
 				COLUMN_DATE + DATETIME_TYPE /*+ COMMA_SEP +
 				FOREIGN_KEY + COLUMN_ROOM_EXPENSE_ID + ") " +
 				REFERENCES + Room_Expenses.TABLE_NAME + " (" + Room_Expenses._ID + ")" + COMMA_SEP +
 				FOREIGN_KEY + COLUMN_PERSON_ID + ") " +
 				REFERENCES + Person.TABLE_NAME + " (" + Person._ID + ")"*/ + " )";
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
+		public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER " + TRIGGER_NAME +
+				"AFTER INSERT ON " + TABLE_NAME + " BEGIN " +
+				"UPDATE " + Room_Expenses.TABLE_NAME + " SET " + Room_Expenses
+				.COLUMN_MISCELLANEOUS + "= (SELECT SUM(" + COLUMN_AMOUNT + ") FROM " +
+				TABLE_NAME + " WHERE " + TABLE_NAME + "." + COLUMN_MONTH + "=" + Room_Expenses.TABLE_NAME + "" +
+				"." + Room_Expenses.COLUMN_MONTH + " AND " + TABLE_NAME + "." + COLUMN_USERNAME +
+				"=" + Room_Expenses.TABLE_NAME + "." + Room_Expenses.COLUMN_USERNAME + "); END;";
+		public static final String SQL_DROP_TRIGGER = "DROP TRIGGER " + TRIGGER_NAME;
 	}
 }
