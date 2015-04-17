@@ -2,18 +2,13 @@ package com.phaseii.rxm.roomies.activity;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -29,20 +24,20 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.fragments.TrendFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 import com.phaseii.rxm.roomies.view.BannerView;
-import com.phaseii.rxm.roomies.view.RoomiesRecyclerViewAdapter;
+import com.phaseii.rxm.roomies.view.RoomiesRecyclerHomeViewAdapter;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
@@ -61,6 +56,7 @@ public class HomeScreenActivity extends ActionBarActivity
 	DrawerLayout mDrawerLayout;
 	Toolbar mtoolbar;
 	ViewPager pager;
+	BannerView title;
 	SharedPreferences mSharedPref;
 	RecyclerView.Adapter mRecylerAdapter;
 	FragmentTransaction transaction;
@@ -106,7 +102,7 @@ public class HomeScreenActivity extends ActionBarActivity
 			if (mtoolbar != null) {
 				setSupportActionBar(mtoolbar);
 			}
-			BannerView title = (BannerView) findViewById(R.id.toolbartitle);
+			title = (BannerView) findViewById(R.id.toolbartitle);
 			title.setText(" " + getSharedPreferences(RoomiesConstants
 					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
 					getString(ROOM_ALIAS, "Room") + " ");
@@ -115,7 +111,7 @@ public class HomeScreenActivity extends ActionBarActivity
 
 				@Override
 				public void onClick(View v) {
-					DialogFragment dialog = AddExpenseDialog.getInstance(R.id.pager, name);
+					DialogFragment dialog = AddExpenseDialog.getInstance(R.id.pager);
 					dialog.show(getSupportFragmentManager(), "addexpense");
 				}
 
@@ -125,7 +121,7 @@ public class HomeScreenActivity extends ActionBarActivity
 
 			RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
 			mRecyclerView.hasFixedSize();
-			mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
+			mRecylerAdapter = new RoomiesRecyclerHomeViewAdapter(drawerTitles,
 					drawerIcons, name, email, profile, this);
 			mRecyclerView.setAdapter(mRecylerAdapter);
 			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -204,6 +200,19 @@ public class HomeScreenActivity extends ActionBarActivity
 		transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
+		if (fragment instanceof TrendFragment) {
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+			mtoolbar.setLayoutParams(params);
+			mtoolbar.setTitle("Roomies");
+			title.setVisibility(View.INVISIBLE);
+		}else{
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+					RelativeLayout.LayoutParams.MATCH_PARENT, 400);
+			mtoolbar.setLayoutParams(params);
+			mtoolbar.setTitle("");
+			title.setVisibility(View.VISIBLE);
+		}
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 	}
 
@@ -220,11 +229,11 @@ public class HomeScreenActivity extends ActionBarActivity
 	}
 
 	public void updateProfilePic(Bitmap profilePic, int profile) {
-		View headerView = ((RoomiesRecyclerViewAdapter) mRecylerAdapter).getHeaderView();
+		View headerView = ((RoomiesRecyclerHomeViewAdapter) mRecylerAdapter).getHeaderView();
 		ImageView profileFrame = (ImageView) headerView.findViewById(R.id.profileFrame);
 		if (null != profilePic) {
 			profileFrame.setImageBitmap(profilePic);
-		}else{
+		} else {
 			profileFrame.setImageResource(profile);
 		}
 	}

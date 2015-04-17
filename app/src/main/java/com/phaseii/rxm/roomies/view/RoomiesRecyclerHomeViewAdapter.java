@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.ProfileFragment;
+import com.phaseii.rxm.roomies.fragments.TrendFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
@@ -29,18 +29,19 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PROFILE_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TREND_FRAGMENT;
 
 /**
  * Created by Snehankur on 4/4/2015.
  */
-public class RoomiesRecyclerViewAdapter
-		extends RecyclerView.Adapter<RoomiesRecyclerViewAdapter.ViewHolder> {
+public class RoomiesRecyclerHomeViewAdapter
+		extends RecyclerView.Adapter<RoomiesRecyclerHomeViewAdapter.ViewHolder> {
 
 	Context mContext;
 	private View headerView;
 
-	public RoomiesRecyclerViewAdapter(String Titles[], int Icons[], String Name,
-	                                  String Email, int Profile, Context mContext) {
+	public RoomiesRecyclerHomeViewAdapter(String Titles[], int Icons[], String Name,
+	                                      String Email, int Profile, Context mContext) {
 		mNavTitles = Titles;
 		mIcons = Icons;
 		name = Name;
@@ -106,10 +107,12 @@ public class RoomiesRecyclerViewAdapter
 					} else if (pos == 1) {
 						((HomeScreenActivity) mContext).nextFragment(
 								new HomeFragment(), HOME_FRAGMENT);
-
 					} else if (pos == 4) {
 						((HomeScreenActivity) mContext).nextFragment(
 								new ProfileFragment(), PROFILE_FRAGMENT);
+					} else if (pos == 2) {
+						((HomeScreenActivity) mContext).nextFragment(
+								new TrendFragment(), TREND_FRAGMENT);
 					}
 				}
 			});

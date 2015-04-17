@@ -51,7 +51,7 @@
 			android:layout_height="wrap_content"
 			android:text="Sub Category"
 			android:textColor="@color/spinnerColor"
-			android:id="@+id/subcategory"
+			android:id="@+id/type"
 			android:layout_gravity="center"
 			android:textSize="18sp"/>
 

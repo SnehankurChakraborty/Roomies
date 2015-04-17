@@ -45,6 +45,7 @@ public final class RoomiesConstants {
 	public static final String IS_ELEC_PAID = "isElecPaid";
 	public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
 	public static final String PROFILE_FRAGMENT = "PROFILE_FRAGMENT";
+	public static final String TREND_FRAGMENT = "TREND_FRAGMENT";
 	public static final String MISCELLANEOUS="MISCELLANEOUS";
 	public static final int SELECT_PHOTO = 1;
 	public static String imagePath=null;

@@ -17,9 +17,6 @@ import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.database.RoomiesDbHelper;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
 
-import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_NAME;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_VERSION;
-
 /**
  * Created by Snehankur on 4/9/2015.
  */

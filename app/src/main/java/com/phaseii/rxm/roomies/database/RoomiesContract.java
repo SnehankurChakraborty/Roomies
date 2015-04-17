@@ -19,7 +19,7 @@ public class RoomiesContract {
 	public static final String DATABASE_NAME = "Roomies.db";
 	public static final int DATABASE_VERSION = 1;
 	public static final String TEXT_TYPE = " TEXT";
-	public static final String DATETIME_TYPE = " DATETIME DEFAULT CURRENT_TIMESTAMP";
+	public static final String DATETIME_TYPE = " INTEGER";
 	public static final String COMMA_SEP = ",";
 	public static final String NOT_NULL = " NOT NULL";
 	public static final String INTEGER_TYPE = " INTEGER";
@@ -184,19 +184,17 @@ public class RoomiesContract {
 				COLUMN_AMOUNT + INTEGER_TYPE + COMMA_SEP +
 				COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
 				COLUMN_USERNAME + TEXT_TYPE + COMMA_SEP +
-				COLUMN_DATE + DATETIME_TYPE /*+ COMMA_SEP +
-				FOREIGN_KEY + COLUMN_ROOM_EXPENSE_ID + ") " +
-				REFERENCES + Room_Expenses.TABLE_NAME + " (" + Room_Expenses._ID + ")" + COMMA_SEP +
-				FOREIGN_KEY + COLUMN_PERSON_ID + ") " +
-				REFERENCES + Person.TABLE_NAME + " (" + Person._ID + ")"*/ + " )";
+				COLUMN_DATE + DATETIME_TYPE + NOT_NULL;
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 		public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER " + TRIGGER_NAME +
 				"AFTER INSERT ON " + TABLE_NAME + " BEGIN " +
 				"UPDATE " + Room_Expenses.TABLE_NAME + " SET " + Room_Expenses
 				.COLUMN_MISCELLANEOUS + "= (SELECT SUM(" + COLUMN_AMOUNT + ") FROM " +
-				TABLE_NAME + " WHERE " + TABLE_NAME + "." + COLUMN_MONTH + "=" + Room_Expenses.TABLE_NAME + "" +
-				"." + Room_Expenses.COLUMN_MONTH + " AND " + TABLE_NAME + "." + COLUMN_USERNAME +
-				"=" + Room_Expenses.TABLE_NAME + "." + Room_Expenses.COLUMN_USERNAME + "); END;";
+				TABLE_NAME + " WHERE " + TABLE_NAME + "." + COLUMN_MONTH + " = new."
+				+ COLUMN_MONTH + " AND " + TABLE_NAME + "." + COLUMN_USERNAME + " = new." +
+				COLUMN_USERNAME + " )" +" WHERE " + Room_Expenses.COLUMN_MONTH +
+				" = new." + COLUMN_MONTH + " AND " + Room_Expenses.COLUMN_USERNAME + " = new." +
+				COLUMN_USERNAME + "; END;";
 		public static final String SQL_DROP_TRIGGER = "DROP TRIGGER " + TRIGGER_NAME;
 	}
 }

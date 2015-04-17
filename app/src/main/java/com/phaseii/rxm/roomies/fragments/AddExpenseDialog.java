@@ -42,18 +42,19 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	Button positive;
 	Button negative;
 	static int pagerId;
-	static String username;
+	String username;
 
 
-	public static AddExpenseDialog getInstance(int pagerId, String username) {
+	public static AddExpenseDialog getInstance(int pagerId) {
 		AddExpenseDialog.pagerId = pagerId;
-		AddExpenseDialog.username = username;
 		return new AddExpenseDialog();
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		mContext = getActivity().getApplicationContext();
+		username=mContext.getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME,null);
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		final View dialogView = inflater.inflate(R.layout.add_expense_dilog, null);
@@ -216,12 +217,18 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	}
 
 	private void updateGraphs(AlertDialog dialog) {
-		((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
-				.getFragments().get(0).getChildFragmentManager().getFragments().get(0))
-				.update();
-		((RoomiesFragment.UpdatableFragment) getActivity().getSupportFragmentManager()
-				.getFragments().get(0).getChildFragmentManager().getFragments().get(1))
-				.update();
+		RoomiesFragment fragment = (RoomiesFragment) getActivity().getSupportFragmentManager()
+				.getFragments().get(0);
+		if (fragment instanceof HomeFragment) {
+			((RoomiesFragment.UpdatableFragment) fragment.getChildFragmentManager().getFragments()
+					.get(0))
+					.update();
+			((RoomiesFragment.UpdatableFragment) fragment.getChildFragmentManager().getFragments().get
+					(1))
+					.update();
+		} else if (fragment instanceof TrendFragment) {
+			((TrendFragment) fragment).update();
+		}
 		dialog.dismiss();
 	}
 }

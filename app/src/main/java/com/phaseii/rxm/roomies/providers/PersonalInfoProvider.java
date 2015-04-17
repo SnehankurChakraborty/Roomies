@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 
-import static com.phaseii.rxm.roomies.database.RoomiesContract.*;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_NAME;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_VERSION;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.Person;
 
 /**
  * Created by Snehankur on 3/19/2015.

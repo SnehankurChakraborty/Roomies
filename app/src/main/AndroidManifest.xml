@@ -25,7 +25,6 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" >
         </activity>
-
         <provider
             android:name=".providers.RoomExpenseProvider"
             android:authorities="com.phaseii.rxm.roomies.providers.RoomExpenseProvider"

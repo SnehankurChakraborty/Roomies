@@ -13,6 +13,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.service.RoomiesService;
@@ -107,7 +108,7 @@ public class CurrentExpenseReport extends RoomiesFragment
 				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
 		PieDataSet dataSet = new PieDataSet(entries,
 				sharedPreferences.getString(ROOM_ALIAS, ""));
-		dataSet.setColors(ROOMIES_ALL_COLORS);
+		dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 		PieData data = new PieData(labels, dataSet);
 		mChart.setData(data);
 		mChart.animateXY(1000, 1000);

@@ -12,17 +12,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.text.TextUtils;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.database.RoomiesDbHelper;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
-
-import java.util.Arrays;
-import java.util.HashSet;
-
-import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_NAME;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_VERSION;
 
 /**
  * Created by Snehankur on 4/6/2015.
@@ -44,7 +37,7 @@ public class MiscellaneousProvider extends ContentProvider {
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, "miscexpense", ALL_MISC_DETAILS);
-		uriMatcher.addURI(AUTHORITY, "miscexpense/*", MISC_ROW_WISE);
+		uriMatcher.addURI(AUTHORITY, "miscexpense/#", MISC_ROW_WISE);
 		uriMatcher.addURI(AUTHORITY, "miscexpense/month/*", SPECIFIC_MONTH_DETAILS);
 		uriMatcher.addURI(AUTHORITY, "miscexpense/total/*", MONTH_TOTAL_DETAILS);
 	}
@@ -70,21 +63,17 @@ public class MiscellaneousProvider extends ContentProvider {
 				qb.appendWhere(RoomiesContract.Misc_Expenses._ID + "=" + uri.getLastPathSegment());
 				break;
 			case SPECIFIC_MONTH_DETAILS:
-				qb.appendWhere(
-						RoomiesContract.Misc_Expenses.COLUMN_MONTH + "=" + uri.getLastPathSegment());
+
+				/*qb.appendWhere(
+						RoomiesContract.Misc_Expenses.COLUMN_MONTH + "='" + uri
+								.getLastPathSegment() + "'");*/
 				break;
 			case MONTH_TOTAL_DETAILS:
-				db = mdbHelper.getReadableDatabase();
-				String sql = "SELECT SUM(" + RoomiesContract.Misc_Expenses.COLUMN_AMOUNT + ") FROM " +
-						RoomiesContract.Misc_Expenses.TABLE_NAME + " WHERE " + RoomiesContract.Misc_Expenses
-						.COLUMN_MONTH + " =@month";
-				Cursor cursor = db.rawQuery(sql, new String[]{uri.getLastPathSegment()});
-				return cursor;
+				/*qb.appendWhere(
+						RoomiesContract.Misc_Expenses.COLUMN_MONTH + "=" + uri.getLastPathSegment());*/
+				break;
 			default:
 				throw new IllegalStateException("Unknown URI " + uri);
-		}
-		if (TextUtils.isEmpty(sortOrder)) {
-			sortOrder = RoomiesContract.Room_Expenses._ID;
 		}
 		Cursor cursor = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
