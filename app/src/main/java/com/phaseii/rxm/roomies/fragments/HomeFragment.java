@@ -1,6 +1,5 @@
 package com.phaseii.rxm.roomies.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -8,19 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.view.BannerView;
-import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
+import com.phaseii.rxm.roomies.view.RoomiesHomePagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
-
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 
 
 public class HomeFragment extends RoomiesFragment{
 
 	ViewPager pager;
 	RoomiesSlidingTabLayout tabs;
-	RoomiesPagerAdapter adapter;
+	RoomiesHomePagerAdapter adapter;
 	int numboftabs = 2;
 	String titles[] = {"Room Budget", "Room Expense"};
 
@@ -32,7 +27,7 @@ public class HomeFragment extends RoomiesFragment{
 				false);
 
 		pager = (ViewPager) rootView.findViewById(R.id.pager);
-		adapter = new RoomiesPagerAdapter(getChildFragmentManager(), titles, numboftabs);
+		adapter = new RoomiesHomePagerAdapter(getChildFragmentManager(), titles, numboftabs);
 		pager.setAdapter(adapter);
 		tabs = (RoomiesSlidingTabLayout) rootView.findViewById(R.id.tabs);
 		tabs.setDistributeEvenly(true);

@@ -3,10 +3,9 @@ package com.phaseii.rxm.roomies.view;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.ViewGroup;
 
-import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
-import com.phaseii.rxm.roomies.fragments.CurrentExpenseReport;
+import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
+import com.phaseii.rxm.roomies.tabs.CurrentExpenseReport;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 
 import java.util.HashMap;
@@ -17,16 +16,16 @@ import static com.phaseii.rxm.roomies.fragments.RoomiesFragment.*;
 /**
  * Created by Snehankur on 4/3/2015.
  */
-public class RoomiesPagerAdapter extends FragmentStatePagerAdapter {
+public class RoomiesHomePagerAdapter extends FragmentStatePagerAdapter {
 
-	CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
-	int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
+	CharSequence titles[];
+	int numbOfTabs;
 	private Map<Integer, String> mTags=new HashMap<>();
 
-	public RoomiesPagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
+	public RoomiesHomePagerAdapter(FragmentManager fm, CharSequence mTitles[], int mNumbOfTabsumb) {
 		super(fm);
-		this.Titles = mTitles;
-		this.NumbOfTabs = mNumbOfTabsumb;
+		this.titles = mTitles;
+		this.numbOfTabs = mNumbOfTabsumb;
 	}
 
 	@Override
@@ -44,28 +43,17 @@ public class RoomiesPagerAdapter extends FragmentStatePagerAdapter {
 		}
 		return tab;
 	}
-/*
-	@Override
-	public Object instantiateItem(ViewGroup container, int position) {
-		Object obj=super.instantiateItem(container, position);;
-		if(obj instanceof RoomiesFragment){
-			RoomiesFragment f=(RoomiesFragment)obj;
-			String tag=f.getTag();
-			mTags.put(position,tag);
-		}
-		return obj;
-	}*/
+
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		return Titles[position];
+		return titles[position];
 	}
 
-	// This method return the Number of tabs for the tabs Strip
 
 	@Override
 	public int getCount() {
-		return NumbOfTabs;
+		return numbOfTabs;
 	}
 
 	@Override

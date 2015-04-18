@@ -66,10 +66,11 @@ public class MiscServiceImpl {
 		String username = mContext.getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
 				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
 		String[] selectionArgs = new String[]{currentMonth, username};
-		Cursor cursor = mContext.getContentResolver().query(monthTotalUri, projection, selection, selectionArgs,
+		Cursor cursor = mContext.getContentResolver().query(monthTotalUri, projection, selection,
+				selectionArgs,
 				null);
 		cursor.moveToFirst();
-		while(!cursor.isAfterLast()) {
+		while (!cursor.isAfterLast()) {
 			MiscExpense miscExpense = new MiscExpense();
 			miscExpense.setType(cursor.getString(cursor.getColumnIndex(
 					RoomiesContract.Misc_Expenses.COLUMN_TYPE)));
@@ -89,5 +90,20 @@ public class MiscServiceImpl {
 		return miscExpenses;
 	}
 
+	public List<String> getMiscMonths(String username) {
+		List<String> months = new ArrayList<>();
+		Uri allMonthsUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,
+				"all/" + username);
+		String projection[] = {RoomiesContract.Misc_Expenses.COLUMN_MONTH};
+		Cursor cursor = mContext.getContentResolver().query(allMonthsUri, projection, null, null,
+				null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			months.add(cursor.getString(cursor.getColumnIndex(RoomiesContract.Misc_Expenses
+					.COLUMN_MONTH)));
+			cursor.moveToNext();
+		}
+		return months;
+	}
 
 }

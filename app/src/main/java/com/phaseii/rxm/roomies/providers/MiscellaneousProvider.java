@@ -30,14 +30,18 @@ public class MiscellaneousProvider extends ContentProvider {
 	private static final int MISC_ROW_WISE = 1;
 	private static final int SPECIFIC_MONTH_DETAILS = 2;
 	private static final int MONTH_TOTAL_DETAILS = 3;
+	private static final int ALL_MONTHS =4 ;
 	public static final String UNKNOWN_URI = "Unknown URI ";
 	private SQLiteOpenHelper mdbHelper;
 	private SQLiteDatabase db;
+
+
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, "miscexpense", ALL_MISC_DETAILS);
 		uriMatcher.addURI(AUTHORITY, "miscexpense/#", MISC_ROW_WISE);
+		uriMatcher.addURI(AUTHORITY, "miscexpense/all/*", ALL_MONTHS);
 		uriMatcher.addURI(AUTHORITY, "miscexpense/month/*", SPECIFIC_MONTH_DETAILS);
 		uriMatcher.addURI(AUTHORITY, "miscexpense/total/*", MONTH_TOTAL_DETAILS);
 	}
@@ -71,6 +75,11 @@ public class MiscellaneousProvider extends ContentProvider {
 			case MONTH_TOTAL_DETAILS:
 				/*qb.appendWhere(
 						RoomiesContract.Misc_Expenses.COLUMN_MONTH + "=" + uri.getLastPathSegment());*/
+				break;
+			case ALL_MONTHS:
+				qb.appendWhere(
+					RoomiesContract.Misc_Expenses.COLUMN_USERNAME + "= '" + uri
+							.getLastPathSegment()+"'");
 				break;
 			default:
 				throw new IllegalStateException("Unknown URI " + uri);

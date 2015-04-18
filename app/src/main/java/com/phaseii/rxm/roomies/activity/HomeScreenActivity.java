@@ -30,14 +30,16 @@ import android.widget.Toast;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
-import com.phaseii.rxm.roomies.fragments.CurrentBudgetStatus;
-import com.phaseii.rxm.roomies.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.fragments.ProfileFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;
+import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
+import com.phaseii.rxm.roomies.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 import com.phaseii.rxm.roomies.view.BannerView;
-import com.phaseii.rxm.roomies.view.RoomiesRecyclerHomeViewAdapter;
+import com.phaseii.rxm.roomies.view.RoomiesRecyclerViewAdapter;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
@@ -102,6 +104,7 @@ public class HomeScreenActivity extends ActionBarActivity
 			if (mtoolbar != null) {
 				setSupportActionBar(mtoolbar);
 			}
+			mtoolbar.setNavigationIcon(R.drawable.roomies_launcher);
 			title = (BannerView) findViewById(R.id.toolbartitle);
 			title.setText(" " + getSharedPreferences(RoomiesConstants
 					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
@@ -121,7 +124,7 @@ public class HomeScreenActivity extends ActionBarActivity
 
 			RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
 			mRecyclerView.hasFixedSize();
-			mRecylerAdapter = new RoomiesRecyclerHomeViewAdapter(drawerTitles,
+			mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
 					drawerIcons, name, email, profile, this);
 			mRecyclerView.setAdapter(mRecylerAdapter);
 			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -137,6 +140,7 @@ public class HomeScreenActivity extends ActionBarActivity
 					super.onDrawerOpened(drawerView);
 				}
 			};
+
 			mDrawerLayout.setDrawerListener(mDrawerTogggle);
 			mDrawerTogggle.syncState();
 
@@ -200,13 +204,18 @@ public class HomeScreenActivity extends ActionBarActivity
 		transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
-		if (fragment instanceof TrendFragment) {
+		if (!(fragment instanceof HomeFragment)) {
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+					RelativeLayout.LayoutParams.MATCH_PARENT,
+					RelativeLayout.LayoutParams.WRAP_CONTENT);
 			mtoolbar.setLayoutParams(params);
-			mtoolbar.setTitle("Roomies");
+			if(fragment instanceof TrendFragment) {
+				mtoolbar.setTitle("Trends");
+			}else if(fragment instanceof ProfileFragment){
+				mtoolbar.setTitle("Profile");
+			}
 			title.setVisibility(View.INVISIBLE);
-		}else{
+		} else {
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.MATCH_PARENT, 400);
 			mtoolbar.setLayoutParams(params);
@@ -229,7 +238,7 @@ public class HomeScreenActivity extends ActionBarActivity
 	}
 
 	public void updateProfilePic(Bitmap profilePic, int profile) {
-		View headerView = ((RoomiesRecyclerHomeViewAdapter) mRecylerAdapter).getHeaderView();
+		View headerView = ((RoomiesRecyclerViewAdapter) mRecylerAdapter).getHeaderView();
 		ImageView profileFrame = (ImageView) headerView.findViewById(R.id.profileFrame);
 		if (null != profilePic) {
 			profileFrame.setImageBitmap(profilePic);

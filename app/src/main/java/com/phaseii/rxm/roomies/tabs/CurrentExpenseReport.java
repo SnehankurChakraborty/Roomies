@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 

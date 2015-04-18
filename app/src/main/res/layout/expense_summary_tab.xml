@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin">
+
+
+
+	<com.github.mikephil.charting.charts.BarChart
+		android:layout_width="wrap_content"
+		android:layout_height="300dp"
+		android:id="@+id/summary"
+
+		/>
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:id="@+id/month_layout"
+		android:layout_below="@id/summary"
+		android:layout_centerHorizontal="true">
+
+		<TextView
+			android:layout_width="120dp"
+			android:layout_height="wrap_content"
+			android:text="Month"
+			android:textSize="18sp"
+			android:id="@+id/month"
+			android:gravity="center_horizontal"
+			android:layout_gravity="center"/>
+		<Spinner
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/monthspinner"
+			android:layout_gravity="center_horizontal"
+			android:layout_toRightOf="@id/month"
+			style="@style/SpinnerRoomies"
+			android:spinnerMode="dropdown"
+			android:popupBackground="@drawable/menu_dropdown_panel_roomies"
+			/>
+	</LinearLayout>
+
+
+
+</RelativeLayout>

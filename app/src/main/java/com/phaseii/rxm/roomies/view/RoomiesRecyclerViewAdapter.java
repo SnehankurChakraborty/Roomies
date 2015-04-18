@@ -18,6 +18,7 @@ import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.ProfileFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;
+import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
@@ -34,14 +35,14 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TREND_FRAGMENT;
 /**
  * Created by Snehankur on 4/4/2015.
  */
-public class RoomiesRecyclerHomeViewAdapter
-		extends RecyclerView.Adapter<RoomiesRecyclerHomeViewAdapter.ViewHolder> {
+public class RoomiesRecyclerViewAdapter
+		extends RecyclerView.Adapter<RoomiesRecyclerViewAdapter.ViewHolder> {
 
 	Context mContext;
 	private View headerView;
 
-	public RoomiesRecyclerHomeViewAdapter(String Titles[], int Icons[], String Name,
-	                                      String Email, int Profile, Context mContext) {
+	public RoomiesRecyclerViewAdapter(String Titles[], int Icons[], String Name,
+	                                  String Email, int Profile, Context mContext) {
 		mNavTitles = Titles;
 		mIcons = Icons;
 		name = Name;

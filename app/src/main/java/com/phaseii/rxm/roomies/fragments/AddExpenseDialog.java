@@ -23,6 +23,7 @@ import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 
 /**
  * Created by Snehankur on 4/5/2015.
@@ -226,8 +227,8 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 			((RoomiesFragment.UpdatableFragment) fragment.getChildFragmentManager().getFragments().get
 					(1))
 					.update();
-		} else if (fragment instanceof TrendFragment) {
-			((TrendFragment) fragment).update();
+		} else if (fragment instanceof DetailExpenseTab) {
+			((DetailExpenseTab) fragment).update();
 		}
 		dialog.dismiss();
 	}

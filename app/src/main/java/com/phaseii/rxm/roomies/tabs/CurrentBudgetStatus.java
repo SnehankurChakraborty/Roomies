@@ -1,9 +1,8 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.tabs;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,22 +14,18 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 
 import java.util.ArrayList;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SPENT;
 
 
 public class CurrentBudgetStatus extends RoomiesFragment

@@ -184,7 +184,7 @@ public class RoomiesContract {
 				COLUMN_AMOUNT + INTEGER_TYPE + COMMA_SEP +
 				COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
 				COLUMN_USERNAME + TEXT_TYPE + COMMA_SEP +
-				COLUMN_DATE + DATETIME_TYPE + NOT_NULL;
+				COLUMN_DATE + DATETIME_TYPE + NOT_NULL + " )";
 		public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
 		public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER " + TRIGGER_NAME +
 				"AFTER INSERT ON " + TABLE_NAME + " BEGIN " +
@@ -192,7 +192,7 @@ public class RoomiesContract {
 				.COLUMN_MISCELLANEOUS + "= (SELECT SUM(" + COLUMN_AMOUNT + ") FROM " +
 				TABLE_NAME + " WHERE " + TABLE_NAME + "." + COLUMN_MONTH + " = new."
 				+ COLUMN_MONTH + " AND " + TABLE_NAME + "." + COLUMN_USERNAME + " = new." +
-				COLUMN_USERNAME + " )" +" WHERE " + Room_Expenses.COLUMN_MONTH +
+				COLUMN_USERNAME + " )" + " WHERE " + Room_Expenses.COLUMN_MONTH +
 				" = new." + COLUMN_MONTH + " AND " + Room_Expenses.COLUMN_USERNAME + " = new." +
 				COLUMN_USERNAME + "; END;";
 		public static final String SQL_DROP_TRIGGER = "DROP TRIGGER " + TRIGGER_NAME;

@@ -160,7 +160,7 @@ public class RoomiesHelper {
 				errorFeild.setVisibility(View.INVISIBLE);
 			}
 		} else {
-			if (isFieldBlankOrEmpty(feild)) {
+			if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
 				isValid = false;
 				errorFeild.setVisibility(View.VISIBLE);
 			} else {
