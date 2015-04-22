@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -16,12 +17,11 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ValueFormatter;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.MiscExpense;
+import com.phaseii.rxm.roomies.service.MiscService;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
 public class ExpenseSummaryTab extends RoomiesFragment {
 
 	private Context mContext;
-	MiscServiceImpl miscService;
+	MiscService miscService;
 	ArrayAdapter<String> monthAdapter;
 
 
@@ -96,7 +96,7 @@ public class ExpenseSummaryTab extends RoomiesFragment {
 		entries.add(new BarEntry(grocery, 1));
 		entries.add(new BarEntry(vegetables, 2));
 		entries.add(new BarEntry(others, 3));
-		BarDataSet dataset=new BarDataSet(entries,"Summary");
+		BarDataSet dataset = new BarDataSet(entries, "Summary");
 		dataset.setColors(ColorTemplate.JOYFUL_COLORS);
 		dataset.setBarShadowColor(Color.TRANSPARENT);
 
@@ -124,5 +124,15 @@ public class ExpenseSummaryTab extends RoomiesFragment {
 		xl.setPosition(XAxis.XAxisPosition.BOTTOM);
 		xl.setDrawAxisLine(true);
 		xl.setDrawGridLines(false);
+
+
+		TextView groceryValue = (TextView) rootView.findViewById(R.id.grocery_value);
+		TextView vegetableValue = (TextView) rootView.findViewById(R.id.vegetable_value);
+		TextView othersValue = (TextView) rootView.findViewById(R.id.others_value);
+		TextView naValue = (TextView) rootView.findViewById(R.id.na_value);
+		groceryValue.setText(String.valueOf(grocery));
+		vegetableValue.setText(String.valueOf(vegetables));
+		othersValue.setText(String.valueOf(others));
+		naValue.setText(String.valueOf(na));
 	}
 }

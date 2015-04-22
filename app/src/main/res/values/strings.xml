@@ -66,7 +66,7 @@
         <item>MISCELLANEOUS</item>
     </string-array>
     <string-array name="subcategory">
-        <item>NA</item>
+        <item>BILLS</item>
         <item>GROCERY</item>
         <item>VEGETABLES</item>
         <item>OTHERS</item>

@@ -2,6 +2,10 @@ package com.phaseii.rxm.roomies.service;
 
 import android.database.Cursor;
 
+import com.phaseii.rxm.roomies.model.RoomBudget;
+
+import java.util.List;
+
 /**
  * Created by Snehankur on 4/7/2015.
  */
@@ -14,6 +18,8 @@ public interface RoomiesService {
 	Cursor getRoomDetails();
 
 	Cursor getRoomDetailsWithMargin(String username);
+
+	List<RoomBudget> getAllMonthDetailsWithMargin(String username);
 
 	float getTotalSpent();
 }

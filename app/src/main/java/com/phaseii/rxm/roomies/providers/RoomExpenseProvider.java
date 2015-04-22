@@ -32,15 +32,16 @@ public class RoomExpenseProvider extends ContentProvider {
 	private static final int ALL_ROOM_DETAILS = 0;
 	private static final int ROOM_ROW_WISE = 1;
 	private static final int SPECIFIC_MONTH_DETAILS = 2;
+	private static final int ALL_MONTH_DETAILS = 3;
 	public static final String UNKNOWN_URI = "Unknown URI ";
 	private SQLiteOpenHelper mdbHelper;
 	private SQLiteDatabase db;
-
 
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(AUTHORITY, "roomexpense", ALL_ROOM_DETAILS);
 		uriMatcher.addURI(AUTHORITY, "roomexpense/#", ROOM_ROW_WISE);
+		uriMatcher.addURI(AUTHORITY, "roomexpense/all/*", ALL_MONTH_DETAILS);
 		uriMatcher.addURI(AUTHORITY, "roomexpense/month/*", SPECIFIC_MONTH_DETAILS);
 	}
 
@@ -66,6 +67,9 @@ public class RoomExpenseProvider extends ContentProvider {
 				qb.appendWhere(Room_Expenses._ID + "=" + uri.getLastPathSegment());
 				break;
 			case SPECIFIC_MONTH_DETAILS:
+				break;
+			case ALL_MONTH_DETAILS:
+				qb.appendWhere(Room_Expenses.COLUMN_USERNAME + "= '" + uri.getLastPathSegment()+"'");
 				break;
 			default:
 				throw new IllegalStateException("Unknown URI " + uri);

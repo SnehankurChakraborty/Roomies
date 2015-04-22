@@ -19,7 +19,7 @@
 			<include
 				layout="@layout/roomies_toolbar"
 				android:id="@+id/toolbar"
-				android:layout_height="150dp"
+				android:layout_height="150dip"
 				android:layout_width="match_parent"/>
 
 			<com.phaseii.rxm.roomies.view.BannerView
@@ -30,6 +30,17 @@
 				android:layout_centerHorizontal="true"
 				android:layout_marginTop="58dp"
 				/>
+
+			<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+				android:layout_width="100dp"
+				android:layout_height="100dp"
+				android:src="@drawable/ic_camera"
+				android:layout_gravity="center_horizontal"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"
+				android:id="@+id/profilepic"
+				android:visibility="invisible"
+				android:layout_marginTop="20dp"/>
 
 			<FrameLayout
 				android:layout_width="match_parent"
@@ -46,9 +57,9 @@
 				android:background="@drawable/add_expense"
 				android:id="@+id/addexpense"
 				android:layout_gravity="left|bottom"
-				android:layout_marginRight="40dp"
-				android:layout_marginBottom="40dp"
-				android:layout_marginEnd="40dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="10dp"
+				android:layout_marginEnd="10dp"
 				android:layout_alignParentBottom="true"
 				android:layout_alignParentRight="true"
 				android:layout_alignParentEnd="true"/>

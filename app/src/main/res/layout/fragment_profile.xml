@@ -5,11 +5,6 @@
               tools:context="com.phaseii.rxm.roomies.fragments.ProfileFragment"
               android:orientation="vertical">
 
-	<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
-		android:layout_width="100dp"
-		android:layout_height="100dp"
-		android:src="@drawable/ic_camera"
-		android:layout_gravity="center_horizontal"
-		android:id="@+id/profilepic"/>
+
 
 </LinearLayout>

@@ -17,6 +17,7 @@ import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.ProfileFragment;
+import com.phaseii.rxm.roomies.fragments.SavingsFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;
 import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
@@ -30,6 +31,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PROFILE_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SAVINGS_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TREND_FRAGMENT;
 
 /**
@@ -114,6 +116,9 @@ public class RoomiesRecyclerViewAdapter
 					} else if (pos == 2) {
 						((HomeScreenActivity) mContext).nextFragment(
 								new TrendFragment(), TREND_FRAGMENT);
+					}else if(pos==3){
+						((HomeScreenActivity) mContext).nextFragment(
+								new SavingsFragment(), SAVINGS_FRAGMENT);
 					}
 				}
 			});
@@ -125,16 +130,17 @@ public class RoomiesRecyclerViewAdapter
 				name = (TextView) itemView.findViewById(R.id.name);
 				email = (TextView) itemView.findViewById(R.id.email);
 				profileFrame = (ImageView) itemView.findViewById(R.id.profileFrame);
+				final String username = mContext.getSharedPreferences(RoomiesConstants
+						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
+						getString(RoomiesConstants.NAME, null);
 				profileFrame.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						((HomeScreenActivity) mContext).nextFragment(
-								new ProfileFragment(), PROFILE_FRAGMENT);
+								ProfileFragment.geInstance(username), PROFILE_FRAGMENT);
 					}
 				});
-				String username = mContext.getSharedPreferences(RoomiesConstants
-						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
-						getString(RoomiesConstants.NAME, null);
+
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 4;
 				Bitmap bitmap = BitmapFactory.decodeFile(new File(mContext.getFilesDir(),

@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Snehankur on 4/12/2015.
  */
-public class MiscServiceImpl {
+public class MiscServiceImpl implements MiscService {
 
 	Context mContext;
 
@@ -34,13 +34,19 @@ public class MiscServiceImpl {
 	String currentMonth = new DateFormatSymbols().getMonths()[Calendar
 			.getInstance().get(Calendar.MONTH)];
 
+	@Override
 	public void insertMiscExpenses(EditText description, EditText quantity, EditText amount,
 	                               String type, String username) {
 		ContentValues values = new ContentValues();
 		values.put(RoomiesContract.Misc_Expenses.COLUMN_DESCRIPTION,
 				description.getText().toString());
-		values.put(RoomiesContract.Misc_Expenses.COLUMN_QUANTITY,
-				Float.valueOf(quantity.getText().toString()));
+		if (type.equals(RoomiesConstants.BILLS)) {
+			values.put(RoomiesContract.Misc_Expenses.COLUMN_QUANTITY,
+					Float.valueOf("0.0"));
+		} else {
+			values.put(RoomiesContract.Misc_Expenses.COLUMN_QUANTITY,
+					Float.valueOf(quantity.getText().toString()));
+		}
 		values.put(RoomiesContract.Misc_Expenses.COLUMN_AMOUNT,
 				Float.valueOf(amount.getText().toString()));
 		values.put(RoomiesContract.Misc_Expenses.COLUMN_TYPE, type);
@@ -50,6 +56,7 @@ public class MiscServiceImpl {
 		mContext.getContentResolver().insert(monthUri, values);
 	}
 
+	@Override
 	public List<MiscExpense> getCurrentTotalMiscExpense() {
 		List<MiscExpense> miscExpenses = new ArrayList<>();
 		final Uri monthTotalUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,
@@ -90,6 +97,7 @@ public class MiscServiceImpl {
 		return miscExpenses;
 	}
 
+	@Override
 	public List<String> getMiscMonths(String username) {
 		List<String> months = new ArrayList<>();
 		Uri allMonthsUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,

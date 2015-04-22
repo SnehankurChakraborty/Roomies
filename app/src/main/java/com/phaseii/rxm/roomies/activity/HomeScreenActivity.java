@@ -1,10 +1,13 @@
 package com.phaseii.rxm.roomies.activity;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -17,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +35,7 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.ProfileFragment;
+import com.phaseii.rxm.roomies.fragments.SavingsFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;
 import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
@@ -40,6 +45,12 @@ import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 import com.phaseii.rxm.roomies.view.BannerView;
 import com.phaseii.rxm.roomies.view.RoomiesRecyclerViewAdapter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
@@ -59,6 +70,7 @@ public class HomeScreenActivity extends ActionBarActivity
 	Toolbar mtoolbar;
 	ViewPager pager;
 	BannerView title;
+	ImageView profilePic;
 	SharedPreferences mSharedPref;
 	RecyclerView.Adapter mRecylerAdapter;
 	FragmentTransaction transaction;
@@ -68,9 +80,11 @@ public class HomeScreenActivity extends ActionBarActivity
 			R.drawable.ic_savings_bank,
 			R.drawable.ic_profile,
 			R.drawable.ic_logout};
+	private Bitmap bitmap;
 	String name;
 	String email;
 	int profile = R.drawable.ic_camera;
+	private static final int REQUEST_CODE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +134,29 @@ public class HomeScreenActivity extends ActionBarActivity
 
 			});
 
+
+			profilePic = (ImageView) findViewById(R.id.profilepic);
+			final String username = getSharedPreferences(RoomiesConstants
+					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
+					getString(RoomiesConstants.NAME, null);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 4;
+			Bitmap bitmap = BitmapFactory.decodeFile(new File(getFilesDir(),
+					username + getResources().getString(
+							R.string.PROFILEJPG)).getAbsolutePath(), options);
+			if (null != bitmap) {
+				profilePic.setImageBitmap(bitmap);
+			}
+			profilePic.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent();
+					intent.setType("image/*");
+					intent.setAction(Intent.ACTION_GET_CONTENT);
+					intent.addCategory(Intent.CATEGORY_OPENABLE);
+					startActivityForResult(intent, REQUEST_CODE);
+				}
+			});
 			/*Setting the recycler view for navigation drawer*/
 
 			RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
@@ -205,22 +242,40 @@ public class HomeScreenActivity extends ActionBarActivity
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
 		if (!(fragment instanceof HomeFragment)) {
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.MATCH_PARENT,
-					RelativeLayout.LayoutParams.WRAP_CONTENT);
-			mtoolbar.setLayoutParams(params);
-			if(fragment instanceof TrendFragment) {
-				mtoolbar.setTitle("Trends");
-			}else if(fragment instanceof ProfileFragment){
-				mtoolbar.setTitle("Profile");
-			}
 			title.setVisibility(View.INVISIBLE);
+			if (fragment instanceof TrendFragment) {
+				mtoolbar.setTitle("Trends");
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+						RelativeLayout.LayoutParams.MATCH_PARENT,
+						RelativeLayout.LayoutParams.WRAP_CONTENT);
+				mtoolbar.setLayoutParams(params);
+				profilePic.setVisibility(View.INVISIBLE);
+			} else if (fragment instanceof ProfileFragment) {
+				int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150,
+						getResources().getDisplayMetrics());
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+						RelativeLayout.LayoutParams.MATCH_PARENT, height);
+				mtoolbar.setLayoutParams(params);
+				mtoolbar.setTitle("");
+				profilePic.setVisibility(View.VISIBLE);
+			} else if (fragment instanceof SavingsFragment) {
+				mtoolbar.setTitle("Savings");
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+						RelativeLayout.LayoutParams.MATCH_PARENT,
+						RelativeLayout.LayoutParams.WRAP_CONTENT);
+				mtoolbar.setLayoutParams(params);
+				profilePic.setVisibility(View.INVISIBLE);
+			}
+
 		} else {
+			int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150,
+					getResources().getDisplayMetrics());
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.MATCH_PARENT, 400);
+					RelativeLayout.LayoutParams.MATCH_PARENT, height);
 			mtoolbar.setLayoutParams(params);
 			mtoolbar.setTitle("");
 			title.setVisibility(View.VISIBLE);
+			profilePic.setVisibility(View.INVISIBLE);
 		}
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 	}
@@ -237,13 +292,45 @@ public class HomeScreenActivity extends ActionBarActivity
 		}
 	}
 
-	public void updateProfilePic(Bitmap profilePic, int profile) {
+	public void updateProfilePic(Bitmap profilePicBitmap, int profile) {
 		View headerView = ((RoomiesRecyclerViewAdapter) mRecylerAdapter).getHeaderView();
 		ImageView profileFrame = (ImageView) headerView.findViewById(R.id.profileFrame);
-		if (null != profilePic) {
-			profileFrame.setImageBitmap(profilePic);
+		if (null != profilePicBitmap) {
+			profileFrame.setImageBitmap(profilePicBitmap);
 		} else {
 			profileFrame.setImageResource(profile);
 		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && null != data)
+			try {
+				if (bitmap != null) {
+					bitmap.recycle();
+				}
+				InputStream stream = getContentResolver().openInputStream(data.getData());
+				bitmap = BitmapFactory.decodeStream(stream);
+				stream.close();
+				profilePic.setImageBitmap(bitmap);
+				String username = getSharedPreferences(RoomiesConstants
+						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
+						getString(RoomiesConstants.NAME, null);
+
+				File file = new File(getFilesDir(),
+						username + getResources().getString(R.string.PROFILEJPG));
+				FileOutputStream fos = new FileOutputStream(file);
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+				fos.flush();
+				fos.close();
+				file.getAbsolutePath();
+				updateProfilePic(bitmap, R.drawable.ic_profile_pic);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }
