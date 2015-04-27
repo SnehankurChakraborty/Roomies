@@ -12,4 +12,9 @@
 		<item name="android:textColor">#ffffff</item>
 	</style>
 
+	<style name="CustomActionBarTheme"
+	       parent="@style/Theme.AppCompat">
+		<item name="android:windowActionBarOverlay">true</item>
+	</style>
+
 </resources>

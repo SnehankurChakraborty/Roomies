@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 	<style name="ErrorButton">
 		<item name="android:visibility">invisible</item>
@@ -13,4 +13,24 @@
 	</style>
 
 	<color name="white">#f2f2f2</color>
+
+	<style name="ProfileTheme" parent="Theme.AppCompat.Light">
+		<item name="android:actionBarStyle"
+		      tools:ignore="NewApi">@style/ProfileTheme.ActionBar</item>
+
+		<!-- Support library compatibility -->
+		<item name="actionBarStyle">@style/ProfileTheme.ActionBar</item>
+	</style>
+
+	<!-- ACTION BAR STYLES -->
+	<style name="ProfileTheme.ActionBar" parent="Theme.AppCompat.Light">
+		<item name="android:background">@drawable/ab_background_textured_roomies</item>
+		<item name="android:windowActionBarOverlay"
+		      tools:ignore="NewApi">true</item>
+
+		<!-- Support library compatibility -->
+		<item name="background">@drawable/ab_background_textured_roomies</item>
+		<item name="windowActionBarOverlay">true</item>
+	</style>
+
 </resources>

@@ -3,6 +3,7 @@ package com.phaseii.rxm.roomies.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -72,7 +73,7 @@ public class SavingsFragment extends RoomiesFragment {
 		roomBudgetList = roomiesService.getAllMonthDetailsWithMargin(mContext
 				.getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
 						Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null));
-		int index=0;
+		int index = 0;
 		for (RoomBudget roomBudget : roomBudgetList) {
 			float rentSavings = roomBudget.getRent_margin() - roomBudget.getRent();
 			float maidSavings = roomBudget.getMaid_margin() - roomBudget.getMaid();
@@ -115,22 +116,22 @@ public class SavingsFragment extends RoomiesFragment {
 		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 			@Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-				CardView cardView=(CardView)rootView.findViewById(R.id.savings_card);
+				CardView cardView = (CardView) rootView.findViewById(R.id.savings_card);
 				cardView.setVisibility(View.VISIBLE);
 				RoomBudget roomBudget = roomBudgetList.get(e.getXIndex());
 				if (dataSets.get(dataSetIndex).getLabel().equals("Rent")) {
 					showBubble(roomBudget.getMonth(), roomBudget.getRent_margin(),
 							roomBudget.getRent(), "Rent");
 					cardView.setCardBackgroundColor(ColorTemplate.JOYFUL_COLORS[0]);
-				}else if(dataSets.get(dataSetIndex).getLabel().equals("Maid")){
+				} else if (dataSets.get(dataSetIndex).getLabel().equals("Maid")) {
 					showBubble(roomBudget.getMonth(), roomBudget.getMaid_margin(),
 							roomBudget.getMaid(), "Maid");
 					cardView.setCardBackgroundColor(ColorTemplate.JOYFUL_COLORS[1]);
-				}else if(dataSets.get(dataSetIndex).getLabel().equals("Elec")){
+				} else if (dataSets.get(dataSetIndex).getLabel().equals("Elec")) {
 					showBubble(roomBudget.getMonth(), roomBudget.getElectricity_margin(),
 							roomBudget.getElectricity(), "Electricity");
 					cardView.setCardBackgroundColor(ColorTemplate.JOYFUL_COLORS[2]);
-				}else if(dataSets.get(dataSetIndex).getLabel().equals("Misc")){
+				} else if (dataSets.get(dataSetIndex).getLabel().equals("Misc")) {
 					showBubble(roomBudget.getMonth(), roomBudget.getMiscellaneous_margin(),
 							roomBudget.getMiscellaneous(), "Miscellaneous");
 					cardView.setCardBackgroundColor(ColorTemplate.JOYFUL_COLORS[3]);
@@ -150,7 +151,7 @@ public class SavingsFragment extends RoomiesFragment {
 		yl.setDrawAxisLine(false);
 		yl.setDrawGridLines(false);
 		yl.setSpaceTop(10f);
-
+		yl.setStartAtZero(false);
 		yl.setValueFormatter(new LargeValueFormatter());
 
 		barChart.getAxisRight().setEnabled(false);
@@ -164,20 +165,22 @@ public class SavingsFragment extends RoomiesFragment {
 
 	private void showBubble(String selectedMonth, float selectedMargin, float selectedExpense,
 	                        String type) {
+		Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Thin.ttf");
 		float selectedSavings = selectedMargin - selectedExpense;
 		TextView month = (TextView) rootView.findViewById(R.id.month);
 		TextView description = (TextView) rootView.findViewById(R.id.description);
 		TextView savings = (TextView) rootView.findViewById(R.id.savings_value);
+		savings.setTypeface(typeface);
 		month.setText(selectedMonth);
 		String descriptionValue = selectedExpense + " out of " + selectedMargin + " spent on " +
 				type;
 		description.setText(descriptionValue);
 		savings.setText(String.valueOf(selectedSavings));
-		if(selectedSavings<0){
+		if (selectedSavings < 0) {
 			savings.setTextColor(Color.RED);
-		}else if(selectedSavings==0) {
+		} else if (selectedSavings == 0) {
 			savings.setTextColor(Color.BLUE);
-		}else{
+		} else {
 			savings.setTextColor(Color.GREEN);
 		}
 

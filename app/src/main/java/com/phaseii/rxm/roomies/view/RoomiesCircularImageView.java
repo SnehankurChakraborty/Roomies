@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -55,6 +56,7 @@ public class RoomiesCircularImageView extends ImageView {
 
 	private boolean mReady;
 	private boolean mSetupPending;
+	private int mCurrentTranslation;
 
 	public RoomiesCircularImageView(Context context) {
 		super(context);
@@ -271,6 +273,23 @@ public class RoomiesCircularImageView extends ImageView {
 		mShaderMatrix.postTranslate((int) (dx + 0.5f) + mBorderWidth, (int) (dy + 0.5f) + mBorderWidth);
 
 		mBitmapShader.setLocalMatrix(mShaderMatrix);
+	}
+
+	public void setCurrentTranslation(int currentTranslation) {
+		mCurrentTranslation = currentTranslation;
+		invalidate();
+		/*mCurrentTranslation = currentTranslation;
+		float ratio =  -mCurrentTranslation / (float)getHeight();
+		int color = Color.argb((int) (fMAX_COLORFILTER_ALPHA * ratio), 0, 0, 0);
+		setColorFilter(color, PorterDuff.Mode.SRC_ATOP);*/
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		canvas.save();
+		canvas.translate(0, -mCurrentTranslation / 2)  ;
+		super.draw(canvas);
+		canvas.restore();
 	}
 
 }

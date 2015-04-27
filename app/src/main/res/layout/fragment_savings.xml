@@ -41,7 +41,7 @@
 					android:id="@+id/savings_value"
 					android:textSize="30sp"
 					android:layout_centerHorizontal="true"
-					android:gravity="center"		/>
+					android:gravity="center"/>
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"

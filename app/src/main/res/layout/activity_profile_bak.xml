@@ -1,0 +1,38 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".MainActivity">
+
+	<LinearLayout
+		android:id="@+id/toolbar_container"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<include
+			layout="@layout/roomies_toolbar"
+			android:id="@+id/toolbar"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"/>
+
+
+		<TextView
+			android:id="@+id/fake_tab"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textAllCaps="true"
+			android:gravity="center_vertical"
+			android:background="?attr/colorPrimary"
+			android:textStyle="bold"
+			android:text=""/>
+	</LinearLayout>
+
+	<android.support.v7.widget.RecyclerView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingTop="?attr/actionBarSize"
+		android:clipToPadding="false"
+		android:id="@+id/recyclerview"/>
+
+</FrameLayout>

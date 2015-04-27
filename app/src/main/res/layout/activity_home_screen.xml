@@ -22,6 +22,7 @@
 				android:layout_height="150dip"
 				android:layout_width="match_parent"/>
 
+
 			<com.phaseii.rxm.roomies.view.BannerView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -31,16 +32,7 @@
 				android:layout_marginTop="58dp"
 				/>
 
-			<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
-				android:layout_width="100dp"
-				android:layout_height="100dp"
-				android:src="@drawable/ic_camera"
-				android:layout_gravity="center_horizontal"
-				android:layout_alignParentTop="true"
-				android:layout_centerHorizontal="true"
-				android:id="@+id/profilepic"
-				android:visibility="invisible"
-				android:layout_marginTop="20dp"/>
+
 
 			<FrameLayout
 				android:layout_width="match_parent"
@@ -63,6 +55,7 @@
 				android:layout_alignParentBottom="true"
 				android:layout_alignParentRight="true"
 				android:layout_alignParentEnd="true"/>
+
 
 		</RelativeLayout>
 
@@ -91,6 +84,7 @@
 			android:scrollbars="vertical">
 
 		</android.support.v7.widget.RecyclerView>
+
 	</android.support.v4.widget.DrawerLayout>
 
 

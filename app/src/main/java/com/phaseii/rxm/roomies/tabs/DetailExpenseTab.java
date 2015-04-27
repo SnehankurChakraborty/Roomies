@@ -114,17 +114,20 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 			@Override
 			public void onValueSelected(Entry entry, int dataSetIndex, Highlight h) {
-				if (entry.getVal() > 0) {
-					int index = entry.getXIndex();
-					List<MiscExpense> miscExpensesList = new ArrayList<MiscExpense>();
-					for (MiscExpense misc : miscExpenses) {
-						cal.setTime(misc.getTransactionDate());
-						if (cal.get(Calendar.DAY_OF_MONTH) == start + (index - 2)) {
-							miscExpensesList.add(misc);
+				if (null != entry) {
+					if (entry.getVal() > 0) {
+						int index = entry.getXIndex();
+						List<MiscExpense> miscExpensesList = new ArrayList<MiscExpense>();
+						for (MiscExpense misc : miscExpenses) {
+							cal.setTime(misc.getTransactionDate());
+							if (cal.get(Calendar.DAY_OF_MONTH) == start + (index - 2)) {
+								miscExpensesList.add(misc);
+							}
 						}
+						DetailExpenseDialog dialog = DetailExpenseDialog.getInstance(
+								miscExpensesList);
+						dialog.show(getActivity().getSupportFragmentManager(), "DetailExpense");
 					}
-					DetailExpenseDialog dialog = DetailExpenseDialog.getInstance(miscExpensesList);
-					dialog.show(getActivity().getSupportFragmentManager(), "DetailExpense");
 				}
 			}
 

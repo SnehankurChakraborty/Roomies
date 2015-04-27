@@ -16,10 +16,8 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
-import com.phaseii.rxm.roomies.fragments.ProfileFragment;
 import com.phaseii.rxm.roomies.fragments.SavingsFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;
-import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
@@ -27,7 +25,6 @@ import java.io.File;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PROFILE_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
@@ -42,6 +39,7 @@ public class RoomiesRecyclerViewAdapter
 
 	Context mContext;
 	private View headerView;
+
 
 	public RoomiesRecyclerViewAdapter(String Titles[], int Icons[], String Name,
 	                                  String Email, int Profile, Context mContext) {
@@ -111,12 +109,17 @@ public class RoomiesRecyclerViewAdapter
 						((HomeScreenActivity) mContext).nextFragment(
 								new HomeFragment(), HOME_FRAGMENT);
 					} else if (pos == 4) {
-						((HomeScreenActivity) mContext).nextFragment(
-								new ProfileFragment(), PROFILE_FRAGMENT);
+
+						try {
+							RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
+									.getString(R.string.ProfileActivity), null, false);
+						} catch (RoomXpnseMngrException e) {
+							RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
+						}
 					} else if (pos == 2) {
 						((HomeScreenActivity) mContext).nextFragment(
 								new TrendFragment(), TREND_FRAGMENT);
-					}else if(pos==3){
+					} else if (pos == 3) {
 						((HomeScreenActivity) mContext).nextFragment(
 								new SavingsFragment(), SAVINGS_FRAGMENT);
 					}
@@ -134,10 +137,16 @@ public class RoomiesRecyclerViewAdapter
 						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
 						getString(RoomiesConstants.NAME, null);
 				profileFrame.setOnClickListener(new View.OnClickListener() {
+					Toast mToast = null;
+
 					@Override
 					public void onClick(View v) {
-						((HomeScreenActivity) mContext).nextFragment(
-								ProfileFragment.geInstance(username), PROFILE_FRAGMENT);
+						try {
+							RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
+									.getString(R.string.ProfileActivity), null, true);
+						} catch (RoomXpnseMngrException e) {
+							RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
+						}
 					}
 				});
 

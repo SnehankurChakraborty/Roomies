@@ -6,7 +6,8 @@
     <string name="HomeScreen_Activity">com.phaseii.rxm.roomies.activity.HomeScreenActivity</string>
     <string name="GetStartedWizard">com.phaseii.rxm.roomies.activity.GetStartedWizard</string>
     <string name="LoginActivity">com.phaseii.rxm.roomies.activity.LoginActivity</string>
-    <!--  -->
+    <string name="ProfileActivity">com.phaseii.rxm.roomies.activity.ProfileActivity</string>
+	<string name="DemoActivity">com.phaseii.rxm.roomies.activity.DemoActivity</string>
 
     <string name="app_name">Roomies</string>
     <string name="action_settings">Settings</string>
@@ -73,11 +74,13 @@
     </string-array>
 
     <string name="hello_world">Hello world!</string>
-	<string name="into_your_room">into your room</string>
-	<string name="enter_username">Enter Username</string>
-	<string name="enter_password">Enter Password</string>
-	<string name="enter_name_username">Enter name/username</string>
-	<string name="enter_email">Enter email address</string>
-	<string name="PROFILEJPG">profile.jpg</string>
+    <string name="into_your_room">into your room</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="enter_name_username">Enter name/username</string>
+    <string name="enter_email">Enter email address</string>
+    <string name="PROFILEJPG">profile.jpg</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_demo">DemoActivity</string>
 
 </resources>

@@ -25,6 +25,7 @@
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" >
         </activity>
+
         <provider
             android:name=".providers.RoomExpenseProvider"
             android:authorities="com.phaseii.rxm.roomies.providers.RoomExpenseProvider"
@@ -33,10 +34,20 @@
             android:name=".providers.UserCredentialsProvider"
             android:authorities="com.phaseii.rxm.roomies.providers.UserCredentialsProvider"
             android:exported="false" />
-	    <provider
-		    android:name=".providers.MiscellaneousProvider"
-		    android:authorities="com.phaseii.rxm.roomies.providers.MiscellaneousProvider"
-		    android:exported="false" />
+        <provider
+            android:name=".providers.MiscellaneousProvider"
+            android:authorities="com.phaseii.rxm.roomies.providers.MiscellaneousProvider"
+            android:exported="false" />
+
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".activity.HomeScreenActivity"
+            android:screenOrientation="portrait" >
+	        <meta-data
+		        android:name="android.support.PARENT_ACTIVITY"
+		        android:value=".activity.HomeScreenActivity" />
+        </activity>
     </application>
 
 </manifest>
