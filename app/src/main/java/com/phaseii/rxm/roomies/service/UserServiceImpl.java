@@ -17,6 +17,9 @@ import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.providers.UserCredentialsProvider;
 
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.NAME;
+
 /**
  * Created by Snehankur on 4/9/2015.
  */
@@ -26,6 +29,7 @@ public class UserServiceImpl implements UserService {
 	Uri userUri;
 	Toast mToast;
 	Cursor mCursor;
+	SharedPreferences.Editor mEditor;
 
 	public UserServiceImpl(Context mContext) {
 		this.mContext = mContext;
@@ -76,7 +80,7 @@ public class UserServiceImpl implements UserService {
 		if (null != mCursor) {
 			SharedPreferences mSharedPreferences = mContext.getSharedPreferences(RoomiesConstants
 					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-			SharedPreferences.Editor mEditor = mSharedPreferences.edit();
+			mEditor = mSharedPreferences.edit();
 			mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
 			mCursor.moveToFirst();
 			mEditor.putString(RoomiesConstants.NAME, mCursor.getString(mCursor.getColumnIndex(
@@ -114,5 +118,29 @@ public class UserServiceImpl implements UserService {
 		mCursor.moveToFirst();
 		return Boolean.valueOf(mCursor.getString(
 				mCursor.getColumnIndex(RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED)));
+	}
+
+	@Override
+	public boolean update(String username, String newVal, String column) {
+		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
+				"username/" + username);
+		String selection = RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME + " =?";
+		String selectionArgs[] = {username};
+		ContentValues values = new ContentValues();
+		values.put(column, newVal);
+		int count = mContext.getContentResolver().update(userUri, values, selection, selectionArgs);
+		if(count>0){
+			mEditor = mContext.getSharedPreferences(
+					RoomiesConstants.ROOM_INFO_FILE_KEY,
+					Context.MODE_PRIVATE).edit();
+			if(RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME.equals(column)){
+				mEditor.putString(NAME, newVal);
+				mEditor.apply();
+			}else if(RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID.equals(column)){
+				mEditor.putString(EMAIL_ID, newVal);
+				mEditor.apply();
+			}
+		}
+		return count > 0 ? true : false;
 	}
 }

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="roomies_color">#5ebdad</color>
-	<color name="primaryColor">#1a979e</color>
-	<color name="primaryColorDark">#116A6F</color>
 	<color name="spinnerColor">#0a7148</color>
 	<color name="back">#fff</color>
-	<color name="edit">#5eddaa</color>
+	<color name="edit">#d4cece</color>
+
+<color name="primary">#009688</color>
+<color name="primary_dark">#00796B</color>
+<color name="primary_light">#B2DFDB</color>
+<color name="accent">#607D8B</color>
+<color name="primary_text">#212121</color>
+<color name="secondary_text">#727272</color>
+<color name="icons">#FFFFFF</color>
+<color name="divider">#B6B6B6</color>
 </resources>

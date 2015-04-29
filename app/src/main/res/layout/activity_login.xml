@@ -16,14 +16,14 @@
 		android:text="@string/login"
 		android:textAllCaps="true"
 		android:textSize="40sp"
-		android:textColor="@color/primaryColor"/>
+		android:textColor="@color/primary"/>
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/into_your_room"
 		android:layout_marginBottom="20dp"
-		android:textColor="@color/primaryColor"/>
+		android:textColor="@color/primary"/>
 
 	<RelativeLayout
 		android:layout_width="match_parent"

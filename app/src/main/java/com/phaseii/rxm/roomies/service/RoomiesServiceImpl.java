@@ -29,6 +29,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NO_OF_MEMBERS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 
 /**
@@ -43,6 +44,7 @@ public class RoomiesServiceImpl implements RoomiesService {
 	String currentMonth = new DateFormatSymbols().getMonths()[Calendar
 			.getInstance().get(Calendar.MONTH)];
 	SharedPreferences mexpenditurePref;
+	SharedPreferences.Editor mEditor;
 
 	public RoomiesServiceImpl(Context mContext) {
 		this.mContext = mContext;
@@ -196,7 +198,7 @@ public class RoomiesServiceImpl implements RoomiesService {
 				Context.MODE_PRIVATE);
 		if (cursor != null) {
 			cursor.moveToFirst();
-			SharedPreferences.Editor mEditor = sharedPreferences.edit();
+			mEditor = sharedPreferences.edit();
 			float rent_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
 					.COLUMN_RENT_MARGIN));
 			float maid_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
@@ -231,5 +233,74 @@ public class RoomiesServiceImpl implements RoomiesService {
 					(Room_Expenses.COLUMN_ROOM_ALIAS)));
 			mEditor.apply();
 		}
+	}
+
+
+	@Override
+	public boolean updateRoomMargins(String username, String column, String newVal) {
+
+		int count = 0;
+		mEditor = mContext.getSharedPreferences(RoomiesConstants
+				.ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE).edit();
+		ContentValues values = new ContentValues();
+		String selection = Room_Expenses.COLUMN_MONTH + "=? AND " + Room_Expenses
+				.COLUMN_USERNAME + "=?";
+		String selectionArgs[] = {currentMonth, username};
+		if ("room_alias".equals(column)) {
+			values.put(Room_Expenses.COLUMN_ROOM_ALIAS, newVal);
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+			if (count > 0) {
+				mEditor = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+						Context.MODE_PRIVATE).edit();
+				mEditor.putString(ROOM_ALIAS, newVal);
+				mEditor.apply();
+			}
+		} else if ("no_of_members".equals(column)) {
+			mEditor = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+					Context.MODE_PRIVATE).edit();
+			mEditor.putString(ROOM_NO_OF_MEMBERS, newVal);
+			mEditor.apply();
+
+		} else if ("rent".equals(column)) {
+			values.put(Room_Expenses.COLUMN_RENT_MARGIN, Float.valueOf(newVal));
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+			if (count > 0) {
+				mEditor.putString(RENT_MARGIN, newVal);
+				mEditor.apply();
+			}
+		} else if ("maid".equals(column)) {
+			values.put(Room_Expenses.COLUMN_MAID_MARGIN, Float.valueOf(newVal));
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+			if (count > 0) {
+				mEditor.putString(MAID_MARGIN, newVal);
+				mEditor.apply();
+			}
+
+		} else if ("electricity".equals(column)) {
+			values.put(Room_Expenses.COLUMN_ELECTRICITY_MARGIN, Float.valueOf(newVal));
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+			if (count > 0) {
+				mEditor.putString(ELECTRICITY_MARGIN, newVal);
+				mEditor.apply();
+			}
+		} else if ("misc".equals(column)) {
+			values.put(Room_Expenses.COLUMN_MISCELLANEOUS_MARGIN, Float.valueOf(newVal));
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+			if (count > 0) {
+				mEditor.putString(MISC_MARGIN, newVal);
+				mEditor.apply();
+			}
+		} else if ("name".equals(column)) {
+			values.put(Room_Expenses.COLUMN_USERNAME, newVal);
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+		}
+
+		return count > 0 ? true : false;
 	}
 }

@@ -38,7 +38,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:text="Electricity"
 					android:layout_gravity="center"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 
 			</LinearLayout>
 
@@ -62,7 +62,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:layout_gravity="center"
 					android:text="Rent"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 			</LinearLayout>
 
 			<LinearLayout
@@ -84,7 +84,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:text="Maid"
 					android:layout_gravity="center"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 			</LinearLayout>
 
 			<LinearLayout android:orientation="vertical">
@@ -105,7 +105,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:text="Misc"
 					android:layout_gravity="center"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 			</LinearLayout>
 
 
@@ -134,7 +134,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:text="Bills"
 					android:layout_gravity="center"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 
 			</LinearLayout>
 
@@ -159,7 +159,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:layout_gravity="center"
 					android:text="Grocery"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 			</LinearLayout>
 
 			<LinearLayout
@@ -182,7 +182,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:text="Vegetables"
 					android:layout_gravity="center"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 			</LinearLayout>
 
 			<LinearLayout android:orientation="vertical">
@@ -203,7 +203,7 @@
 					android:textAppearance="?android:attr/textAppearanceSmall"
 					android:text="Others"
 					android:layout_gravity="center"
-					android:textColor="@color/primaryColor"/>
+					android:textColor="@color/primary"/>
 			</LinearLayout>
 
 

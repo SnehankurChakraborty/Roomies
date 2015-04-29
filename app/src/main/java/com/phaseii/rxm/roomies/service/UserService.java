@@ -15,4 +15,6 @@ public interface UserService {
 	void completeSetup(String username);
 
 	boolean  isSetupCompleted(String username);
+
+	boolean update(String username, String newVal, String column);
 }

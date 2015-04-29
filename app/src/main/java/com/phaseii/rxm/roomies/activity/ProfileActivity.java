@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +29,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.service.RoomiesService;
+import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.UserService;
+import com.phaseii.rxm.roomies.service.UserServiceImpl;
 import com.phaseii.rxm.roomies.view.AlphaForegroundColorSpan;
 import com.phaseii.rxm.roomies.view.RoomiesScrollView;
 
@@ -43,12 +51,16 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 public class ProfileActivity extends ActionBarActivity {
 
 	private static final int REQUEST_CODE = 1;
+	private static final int USER = 0;
+	private static final int ROOM = 1;
 	private AlphaForegroundColorSpan mAlphaForegroundColorSpan;
 	private SpannableString mSpannableString;
 	private ImageView coloredBackgroundView;
 	private int lastTopValueAssigned = 0;
 	private Bitmap bitmap;
 	private Toast mToast;
+	private String username;
+	private SharedPreferences.Editor mEditor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +71,7 @@ public class ProfileActivity extends ActionBarActivity {
 				R.id.colored_background_view);
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 4;
-		String username = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+		username = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
 				MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
 		Bitmap bitmap = BitmapFactory.decodeFile(new File(getFilesDir(),
 				username + getResources().getString(
@@ -85,7 +97,7 @@ public class ProfileActivity extends ActionBarActivity {
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		toolbar.setTitle("Profile");
 		setSupportActionBar(toolbar);
-		final ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.primaryColor));
+		final ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.primary));
 		cd.setAlpha(0);
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -114,7 +126,9 @@ public class ProfileActivity extends ActionBarActivity {
 			}
 
 			private int getAlphaforActionBar(int scrollY) {
-				int minDist = 0, maxDist = 350;
+				int minDist = 0, maxDist = (int) TypedValue.applyDimension(TypedValue
+								.COMPLEX_UNIT_DIP, 250,
+						getResources().getDisplayMetrics());
 				if (scrollY > maxDist) {
 					return 255;
 				} else {
@@ -127,8 +141,11 @@ public class ProfileActivity extends ActionBarActivity {
 			}
 
 		});
-		setUpProfile(username);
+		populateFeilds();
+		setUpEditors();
+
 	}
+
 
 	private void setTitleAlpha(float alpha) {
 		if (alpha < 1) {
@@ -172,43 +189,127 @@ public class ProfileActivity extends ActionBarActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	private void setUpProfile(String username) {
-		TextView name = (TextView) findViewById(R.id.saved_name);
+	private void populateFeilds() {
+		String mailVal = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.EMAIL_ID, null);
+		String roomAliasVal = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.ROOM_ALIAS, null);
+		String noOfMembersVal = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.ROOM_NO_OF_MEMBERS, null);
+		String rentVal = getSharedPreferences(RoomiesConstants.ROOM_BUDGET_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.RENT_MARGIN, null);
+		String maidVal = getSharedPreferences(RoomiesConstants.ROOM_BUDGET_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.MAID_MARGIN, null);
+		String electricityVal = getSharedPreferences(RoomiesConstants.ROOM_BUDGET_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.ELECTRICITY_MARGIN, null);
+		String miscellaneousVal = getSharedPreferences(RoomiesConstants.ROOM_BUDGET_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.MISC_MARGIN, null);
+
+
+		TextView savedName = (TextView) findViewById(R.id.saved_name);
+		savedName.setText(username);
+
+		TextView savedMail = (TextView) findViewById(R.id.saved_mail);
+		savedMail.setText(mailVal);
+
+		TextView name = (TextView) findViewById(R.id.name);
 		name.setText(username);
-		TextView mail = (TextView) findViewById(R.id.saved_mail);
-		mail.setText(getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-				MODE_PRIVATE).getString(RoomiesConstants.EMAIL_ID, null));
-		makeEditable("name");
-		makeEditable("email");
-		makeEditable("room_alias");
-		makeEditable("no_of_members");
-		makeEditable("rent");
-		makeEditable("maid");
-		makeEditable("electricity");
-		makeEditable("misc");
+
+		TextView email = (TextView) findViewById(R.id.email);
+		email.setText(mailVal);
+
+		TextView roomAlias = (TextView) findViewById(R.id.room_alias);
+		roomAlias.setText(roomAliasVal);
+
+		TextView noOfMembers = (TextView) findViewById(R.id.no_of_members);
+		noOfMembers.setText(noOfMembersVal);
+
+		TextView rent = (TextView) findViewById(R.id.rent);
+		rent.setText(rentVal);
+
+		TextView maid = (TextView) findViewById(R.id.maid);
+		maid.setText(maidVal);
+
+		TextView electricity = (TextView) findViewById(R.id.electricity);
+		electricity.setText(electricityVal);
+
+		TextView misc = (TextView) findViewById(R.id.misc);
+		misc.setText(miscellaneousVal);
+
 	}
 
-	private void makeEditable(String feildId) {
+	private void setUpEditors() {
+		makeEditable("name", USER);
+		makeEditable("email", USER);
+		makeEditable("room_alias", ROOM);
+		makeEditable("no_of_members", ROOM);
+		makeEditable("rent", ROOM);
+		makeEditable("maid", ROOM);
+		makeEditable("electricity", ROOM);
+		makeEditable("misc", ROOM);
+	}
+
+	private void makeEditable(final String feildId, final int mode) {
 		Resources resources = getResources();
 		String packageName = getPackageName();
 		int resId = resources.getIdentifier(feildId, "id", packageName);
 		int resEditId = resources.getIdentifier(feildId + "_edit", "id", packageName);
 		int resEditButtonId = resources.getIdentifier(feildId + "_edit_button", "id",
 				packageName);
-		final TextView name = (TextView) findViewById(resId);
-		final EditText name_edit = (EditText) findViewById(resEditId);
-		final Button name_edit_button = (Button) findViewById(resEditButtonId);
-		name_edit_button.setOnClickListener(new View.OnClickListener() {
+		final TextView field = (TextView) findViewById(resId);
+		final EditText field_edit = (EditText) findViewById(resEditId);
+		final Button field_edit_button = (Button) findViewById(resEditButtonId);
+		field_edit_button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (name_edit_button.getText().equals("Edit")) {
-					name.setVisibility(View.INVISIBLE);
-					name_edit.setVisibility(View.VISIBLE);
-					name_edit_button.setText("Save");
+				if (field_edit_button.getText().equals("Edit")) {
+					field.setVisibility(View.INVISIBLE);
+					field_edit.setVisibility(View.VISIBLE);
+					field_edit_button.setText("Save");
 				} else {
-					name.setVisibility(View.VISIBLE);
-					name_edit.setVisibility(View.INVISIBLE);
-					name_edit_button.setText("Edit");
+					if (!TextUtils.isEmpty(field_edit.getText().toString().trim())) {
+						boolean isUpdateSuccessful = false;
+						UserService userService = new UserServiceImpl(getBaseContext());
+						RoomiesService roomService = new RoomiesServiceImpl(getBaseContext());
+						switch (mode) {
+							case USER:
+
+								if ("name".equals(feildId)) {
+									if ((userService.update(username,
+											field_edit.getText().toString(),
+											RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME)) &&
+											(roomService.updateRoomMargins(username, feildId,
+													field_edit.getText().toString()))) {
+										isUpdateSuccessful = true;
+									}
+
+								} else {
+									isUpdateSuccessful = userService.update(username,
+											field_edit.getText().toString(),
+											RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID);
+								}
+								break;
+							case ROOM:
+
+								isUpdateSuccessful = roomService.updateRoomMargins(username,
+										feildId,
+										field_edit.getText().toString());
+
+								break;
+							default:
+								break;
+
+						}
+						if (isUpdateSuccessful) {
+							RoomiesHelper.createToast(getBaseContext(), feildId + " updated",
+									mToast);
+							populateFeilds();
+						}
+					}
+					field.setVisibility(View.VISIBLE);
+					field_edit.setVisibility(View.INVISIBLE);
+					field_edit_button.setText("Edit");
+
 				}
 			}
 		});

@@ -22,4 +22,6 @@ public interface RoomiesService {
 	List<RoomBudget> getAllMonthDetailsWithMargin(String username);
 
 	float getTotalSpent();
+
+	boolean updateRoomMargins(String username, String column, String newVal);
 }
