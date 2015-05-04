@@ -1,459 +1,244 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:isScrollContainer="true"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbars="vertical"
+    tools:context="com.phaseii.rxm.roomies.fragments.SavingsFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />-->
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/savings_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/savings"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/summary_detail_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.phaseii.rxm.roomies.fragments.SavingsFragment"
-            android:isScrollContainer="true"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="outsideOverlay">
-
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-		<!--<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			/>-->
-		<com.github.mikephil.charting.charts.HorizontalBarChart
-			android:layout_width="wrap_content"
-			android:layout_height="300dp"
-			android:id="@+id/savings"/>
-
-		<android.support.v7.widget.CardView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/savings_card"
-			android:layout_below="@id/savings"
-			android:layout_marginBottom="30dp"
-			android:layout_marginRight="20dp"
-			android:layout_marginLeft="20dp"
-			android:visibility="invisible">
-
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="Savings"
-					android:id="@+id/savings_value"
-					android:textSize="30sp"
-					android:layout_centerHorizontal="true"
-					android:gravity="center"/>
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="1950 out of 2000 spent on Rent"
-					android:id="@+id/description"
-					android:textSize="20sp"
-					android:layout_centerHorizontal="true"
-					android:gravity="center"
-					android:layout_below="@id/savings_value"
-					android:paddingLeft="10dp"
-					android:paddingRight="10dp"/>
-
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:text="Month"
-					android:id="@+id/month"
-					android:textSize="10sp"
-					android:layout_centerHorizontal="true"
-					android:gravity="center"
-					android:paddingTop="10dp"
-					android:layout_below="@id/description"/>
-
-				<!--
-
-				<TableLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_below="@id/type"
-					android:paddingBottom="10dp">
-
-					<TableRow>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Savings"
-							android:gravity="start"/>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Savings Value"
-							android:id="@+id/savings_value"
-							android:gravity="center"/>
-					</TableRow>
-
-					<TableRow>
-
-						<TextView
-							android:layout_width="120dp"
-							android:layout_height="wrap_content"
-							android:text="Margin"
-							android:gravity="start"/>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Margin Value"
-							android:id="@+id/margin"
-							android:gravity="center"/>
-
-					</TableRow>
-
-					<TableRow>
-
-						<TextView
-							android:layout_width="120dp"
-							android:layout_height="wrap_content"
-							android:text="Expenses"
-							android:gravity="start"/>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Expense Value"
-							android:id="@+id/expense"
-							android:gravity="center"/>
-					</TableRow>
-
-
-				</TableLayout>
--->
-			</RelativeLayout>
-
-		</android.support.v7.widget.CardView>
-
-		<!--<TableLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/month"
-			android:paddingBottom="10dp">
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="120dp"
-					android:layout_height="wrap_content"
-					android:text="Rent Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Margin Value"
-					android:id="@+id/rent_margin"
-					android:gravity="center"/>
-
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="120dp"
-					android:layout_height="wrap_content"
-					android:text="Rent Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Expense Value"
-					android:id="@+id/rent"
-					android:gravity="center"/>
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Margin Value"
-					android:id="@+id/maid_margin"
-					android:gravity="center"/>
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Expense Value"
-					android:id="@+id/maid"
-					android:gravity="center"/>
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Electricity Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Electricity Margin Value"
-					android:id="@+id/electricity_margin"
-					android:gravity="center"/>
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Electricity Expense Value"
-					android:id="@+id/electricity"
-					android:gravity="center"/>
-
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Margin Value"
-					android:id="@+id/miscellaneous_margin"
-					android:gravity="center"/>
-			</TableRow>
-
-			<TableRow>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Expense Value"
-					android:id="@+id/miscellaneous"
-					android:gravity="center"/>
-			</TableRow>
-
-		</TableLayout>-->
-
-
-		<!--<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:background="@drawable/speech_bubble_md"
-			android:layout_below="@id/savings"
-			android:layout_marginLeft="30dp"
-			android:layout_marginRight="30dp"
-			android:layout_marginBottom="30dp">
-
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Month"
-				android:id="@+id/month"
-				android:layout_gravity="center"
-				android:layout_marginTop="50dp"/>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Margin Value"
-					android:id="@+id/rent_margin"
-					android:gravity="end"/>
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Expense Value"
-					android:id="@+id/rent"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Margin Value"
-					android:id="@+id/maid_margin"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Maid Expense Value"
-					android:id="@+id/maid"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Electricity Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Electricity Margin Value"
-					android:id="@+id/electricity_margin"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Rent Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Electricity Expense Value"
-					android:id="@+id/electricity"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Margin"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Margin Value"
-					android:id="@+id/miscellaneous_margin"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:layout_gravity="center_horizontal">
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Expenses"
-					android:gravity="end"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Miscellaneous Expense Value"
-					android:id="@+id/miscellaneous"
-					android:gravity="end"/>
-
-			</LinearLayout>
-
-		</LinearLayout>-->
-
-	</RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/savings_layout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:id="@+id/month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
+                    android:text="Month"
+                    android:textSize="18sp" />
+
+                <View
+                    android:id="@+id/month_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/month"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/darker_gray" />
+
+                <RelativeLayout
+                    android:id="@+id/rent_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/month_divider"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:id="@+id/rent"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="start"
+                        android:text="RENT"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/rent_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="end"
+                        android:text="10"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/maid_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rent_layout"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:id="@+id/maid"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="start"
+                        android:text="MAID"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/maid_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:gravity="center_horizontal"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/electricity_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/maid_layout"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:id="@+id/electricity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="start"
+                        android:text="ELECTRICITY"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/electricity_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:gravity="center_horizontal"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/misc_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/electricity_layout"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <TextView
+                        android:id="@+id/misc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:gravity="start"
+                        android:text="MISCELLANEOUS"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/misc_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="end"
+                        android:gravity="center_horizontal"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <!--<android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/savings_card"
+            android:layout_below="@id/savings_layout"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:visibility="invisible">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Savings"
+                    android:id="@+id/savings_value"
+                    android:textSize="30sp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1950 out of 2000 spent on Rent"
+                    android:id="@+id/description"
+                    android:textSize="20sp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@id/savings_value"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:id="@+id/month"
+                    android:textSize="10sp"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:layout_below="@id/description"/>
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>-->
+
+
+    </RelativeLayout>
 </ScrollView>

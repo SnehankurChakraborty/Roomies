@@ -9,7 +9,7 @@
 	</item>-->
 
 	<item
-		android:drawable="@color/edit">
+		android:drawable="@android:color/transparent">
 		<shape android:shape="rectangle"></shape>
 	</item>
 

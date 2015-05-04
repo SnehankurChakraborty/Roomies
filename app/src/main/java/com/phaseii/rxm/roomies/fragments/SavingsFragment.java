@@ -34,87 +34,95 @@ import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 import com.phaseii.rxm.roomies.view.RoomiesMarkerView;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
 public class SavingsFragment extends RoomiesFragment {
 
-	RoomiesService roomiesService;
-	Context mContext;
-	List<RoomBudget> roomBudgetList;
-	ArrayList<BarDataSet> dataSets;
+    RoomiesService roomiesService;
+    Context mContext;
+    List<RoomBudget> roomBudgetList;
+    ArrayList<BarDataSet> dataSets;
+    float rentSavings;
+    float maidSavings;
+    float electricitySavings;
+    float miscSavings;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	}
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		mContext = getActivity().getBaseContext();
-		rootView = inflater.inflate(R.layout.fragment_savings, container, false);
-		createBarChart();
-		return rootView;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mContext = getActivity().getBaseContext();
+        rootView = inflater.inflate(R.layout.fragment_savings, container, false);
+        createBarChart();
+        setCardDetails();
+        return rootView;
 
-	}
+    }
 
-	public void createBarChart() {
-		HorizontalBarChart barChart = (HorizontalBarChart) rootView.findViewById(R.id.savings);
-		ArrayList<String> labels = new ArrayList<>();
-		ArrayList<BarEntry> rentEntries = new ArrayList<>();
-		ArrayList<BarEntry> maidEntries = new ArrayList<>();
-		ArrayList<BarEntry> elecEntries = new ArrayList<>();
-		ArrayList<BarEntry> miscEntries = new ArrayList<>();
-		dataSets = new ArrayList<>();
-		roomiesService = new RoomiesServiceImpl(mContext);
-		roomBudgetList = roomiesService.getAllMonthDetailsWithMargin(mContext
-				.getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-						Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null));
-		int index = 0;
-		for (RoomBudget roomBudget : roomBudgetList) {
-			float rentSavings = roomBudget.getRent_margin() - roomBudget.getRent();
-			float maidSavings = roomBudget.getMaid_margin() - roomBudget.getMaid();
-			float electricitySavings = roomBudget.getElectricity_margin() - roomBudget.getElectricity();
-			float miscSavings = roomBudget.getMiscellaneous_margin() - roomBudget.getMiscellaneous();
-			labels.add(roomBudget.getMonth());
-			rentEntries.add(new BarEntry(rentSavings, index));
-			maidEntries.add(new BarEntry(maidSavings, index));
-			elecEntries.add(new BarEntry(electricitySavings, index));
-			miscEntries.add(new BarEntry(miscSavings, index));
-			index++;
+    public void createBarChart() {
 
-		}
-		final BarDataSet rentDataSet = new BarDataSet(rentEntries, "Rent");
-		rentDataSet.setBarShadowColor(Color.TRANSPARENT);
-		rentDataSet.setColor(ColorTemplate.JOYFUL_COLORS[0]);
-		dataSets.add(rentDataSet);
-		final BarDataSet maidDataSet = new BarDataSet(maidEntries, "Maid");
-		maidDataSet.setBarShadowColor(Color.TRANSPARENT);
-		maidDataSet.setColor(ColorTemplate.JOYFUL_COLORS[1]);
-		dataSets.add(maidDataSet);
-		final BarDataSet elecDataSet = new BarDataSet(elecEntries, "Elec");
-		elecDataSet.setBarShadowColor(Color.TRANSPARENT);
-		elecDataSet.setColor(ColorTemplate.JOYFUL_COLORS[2]);
-		dataSets.add(elecDataSet);
-		final BarDataSet miscDataSet = new BarDataSet(miscEntries, "Misc");
-		miscDataSet.setBarShadowColor(Color.TRANSPARENT);
-		miscDataSet.setColor(ColorTemplate.JOYFUL_COLORS[3]);
-		dataSets.add(miscDataSet);
+        HorizontalBarChart barChart = (HorizontalBarChart) rootView.findViewById(R.id.savings);
+        ArrayList<String> labels = new ArrayList<>();
+        ArrayList<BarEntry> rentEntries = new ArrayList<>();
+        ArrayList<BarEntry> maidEntries = new ArrayList<>();
+        ArrayList<BarEntry> elecEntries = new ArrayList<>();
+        ArrayList<BarEntry> miscEntries = new ArrayList<>();
+        dataSets = new ArrayList<>();
+        roomiesService = new RoomiesServiceImpl(mContext);
+        roomBudgetList = roomiesService.getAllMonthDetailsWithMargin(mContext
+                .getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+                        Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null));
+        int index = 0;
+        for (RoomBudget roomBudget : roomBudgetList) {
+            rentSavings = roomBudget.getRent_margin() - roomBudget.getRent();
+            maidSavings = roomBudget.getMaid_margin() - roomBudget.getMaid();
+            electricitySavings = roomBudget.getElectricity_margin() - roomBudget.getElectricity();
+            miscSavings = roomBudget.getMiscellaneous_margin() - roomBudget.getMiscellaneous();
+            labels.add(roomBudget.getMonth());
+            rentEntries.add(new BarEntry(rentSavings, index));
+            maidEntries.add(new BarEntry(maidSavings, index));
+            elecEntries.add(new BarEntry(electricitySavings, index));
+            miscEntries.add(new BarEntry(miscSavings, index));
+            index++;
 
-		BarData data = new BarData(labels, dataSets);
-		barChart.setData(data);
-		barChart.animateY(500);
-		barChart.setDrawValueAboveBar(true);
-		barChart.setDescription("");
-		barChart.setDrawGridBackground(false);
-		barChart.setPinchZoom(true);
-		barChart.setScaleMinima(1f, 1f);
-		barChart.setDoubleTapToZoomEnabled(false);
-		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-			@Override
+        }
+        final BarDataSet rentDataSet = new BarDataSet(rentEntries, "Rent");
+        rentDataSet.setBarShadowColor(Color.TRANSPARENT);
+        rentDataSet.setColor(ColorTemplate.JOYFUL_COLORS[0]);
+        dataSets.add(rentDataSet);
+        final BarDataSet maidDataSet = new BarDataSet(maidEntries, "Maid");
+        maidDataSet.setBarShadowColor(Color.TRANSPARENT);
+        maidDataSet.setColor(ColorTemplate.JOYFUL_COLORS[1]);
+        dataSets.add(maidDataSet);
+        final BarDataSet elecDataSet = new BarDataSet(elecEntries, "Elec");
+        elecDataSet.setBarShadowColor(Color.TRANSPARENT);
+        elecDataSet.setColor(ColorTemplate.JOYFUL_COLORS[2]);
+        dataSets.add(elecDataSet);
+        final BarDataSet miscDataSet = new BarDataSet(miscEntries, "Misc");
+        miscDataSet.setBarShadowColor(Color.TRANSPARENT);
+        miscDataSet.setColor(ColorTemplate.JOYFUL_COLORS[3]);
+        dataSets.add(miscDataSet);
+
+        BarData data = new BarData(labels, dataSets);
+        barChart.setData(data);
+        barChart.animateY(500);
+        barChart.setDrawValueAboveBar(true);
+        barChart.setDescription("");
+        barChart.setDrawGridBackground(false);
+        barChart.setPinchZoom(true);
+        barChart.setScaleMinima(1f, 1f);
+        barChart.setDoubleTapToZoomEnabled(false);
+        /*barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 				CardView cardView = (CardView) rootView.findViewById(R.id.savings_card);
 				cardView.setVisibility(View.VISIBLE);
@@ -142,53 +150,45 @@ public class SavingsFragment extends RoomiesFragment {
 			public void onNothingSelected() {
 
 			}
-		});
+		});*/
 
-		Legend l = barChart.getLegend();
-		l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        Legend l = barChart.getLegend();
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
 
-		YAxis yl = barChart.getAxisLeft();
-		yl.setDrawAxisLine(false);
-		yl.setDrawGridLines(false);
-		yl.setSpaceTop(10f);
-		yl.setStartAtZero(false);
-		yl.setValueFormatter(new LargeValueFormatter());
+        YAxis yl = barChart.getAxisLeft();
+        yl.setDrawAxisLine(false);
+        yl.setDrawGridLines(false);
+        yl.setSpaceTop(10f);
+        yl.setStartAtZero(false);
+        yl.setValueFormatter(new LargeValueFormatter());
 
-		barChart.getAxisRight().setEnabled(false);
+        barChart.getAxisRight().setEnabled(false);
 
-		XAxis xl = barChart.getXAxis();
-		xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-		xl.setDrawAxisLine(true);
-		xl.setDrawGridLines(false);
+        XAxis xl = barChart.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(false);
 
-	}
+    }
 
-	private void showBubble(String selectedMonth, float selectedMargin, float selectedExpense,
-	                        String type) {
-		Typeface typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Roboto-Thin.ttf");
-		float selectedSavings = selectedMargin - selectedExpense;
-		TextView month = (TextView) rootView.findViewById(R.id.month);
-		TextView description = (TextView) rootView.findViewById(R.id.description);
-		TextView savings = (TextView) rootView.findViewById(R.id.savings_value);
-		savings.setTypeface(typeface);
-		month.setText(selectedMonth);
-		String descriptionValue = selectedExpense + " out of " + selectedMargin + " spent on " +
-				type;
-		description.setText(descriptionValue);
-		savings.setText(String.valueOf(selectedSavings));
-		if (selectedSavings < 0) {
-			savings.setTextColor(Color.RED);
-		} else if (selectedSavings == 0) {
-			savings.setTextColor(Color.BLUE);
-		} else {
-			savings.setTextColor(Color.GREEN);
-		}
+    private void setCardDetails() {
+        TextView rent = (TextView) rootView.findViewById(R.id.rent_value);
+        TextView maid = (TextView) rootView.findViewById(R.id.maid_value);
+        TextView electricity = (TextView) rootView.findViewById(R.id.electricity_value);
+        TextView misc = (TextView) rootView.findViewById(R.id.misc_value);
+        TextView month = (TextView) rootView.findViewById(R.id.month);
 
-	}
+        rent.setText(String.valueOf(rentSavings));
+        maid.setText(String.valueOf(maidSavings));
+        electricity.setText(String.valueOf(electricitySavings));
+        misc.setText(String.valueOf(miscSavings));
+        month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(Calendar.MONTH)]
+                + " " + Calendar.getInstance().get(Calendar.YEAR));
+    }
 
 
-	@Override
-	public View getFragmentView() {
-		return rootView;
-	}
+    @Override
+    public View getFragmentView() {
+        return rootView;
+    }
 }

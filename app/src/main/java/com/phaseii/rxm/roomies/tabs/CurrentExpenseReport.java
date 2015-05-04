@@ -23,12 +23,16 @@ import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
 import java.util.ArrayList;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_ELEC_PAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_MAID_PAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_RENT_PAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
@@ -40,7 +44,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 public class CurrentExpenseReport extends RoomiesFragment
 		implements RoomiesFragment.UpdatableFragment {
 
-
+	SharedPreferences sharedPreferences;
 
 	public static CurrentExpenseReport getInstance() {
 		return new CurrentExpenseReport();
@@ -72,7 +76,7 @@ public class CurrentExpenseReport extends RoomiesFragment
 				.COLUMN_ELECTRICITY));
 		float misc = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
 				.COLUMN_MISCELLANEOUS));
-		SharedPreferences sharedPreferences = context.getSharedPreferences(
+		sharedPreferences = context.getSharedPreferences(
 				ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = sharedPreferences.edit();
 		float spent = rent + maid + electricity + misc;
@@ -100,7 +104,7 @@ public class CurrentExpenseReport extends RoomiesFragment
 			entries.add(new Entry(misc, 3));
 			labels.add(MISC);
 		}
-		float total = Float.valueOf(sharedPreferences.getString(TOTAL_MARGIN, "0.0"));
+		float total = getTotal();
 		if (total <= 0) {
 			entries.add(new Entry(0, 0));
 			labels.add("NO SPENDS");
@@ -126,6 +130,14 @@ public class CurrentExpenseReport extends RoomiesFragment
 			percent = (expense / total) * 100;
 		}
 		return percent + "% Spends";
+	}
+
+	private float getTotal() {
+		float rent = Float.valueOf(sharedPreferences.getString(RENT_MARGIN, "0"));
+		float maid = Float.valueOf(sharedPreferences.getString(MAID_MARGIN, "0"));
+		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY_MARGIN, "0"));
+		float misc = Float.valueOf(sharedPreferences.getString(MISC_MARGIN, "0"));
+		return rent + maid + electricity + misc;
 	}
 
 	@Override

@@ -19,7 +19,7 @@
 				android:id="@+id/colored_background_view"
 				android:layout_width="match_parent"
 				android:layout_height="250dp"
-				android:src="@drawable/ic_profile_pic"/>
+				android:src="@drawable/ic_user"/>
 
 			<LinearLayout
 				android:id="@+id/informations_container"
@@ -28,8 +28,8 @@
 				android:orientation="vertical"
 				android:layout_gravity="start"
 				android:gravity="start"
-				android:paddingTop="17dp"
-				android:paddingBottom="12dp"
+				android:paddingTop="5dp"
+				android:paddingBottom="5dp"
 				android:background="@color/primary"
 				android:layout_below="@id/colored_background_view">
 
@@ -38,7 +38,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="Name"
-					android:textSize="35sp"
+					android:textSize="30sp"
 					android:layout_marginLeft="20dp"
 					android:id="@+id/saved_name"
 					android:fontFamily="sans-serif-condensed"
@@ -73,24 +73,23 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/personal_profile"
-				android:layout_below="@id/informations_container"
-				android:layout_marginTop="10dp"
 				android:layout_marginRight="20dp"
-				android:layout_marginLeft="20dp">
+				android:layout_marginLeft="20dp"
+                android:layout_below="@id/informations_container">
 
 				<RelativeLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
-					android:paddingTop="10dp"
-					android:paddingRight="10dp"
-					android:paddingLeft="10dp"
-					android:paddingBottom="10dp">
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingBottom="20dp">
 
 					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:src="@drawable/ic_profile_pic"
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/ic_user"
 						android:id="@+id/name_image"/>
 
 					<RelativeLayout
@@ -106,9 +105,9 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/name"
 							android:text="Name"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
+							android:fontFamily="sans-serif-thin"
 							android:layout_gravity="center_horizontal"
 							android:gravity="center_horizontal"
 							android:textColor="@color/primary_text"
@@ -119,9 +118,9 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/name_edit"
 							android:hint="Name"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
+							android:fontFamily="sans-serif-thin"
 							android:layout_gravity="center_horizontal"
 							android:background="@drawable/roomiesprofileedittext"
 							android:inputType="textAutoCorrect"
@@ -132,7 +131,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="Name"
-							android:textSize="15sp"
+							android:textSize="10sp"
 							android:layout_below="@id/name"
 							android:layout_marginTop="5dp"
 							android:fontFamily="sans-serif-medium"
@@ -142,15 +141,6 @@
 
 					</RelativeLayout>
 
-					<Button
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentEnd="true"
-						android:layout_alignParentRight="true"
-						android:text="Edit"
-						android:layout_gravity="center_vertical"
-						android:id="@+id/name_edit_button"
-						style="@style/ButtonRoomies"/>
 
 					<View
 						android:layout_width="match_parent"
@@ -161,10 +151,32 @@
 						android:id="@+id/name_divider"
 						android:background="@android:color/darker_gray"/>
 
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_above="@id/name_divider"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/name_edit_button"
+                        android:background="@drawable/ic_edit"/>
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_above="@id/name_divider"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:id="@+id/name_save_button"
+                        android:background="@drawable/ic_save"
+                        android:visibility="invisible"/>
+
 					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:src="@drawable/ic_profile_pic"
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/ic_mail"
 						android:id="@+id/email_image"
 						
 						android:layout_below="@id/name_divider"/>
@@ -182,9 +194,9 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/email"
 							android:text="Email"
-							android:textSize="20sp"
+							android:textSize="15sp"
+							android:fontFamily="sans-serif-thin"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
 							android:layout_gravity="center_horizontal"
 							android:gravity="center_horizontal"
 							android:textColor="@color/primary_text"
@@ -195,9 +207,9 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/email_edit"
 							android:hint="Email"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
+							android:fontFamily="sans-serif-thin"
 							android:layout_gravity="center_horizontal"
 							android:background="@drawable/roomiesprofileedittext"
 							android:inputType="textEmailAddress"
@@ -208,7 +220,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="Email"
-							android:textSize="15sp"
+							android:textSize="10sp"
 							android:layout_below="@id/email"
 							android:layout_marginTop="5dp"
 							android:fontFamily="sans-serif-medium"
@@ -218,16 +230,28 @@
 
 					</RelativeLayout>
 
-					<Button
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentEnd="true"
-						android:layout_alignParentRight="true"
-						android:layout_below="@id/name_divider"
-						android:text="Edit"
-						android:layout_gravity="center_vertical"
-						android:id="@+id/email_edit_button"
-						style="@style/ButtonRoomies"/>
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/name_divider"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/email_edit_button"
+                        android:background="@drawable/ic_edit"/>
+
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/name_divider"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/email_save_button"
+                        android:background="@drawable/ic_save"
+                        android:visibility="invisible"/>
 
 				</RelativeLayout>
 			</android.support.v7.widget.CardView>
@@ -238,7 +262,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/room_profile"
 				android:layout_below="@id/personal_profile"
-				android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
 				android:layout_marginRight="20dp"
 				android:layout_marginLeft="20dp">
 
@@ -246,15 +270,15 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
-					android:paddingTop="10dp"
-					android:paddingRight="10dp"
-					android:paddingLeft="10dp"
-					android:paddingBottom="10dp">
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingBottom="20dp">
 
 					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:src="@drawable/ic_profile_pic"
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/ic_room"
 						android:id="@+id/room_alias_image"
 						/>
 
@@ -271,19 +295,18 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/room_alias"
 							android:text="Room"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
+							android:fontFamily="sans-serif-thin"
 							android:layout_gravity="center_horizontal"
-							android:textColor="@color/primary_text"
-							android:background="@color/back"/>
+							android:textColor="@color/primary_text"/>
 
 						<EditText
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:id="@+id/room_alias_edit"
 							android:hint="Room Name"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
 							android:fontFamily="sans-serif"
 							android:layout_gravity="center_horizontal"
@@ -296,7 +319,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="Room Alias"
-							android:textSize="15sp"
+							android:textSize="10sp"
 							android:layout_below="@id/room_alias"
 							android:layout_marginTop="5dp"
 							android:fontFamily="sans-serif-medium"
@@ -306,15 +329,7 @@
 
 					</RelativeLayout>
 
-					<Button
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentEnd="true"
-						android:layout_alignParentRight="true"
-						android:text="Edit"
-						android:layout_gravity="center_vertical"
-						android:id="@+id/room_alias_edit_button"
-						style="@style/ButtonRoomies"/>
+
 
 					<View
 						android:layout_width="match_parent"
@@ -324,11 +339,33 @@
 						android:layout_marginBottom="10dp"
 						android:id="@+id/room_alias_divider"
 						android:background="@android:color/darker_gray"/>
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_above="@id/room_alias_divider"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/room_alias_edit_button"
+                        android:background="@drawable/ic_edit"/>
+
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_above="@id/room_alias_divider"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/room_alias_save_button"
+                        android:background="@drawable/ic_save"
+                        android:visibility="invisible"/>
 
 					<ImageView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:src="@drawable/ic_profile_pic"
+						android:layout_width="30dp"
+						android:layout_height="30dp"
+						android:src="@drawable/ic_number"
 						android:id="@+id/no_of_members_image"
 						
 						android:layout_below="@id/room_alias_divider"/>
@@ -346,9 +383,9 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/no_of_members"
 							android:text="No of Members"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
+							android:fontFamily="sans-serif-thin"
 							android:layout_gravity="center_horizontal"
 							android:gravity="center_horizontal"
 							android:textColor="@color/primary_text"
@@ -359,9 +396,9 @@
 							android:layout_height="wrap_content"
 							android:id="@+id/no_of_members_edit"
 							android:hint="No of Members"
-							android:textSize="20sp"
+							android:textSize="15sp"
 							android:textStyle="bold"
-							android:fontFamily="sans-serif"
+							android:fontFamily="sans-serif-thin"
 							android:layout_gravity="center_horizontal"
 							android:background="@drawable/roomiesprofileedittext"
 							android:inputType="number"
@@ -372,7 +409,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:text="No of Members"
-							android:textSize="15sp"
+							android:textSize="10sp"
 							android:layout_below="@id/no_of_members"
 							android:layout_marginTop="5dp"
 							android:fontFamily="sans-serif-medium"
@@ -382,16 +419,28 @@
 
 					</RelativeLayout>
 
-					<Button
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_alignParentEnd="true"
-						android:layout_alignParentRight="true"
-						android:layout_below="@id/room_alias_divider"
-						android:text="Edit"
-						android:layout_gravity="center_vertical"
-						android:id="@+id/no_of_members_edit_button"
-						style="@style/ButtonRoomies"/>
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/room_alias_divider"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/no_of_members_edit_button"
+                        android:background="@drawable/ic_edit"/>
+
+                    <Button
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/room_alias_divider"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/no_of_members_save_button"
+                        android:background="@drawable/ic_save"
+                        android:visibility="invisible"/>
 
 				</RelativeLayout>
 
@@ -402,32 +451,24 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/room_expense_profile"
 				android:layout_below="@id/room_profile"
-				android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
 				android:layout_marginRight="20dp"
-				android:layout_marginLeft="20dp">
+				android:layout_marginLeft="20dp"
+				android:layout_marginBottom="10dp">
 
 				<RelativeLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical"
-					android:paddingTop="10dp"
-					android:paddingRight="10dp"
-					android:paddingLeft="10dp"
-					android:paddingBottom="10dp">
+					android:paddingTop="20dp"
+					android:paddingRight="20dp"
+					android:paddingLeft="20dp"
+					android:paddingBottom="20dp">
 
-
-					<RelativeLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="horizontal"
-						android:paddingTop="10dp"
-						android:paddingRight="10dp"
-						android:paddingLeft="10dp"
-						android:paddingBottom="10dp">
 
 						<ImageView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
+							android:layout_width="30dp"
+							android:layout_height="30dp"
 							android:src="@drawable/ic_rent_selected"
 							android:id="@+id/rent_image"
 							/>
@@ -444,9 +485,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/rent"
 								android:text="Rent"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:gravity="center_horizontal"
 								android:textColor="@color/primary_text"
@@ -457,9 +498,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/rent_edit"
 								android:hint="Rent"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:background="@drawable/roomiesprofileedittext"
 								android:inputType="number"
@@ -470,7 +511,7 @@
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:text="Rent"
-								android:textSize="15sp"
+								android:textSize="10sp"
 								android:layout_below="@id/rent"
 								android:layout_marginTop="5dp"
 								android:fontFamily="sans-serif-medium"
@@ -480,15 +521,6 @@
 
 						</RelativeLayout>
 
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_alignParentEnd="true"
-							android:layout_alignParentRight="true"
-							android:text="Edit"
-							android:layout_gravity="center_vertical"
-							android:id="@+id/rent_edit_button"
-							style="@style/ButtonRoomies"/>
 
 						<View
 							android:layout_width="match_parent"
@@ -499,12 +531,35 @@
 							android:id="@+id/rent_divider"
 							android:background="@android:color/darker_gray"/>
 
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_above="@id/rent_divider"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/rent_edit_button"
+                            android:background="@drawable/ic_edit"/>
+
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_above="@id/rent_divider"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/rent_save_button"
+                            android:background="@drawable/ic_save"
+                            android:visibility="invisible"/>
+
 						<ImageView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
+							android:layout_width="30dp"
+							android:layout_height="30dp"
 							android:src="@drawable/ic_electricity_selected"
 							android:id="@+id/electricity_image"
-							
+
 							android:layout_below="@id/rent_divider"/>
 
 						<RelativeLayout
@@ -520,9 +575,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/electricity"
 								android:text="Electricity"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:gravity="center_horizontal"
 								android:textColor="@color/primary_text"
@@ -533,9 +588,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/electricity_edit"
 								android:hint="Electricity"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:background="@drawable/roomiesprofileedittext"
 								android:inputType="number"
@@ -546,7 +601,7 @@
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:text="Electricity"
-								android:textSize="15sp"
+								android:textSize="10sp"
 								android:layout_below="@id/electricity"
 								android:layout_marginTop="5dp"
 								android:fontFamily="sans-serif-medium"
@@ -556,16 +611,8 @@
 
 						</RelativeLayout>
 
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_alignParentEnd="true"
-							android:layout_alignParentRight="true"
-							android:layout_below="@id/rent_divider"
-							android:text="Edit"
-							android:layout_gravity="center_vertical"
-							android:id="@+id/electricity_edit_button"
-							style="@style/ButtonRoomies"/>
+						
+
 						<View
 							android:layout_width="match_parent"
 							android:layout_height="1dp"
@@ -575,12 +622,35 @@
 							android:id="@+id/electricity_divider"
 							android:background="@android:color/darker_gray"/>
 
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_above="@id/electricity_divider"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/electricity_edit_button"
+                            android:background="@drawable/ic_edit"/>
+
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_above="@id/electricity_divider"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/electricity_save_button"
+                            android:background="@drawable/ic_save"
+                            android:visibility="invisible"/>
+
 						<ImageView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
+							android:layout_width="30dp"
+							android:layout_height="30dp"
 							android:src="@drawable/ic_maid_selected"
 							android:id="@+id/maid_image"
-							
+
 							android:layout_below="@id/electricity_divider"/>
 
 						<RelativeLayout
@@ -596,9 +666,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/maid"
 								android:text="Maid"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:gravity="center_horizontal"
 								android:textColor="@color/primary_text"
@@ -609,9 +679,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/maid_edit"
 								android:hint="Maid"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:background="@drawable/roomiesprofileedittext"
 								android:inputType="number"
@@ -622,7 +692,7 @@
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:text="Maid"
-								android:textSize="15sp"
+								android:textSize="10sp"
 								android:layout_below="@id/maid"
 								android:layout_marginTop="5dp"
 								android:fontFamily="sans-serif-medium"
@@ -632,16 +702,6 @@
 
 						</RelativeLayout>
 
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_alignParentEnd="true"
-							android:layout_alignParentRight="true"
-							android:layout_below="@id/electricity_divider"
-							android:text="Edit"
-							android:layout_gravity="center_vertical"
-							android:id="@+id/maid_edit_button"
-							style="@style/ButtonRoomies"/>
 						<View
 							android:layout_width="match_parent"
 							android:layout_height="1dp"
@@ -651,12 +711,36 @@
 							android:id="@+id/maid_divider"
 							android:background="@android:color/darker_gray"/>
 
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_above="@id/maid_divider"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/maid_edit_button"
+                            android:background="@drawable/ic_edit"/>
+
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_above="@id/maid_divider"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/maid_save_button"
+                            android:background="@drawable/ic_save"
+                            android:visibility="invisible"/>
+
+
 						<ImageView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
+							android:layout_width="30dp"
+							android:layout_height="30dp"
 							android:src="@drawable/ic_misc_selected"
 							android:id="@+id/misc_image"
-							
+
 							android:layout_below="@id/maid_divider"/>
 
 						<RelativeLayout
@@ -672,9 +756,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/misc"
 								android:text="Miscellaneous"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:gravity="center_horizontal"
 								android:textColor="@color/primary_text"
@@ -685,9 +769,9 @@
 								android:layout_height="wrap_content"
 								android:id="@+id/misc_edit"
 								android:hint="Miscellaneous"
-								android:textSize="20sp"
+								android:textSize="15sp"
 								android:textStyle="bold"
-								android:fontFamily="sans-serif"
+								android:fontFamily="sans-serif-thin"
 								android:layout_gravity="center_horizontal"
 								android:background="@drawable/roomiesprofileedittext"
 								android:inputType="number"
@@ -698,7 +782,7 @@
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
 								android:text="Miscellaneous"
-								android:textSize="15sp"
+								android:textSize="10sp"
 								android:layout_below="@id/misc"
 								android:layout_marginTop="5dp"
 								android:fontFamily="sans-serif-medium"
@@ -708,21 +792,32 @@
 
 						</RelativeLayout>
 
-						<Button
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_alignParentEnd="true"
-							android:layout_alignParentRight="true"
-							android:layout_below="@id/maid_divider"
-							android:text="Edit"
-							android:layout_gravity="center_vertical"
-							android:id="@+id/misc_edit_button"
-							style="@style/ButtonRoomies"/>
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/maid_divider"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/misc_edit_button"
+                            android:background="@drawable/ic_edit"/>
+
+                        <Button
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/maid_divider"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical"
+                            android:id="@+id/misc_save_button"
+                            android:background="@drawable/ic_save"
+                            android:visibility="invisible"/>
 
 					</RelativeLayout>
 
 
-				</RelativeLayout>
 
 			</android.support.v7.widget.CardView>
 

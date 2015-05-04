@@ -24,8 +24,10 @@ import com.phaseii.rxm.roomies.model.MiscExpense;
 import com.phaseii.rxm.roomies.service.MiscService;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
 
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -33,106 +35,98 @@ import java.util.List;
  */
 public class ExpenseSummaryTab extends RoomiesFragment {
 
-	private Context mContext;
-	MiscService miscService;
-	ArrayAdapter<String> monthAdapter;
+    private Context mContext;
+    MiscService miscService;
+    ArrayAdapter<String> monthAdapter;
 
 
-	public static ExpenseSummaryTab getInstance() {
-		return new ExpenseSummaryTab();
-	}
+    public static ExpenseSummaryTab getInstance() {
+        return new ExpenseSummaryTab();
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.expense_summary_tab, container, false);
-		mContext = getActivity().getBaseContext();
-		fillSpinnerData();
-		createBarChart();
-		return rootView;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.expense_summary_tab, container, false);
+        mContext = getActivity().getBaseContext();
+        createBarChart();
+        return rootView;
+    }
 
-	@Override
-	public View getFragmentView() {
-		return rootView;
-	}
-
-	public void fillSpinnerData() {
-		miscService = new MiscServiceImpl(mContext);
-		List<String> months = miscService.getMiscMonths(
-				mContext.getSharedPreferences(RoomiesConstants
-						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(RoomiesConstants.NAME,
-						null));
-		Spinner monthSpinner = (Spinner) rootView.findViewById(R.id.monthspinner);
-		monthAdapter = new ArrayAdapter<String>(mContext, R.layout.roomies_spinner_item, months);
-		monthSpinner.setAdapter(monthAdapter);
-	}
-
-	public void createBarChart() {
-		miscService = new MiscServiceImpl(mContext);
-		BarChart barChart = (BarChart) rootView.findViewById(R.id.summary);
-		ArrayList<String> labels = new ArrayList<>();
-		ArrayList<BarEntry> entries = new ArrayList<>();
-		List<MiscExpense> miscExpenses = miscService.getCurrentTotalMiscExpense();
-		float grocery = 0f;
-		float vegetables = 0f;
-		float others = 0f;
-		float na = 0f;
-		String types[] = mContext.getResources().getStringArray(R.array.subcategory);
-		for (MiscExpense miscExpense : miscExpenses) {
-			String type = miscExpense.getType();
-			if (type.equals(types[0])) {
-				na = na + miscExpense.getAmount();
-			} else if (type.equals(types[1])) {
-				grocery = grocery + miscExpense.getAmount();
-			} else if (type.equals(types[2])) {
-				vegetables = vegetables + miscExpense.getAmount();
-			} else if (type.equals(types[3])) {
-				others = others + miscExpense.getAmount();
-			}
-		}
-		labels.addAll(Arrays.asList(types));
-		entries.add(new BarEntry(na, 0));
-		entries.add(new BarEntry(grocery, 1));
-		entries.add(new BarEntry(vegetables, 2));
-		entries.add(new BarEntry(others, 3));
-		BarDataSet dataset = new BarDataSet(entries, "Summary");
-		dataset.setColors(ColorTemplate.JOYFUL_COLORS);
-		dataset.setBarShadowColor(Color.TRANSPARENT);
-
-		BarData data = new BarData(labels, dataset);
-		barChart.setData(data);
-		barChart.animateY(500);
-		barChart.setDrawValueAboveBar(true);
-
-		barChart.setDescription("");
-		barChart.setDrawGridBackground(false);
-		barChart.setPinchZoom(true);
-		barChart.setDoubleTapToZoomEnabled(false);
-
-		YAxis yl = barChart.getAxisLeft();
-		yl.setDrawAxisLine(false);
-		yl.setDrawGridLines(false);
+    @Override
+    public View getFragmentView() {
+        return rootView;
+    }
 
 
-		YAxis yr = barChart.getAxisRight();
-		yr.setDrawAxisLine(false);
-		yr.setDrawGridLines(false);
+    public void createBarChart() {
+        miscService = new MiscServiceImpl(mContext);
+        BarChart barChart = (BarChart) rootView.findViewById(R.id.summary);
+        ArrayList<String> labels = new ArrayList<>();
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        List<MiscExpense> miscExpenses = miscService.getCurrentTotalMiscExpense();
+        float grocery = 0f;
+        float vegetables = 0f;
+        float others = 0f;
+        float bills = 0f;
+        String types[] = mContext.getResources().getStringArray(R.array.subcategory);
+        for (MiscExpense miscExpense : miscExpenses) {
+            String type = miscExpense.getType();
+            if (type.equals(types[0])) {
+                bills = bills + miscExpense.getAmount();
+            } else if (type.equals(types[1])) {
+                grocery = grocery + miscExpense.getAmount();
+            } else if (type.equals(types[2])) {
+                vegetables = vegetables + miscExpense.getAmount();
+            } else if (type.equals(types[3])) {
+                others = others + miscExpense.getAmount();
+            }
+        }
+        labels.addAll(Arrays.asList(types));
+        entries.add(new BarEntry(bills, 0));
+        entries.add(new BarEntry(grocery, 1));
+        entries.add(new BarEntry(vegetables, 2));
+        entries.add(new BarEntry(others, 3));
+        BarDataSet dataset = new BarDataSet(entries, "Summary");
+        dataset.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataset.setBarShadowColor(Color.TRANSPARENT);
+
+        BarData data = new BarData(labels, dataset);
+        barChart.setData(data);
+        barChart.animateY(500);
+        barChart.setDrawValueAboveBar(true);
+
+        barChart.setDescription("");
+        barChart.setDrawGridBackground(false);
+        barChart.setPinchZoom(false);
+        barChart.setDoubleTapToZoomEnabled(false);
+
+        YAxis yl = barChart.getAxisLeft();
+        yl.setDrawAxisLine(false);
+        yl.setDrawGridLines(false);
+        yl.setShowOnlyMinMax(true);
+
+        YAxis yr = barChart.getAxisRight();
+        yr.setDrawAxisLine(false);
+        yr.setDrawGridLines(false);
+        yr.setShowOnlyMinMax(true);
 
 
-		XAxis xl = barChart.getXAxis();
-		xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-		xl.setDrawAxisLine(true);
-		xl.setDrawGridLines(false);
+        XAxis xl = barChart.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(false);
 
-
-		TextView groceryValue = (TextView) rootView.findViewById(R.id.grocery_value);
-		TextView vegetableValue = (TextView) rootView.findViewById(R.id.vegetable_value);
-		TextView othersValue = (TextView) rootView.findViewById(R.id.others_value);
-		TextView naValue = (TextView) rootView.findViewById(R.id.na_value);
-		groceryValue.setText(String.valueOf(grocery));
-		vegetableValue.setText(String.valueOf(vegetables));
-		othersValue.setText(String.valueOf(others));
-		naValue.setText(String.valueOf(na));
-	}
+        TextView month = (TextView) rootView.findViewById(R.id.month);
+        TextView groceryValue = (TextView) rootView.findViewById(R.id.grocery_value);
+        TextView vegetableValue = (TextView) rootView.findViewById(R.id.vegetable_value);
+        TextView othersValue = (TextView) rootView.findViewById(R.id.others_value);
+        TextView billsValue = (TextView) rootView.findViewById(R.id.bills_value);
+        groceryValue.setText(String.valueOf(grocery));
+        vegetableValue.setText(String.valueOf(vegetables));
+        othersValue.setText(String.valueOf(others));
+        billsValue.setText(String.valueOf(bills));
+        month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(Calendar.MONTH)] + " " +
+                Calendar.getInstance().get(Calendar.YEAR));
+    }
 }

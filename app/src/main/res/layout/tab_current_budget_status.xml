@@ -5,10 +5,38 @@
                 tools:context="com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus"
                 android:id="@+id/current_room_status_fragment">
 
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/budget_layout"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
 
 	<com.github.mikephil.charting.charts.PieChart
 		android:id="@+id/pie_current_budget"
 		android:layout_height="300dp"
 		android:layout_width="wrap_content"	/>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/budget_layout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:text="Month"
+        android:id="@+id/month"
+        android:textColor="@color/primary_text"
+        android:fontFamily="sans-serif-thin"/>
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

@@ -71,6 +71,7 @@ public class HomeScreenActivity extends ActionBarActivity
 	private Bitmap bitmap;
 	String name;
 	String email;
+    ImageView addExpenseButton;
 	int profile = R.drawable.ic_camera;
 
 	@Override
@@ -109,7 +110,7 @@ public class HomeScreenActivity extends ActionBarActivity
 			title.setText(" " + getSharedPreferences(RoomiesConstants
 					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
 					getString(ROOM_ALIAS, "Room") + " ");
-			ImageView addExpenseButton = (ImageView) findViewById(R.id.addexpense);
+			addExpenseButton = (ImageView) findViewById(R.id.addexpense);
 			addExpenseButton.setOnClickListener(new View.OnClickListener() {
 
 				@Override
@@ -208,6 +209,7 @@ public class HomeScreenActivity extends ActionBarActivity
 		transaction.commit();
 		if (!(fragment instanceof HomeFragment)) {
 			title.setVisibility(View.INVISIBLE);
+            addExpenseButton.setVisibility(View.GONE);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.MATCH_PARENT,
 					RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -226,6 +228,8 @@ public class HomeScreenActivity extends ActionBarActivity
 			mtoolbar.setLayoutParams(params);
 			mtoolbar.setTitle("");
 			title.setVisibility(View.VISIBLE);
+            addExpenseButton.setVisibility(View.VISIBLE);
+
 		}
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 	}

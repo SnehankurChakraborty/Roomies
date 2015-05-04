@@ -50,8 +50,10 @@
 		android:layout_height="wrap_content"
 		android:paddingLeft="12dp"
 		android:paddingTop="4dp"
-		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:text="Sample"
+		android:textSize="15sp"
 		android:id="@+id/rowText"
-		/>
+		android:fontFamily="sans-serif-thin"
+	    android:textStyle="bold"/>
 
 </LinearLayout>

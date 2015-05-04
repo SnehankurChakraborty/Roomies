@@ -153,7 +153,7 @@ public class MiscellaneousProvider extends ContentProvider {
 		switch (uriMatcher.match(uri)) {
 			case ALL_MISC_DETAILS:
 				count = db.update(RoomiesContract.Misc_Expenses.TABLE_NAME, values,
-						null, null);
+						selection, selectionArgs);
 				break;
 			case MISC_ROW_WISE:
 				count = db.update(RoomiesContract.Misc_Expenses.TABLE_NAME, values,
@@ -163,6 +163,10 @@ public class MiscellaneousProvider extends ContentProvider {
 				count = db.update(RoomiesContract.Misc_Expenses.TABLE_NAME, values,
 						selection, selectionArgs);
 				break;
+            case ALL_MONTHS:
+                count = db.update(RoomiesContract.Misc_Expenses.TABLE_NAME, values,
+                        selection, selectionArgs);
+                break;
 			default:
 				db.close();
 				throw new IllegalStateException(UNKNOWN_URI + uri);

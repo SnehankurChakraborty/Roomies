@@ -10,10 +10,12 @@ import java.util.List;
  * Created by Snehankur on 4/18/2015.
  */
 public interface MiscService {
-	void insertMiscExpenses(EditText description, EditText quantity, EditText amount,
+	public void insertMiscExpenses(EditText description, EditText quantity, EditText amount,
 	                        String type, String username);
 
-	List<MiscExpense> getCurrentTotalMiscExpense();
+	public List<MiscExpense> getCurrentTotalMiscExpense();
 
-	List<String> getMiscMonths(String username);
+	public List<String> getMiscMonths(String username);
+
+    public boolean updateUser(String username, String newVal);
 }

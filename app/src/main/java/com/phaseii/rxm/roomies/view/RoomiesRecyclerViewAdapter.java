@@ -143,7 +143,7 @@ public class RoomiesRecyclerViewAdapter
 					public void onClick(View v) {
 						try {
 							RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
-									.getString(R.string.ProfileActivity), null, true);
+									.getString(R.string.ProfileActivity), null, false);
 						} catch (RoomXpnseMngrException e) {
 							RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
 						}
