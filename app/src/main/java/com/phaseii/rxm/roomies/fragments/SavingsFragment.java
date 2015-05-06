@@ -9,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -69,7 +70,6 @@ public class SavingsFragment extends RoomiesFragment {
     }
 
     public void createBarChart() {
-
         HorizontalBarChart barChart = (HorizontalBarChart) rootView.findViewById(R.id.savings);
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<BarEntry> rentEntries = new ArrayList<>();
@@ -121,6 +121,7 @@ public class SavingsFragment extends RoomiesFragment {
         barChart.setPinchZoom(true);
         barChart.setScaleMinima(1f, 1f);
         barChart.setDoubleTapToZoomEnabled(false);
+
         /*barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
@@ -172,19 +173,40 @@ public class SavingsFragment extends RoomiesFragment {
     }
 
     private void setCardDetails() {
-        TextView rent = (TextView) rootView.findViewById(R.id.rent_value);
-        TextView maid = (TextView) rootView.findViewById(R.id.maid_value);
-        TextView electricity = (TextView) rootView.findViewById(R.id.electricity_value);
-        TextView misc = (TextView) rootView.findViewById(R.id.misc_value);
+        TextView rentVal = (TextView) rootView.findViewById(R.id.rent_value);
+	    TextView rent = (TextView) rootView.findViewById(R.id.rent);
+        TextView maidVal = (TextView) rootView.findViewById(R.id.maid_value);
+	    TextView maid = (TextView) rootView.findViewById(R.id.maid);
+	    TextView electricityVal = (TextView) rootView.findViewById(R.id.electricity_value);
+	    TextView electricity = (TextView) rootView.findViewById(R.id.electricity);
+	    TextView miscVal = (TextView) rootView.findViewById(R.id.misc_value);
+	    TextView misc = (TextView) rootView.findViewById(R.id.misc);
         TextView month = (TextView) rootView.findViewById(R.id.month);
 
-        rent.setText(String.valueOf(rentSavings));
-        maid.setText(String.valueOf(maidSavings));
-        electricity.setText(String.valueOf(electricitySavings));
-        misc.setText(String.valueOf(miscSavings));
+        rentVal.setText(String.valueOf(rentSavings));
+	    setTextColor(rent,rentVal, rentSavings);
+        maidVal.setText(String.valueOf(maidSavings));
+	    setTextColor(maid,maidVal, maidSavings);
+	    electricityVal.setText(String.valueOf(electricitySavings));
+	    setTextColor(electricity,electricityVal, electricitySavings);
+        miscVal.setText(String.valueOf(miscSavings));
+	    setTextColor(misc,miscVal, miscSavings);
         month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(Calendar.MONTH)]
                 + " " + Calendar.getInstance().get(Calendar.YEAR));
     }
+
+	private void setTextColor(TextView field, TextView fieldVal,float value){
+		if(value>0){
+			field.setTextColor(Color.GREEN);
+			fieldVal.setTextColor(Color.GREEN);
+		}else if(value<0){
+			field.setTextColor(Color.RED);
+			fieldVal.setTextColor(Color.RED);
+		}else{
+			field.setTextColor(Color.rgb(252,180,71));
+			fieldVal.setTextColor(Color.rgb(252,180,71));
+		}
+	}
 
 
     @Override
@@ -192,3 +214,4 @@ public class SavingsFragment extends RoomiesFragment {
         return rootView;
     }
 }
+

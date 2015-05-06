@@ -3,6 +3,8 @@ package com.phaseii.rxm.roomies.tabs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -118,17 +121,21 @@ public class CurrentBudgetStatus extends RoomiesFragment
         labels.add("Remaining");
         entries.add(new Entry(spent, 1));
         labels.add("Spent");
-        PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS,
-                null));
+        PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
         PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
         dataSet.setColors(ROOMIES_RAG_COLORS);
-        PieData data = new PieData(labels, dataSet);
+        dataSet.setValueTextColor(Color.WHITE);
+	    PieData data = new PieData(labels, dataSet);
         mChart.setData(data);
         mChart.animateXY(1000, 1000);
         mChart.setDrawCenterText(true);
         mChart.setCenterText(getPercentageLeft(total, spent));
         mChart.setDescription("");
         mChart.setClickable(true);
+	    mChart.setHoleColor(getResources().getColor(R.color.secondary));
+	    mChart.getLegend().setEnabled(false);
+	    mChart.setBackgroundColor(getResources().getColor(R.color.secondary));
+		mChart.setCenterTextColor(Color.WHITE);
         return mChart;
     }
 
