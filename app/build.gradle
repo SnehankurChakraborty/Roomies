@@ -23,7 +23,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
 
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.github.PhilJay:MPAndroidChart:v2.0.8'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
     compile 'com.androidplot:androidplot-core:0.6.1'
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:recyclerview-v7:21.0.3'

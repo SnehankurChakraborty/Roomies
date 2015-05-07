@@ -121,6 +121,8 @@ public class CurrentExpenseReport extends RoomiesFragment
 		mChart.setCenterText(getPercentageLeft(total, spent));
 		mChart.setDescription("");
 		mChart.setClickable(true);
+		mChart.setNoDataText("");
+		mChart.getLegend().setEnabled(false);
 		return mChart;
 	}
 

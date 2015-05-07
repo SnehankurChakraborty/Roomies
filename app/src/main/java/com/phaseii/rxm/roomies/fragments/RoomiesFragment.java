@@ -13,9 +13,9 @@ public abstract class RoomiesFragment extends Fragment {
 	public static final int SEGMENT_TWO = Color.parseColor("#23dfa5");
 	public static final int SEGMENT_THREE = Color.parseColor("#2eb094");
 	public static final int SEGMENT_FOUR = Color.parseColor("#15816a");
-	public static final int GREEN_STATUS = Color.parseColor("#16B624");
-	public static final int RED_STATUS = Color.parseColor("#D5152C");
-	public static final int AMBER_STATUS = Color.parseColor("#DF8921");
+	public static final int GREEN_STATUS = Color.parseColor("#4CAF50");
+	public static final int RED_STATUS = Color.parseColor("#F44336");
+	public static final int AMBER_STATUS = Color.parseColor("#FF9800");
 	public View rootView;
 
 	public abstract View getFragmentView();
@@ -25,10 +25,14 @@ public abstract class RoomiesFragment extends Fragment {
 	};
 
 	public static final int[] ROOMIES_RAG_COLORS = {
-			GREEN_STATUS, RED_STATUS, SEGMENT_THREE, AMBER_STATUS
+			GREEN_STATUS, AMBER_STATUS
+	};
+	public static final int[] ROOMIES_RAG_REVERSE_COLORS = {
+			RED_STATUS, AMBER_STATUS
 	};
 
-	public interface UpdatableFragment{
+
+	public interface UpdatableFragment {
 		public void update();
 	}
 

@@ -146,7 +146,7 @@ public class ProfileActivity extends ActionBarActivity {
 				bitmap = BitmapFactory.decodeStream(stream);
 				stream.close();
 				coloredBackgroundView.setImageBitmap(bitmap);
-				coloredBackgroundView.setScaleType(ImageView.ScaleType.FIT_XY);
+				coloredBackgroundView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				String username = getSharedPreferences(RoomiesConstants
 						.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
 						getString(RoomiesConstants.NAME, null);
@@ -332,14 +332,14 @@ public class ProfileActivity extends ActionBarActivity {
 		});
 	}
 
-	@Override
+	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_demo, menu);
 		return true;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -352,7 +352,7 @@ public class ProfileActivity extends ActionBarActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 
 	@Override
 	public void onBackPressed() {

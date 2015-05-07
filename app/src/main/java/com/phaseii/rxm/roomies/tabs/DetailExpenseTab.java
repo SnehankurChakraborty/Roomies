@@ -84,6 +84,7 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 		lineChart.setDrawGridBackground(false);
 		lineChart.animateY(500);
 		lineChart.animateX(500);
+		lineChart.setNoDataText("No Miscellaneous expenses yet");
 		lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 			@Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {

@@ -122,6 +122,7 @@ public class SavingsFragment extends RoomiesFragment {
         barChart.setScaleMinima(1f, 1f);
         barChart.setDoubleTapToZoomEnabled(false);
 
+
         /*barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
@@ -161,6 +162,7 @@ public class SavingsFragment extends RoomiesFragment {
         yl.setDrawGridLines(false);
         yl.setSpaceTop(10f);
         yl.setStartAtZero(false);
+	    yl.setShowOnlyMinMax(true);
         yl.setValueFormatter(new LargeValueFormatter());
 
         barChart.getAxisRight().setEnabled(false);
@@ -169,7 +171,6 @@ public class SavingsFragment extends RoomiesFragment {
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(false);
-
     }
 
     private void setCardDetails() {
@@ -196,12 +197,14 @@ public class SavingsFragment extends RoomiesFragment {
     }
 
 	private void setTextColor(TextView field, TextView fieldVal,float value){
+		int green=getResources().getColor(R.color.green);
+		int red=getResources().getColor(R.color.red);
 		if(value>0){
-			field.setTextColor(Color.GREEN);
-			fieldVal.setTextColor(Color.GREEN);
+			field.setTextColor(green);
+			fieldVal.setTextColor(green);
 		}else if(value<0){
-			field.setTextColor(Color.RED);
-			fieldVal.setTextColor(Color.RED);
+			field.setTextColor(red);
+			fieldVal.setTextColor(red);
 		}else{
 			field.setTextColor(Color.rgb(252,180,71));
 			fieldVal.setTextColor(Color.rgb(252,180,71));

@@ -14,4 +14,6 @@
 <color name="icons">#FFFFFF</color>
 <color name="divider">#B6B6B6</color>
 <color name="secondary">#455A64</color>
+	<color name="green">#33691E</color>
+	<color name="red">#BF360C</color>
 </resources>

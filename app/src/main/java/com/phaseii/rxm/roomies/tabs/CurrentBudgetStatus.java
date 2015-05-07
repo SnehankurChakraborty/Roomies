@@ -36,119 +36,126 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_K
 
 
 public class CurrentBudgetStatus extends RoomiesFragment
-        implements RoomiesFragment.UpdatableFragment {
+		implements RoomiesFragment.UpdatableFragment {
 
-    private OnFragmentInteractionListener mListener;
+	private OnFragmentInteractionListener mListener;
 
-    public static CurrentBudgetStatus getInstance() {
-        return new CurrentBudgetStatus();
-    }
+	public static CurrentBudgetStatus getInstance() {
+		return new CurrentBudgetStatus();
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.tab_current_budget_status, container, false);
-        rootView.setTag("BUDGET");
-        showBarGraph(getActivity().getBaseContext());
-        TextView month = (TextView) rootView.findViewById(R.id.month);
-        month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(Calendar.MONTH)] + " " +
-                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        return rootView;
-    }
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.tab_current_budget_status, container, false);
+		rootView.setTag("BUDGET");
+		showBarGraph(getActivity().getBaseContext());
+		TextView month = (TextView) rootView.findViewById(R.id.month);
+		month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(
+				Calendar.MONTH)] + " " +
+				String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+		return rootView;
+	}
 
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			mListener = (OnFragmentInteractionListener) activity;
 
-    @Override
-    public View getFragmentView() {
-        return rootView;
-    }
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnFragmentInteractionListener");
+		}
+	}
 
-    @Override
-    public void update() {
-        showBarGraph(getActivity().getBaseContext());
-    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mListener = null;
+	}
 
-    private PieChart showBarGraph(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
-                context.MODE_PRIVATE);
-        float rent = Float.valueOf(sharedPreferences.getString(RENT_MARGIN, "0"));
-        float maid = Float.valueOf(sharedPreferences.getString(MAID_MARGIN, "0"));
-        float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY_MARGIN, "0"));
-        float misc = Float.valueOf(sharedPreferences.getString(MISC_MARGIN, "0"));
-        ArrayList<Entry> entries = new ArrayList<Entry>();
-        ArrayList<String> labels = new ArrayList<String>();
-        float total = rent + maid + electricity + misc;
-        float spent = getSpentDetails();
-        entries.add(new Entry(total - spent, 0));
-        labels.add("Remaining");
-        entries.add(new Entry(spent, 1));
-        labels.add("Spent");
-        PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
-        PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
-        dataSet.setColors(ROOMIES_RAG_COLORS);
-        dataSet.setValueTextColor(Color.WHITE);
-	    PieData data = new PieData(labels, dataSet);
-        mChart.setData(data);
-        mChart.animateXY(1000, 1000);
-        mChart.setDrawCenterText(true);
-        mChart.setCenterText(getPercentageLeft(total, spent));
-        mChart.setDescription("");
-        mChart.setClickable(true);
-	    mChart.setHoleColor(getResources().getColor(R.color.secondary));
-	    mChart.getLegend().setEnabled(false);
-	    mChart.setBackgroundColor(getResources().getColor(R.color.secondary));
-		mChart.setCenterTextColor(Color.WHITE);
-        return mChart;
-    }
+	@Override
+	public View getFragmentView() {
+		return rootView;
+	}
 
-    private String getPercentageLeft(float total, float spent) {
-        float percent = 100f;
-        if (spent > 0) {
-            percent = 100 - ((spent / total) * 100);
-        }
-        return percent + "% Availaible";
-    }
+	@Override
+	public void update() {
+		showBarGraph(getActivity().getBaseContext());
+	}
 
-    private float getSpentDetails() {
-        RoomiesService roomiesService = new RoomiesServiceImpl(getActivity().getBaseContext());
-        return roomiesService.getTotalSpent();
-    }
+	/**
+	 * This interface must be implemented by activities that contain this
+	 * fragment to allow an interaction in this fragment to be communicated
+	 * to the activity and potentially other fragments contained in that
+	 * activity.
+	 * <p/>
+	 * See the Android Training lesson <a href=
+	 * "http://developer.android.com/training/basics/fragments/communicating.html"
+	 * >Communicating with Other Fragments</a> for more information.
+	 */
+	public interface OnFragmentInteractionListener {
+		// TODO: Update argument type and name
+		public void onFragmentInteraction(Uri uri);
+	}
+
+	private PieChart showBarGraph(Context context) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
+				context.MODE_PRIVATE);
+		float rent = Float.valueOf(sharedPreferences.getString(RENT_MARGIN, "0"));
+		float maid = Float.valueOf(sharedPreferences.getString(MAID_MARGIN, "0"));
+		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY_MARGIN, "0"));
+		float misc = Float.valueOf(sharedPreferences.getString(MISC_MARGIN, "0"));
+		ArrayList<Entry> entries = new ArrayList<Entry>();
+		ArrayList<String> labels = new ArrayList<String>();
+		float total = rent + maid + electricity + misc;
+		float spent = getSpentDetails();
+		entries.add(new Entry(total - spent, 0));
+		labels.add("Remaining");
+		entries.add(new Entry(spent, 1));
+		labels.add("Spent");
+		PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
+		PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
+		String status = getPercentageLeft(total, spent);
+		if (Float.valueOf(status) < 0) {
+			dataSet.setColors(ROOMIES_RAG_REVERSE_COLORS);
+		} else {
+			dataSet.setColors(ROOMIES_RAG_COLORS);
+		}
+		dataSet.setValueTextColor(Color.WHITE);
+		PieData data = new PieData(labels, dataSet);
+		mChart.setData(data);
+		mChart.animateXY(1000, 1000);
+		mChart.setDrawCenterText(true);
+
+		mChart.setCenterText(status+ " % Availaible");
+		mChart.setDescription("");
+		mChart.setClickable(true);
+		/*mChart.setHoleColor(getResources().getColor(R.color.secondary));*/
+		mChart.getLegend().setEnabled(false);
+	    /*mChart.setBackgroundColor(getResources().getColor(R.color.secondary));
+		mChart.setCenterTextColor(Color.WHITE);*/
+		return mChart;
+	}
+
+	private String getPercentageLeft(float total, float spent) {
+		float percent = 100f;
+		if (spent > 0) {
+			percent = 100 - ((spent / total) * 100);
+		}
+		return String.valueOf(percent);
+	}
+
+	private float getSpentDetails() {
+		RoomiesService roomiesService = new RoomiesServiceImpl(getActivity().getBaseContext());
+		return roomiesService.getTotalSpent();
+	}
 }

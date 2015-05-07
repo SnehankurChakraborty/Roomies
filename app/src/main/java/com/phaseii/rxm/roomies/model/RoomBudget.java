@@ -4,94 +4,94 @@ package com.phaseii.rxm.roomies.model;
  * Created by Snehankur on 4/18/2015.
  */
 public class RoomBudget {
-	private static String month;
-	private static float rent;
-	private static float rent_margin;
-	private static float maid;
-	private static float maid_margin;
-	private static float electricity;
-	private static float electricity_margin;
-	private static float miscellaneous;
-	private static float miscellaneous_margin;
-	private static float total;
+	private  String month;
+	private  float rent;
+	private  float rent_margin;
+	private  float maid;
+	private  float maid_margin;
+	private  float electricity;
+	private  float electricity_margin;
+	private  float miscellaneous;
+	private  float miscellaneous_margin;
+	private  float total;
 
-	public static String getMonth() {
+	public  String getMonth() {
 		return month;
 	}
 
-	public static void setMonth(String month) {
-		RoomBudget.month = month;
+	public  void setMonth(String month) {
+		this.month = month;
 	}
 
-	public static float getRent() {
+	public  float getRent() {
 		return rent;
 	}
 
-	public static void setRent(float rent) {
-		RoomBudget.rent = rent;
+	public  void setRent(float rent) {
+		this.rent = rent;
 	}
 
-	public static float getRent_margin() {
+	public  float getRent_margin() {
 		return rent_margin;
 	}
 
-	public static void setRent_margin(float rent_margin) {
-		RoomBudget.rent_margin = rent_margin;
+	public  void setRent_margin(float rent_margin) {
+		this.rent_margin = rent_margin;
 	}
 
-	public static float getMaid() {
+	public  float getMaid() {
 		return maid;
 	}
 
-	public static void setMaid(float maid) {
-		RoomBudget.maid = maid;
+	public  void setMaid(float maid) {
+		this.maid = maid;
 	}
 
-	public static float getMaid_margin() {
+	public  float getMaid_margin() {
 		return maid_margin;
 	}
 
-	public static void setMaid_margin(float maid_margin) {
-		RoomBudget.maid_margin = maid_margin;
+	public  void setMaid_margin(float maid_margin) {
+		this.maid_margin = maid_margin;
 	}
 
-	public static float getElectricity() {
+	public  float getElectricity() {
 		return electricity;
 	}
 
-	public static void setElectricity(float electricity) {
-		RoomBudget.electricity = electricity;
+	public  void setElectricity(float electricity) {
+		this.electricity = electricity;
 	}
 
-	public static float getElectricity_margin() {
+	public  float getElectricity_margin() {
 		return electricity_margin;
 	}
 
-	public static void setElectricity_margin(float electricity_margin) {
-		RoomBudget.electricity_margin = electricity_margin;
+	public  void setElectricity_margin(float electricity_margin) {
+		this.electricity_margin = electricity_margin;
 	}
 
-	public static float getMiscellaneous() {
+	public  float getMiscellaneous() {
 		return miscellaneous;
 	}
 
-	public static void setMiscellaneous(float miscellaneous) {
-		RoomBudget.miscellaneous = miscellaneous;
+	public  void setMiscellaneous(float miscellaneous) {
+		this.miscellaneous = miscellaneous;
 	}
 
-	public static float getMiscellaneous_margin() {
+	public  float getMiscellaneous_margin() {
 		return miscellaneous_margin;
 	}
 
-	public static void setMiscellaneous_margin(float miscellaneous_margin) {
-		RoomBudget.miscellaneous_margin = miscellaneous_margin;
+	public  void setMiscellaneous_margin(float miscellaneous_margin) {
+		this.miscellaneous_margin = miscellaneous_margin;
 	}
 
-	public static float getTotal() {
+	public  float getTotal() {
 		return total;
 	}
 
-	public static void setTotal(float total) {
-		RoomBudget.total = total;
+	public  void setTotal(float total) {
+		this.total = total;
 	}
 }
