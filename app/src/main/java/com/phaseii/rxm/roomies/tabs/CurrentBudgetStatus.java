@@ -125,17 +125,17 @@ public class CurrentBudgetStatus extends RoomiesFragment
         PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
         dataSet.setColors(ROOMIES_RAG_COLORS);
         dataSet.setValueTextColor(Color.WHITE);
-	    PieData data = new PieData(labels, dataSet);
+	PieData data = new PieData(labels, dataSet);
         mChart.setData(data);
         mChart.animateXY(1000, 1000);
         mChart.setDrawCenterText(true);
         mChart.setCenterText(getPercentageLeft(total, spent));
         mChart.setDescription("");
         mChart.setClickable(true);
-	    mChart.setHoleColor(getResources().getColor(R.color.secondary));
-	    mChart.getLegend().setEnabled(false);
-	    mChart.setBackgroundColor(getResources().getColor(R.color.secondary));
-		mChart.setCenterTextColor(Color.WHITE);
+	mChart.setHoleColor(getResources().getColor(R.color.secondary));
+	mChart.getLegend().setEnabled(false);
+	mChart.setBackgroundColor(getResources().getColor(R.color.secondary));
+	mChart.setCenterTextColor(Color.WHITE);
         return mChart;
     }
 
