@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.CombinedChart;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -21,11 +19,11 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
+import com.phaseii.rxm.roomies.dialogs.DetailExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.model.MiscExpense;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
-import com.phaseii.rxm.roomies.view.DetailExpenseDataTableAdapter;
+import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,7 +86,8 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 		lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 			@Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-				DialogFragment dialog = new DetailExpenseDataTableAdapter();
+				DialogFragment dialog = DetailExpenseDialog.getInstance(miscExpenses,
+						getActivity().getBaseContext());
 				dialog.show(getActivity().getSupportFragmentManager(), "detailExpense");
 			}
 
@@ -100,7 +99,7 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 	}
 
 	private LineData getLineChart(List<MiscExpense> miscExpenses) {
-		
+
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<>();
 		if (miscExpenses.size() > 0) {
@@ -109,18 +108,18 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 			for (MiscExpense misc : miscExpenses) {
 				cal.setTime(misc.getTransactionDate());
 				day = cal.get(Calendar.DAY_OF_MONTH);
-	            if (!labels.contains(String.valueOf(day))) {
-                    labels.add(String.valueOf(day));
-                    entries.add(new Entry(misc.getAmount(), (day-start)));
-                } else {
-                    for (Entry entry : entries) {
-                        if (entry.getXIndex() == (day-start)) {
-                            float val = entry.getVal();
-                            val = val + misc.getAmount();
-                            entry.setVal(val);
-                        }
-                    }
-                }
+				if (!labels.contains(String.valueOf(day))) {
+					labels.add(String.valueOf(day));
+					entries.add(new Entry(misc.getAmount(), (day - start)));
+				} else {
+					for (Entry entry : entries) {
+						if (entry.getXIndex() == (day - start)) {
+							float val = entry.getVal();
+							val = val + misc.getAmount();
+							entry.setVal(val);
+						}
+					}
+				}
 			}
 		}
 

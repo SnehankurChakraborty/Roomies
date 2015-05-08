@@ -19,8 +19,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -30,7 +28,7 @@ import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
-import com.phaseii.rxm.roomies.fragments.AddExpenseDialog;
+import com.phaseii.rxm.roomies.dialogs.AddExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.SavingsFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;

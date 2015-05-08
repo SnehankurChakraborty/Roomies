@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="88dp">
+
+	<ImageView
+		android:layout_width="60dp"
+		android:layout_height="60dp"
+		android:paddingLeft="16dp"
+		android:layout_centerVertical="true"
+		android:id="@+id/expense_icon"
+		android:src="@drawable/ic_misc_selected"/>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingLeft="72dp"
+		android:orientation="vertical"
+		android:layout_centerVertical="true">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Amount"
+			android:id="@+id/amount"
+			android:textSize="16sp"
+			android:fontFamily="sans-serif-thin"
+			android:textColor="@color/primary_text"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Description"
+			android:id="@+id/description"
+			android:textSize="14sp"
+			android:fontFamily="sans-serif"
+			android:textColor="@color/secondary_text"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Type"
+			android:id="@+id/type"
+			android:textSize="14sp"
+			android:fontFamily="sans-serif"
+			android:textColor="@color/secondary_text"/>
+	</LinearLayout>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Date"
+		android:id="@+id/date"
+		android:layout_alignParentRight="true"
+		android:paddingRight="16dp"
+		android:paddingTop="14dp"/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_marginRight="15dp"
+		android:layout_marginLeft="15dp"
+		android:background="@color/secondary_text"
+	    android:layout_alignParentBottom="true"
+		android:id="@+id/divider"/>
+</RelativeLayout>

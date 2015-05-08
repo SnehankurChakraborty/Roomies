@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,18 +9,18 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.RadioGroup;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.service.MiscService;
@@ -45,6 +45,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 	EditText quantity;
 	Button positive;
 	Button negative;
+	RadioGroup quantityRadio;
 	static int pagerId;
 	String username;
 
@@ -65,6 +66,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		description = (EditText) dialogView.findViewById(R.id.description);
 		amount = (EditText) dialogView.findViewById(R.id.amount);
 		quantity = (EditText) dialogView.findViewById(R.id.quantity);
+		quantityRadio=(RadioGroup)dialogView.findViewById(R.id.quantity_radio);
 		final ToggleButton rent = (ToggleButton) dialogView.findViewById(R.id.rent_icon);
 		final ToggleButton electricity = (ToggleButton) dialogView.findViewById(
 				R.id.electricity_icon);
@@ -99,6 +101,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					}
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.VISIBLE);
 					}
 				} else {
 					miscellaneous.setChecked(true);
@@ -140,6 +143,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					}
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.VISIBLE);
 					}
 				}
 			}
@@ -161,6 +165,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					}
 					if (quantity.getVisibility() == View.VISIBLE) {
 						quantity.setVisibility(View.GONE);
+						quantityRadio.setVisibility(View.GONE);
 					}
 					if (miscRow.getVisibility() == View.VISIBLE) {
 						miscRow.setVisibility(View.GONE);
@@ -186,6 +191,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					}
 					if (quantity.getVisibility() == View.VISIBLE) {
 						quantity.setVisibility(View.GONE);
+						quantityRadio.setVisibility(View.GONE);
 					}
 					if (miscRow.getVisibility() == View.VISIBLE) {
 						miscRow.setVisibility(View.GONE);
@@ -210,6 +216,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					}
 					if (quantity.getVisibility() == View.VISIBLE) {
 						quantity.setVisibility(View.GONE);
+						quantityRadio.setVisibility(View.GONE);
 					}
 					if (miscRow.getVisibility() == View.VISIBLE) {
 						miscRow.setVisibility(View.GONE);
@@ -230,10 +237,12 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					others.setChecked(false);
 					if (quantity.getVisibility() == View.VISIBLE) {
 						quantity.setVisibility(View.GONE);
+						quantityRadio.setVisibility(View.GONE);
 					}
 				} else {
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.GONE);
 					}
 					others.setChecked(true);
 				}
@@ -250,6 +259,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					others.setChecked(false);
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.VISIBLE);
 					}
 				} else {
 					others.setChecked(true);
@@ -268,6 +278,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					others.setChecked(false);
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.VISIBLE);
 					}
 				} else {
 					others.setChecked(true);
@@ -285,6 +296,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					bills.setChecked(false);
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.VISIBLE);
 					}
 				} else {
 					others.setChecked(true);
@@ -302,6 +314,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					bills.setChecked(false);
 					if (quantity.getVisibility() == View.GONE) {
 						quantity.setVisibility(View.VISIBLE);
+						quantityRadio.setVisibility(View.VISIBLE);
 					}
 				}
 			}

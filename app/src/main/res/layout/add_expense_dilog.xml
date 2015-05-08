@@ -211,68 +211,6 @@
 
 	</TableLayout>
 
-	<!--
-
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:id="@+id/catgeory_layout"
-			>
-
-
-			<TextView
-				android:layout_width="120dp"
-				android:layout_height="wrap_content"
-				android:text="Category"
-				android:textColor="@color/spinnerColor"
-				android:id="@+id/category"
-				android:layout_gravity="center"
-				android:textSize="18sp"
-				/>
-
-			<Spinner
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/categoryspinner"
-				android:layout_gravity="center_horizontal"
-				android:layout_toRightOf="@id/category"
-				android:layout_toEndOf="@id/category"
-				style="@style/SpinnerRoomies"
-				android:spinnerMode="dropdown"
-				android:popupBackground="@drawable/menu_dropdown_panel_roomies"
-				/>
-		</LinearLayout>
-
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:id="@+id/subcatgeory_layout"
-			android:layout_below="@id/catgeory_layout"
-			>
-
-			<TextView
-				android:layout_width="120dp"
-				android:layout_height="wrap_content"
-				android:text="Sub Category"
-				android:textColor="@color/spinnerColor"
-				android:id="@+id/type"
-				android:layout_gravity="center"
-				android:textSize="18sp"/>
-
-			<Spinner
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/subcategoryspinner"
-				android:layout_gravity="center_horizontal"
-				style="@style/SpinnerRoomies"
-				android:spinnerMode="dropdown"
-				/>
-
-		</LinearLayout>
-	-->
-
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -309,18 +247,48 @@
 		android:layout_below="@id/description_layout"
 		android:id="@+id/quantity_layout">
 
-		<EditText
-			android:layout_width="match_parent"
+		<TableLayout
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:hint="Quantity"
-			android:textColorHint="@color/spinnerColor"
-			android:layout_centerHorizontal="true"
-			android:id="@+id/quantity"
-			android:numeric="decimal"
-			android:enabled="true"
-			style="@style/EditTextRoomies"
-			android:textColor="@color/spinnerColor"
-			android:gravity="center"/>
+			android:stretchColumns="0,1">
+
+			<TableRow>
+
+				<EditText
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:hint="Quantity"
+					android:textColorHint="@color/spinnerColor"
+					android:layout_centerHorizontal="true"
+					android:id="@+id/quantity"
+					android:numeric="decimal"
+					android:enabled="true"
+					style="@style/EditTextRoomies"
+					android:textColor="@color/spinnerColor"
+					android:gravity="center"/>
+
+				<RadioGroup
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					style="@style/RadioButtonRoomies"
+					android:id="@+id/quantity_radio">
+
+					<RadioButton
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="kg"
+						android:textColor="@color/secondary_text"/>
+
+					<RadioButton
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="pcs"
+						android:textColor="@color/secondary_text"/>
+
+				</RadioGroup>
+			</TableRow>
+		</TableLayout>
 
 		<TextView
 			android:layout_width="wrap_content"
