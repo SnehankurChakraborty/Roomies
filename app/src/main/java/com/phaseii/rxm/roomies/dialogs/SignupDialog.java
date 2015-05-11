@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -19,8 +19,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,8 +33,8 @@ import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.service.MiscService;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomService;
+import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 import com.phaseii.rxm.roomies.view.AlphaForegroundColorSpan;
@@ -248,7 +246,7 @@ public class ProfileActivity extends ActionBarActivity {
                     if (!TextUtils.isEmpty(field_edit.getText().toString().trim())) {
                         boolean isUpdateSuccessful = false;
                         UserService userService = new UserServiceImpl(getBaseContext());
-                        RoomiesService roomService = new RoomiesServiceImpl(getBaseContext());
+                        RoomService roomService = new RoomServiceImpl(getBaseContext());
                         MiscService miscService=new MiscServiceImpl(getBaseContext());
                         switch (mode) {
                             case USER:

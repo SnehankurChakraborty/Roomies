@@ -3,37 +3,26 @@ package com.phaseii.rxm.roomies.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.RoomBudget;
-import com.phaseii.rxm.roomies.service.MiscService;
-import com.phaseii.rxm.roomies.service.MiscServiceImpl;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
-import com.phaseii.rxm.roomies.view.RoomiesMarkerView;
+import com.phaseii.rxm.roomies.service.RoomService;
+import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -43,7 +32,7 @@ import java.util.List;
 
 public class SavingsFragment extends RoomiesFragment {
 
-    RoomiesService roomiesService;
+    RoomService roomService;
     Context mContext;
     List<RoomBudget> roomBudgetList;
     ArrayList<BarDataSet> dataSets;
@@ -77,8 +66,8 @@ public class SavingsFragment extends RoomiesFragment {
         ArrayList<BarEntry> elecEntries = new ArrayList<>();
         ArrayList<BarEntry> miscEntries = new ArrayList<>();
         dataSets = new ArrayList<>();
-        roomiesService = new RoomiesServiceImpl(mContext);
-        roomBudgetList = roomiesService.getAllMonthDetailsWithMargin(mContext
+        roomService = new RoomServiceImpl(mContext);
+        roomBudgetList = roomService.getAllMonthDetailsWithMargin(mContext
                 .getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
                         Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null));
         int index = 0;

@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomService;
+import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -155,7 +152,7 @@ public class CurrentBudgetStatus extends RoomiesFragment
 	}
 
 	private float getSpentDetails() {
-		RoomiesService roomiesService = new RoomiesServiceImpl(getActivity().getBaseContext());
-		return roomiesService.getTotalSpent();
+		RoomService roomService = new RoomServiceImpl(getActivity().getBaseContext());
+		return roomService.getTotalSpent();
 	}
 }

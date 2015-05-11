@@ -70,13 +70,12 @@ public class RoomiesRecyclerViewAdapter
 		TextView email;
 		View itemView;
 
-
 		public ViewHolder(View itemView, int ViewType, final Context mContext) {
 			super(itemView);
 			this.itemView = itemView;
 			itemView.setClickable(true);
 			itemView.setOnClickListener(new View.OnClickListener() {
-				Toast mToast;
+			Toast mToast;
 
 				@Override
 				public void onClick(View v) {
@@ -98,9 +97,11 @@ public class RoomiesRecyclerViewAdapter
 						mEditor.clear();
 						mEditor.apply();
 						try {
+							((HomeScreenActivity)mContext).revokeGplusAccess();
 							RoomiesHelper.startActivityHelper(mContext,
 									mContext.getResources()
 											.getString(R.string.HomeScreen_Activity), null, true);
+
 						} catch (RoomXpnseMngrException e) {
 							RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
 							System.exit(0);
@@ -214,5 +215,6 @@ public class RoomiesRecyclerViewAdapter
 	private boolean isPositionHeader(int position) {
 		return position == 0;
 	}
+
 
 }

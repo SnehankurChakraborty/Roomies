@@ -84,10 +84,13 @@
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="androidplot-core-0.6.1" level="project" />
     <orderEntry type="library" exported="" name="MPAndroidChart-v2.1.0" level="project" />
+    <orderEntry type="library" exported="" name="facebook-android-sdk-4.0.0" level="project" />
+    <orderEntry type="library" exported="" name="gson-1.7.2" level="project" />
+    <orderEntry type="library" exported="" name="bolts-android-1.1.4" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.3" level="project" />
   </component>

@@ -17,4 +17,6 @@ public interface UserService {
 	boolean  isSetupCompleted(String username);
 
 	boolean update(String username, String newVal, String column);
+
+	boolean registerAuthenticatedUser(String username, String email);
 }

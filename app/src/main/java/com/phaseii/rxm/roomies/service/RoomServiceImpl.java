@@ -1,6 +1,5 @@
 package com.phaseii.rxm.roomies.service;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,7 +23,6 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.NAME;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
@@ -36,7 +34,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 /**
  * Created by Snehankur on 3/19/2015.
  */
-public class RoomiesServiceImpl implements RoomiesService {
+public class RoomServiceImpl implements RoomService {
 
 	Context mContext;
 	final Uri monthUri = Uri.withAppendedPath(RoomExpenseProvider.CONTENT_URI,
@@ -47,7 +45,7 @@ public class RoomiesServiceImpl implements RoomiesService {
 	SharedPreferences mexpenditurePref;
 	SharedPreferences.Editor mEditor;
 
-	public RoomiesServiceImpl(Context mContext) {
+	public RoomServiceImpl(Context mContext) {
 		this.mContext = mContext;
 	}
 

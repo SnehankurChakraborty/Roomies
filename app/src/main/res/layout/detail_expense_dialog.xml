@@ -1,18 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent" >
+
 
 	<android.support.v7.widget.RecyclerView
 		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingTop="48dp"
+		android:id="@+id/expense_detail_view"
+		android:clipToPadding="false" />
+
+	<LinearLayout
+		android:id="@+id/toolbar_container"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingTop="8dp"
-		android:id="@+id/expense_detail_view"/>
+		android:background="@color/primary_dark"
+		android:orientation="vertical">
 
+		<!--<include
+			layout="@layout/roomies_toolbar"
+			android:id="@+id/toolbar"
+			android:layout_height="@dimen/abc_action_bar_default_height_material"
+			android:layout_width="match_parent"/>-->
 
-</RelativeLayout>
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/sort_filter_tab">
+
+			<TableLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:stretchColumns="0,1">
+
+				<TableRow>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="40dp"
+						android:text="Sort"
+						android:gravity="center_vertical|center_horizontal"
+						android:textColor="@color/white"
+						android:textSize="14sp"
+						android:fontFamily="sans-serif"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="40dp"
+						android:text="Filter"
+						android:gravity="center_vertical|center_horizontal"
+						android:textColor="@color/white"
+						android:textSize="14sp"
+						android:fontFamily="sans-serif"
+						android:textStyle="bold"/>
+				</TableRow>
+			</TableLayout>
+		</LinearLayout>
+	</LinearLayout>
+</FrameLayout>

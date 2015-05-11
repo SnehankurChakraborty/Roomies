@@ -18,7 +18,7 @@
 			<ImageView
 				android:id="@+id/colored_background_view"
 				android:layout_width="match_parent"
-				android:layout_height="250dp"
+				android:layout_height="350dp"
 				android:src="@drawable/ic_user"
 				android:scaleType="center"/>
 
@@ -26,9 +26,9 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_marginTop="180dp"
-				android:layout_marginLeft="5dp"
-				android:layout_marginRight="5dp"
-				android:elevation="5dp">
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:elevation="15dp">
 
 				<RelativeLayout
 					android:layout_width="match_parent"
@@ -850,13 +850,14 @@
 				</RelativeLayout>
 
 				<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
-					android:layout_width="80dp"
-					android:layout_height="80dp"
+					android:layout_width="50dp"
+					android:layout_height="50dp"
 					android:src="@drawable/roomies_launcher"
-					android:elevation="5dp"
+					android:elevation="25dp"
+					android:layout_marginBottom="-30dp"
 					android:layout_alignParentTop="true"
 					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"/>
+					android:layout_alignParentEnd="true" />
 			</RelativeLayout>
 
 		</RelativeLayout>

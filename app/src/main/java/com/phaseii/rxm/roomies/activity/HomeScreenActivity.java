@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,7 +46,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
 
-public class HomeScreenActivity extends ActionBarActivity
+public class HomeScreenActivity extends BaseActivity
 		implements CurrentBudgetStatus.OnFragmentInteractionListener {
 
 
@@ -88,6 +87,7 @@ public class HomeScreenActivity extends ActionBarActivity
 			}
 		} else {
 			setContentView(R.layout.activity_home_screen);
+			mGoogleApiClient.connect();
 			if (savedInstanceState == null) {
 				transaction = getSupportFragmentManager().beginTransaction();
 				transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -149,6 +149,16 @@ public class HomeScreenActivity extends ActionBarActivity
 	}
 
 	@Override
+	public void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException {
+
+	}
+
+	@Override
+	public User getProfileInformation() {
+		return null;
+	}
+
+	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		mDrawerTogggle.syncState();
@@ -160,6 +170,15 @@ public class HomeScreenActivity extends ActionBarActivity
 		mDrawerTogggle.onConfigurationChanged(newConfig);
 	}
 
+	@Override
+	public void signoutGplus() {
+		super.signoutGplus();
+	}
+
+	@Override
+	public void revokeGplusAccess() {
+		super.revokeGplusAccess();
+	}
 
 	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

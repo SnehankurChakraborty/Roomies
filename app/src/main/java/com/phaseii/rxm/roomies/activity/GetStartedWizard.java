@@ -18,8 +18,8 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomService;
+import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 
@@ -165,7 +165,7 @@ public class GetStartedWizard extends FragmentActivity {
 		mEditor.putFloat(TOTAL, total);
 		mEditor.apply();
 
-		RoomiesService room = new RoomiesServiceImpl(this);
+		RoomService room = new RoomServiceImpl(this);
 		UserService user = new UserServiceImpl(this);
 		room.insertRoomDetails(null, null, null,
 				mSharedPref.getString(RoomiesConstants.NAME, null),

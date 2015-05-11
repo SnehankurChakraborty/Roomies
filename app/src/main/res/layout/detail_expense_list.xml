@@ -30,8 +30,8 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Description"
-			android:id="@+id/description"
+			android:text="Quantity"
+			android:id="@+id/quantity"
 			android:textSize="14sp"
 			android:fontFamily="sans-serif"
 			android:textColor="@color/secondary_text"/>
@@ -39,8 +39,8 @@
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Type"
-			android:id="@+id/type"
+			android:text="Description"
+			android:id="@+id/description"
 			android:textSize="14sp"
 			android:fontFamily="sans-serif"
 			android:textColor="@color/secondary_text"/>

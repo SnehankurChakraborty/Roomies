@@ -3,6 +3,7 @@ package com.phaseii.rxm.roomies.view;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
  */
 public class ScrollableLayoutManager extends LinearLayoutManager {
 
-	public ScrollableLayoutManager(Context context, int orientation, boolean reverseLayout)    {
+	private Context context;
+
+	public ScrollableLayoutManager(Context context, int orientation, boolean reverseLayout) {
 		super(context, orientation, reverseLayout);
+		this.context = context;
 	}
 
 	private int[] mMeasuredDimension = new int[2];
@@ -62,7 +66,9 @@ public class ScrollableLayoutManager extends LinearLayoutManager {
 				case View.MeasureSpec.UNSPECIFIED:
 			}
 
-			setMeasuredDimension(width, height);
+			DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+			int px = Math.round(48 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+			setMeasuredDimension(width, height + px);
 		} else {
 			super.onMeasure(recycler, state, widthSpec, heightSpec);
 		}
@@ -80,8 +86,10 @@ public class ScrollableLayoutManager extends LinearLayoutManager {
 			int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec,
 					getPaddingLeft() + getPaddingRight() + getDecoratedLeft(
 							view) + getDecoratedRight(view), p.width);
+
 			int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec,
-					getPaddingTop() + getPaddingBottom() + getPaddingBottom() + getDecoratedBottom(view) , p.height);
+					getPaddingTop() + getPaddingBottom() + getPaddingBottom() + getDecoratedBottom(
+							view), p.height);
 			view.measure(childWidthSpec, childHeightSpec);
 
 			// Get decorated measurements

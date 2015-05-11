@@ -143,4 +143,24 @@ public class UserServiceImpl implements UserService {
 		}
 		return count > 0 ? true : false;
 	}
+
+	@Override
+	public boolean registerAuthenticatedUser(String username, String email){
+		boolean isUserRegistered = false;
+		ContentValues values = new ContentValues();
+		values.put(RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME,
+				username);
+		values.put(RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID,
+				email);
+		values.put(RoomiesContract.UserCredentials.COLUMN_NAME_PASSWORD,
+				RoomiesConstants.DUMMY_PASSWORD);
+		values.put(RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED, "false");
+		try {
+			mContext.getContentResolver().insert(UserCredentialsProvider.CONTENT_URI, values);
+			isUserRegistered = true;
+		} catch (RoomiesStateException e) {
+			RoomiesHelper.createToast(mContext, "USER ALREADY EXISTS", mToast);
+		}
+		return isUserRegistered;
+	}
 }

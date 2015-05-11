@@ -1,5 +1,7 @@
 package com.phaseii.rxm.roomies.helper;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 /**
  * Constant class for RoomXpnseMngr
  */
@@ -53,5 +55,11 @@ public final class RoomiesConstants {
 	public static final String VEGETABLES = "VEGETABLES";
 	public static final String OTHERS = "OTHERS";
 	public static final int REQUEST_CODE = 1;
+	public static final String DUMMY_PASSWORD = "dummy";
+
+	/*
+	static feilds
+	 */
+	public static GoogleApiClient googleApiClient;
 }
 

@@ -25,8 +25,8 @@ import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.service.MiscService;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomService;
+import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 
 /**
@@ -379,7 +379,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 			public void onClick(View v) {
 				SharedPreferences mSharedPreferences = getActivity().getSharedPreferences
 						(RoomiesConstants.ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
-				final RoomiesService room = new RoomiesServiceImpl(mContext);
+				final RoomService room = new RoomServiceImpl(mContext);
 				final MiscService misc = new MiscServiceImpl(mContext);
 				Toast mToast = null;
 				boolean isValidDescription = false;
@@ -528,7 +528,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		dialog.dismiss();
 	}
 
-	private void confirmMarginExceedAlert(final RoomiesService room, final AlertDialog dialog,
+	private void confirmMarginExceedAlert(final RoomService room, final AlertDialog dialog,
 	                                      final String category) {
 		final AlertDialog.Builder confirmBuilder = new AlertDialog.Builder
 				(getActivity());

@@ -17,8 +17,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.RoomiesServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomService;
+import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,6 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 
 /**
  * Created by Snehankur on 4/3/2015.
@@ -65,8 +64,8 @@ public class CurrentExpenseReport extends RoomiesFragment
 
 	private PieChart showBarGraph(Context context) {
 		PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_expense_report);
-		RoomiesService roomiesService = new RoomiesServiceImpl(getActivity());
-		Cursor cursor = roomiesService.getRoomDetails();
+		RoomService roomService = new RoomServiceImpl(getActivity());
+		Cursor cursor = roomService.getRoomDetails();
 		cursor.moveToFirst();
 		float rent = cursor.getFloat(
 				cursor.getColumnIndex(RoomiesContract.Room_Expenses.COLUMN_RENT));
