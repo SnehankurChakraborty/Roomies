@@ -19,8 +19,9 @@
 				android:id="@+id/colored_background_view"
 				android:layout_width="match_parent"
 				android:layout_height="350dp"
-				android:src="@drawable/ic_user"
-				android:scaleType="center"/>
+				android:background="@color/primary"
+				android:src="@drawable/user_back"
+				android:scaleType="centerInside"/>
 
 			<RelativeLayout
 				android:layout_width="match_parent"
@@ -853,11 +854,15 @@
 					android:layout_width="50dp"
 					android:layout_height="50dp"
 					android:src="@drawable/roomies_launcher"
+					android:background="@drawable/add_expense"
 					android:elevation="25dp"
-					android:layout_marginBottom="-30dp"
-					android:layout_alignParentTop="true"
+					android:scaleType="centerCrop"
+					android:layout_marginBottom="-60dp"
+					android:layout_above="@id/non_transparent"
 					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true" />
+					android:layout_alignParentEnd="true"
+					android:layout_marginRight="25dp"
+					android:layout_marginEnd="25dp"/>
 			</RelativeLayout>
 
 		</RelativeLayout>

@@ -56,6 +56,7 @@ public final class RoomiesConstants {
 	public static final String OTHERS = "OTHERS";
 	public static final int REQUEST_CODE = 1;
 	public static final String DUMMY_PASSWORD = "dummy";
+	public static final String IS_GOOGLE_FB_LOGIN ="IS_GOOGLE_FB_LOGIN" ;
 
 	/*
 	static feilds

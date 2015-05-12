@@ -23,7 +23,7 @@ import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 /**
  * Created by Snehankur on 5/10/2015.
  */
-public abstract class BaseActivity extends ActionBarActivity
+public abstract class RoomiesBaseActivity extends ActionBarActivity
 		implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 	public GoogleApiClient mGoogleApiClient;
 	public boolean mIntentInProgress;

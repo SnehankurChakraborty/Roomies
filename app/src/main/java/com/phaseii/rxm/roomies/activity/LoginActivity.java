@@ -3,6 +3,9 @@ package com.phaseii.rxm.roomies.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
@@ -24,8 +27,15 @@ import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 
-public class LoginActivity extends BaseActivity {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
+public class LoginActivity extends RoomiesBaseActivity {
+
+	private static final int PROFILE_PIC_SIZE = 400;
 	private Toast mToast;
 
 	@Override
@@ -73,8 +83,9 @@ public class LoginActivity extends BaseActivity {
 		}
 
 	}
+
 	@Override
-	public void loginGPlus(View v){
+	public void loginGPlus(View v) {
 		super.loginGPlus(v);
 	}
 
@@ -116,7 +127,7 @@ public class LoginActivity extends BaseActivity {
 				mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
 				mEditor.apply();
 				try {
-					RoomiesConstants.googleApiClient=mGoogleApiClient;
+					RoomiesConstants.googleApiClient = mGoogleApiClient;
 					RoomiesHelper.startActivityHelper(this, getResources()
 							.getString(R.string.HomeScreen_Activity), null, true);
 				} catch (RoomXpnseMngrException e) {
@@ -135,7 +146,6 @@ public class LoginActivity extends BaseActivity {
 		} catch (RoomXpnseMngrException e) {
 			RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
 		}
-		/*Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();*/
 	}
 
 	public User getProfileInformation() {
@@ -159,20 +169,58 @@ public class LoginActivity extends BaseActivity {
 				// by default the profile url gives 50x50 px image only
 				// we can replace the value with whatever dimension we want by
 				// replacing sz=X
-				/*personPhotoUrl = personPhotoUrl.substring(0,
+				personPhotoUrl = personPhotoUrl.substring(0,
 						personPhotoUrl.length() - 2)
 						+ PROFILE_PIC_SIZE;
+				File imgProfilePic = new File(getFilesDir(),
+						personName + getResources().getString(R.string.PROFILEJPG));
 
-				new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);*/
+
+				new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
 
 			} else {
 				Toast.makeText(getApplicationContext(),
 						"Person information is null", Toast.LENGTH_LONG).show();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		return user;
 	}
 
+	private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+		private File imgProfilePic;
+
+		public LoadProfileImage(File imgProfilePic) {
+			this.imgProfilePic = imgProfilePic;
+		}
+
+		@Override
+		protected Bitmap doInBackground(String... urls) {
+			String urldisplay = urls[0];
+			Bitmap mIcon11 = null;
+			try {
+				InputStream in = new java.net.URL(urldisplay).openStream();
+				mIcon11 = BitmapFactory.decodeStream(in);
+			} catch (Exception e) {
+
+			}
+			return mIcon11;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(imgProfilePic);
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+				fos.flush();
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

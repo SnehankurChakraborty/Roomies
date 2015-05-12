@@ -156,7 +156,7 @@ public class RoomiesRecyclerViewAdapter
 				Bitmap bitmap = BitmapFactory.decodeFile(new File(mContext.getFilesDir(),
 						username + mContext.getResources().getString(
 								R.string.PROFILEJPG)).getAbsolutePath(), options);
-				((HomeScreenActivity) mContext).updateProfilePic(bitmap, R.drawable.ic_profile_pic);
+				((HomeScreenActivity) mContext).updateProfilePic(bitmap);
 				holderId = 0;
 			}
 		}

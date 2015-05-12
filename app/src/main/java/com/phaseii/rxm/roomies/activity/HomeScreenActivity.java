@@ -46,7 +46,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
 
-public class HomeScreenActivity extends BaseActivity
+public class HomeScreenActivity extends RoomiesBaseActivity
 		implements CurrentBudgetStatus.OnFragmentInteractionListener {
 
 
@@ -263,13 +263,11 @@ public class HomeScreenActivity extends BaseActivity
 		}
 	}
 
-	public void updateProfilePic(Bitmap profilePicBitmap, int profile) {
+	public void updateProfilePic(Bitmap profilePicBitmap) {
 		View headerView = ((RoomiesRecyclerViewAdapter) mRecylerAdapter).getHeaderView();
 		ImageView profileFrame = (ImageView) headerView.findViewById(R.id.profileFrame);
 		if (null != profilePicBitmap) {
 			profileFrame.setImageBitmap(profilePicBitmap);
-		} else {
-			profileFrame.setImageResource(profile);
 		}
 	}
 
