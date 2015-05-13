@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -134,8 +135,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
 			mRecyclerView.setLayoutManager(mLayoutManager);
 			mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
-			/*mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color
-					.primary_dark));*/
+			/*mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));*/
 			mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, mtoolbar
 					, R.string.open_drawer, R.string.close_drawer) {
 				public void onDrawerClosed(View view) {
@@ -240,6 +240,9 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 				mtoolbar.setTitle("Trends");
 			} else if (fragment instanceof SavingsFragment) {
 				mtoolbar.setTitle("Savings");
+				DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+				int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+				mtoolbar.setElevation(px);
 			}
 
 		} else {

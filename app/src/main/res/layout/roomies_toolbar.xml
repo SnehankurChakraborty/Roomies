@@ -4,5 +4,6 @@
 	android:background="?attr/colorPrimary"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingTop="@dimen/tool_bar_top_padding"
+	android:theme="@style/ThemeOverlay.AppCompat.Dark"
+	android:fitsSystemWindows="true"
 	android:title=""	/>
