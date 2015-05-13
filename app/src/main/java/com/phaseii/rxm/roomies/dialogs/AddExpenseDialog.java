@@ -29,6 +29,10 @@ import com.phaseii.rxm.roomies.service.RoomService;
 import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+
 /**
  * Created by Snehankur on 4/5/2015.
  */
@@ -60,6 +64,12 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		mContext = getActivity().getApplicationContext();
 		username = mContext.getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
 				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+		boolean isGoogleFBLogin = getActivity().getSharedPreferences
+				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
+		if (isGoogleFBLogin) {
+			username = getActivity().getSharedPreferences
+					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		final View dialogView = inflater.inflate(R.layout.add_expense_dilog, null);

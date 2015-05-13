@@ -1,6 +1,7 @@
 package com.phaseii.rxm.roomies.tabs;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.utils.Highlight;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dialogs.DetailExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.MiscExpense;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
 import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
@@ -28,6 +30,10 @@ import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 
 public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
@@ -55,8 +61,17 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	public void createCombinedChart() {
+		String username = getActivity().getSharedPreferences(ROOM_INFO_FILE_KEY,
+				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+
+		boolean isGoogleFBLogin = getActivity().getSharedPreferences
+				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
+		if (isGoogleFBLogin) {
+			username = getActivity().getSharedPreferences
+					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
+		}
 		final List<MiscExpense> miscExpenses = new MiscServiceImpl(
-				getActivity().getBaseContext()).getCurrentTotalMiscExpense();
+				getActivity().getBaseContext()).getCurrentTotalMiscExpense(username);
 		lineChart = (LineChart) rootView.findViewById(R.id.trend_chart);
 
 		lineChart.setDescription("");

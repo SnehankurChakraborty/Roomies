@@ -132,9 +132,24 @@ public class GetStartedWizard extends FragmentActivity {
 
 	private void storeRoomInfo() {
 
+		mSharedPref = getSharedPreferences(
+				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences.Editor mEditor = mSharedPref.edit();
+
+		mEditor.putString("ROOM_ALIAS", roomName.getText().toString());
+		mEditor.putString("ROOM_NO_OF_MEMBERS", noOfMembers.getText().toString());
+		mEditor.putBoolean(IS_LOGGED_IN, true);
+		float total = Float.valueOf(rent.getText().toString()) + Float.valueOf(maid.getText()
+				.toString()) + Float.valueOf(electricity.getText().toString()) + Float.valueOf(
+				miscellaneous.getText().toString());
+
+		mEditor.putFloat(TOTAL, total);
+		mEditor.apply();
+
+
 		SharedPreferences sharedPreferences = getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				MODE_PRIVATE);
-		SharedPreferences.Editor mEditor = sharedPreferences.edit();
+		mEditor = sharedPreferences.edit();
 		String rentVal = TextUtils.isEmpty(rent.getText().toString()) ? "0" : rent.getText()
 				.toString();
 		String maidVal = TextUtils.isEmpty(maid.getText().toString()) ? "0" : maid.getText()
@@ -152,25 +167,25 @@ public class GetStartedWizard extends FragmentActivity {
 		mEditor.putString(MISC_MARGIN, miscVal);
 		mEditor.putString(TOTAL_MARGIN, totalVal);
 		mEditor.apply();
-		mSharedPref = getSharedPreferences(
-				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-		mEditor = mSharedPref.edit();
-		mEditor.putString("ROOM_ALIAS", roomName.getText().toString());
-		mEditor.putString("ROOM_NO_OF_MEMBERS", noOfMembers.getText().toString());
-		mEditor.putBoolean(IS_LOGGED_IN, true);
-		float total = Float.valueOf(rent.getText().toString()) + Float.valueOf(maid.getText()
-				.toString()) + Float.valueOf(electricity.getText().toString()) + Float.valueOf(
-				miscellaneous.getText().toString());
 
-		mEditor.putFloat(TOTAL, total);
-		mEditor.apply();
 
 		RoomService room = new RoomServiceImpl(this);
 		UserService user = new UserServiceImpl(this);
+
+		String username = mSharedPref.getString(RoomiesConstants.NAME, null);
+		if (mSharedPref.getBoolean(IS_GOOGLE_FB_LOGIN, false)) {
+			username = mSharedPref.getString(RoomiesConstants.EMAIL_ID, null);
+		}
+
 		room.insertRoomDetails(null, null, null,
-				mSharedPref.getString(RoomiesConstants.NAME, null),
-				roomName.getText().toString());
-		user.completeSetup(mSharedPref.getString(RoomiesConstants.NAME, null));
+				username, roomName.getText().toString());
+		if (!mSharedPref.getBoolean(IS_GOOGLE_FB_LOGIN, false)) {
+			user.completeSetup(mSharedPref.getString(RoomiesConstants.NAME, null));
+		}else{
+			mEditor=mSharedPref.edit();
+			mEditor.putBoolean(IS_SETUP_COMPLETED,true);
+			mEditor.apply();
+		}
 	}
 
 

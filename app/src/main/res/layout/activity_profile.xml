@@ -861,8 +861,8 @@
 					android:layout_above="@id/non_transparent"
 					android:layout_alignParentRight="true"
 					android:layout_alignParentEnd="true"
-					android:layout_marginRight="25dp"
-					android:layout_marginEnd="25dp"/>
+					android:layout_marginRight="5dp"
+					android:layout_marginEnd="5dp"/>
 			</RelativeLayout>
 
 		</RelativeLayout>

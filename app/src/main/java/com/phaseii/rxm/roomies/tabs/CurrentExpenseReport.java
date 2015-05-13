@@ -24,13 +24,16 @@ import java.util.ArrayList;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_ELEC_PAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_MAID_PAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_RENT_PAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.NAME;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
@@ -65,7 +68,17 @@ public class CurrentExpenseReport extends RoomiesFragment
 	private PieChart showBarGraph(Context context) {
 		PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_expense_report);
 		RoomService roomService = new RoomServiceImpl(getActivity());
-		Cursor cursor = roomService.getRoomDetails();
+		String username = getActivity().getSharedPreferences
+				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(NAME, null);
+
+		boolean isGoogleFBLogin = getActivity().getSharedPreferences
+				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
+		if (isGoogleFBLogin) {
+			username = getActivity().getSharedPreferences
+					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
+		}
+
+		Cursor cursor = roomService.getRoomDetails(username);
 		cursor.moveToFirst();
 		float rent = cursor.getFloat(
 				cursor.getColumnIndex(RoomiesContract.Room_Expenses.COLUMN_RENT));

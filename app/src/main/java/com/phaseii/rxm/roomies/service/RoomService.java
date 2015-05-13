@@ -15,13 +15,17 @@ public interface RoomService {
 
 	void updateRoomExpenses(String rent, String maid, String electricity, String username);
 
-	Cursor getRoomDetails();
+	Cursor getRoomDetails(String username);
 
-	Cursor getRoomDetailsWithMargin(String username);
+	boolean getRoomDetailsWithMargin(String username);
 
 	List<RoomBudget> getAllMonthDetailsWithMargin(String username);
 
-	float getTotalSpent();
+	float getTotalSpent(String username);
 
 	boolean updateRoomMargins(String username, String column, String newVal);
+
+	boolean isUserSaved(String username);
+
+	void getSpecificMonthDetails(String username, String month);
 }

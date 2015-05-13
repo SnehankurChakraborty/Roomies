@@ -29,6 +29,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+
 
 public class SavingsFragment extends RoomiesFragment {
 
@@ -66,10 +70,19 @@ public class SavingsFragment extends RoomiesFragment {
         ArrayList<BarEntry> elecEntries = new ArrayList<>();
         ArrayList<BarEntry> miscEntries = new ArrayList<>();
         dataSets = new ArrayList<>();
+
+	    String username = getActivity().getSharedPreferences(ROOM_INFO_FILE_KEY,
+			    Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+
+	    boolean isGoogleFBLogin = getActivity().getSharedPreferences
+			    (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
+	    if (isGoogleFBLogin) {
+		    username = getActivity().getSharedPreferences
+				    (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
+	    }
+
         roomService = new RoomServiceImpl(mContext);
-        roomBudgetList = roomService.getAllMonthDetailsWithMargin(mContext
-                .getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-                        Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null));
+        roomBudgetList = roomService.getAllMonthDetailsWithMargin(username);
         int index = 0;
         for (RoomBudget roomBudget : roomBudgetList) {
             rentSavings = roomBudget.getRent_margin() - roomBudget.getRent();

@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
 					RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME)));
 			mEditor.putString(RoomiesConstants.EMAIL_ID, mCursor.getString(mCursor.getColumnIndex(
 					RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID)));
-			mEditor.putBoolean(RoomiesConstants.IS_GOOGLE_FB_LOGIN, true);
 			mEditor.apply();
 		} else {
 			RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);

@@ -104,24 +104,20 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public Cursor getRoomDetails() {
+	public Cursor getRoomDetails(String username) {
 		String[] projection = {Room_Expenses.COLUMN_MONTH,
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_MAID,
 				Room_Expenses.COLUMN_ELECTRICITY, Room_Expenses.COLUMN_MISCELLANEOUS,
 		};
-		String username = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
-				Context.MODE_PRIVATE).getString
-				(RoomiesConstants.NAME, null);
 		String selection = Room_Expenses.COLUMN_MONTH + " =? AND " + Room_Expenses.COLUMN_USERNAME + " =?";
 		String[] selectionArgs = {currentMonth, username};
 		Cursor cursor = mContext.getContentResolver().query(monthUri, projection, selection,
-				selectionArgs,
-				null);
+				selectionArgs, null);
 		return cursor;
 	}
 
 	@Override
-	public Cursor getRoomDetailsWithMargin(String username) {
+	public boolean getRoomDetailsWithMargin(String username) {
 		String[] projection = {Room_Expenses.COLUMN_MONTH,
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_RENT_MARGIN,
 				Room_Expenses.COLUMN_MAID, Room_Expenses.COLUMN_MAID_MARGIN,
@@ -134,7 +130,7 @@ public class RoomServiceImpl implements RoomService {
 		Cursor cursor = mContext.getContentResolver().query(monthUri, projection,
 				selection, selectionArgs, null);
 		cacheData(cursor);
-		return cursor;
+		return cursor.getCount() > 0 ? true : false;
 	}
 
 	@Override
@@ -174,38 +170,12 @@ public class RoomServiceImpl implements RoomService {
 			roomBudgets.add(room);
 			cursor.moveToNext();
 		}
-
-      /*  while (!cursor.isAfterLast()) {
-	        RoomBudget roomBudget = new RoomBudget();
-	        roomBudget.setMonth(
-                    cursor.getString(cursor.getColumnIndex(Room_Expenses.COLUMN_MONTH)));
-            roomBudget.setRent(cursor.getFloat(cursor.getColumnIndex(Room_Expenses.COLUMN_RENT)));
-            roomBudget.setElectricity(cursor.getFloat(cursor.getColumnIndex(Room_Expenses
-                    .COLUMN_ELECTRICITY)));
-            roomBudget.setMaid(cursor.getFloat(cursor.getColumnIndex(Room_Expenses.COLUMN_MAID)));
-            roomBudget.setMiscellaneous(cursor.getFloat(cursor.getColumnIndex(Room_Expenses
-                    .COLUMN_MISCELLANEOUS)));
-            roomBudget.setRent_margin(cursor.getFloat(cursor.getColumnIndex(Room_Expenses
-                    .COLUMN_RENT_MARGIN)));
-            roomBudget.setMaid_margin(cursor.getFloat(cursor.getColumnIndex(Room_Expenses
-                    .COLUMN_MAID_MARGIN)));
-            roomBudget.setElectricity_margin(cursor.getFloat(cursor.getColumnIndex(Room_Expenses
-                    .COLUMN_ELECTRICITY_MARGIN)));
-            roomBudget.setMiscellaneous_margin(cursor.getFloat(cursor.getColumnIndex(Room_Expenses
-                    .COLUMN_MISCELLANEOUS_MARGIN)));
-            cursor.moveToNext();
-	        roomBudgetList.add(roomBudget);
-	        roomBudget=null;
-        }*/
 		return roomBudgets;
 	}
 
 	@Override
-	public float getTotalSpent() {
+	public float getTotalSpent(String username) {
 		float total = 0f;
-		String username = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
-				Context.MODE_PRIVATE).getString
-				(RoomiesConstants.NAME, null);
 		String roomAlias = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
 				Context.MODE_PRIVATE).getString(ROOM_ALIAS, null);
 		String projection[] = {Room_Expenses.COLUMN_TOTAL};
@@ -226,7 +196,7 @@ public class RoomServiceImpl implements RoomService {
 	private void cacheData(Cursor cursor) {
 		SharedPreferences sharedPreferences = mContext.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
 				Context.MODE_PRIVATE);
-		if (cursor != null) {
+		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			mEditor = sharedPreferences.edit();
 			float rent_margin = cursor.getFloat(cursor.getColumnIndex(Room_Expenses
@@ -330,7 +300,38 @@ public class RoomServiceImpl implements RoomService {
 			count = mContext.getContentResolver().update(monthUri, values, selection,
 					selectionArgs);
 		}
-
 		return count > 0 ? true : false;
+	}
+
+	@Override
+	public boolean isUserSaved(String username) {
+		boolean isUserSaved = false;
+		String[] projection = {Room_Expenses.COLUMN_MONTH};
+		String selection = Room_Expenses.COLUMN_USERNAME + " =?";
+		String[] selectionArgs = {username};
+		Cursor cursor = mContext.getContentResolver().query(monthUri, projection,
+				selection, selectionArgs, null);
+		List<String> months = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			isUserSaved=true;
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				months.add(cursor.getString(cursor.getColumnIndex(Room_Expenses.COLUMN_MONTH)));
+				cursor.moveToNext();
+			}
+			SharedPreferences.Editor mEditor=mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+					Context.MODE_PRIVATE).edit();
+			mEditor.putString(RoomiesConstants.PREVIOUS_MONTH,months.get(months.size()-1));
+			mEditor.apply();
+		}
+		return isUserSaved;
+	}
+
+	@Override
+	public void getSpecificMonthDetails(String username, String month){
+		currentMonth=month;
+		getRoomDetailsWithMargin(username);
+		currentMonth = new DateFormatSymbols().getMonths()[Calendar
+				.getInstance().get(Calendar.MONTH)];
 	}
 }

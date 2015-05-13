@@ -23,6 +23,7 @@
 	       parent="@style/Theme.AppCompat.Light"
 	       tools:ignore="NewApi">
 
+
 		<!-- N A V I G A T I O N  D R A W E R-->
 		<item name="colorPrimary">@color/primary</item>
 		<item name="colorPrimaryDark">@color/primary_dark</item>
@@ -30,7 +31,11 @@
 		<item name="windowActionBar">false</item>
 		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
+
 		<!--S U P P O R T  L I B R A R Y  C O M P A T I B L I T Y-->
+
+		<item name="android:windowTranslucentStatus">true</item>
+		<!--<item name="android:statusBarColor">@color/primary_dark</item>-->
 		<item name="actionBarItemBackground">@drawable/selectable_background_roomies</item>
 		<item name="popupMenuStyle">@style/PopupMenu.Roomies</item>
 		<item name="dropDownListViewStyle">@style/DropDownListView.Roomies</item>

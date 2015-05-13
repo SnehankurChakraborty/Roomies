@@ -1,6 +1,7 @@
 package com.phaseii.rxm.roomies.activity;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -37,6 +38,7 @@ public class LoginActivity extends RoomiesBaseActivity {
 
 	private static final int PROFILE_PIC_SIZE = 400;
 	private Toast mToast;
+	private boolean isStop = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,33 +109,33 @@ public class LoginActivity extends RoomiesBaseActivity {
 	}
 
 	public void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException {
-		UserService userService = new UserServiceImpl(this);
 		RoomService room = new RoomServiceImpl(this);
-		String password = RoomiesConstants.DUMMY_PASSWORD;
-		if (null != password && password.equals(userService.getPassword(user.getUsername()))) {
-			userService.retrieveUserData();
-			room.getRoomDetailsWithMargin(user.getUsername());
-			RoomiesHelper.startActivityHelper(this, getResources().getString(R
-					.string.HomeScreen_Activity), null, true);
+		SharedPreferences sharedPref = getSharedPreferences
+				(RoomiesConstants.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+		SharedPreferences.Editor mEditor = sharedPref.edit();
+		mEditor.putString(RoomiesConstants.NAME, user.getUsername());
+		mEditor.putString(RoomiesConstants.EMAIL_ID, user.getEmail());
+		mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
+		mEditor.putBoolean(RoomiesConstants.IS_GOOGLE_FB_LOGIN, true);
+
+		if (room.getRoomDetailsWithMargin(user.getEmail())) {
+			mEditor.putBoolean(RoomiesConstants.IS_SETUP_COMPLETED, true);
 		} else {
-			boolean isUserRegistered = userService.registerAuthenticatedUser(user.getUsername(),
-					user.getEmail());
-			if (isUserRegistered) {
-				SharedPreferences sharedPref = getSharedPreferences
-						(RoomiesConstants.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-				SharedPreferences.Editor mEditor = sharedPref.edit();
-				mEditor.putString(RoomiesConstants.NAME, user.getUsername());
-				mEditor.putString(RoomiesConstants.EMAIL_ID, user.getEmail());
-				mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
-				mEditor.apply();
-				try {
-					RoomiesConstants.googleApiClient = mGoogleApiClient;
-					RoomiesHelper.startActivityHelper(this, getResources()
-							.getString(R.string.HomeScreen_Activity), null, true);
-				} catch (RoomXpnseMngrException e) {
-					RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
-				}
+			if (room.isUserSaved(user.getEmail())) {
+				mEditor.putBoolean(RoomiesConstants.IS_SETUP_COMPLETED, true);
+				room.getSpecificMonthDetails(user.getEmail(), sharedPref.getString(RoomiesConstants
+						.PREVIOUS_MONTH, null));
+				room.getTotalSpent(user.getEmail());
 			}
+		}
+		mEditor.apply();
+		RoomiesHelper.startActivityHelper(this, getResources().getString(R
+				.string.HomeScreen_Activity), null, true);
+		try {
+			RoomiesHelper.startActivityHelper(this, getResources()
+					.getString(R.string.HomeScreen_Activity), null, true);
+		} catch (RoomXpnseMngrException e) {
+			RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
 		}
 	}
 
@@ -174,8 +176,6 @@ public class LoginActivity extends RoomiesBaseActivity {
 						+ PROFILE_PIC_SIZE;
 				File imgProfilePic = new File(getFilesDir(),
 						personName + getResources().getString(R.string.PROFILEJPG));
-
-
 				new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
 
 			} else {
@@ -216,6 +216,7 @@ public class LoginActivity extends RoomiesBaseActivity {
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 				fos.flush();
 				fos.close();
+				isStop = true;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

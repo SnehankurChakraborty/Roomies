@@ -44,6 +44,6 @@
 		android:layout_height="80dp"
 		android:layout_marginLeft="16dp"
 		android:layout_marginTop="38dp"
-		android:src="@drawable/user_back"
+		android:src="@drawable/ic_user_filled"
 		android:id="@+id/profileFrame"/>
 </RelativeLayout>

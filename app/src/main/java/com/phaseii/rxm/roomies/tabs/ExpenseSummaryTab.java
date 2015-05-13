@@ -30,6 +30,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+
 /**
  * Created by Snehankur on 4/18/2015.
  */
@@ -64,7 +68,18 @@ public class ExpenseSummaryTab extends RoomiesFragment {
         BarChart barChart = (BarChart) rootView.findViewById(R.id.summary);
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<BarEntry> entries = new ArrayList<>();
-        List<MiscExpense> miscExpenses = miscService.getCurrentTotalMiscExpense();
+
+	    String username = getActivity().getSharedPreferences(ROOM_INFO_FILE_KEY,
+			    Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+
+	    boolean isGoogleFBLogin = getActivity().getSharedPreferences
+			    (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
+	    if (isGoogleFBLogin) {
+		    username = getActivity().getSharedPreferences
+				    (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
+	    }
+
+        List<MiscExpense> miscExpenses = miscService.getCurrentTotalMiscExpense(username);
         float grocery = 0f;
         float vegetables = 0f;
         float others = 0f;

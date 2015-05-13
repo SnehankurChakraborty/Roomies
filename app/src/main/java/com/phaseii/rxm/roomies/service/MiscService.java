@@ -13,7 +13,7 @@ public interface MiscService {
 	public void insertMiscExpenses(EditText description, EditText quantity, EditText amount,
 	                        String type, String username);
 
-	public List<MiscExpense> getCurrentTotalMiscExpense();
+	public List<MiscExpense> getCurrentTotalMiscExpense(String username);
 
 	public List<String> getMiscMonths(String username);
 

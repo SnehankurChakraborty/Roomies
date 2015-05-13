@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.RoomService;
 import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 
@@ -25,11 +26,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 
 public class CurrentBudgetStatus extends RoomiesFragment
@@ -133,13 +137,10 @@ public class CurrentBudgetStatus extends RoomiesFragment
 		mChart.animateXY(1000, 1000);
 		mChart.setDrawCenterText(true);
 
-		mChart.setCenterText(status+ " % Availaible");
+		mChart.setCenterText(status + " % Availaible");
 		mChart.setDescription("");
 		mChart.setClickable(true);
-		/*mChart.setHoleColor(getResources().getColor(R.color.secondary));*/
 		mChart.getLegend().setEnabled(false);
-	    /*mChart.setBackgroundColor(getResources().getColor(R.color.secondary));
-		mChart.setCenterTextColor(Color.WHITE);*/
 		return mChart;
 	}
 
@@ -153,6 +154,16 @@ public class CurrentBudgetStatus extends RoomiesFragment
 
 	private float getSpentDetails() {
 		RoomService roomService = new RoomServiceImpl(getActivity().getBaseContext());
-		return roomService.getTotalSpent();
+		String username = getActivity().getSharedPreferences(ROOM_INFO_FILE_KEY,
+				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+		
+		boolean isGoogleFBLogin = getActivity().getSharedPreferences
+				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
+		if (isGoogleFBLogin) {
+			username = getActivity().getSharedPreferences
+					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
+		}
+
+		return roomService.getTotalSpent(username);
 	}
 }
