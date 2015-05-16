@@ -10,7 +10,8 @@
 		android:layout_marginTop="10dp"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
-		android:layout_marginBottom="10dp">
+		android:layout_marginBottom="10dp"
+		android:elevation="8dp">
 
 		<com.github.mikephil.charting.charts.PieChart
 			android:id="@+id/pie_expense_report"

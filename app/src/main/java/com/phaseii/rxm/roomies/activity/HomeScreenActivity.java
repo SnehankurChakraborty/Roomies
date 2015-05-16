@@ -1,11 +1,13 @@
 package com.phaseii.rxm.roomies.activity;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -226,10 +228,12 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public void nextFragment(Fragment fragment, String tag) {
 		transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
+		mtoolbar.setElevation(0);
 		if (!(fragment instanceof HomeFragment)) {
 			title.setVisibility(View.INVISIBLE);
 			addExpenseButton.setVisibility(View.GONE);

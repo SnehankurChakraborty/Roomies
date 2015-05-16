@@ -28,4 +28,6 @@ public interface RoomService {
 	boolean isUserSaved(String username);
 
 	void getSpecificMonthDetails(String username, String month);
+
+	List<RoomBudget> getSpecificMonthRoomBudget(String username, List<String> months);
 }

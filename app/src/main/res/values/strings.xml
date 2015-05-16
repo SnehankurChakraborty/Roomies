@@ -89,5 +89,6 @@
 	<string name="ok">OK</string>
 	<string name="hello_user">Hello %1$s!</string>
 	<string name="success">Success</string>
-
+	<string name="join_message">We are currently working on this option. It would be available in the next update. For now please select "create a room option".</string>
+	<string name="join_title">Available in next update</string>
 </resources>

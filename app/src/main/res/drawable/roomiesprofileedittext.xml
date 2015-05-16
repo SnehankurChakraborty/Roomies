@@ -2,15 +2,15 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<!--<item android:drawable="@drawable/ic_rent_selected"
-		android:right="40dp">
-		<shape android:shape="rectangle"></shape>
+<!--<item android:drawable="@drawable/ic_rent_selected"
+	android:right="40dp">
+	<shape android:shape="rectangle"></shape>
 
-	</item>-->
+</item>-->
 
-	<item
-		android:drawable="@android:color/transparent">
-		<shape android:shape="rectangle"></shape>
-	</item>
+<item
+	android:drawable="@android:color/transparent">
+	<shape android:shape="rectangle"></shape>
+</item>
 
 </layer-list>

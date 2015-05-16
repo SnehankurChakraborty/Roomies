@@ -25,7 +25,6 @@
 			android:layout_height="100dp"
 			android:background="@drawable/join_room"
 			android:layout_gravity="center"
-
 			android:onClick="joinRoomSelected"/>
 
 		<TextView

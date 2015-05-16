@@ -1,6 +1,8 @@
 package com.phaseii.rxm.roomies.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,8 +26,26 @@ import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
-
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ELECTRICITY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MAID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MISC;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NAME;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_RENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_ROOM_EXPENSE;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_ROOM_INFO;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.replaceFragment;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.setError;
@@ -84,7 +105,17 @@ public class GetStartedWizard extends FragmentActivity {
 	}
 
 	public void joinRoomSelected(View view) {
-
+		AlertDialog.Builder builder = new AlertDialog.Builder(getApplication());
+		builder.setMessage(R.string.join_message)
+				.setTitle(R.string.join_title).setPositiveButton("ok",new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog dialog = builder.create();
+		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		dialog.show();
 	}
 
 	public void createRoomSelected(View view) {

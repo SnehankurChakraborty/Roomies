@@ -38,20 +38,20 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY
  */
 public class AddExpenseDialog extends DialogFragment implements DialogInterface.OnShowListener {
 
-	Context mContext;
-	ArrayAdapter<CharSequence> mCategoryAdapter;
-	ArrayAdapter<CharSequence> mSubCategoryAdapter;
+	private Context mContext;
+	private ArrayAdapter<CharSequence> mCategoryAdapter;
+	private ArrayAdapter<CharSequence> mSubCategoryAdapter;
 
-	String category = RoomiesConstants.MISCELLANEOUS;
-	String subCategory = RoomiesConstants.OTHERS;
-	EditText amount;
-	EditText description;
-	EditText quantity;
-	Button positive;
-	Button negative;
-	RadioGroup quantityRadio;
-	static int pagerId;
-	String username;
+	private String category = RoomiesConstants.MISCELLANEOUS;
+	private String subCategory = RoomiesConstants.OTHERS;
+	private EditText amount;
+	private EditText description;
+	private EditText quantity;
+	private Button positive;
+	private Button negative;
+	private RadioGroup quantityRadio;
+	private static int pagerId;
+	private String username;
 
 
 	public static AddExpenseDialog getInstance(int pagerId) {
@@ -115,16 +115,6 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					}
 				} else {
 					miscellaneous.setChecked(true);
-/*
-					if (description.getVisibility() == View.VISIBLE) {
-						description.setVisibility(View.GONE);
-					}
-					if (quantity.getVisibility() == View.VISIBLE) {
-						quantity.setVisibility(View.GONE);
-					}
-					if (miscRow.getVisibility() == View.VISIBLE) {
-						miscRow.setVisibility(View.GONE);
-					}*/
 				}
 			}
 		});
@@ -329,54 +319,6 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 				}
 			}
 		});
-
-
-		/*	@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-			                           int position, long id) {
-				category = (String) parent.getItemAtPosition(position);
-				String categories[] = getResources().getStringArray(R.array.category);
-				if (!category.equals(categories[categories.length - 1])) {
-					subCategorySpinner.setEnabled(false);
-					description.setEnabled(false);
-					quantity.setEnabled(false);
-					TextView descriptionError = (TextView) dialogView.findViewById(R.id
-							.description_error);
-					if (descriptionError.getVisibility() == View.VISIBLE) {
-						descriptionError.setVisibility(View.INVISIBLE);
-					}
-					TextView quantityError = (TextView) dialogView.findViewById(R.id
-							.quantity_error);
-					if (quantityError.getVisibility() == View.VISIBLE) {
-						quantityError.setVisibility(View.INVISIBLE);
-					}
-				} else {
-					subCategorySpinner.setEnabled(true);
-					description.setEnabled(true);
-					quantity.setEnabled(true);
-				}
-
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-		});*/
-
-
-		/*
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-			                           int position, long id) {
-				subCategory = (String) parent.getItemAtPosition(position);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-		});*/
 
 		positive = (Button) dialogView.findViewById(R.id.positiveButton);
 		negative = (Button) dialogView.findViewById(R.id.negativeButton);

@@ -278,7 +278,8 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="kg"
-						android:textColor="@color/secondary_text"/>
+						android:textColor="@color/secondary_text"
+						android:checked="true"/>
 
 					<RadioButton
 						android:layout_width="wrap_content"
@@ -356,6 +357,4 @@
 				android:id="@+id/positiveButton"/>
 		</TableRow>
 	</TableLayout>
-
-
 </RelativeLayout>

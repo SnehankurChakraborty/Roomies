@@ -63,7 +63,7 @@
 			android:name="com.facebook.sdk.ApplicationId"
 			android:value="@string/facebook_app_id"/>
 	</application>
-
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 	<uses-permission android:name="android.permission.USE_CREDENTIALS"/>

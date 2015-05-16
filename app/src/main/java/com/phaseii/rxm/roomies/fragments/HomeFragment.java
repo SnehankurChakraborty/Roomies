@@ -34,7 +34,7 @@ public class HomeFragment extends RoomiesFragment{
 		tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
 			@Override
 			public int getIndicatorColor(int position) {
-				return getResources().getColor(R.color.material_deep_teal_200);
+				return getResources().getColor(R.color.primary_dark);
 			}
 		});
 		tabs.setViewPager(pager);
