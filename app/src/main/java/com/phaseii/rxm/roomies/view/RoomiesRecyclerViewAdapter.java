@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
@@ -98,6 +99,7 @@ public class RoomiesRecyclerViewAdapter
 						mEditor.apply();
 						try {
 							((HomeScreenActivity)mContext).revokeGplusAccess();
+							LoginManager.getInstance().logOut();
 							RoomiesHelper.startActivityHelper(mContext,
 									mContext.getResources()
 											.getString(R.string.HomeScreen_Activity), null, true);

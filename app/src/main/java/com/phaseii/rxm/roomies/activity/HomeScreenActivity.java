@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,9 +26,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.facebook.login.LoginResult;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.dialogs.AddExpenseDialog;
+import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.SavingsFragment;
 import com.phaseii.rxm.roomies.fragments.TrendFragment;
@@ -153,14 +153,15 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 		}
 	}
 
+
 	@Override
 	public void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException {
 
 	}
 
 	@Override
-	public User getProfileInformation() {
-		return null;
+	public void getProfileInformation(LoginResult loginResult) {
+
 	}
 
 	@Override

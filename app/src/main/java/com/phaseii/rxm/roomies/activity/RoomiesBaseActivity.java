@@ -3,34 +3,53 @@ package com.phaseii.rxm.roomies.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
-import com.google.gson.Gson;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
 /**
  * Created by Snehankur on 5/10/2015.
  */
 public abstract class RoomiesBaseActivity extends ActionBarActivity
-		implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+		implements GoogleApiClient.ConnectionCallbacks,
+		GoogleApiClient.OnConnectionFailedListener, FacebookCallback<LoginResult> {
 	public GoogleApiClient mGoogleApiClient;
 	public boolean mIntentInProgress;
 	public boolean mSignInClicked;
 	public ProgressDialog mConnectionProgressDialog;
 	public int RC_SIGN_IN = 0;
 	public Toast mToast;
+	public LoginButton loginButton;
+	private CallbackManager callbackManager;
+	private AccessTokenTracker accessTokenTracker;
+	public LoginType loginType;
+	private ProfileTracker mProfileTracker;
+
+	public enum LoginType {
+		GOOGLE,
+		FACEBOOK
+	}
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +60,40 @@ public abstract class RoomiesBaseActivity extends ActionBarActivity
 				.addApi(Plus.API)
 				.addScope(Plus.SCOPE_PLUS_LOGIN)
 				.build();
+		FacebookSdk.sdkInitialize(this.getApplicationContext());
+
+		callbackManager = CallbackManager.Factory.create();
+		LoginManager.getInstance().registerCallback(callbackManager,this);
+		accessTokenTracker = new AccessTokenTracker() {
+			@Override
+			protected void onCurrentAccessTokenChanged(
+					AccessToken oldAccessToken,
+					AccessToken currentAccessToken) {
+				Profile.fetchProfileForCurrentAccessToken();
+			}
+		};
+	}
+
+	@Override
+	public void onSuccess(LoginResult loginResult) {
+		loginType = LoginType.FACEBOOK;
+
+		mProfileTracker = new ProfileTracker() {
+			@Override
+			protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+				mProfileTracker.stopTracking();
+			}
+		};
+		mProfileTracker.startTracking();
+	}
+
+	@Override
+	public void onCancel() {
+
+	}
+
+	@Override
+	public void onError(FacebookException error) {
 
 	}
 
@@ -55,11 +108,12 @@ public abstract class RoomiesBaseActivity extends ActionBarActivity
 		if (null != mConnectionProgressDialog) {
 			mConnectionProgressDialog.dismiss();
 		}
+		loginType = LoginType.GOOGLE;
 	}
 
 	public abstract void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException;
 
-	public abstract User getProfileInformation();
+	public abstract void getProfileInformation(LoginResult loginResult);
 
 	@Override
 	public void onConnectionSuspended(int i) {
@@ -114,6 +168,8 @@ public abstract class RoomiesBaseActivity extends ActionBarActivity
 						"Logging In", true);
 				mGoogleApiClient.reconnect();
 			}
+		} else {
+			callbackManager.onActivityResult(requestCode, resultCode, data);
 		}
 	}
 
@@ -130,6 +186,15 @@ public abstract class RoomiesBaseActivity extends ActionBarActivity
 	public class User {
 		private String username;
 		private String email;
+		private String id;
+
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
 
 		public String getUsername() {
 			return username;

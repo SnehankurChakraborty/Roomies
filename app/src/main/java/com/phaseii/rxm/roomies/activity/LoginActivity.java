@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -28,22 +33,27 @@ import com.phaseii.rxm.roomies.service.RoomServiceImpl;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class LoginActivity extends RoomiesBaseActivity {
 
 	private static final int PROFILE_PIC_SIZE = 400;
 	private Toast mToast;
-	private boolean isStop = false;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+		loginButton.setReadPermissions(Arrays.asList("public_profile, email"));
 		final View loginPage = findViewById(R.id.login_page);
 		Button submit = (Button) findViewById(R.id.submit);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -142,50 +152,91 @@ public class LoginActivity extends RoomiesBaseActivity {
 	@Override
 	public void onConnected(Bundle bundle) {
 		super.onConnected(bundle);
-		User user = getProfileInformation();
-		try {
-			setUpAuthenticatedUser(user);
-		} catch (RoomXpnseMngrException e) {
-			RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
-		}
+		getProfileInformation(null);
+
 	}
 
-	public User getProfileInformation() {
+	@Override
+	public void onSuccess(LoginResult loginResult) {
+		super.onSuccess(loginResult);
+		getProfileInformation(loginResult);
+	}
+
+	@Override
+	public void getProfileInformation(LoginResult loginResult) {
 		User user = null;
-		try {
-			if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-				user = new User();
-				Person currentPerson = currentPerson = Plus.PeopleApi
-						.getCurrentPerson(mGoogleApiClient);
-				String personName = currentPerson.getDisplayName();
-				String personPhotoUrl = currentPerson.getImage().getUrl();
-				String personGooglePlusProfile = currentPerson.getUrl();
-				String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-				user.setUsername(personName);
-				user.setEmail(email);
-				/*Log.e(TAG, "Name: " + personName + ", plusProfile: "
-						+ personGooglePlusProfile + ", email: " + email
-						+ ", Image: " + personPhotoUrl);*/
+		if (loginType != LoginType.FACEBOOK) {
 
+			try {
+				if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+					user = new User();
+					Person currentPerson = currentPerson = Plus.PeopleApi
+							.getCurrentPerson(mGoogleApiClient);
+					String personName = currentPerson.getDisplayName();
+					String personPhotoUrl = currentPerson.getImage().getUrl();
+					String personGooglePlusProfile = currentPerson.getUrl();
+					String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+					user.setUsername(personName);
+					user.setEmail(email);
+					personPhotoUrl = personPhotoUrl.substring(0,
+							personPhotoUrl.length() - 2)
+							+ PROFILE_PIC_SIZE;
+					File imgProfilePic = new File(getFilesDir(),
+							personName + getResources().getString(R.string.PROFILEJPG));
+					new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+					try {
+						setUpAuthenticatedUser(user);
+					} catch (RoomXpnseMngrException e) {
+						RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+					}
 
-				// by default the profile url gives 50x50 px image only
-				// we can replace the value with whatever dimension we want by
-				// replacing sz=X
-				personPhotoUrl = personPhotoUrl.substring(0,
-						personPhotoUrl.length() - 2)
-						+ PROFILE_PIC_SIZE;
-				File imgProfilePic = new File(getFilesDir(),
-						personName + getResources().getString(R.string.PROFILEJPG));
-				new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+				} else {
+					Toast.makeText(getApplicationContext(),
+							"Person information is null", Toast.LENGTH_LONG).show();
+				}
+			} catch (Exception e) {
 
-			} else {
-				Toast.makeText(getApplicationContext(),
-						"Person information is null", Toast.LENGTH_LONG).show();
 			}
-		} catch (Exception e) {
+		} else {
 
+			final AccessToken accessToken = loginResult.getAccessToken();
+			final User fbUser = new User();
+			mConnectionProgressDialog = ProgressDialog.show(this, "Facebook Log In",
+					"Logging In...", true);
+			GraphRequest request = GraphRequest.newMeRequest(
+					accessToken,
+					new GraphRequest.GraphJSONObjectCallback() {
+						@Override
+						public void onCompleted(
+								JSONObject user,
+								GraphResponse response) {
+							fbUser.setUsername(user.optString("name"));
+							fbUser.setEmail(user.optString("email"));
+							fbUser.setId(user.optString("id"));
+							File imgProfilePic = new File(getFilesDir(),
+									fbUser.getUsername() + getResources().getString(
+											R.string.PROFILEJPG));
+							String personPhotoUrl =
+									"https://graph.facebook.com/" + fbUser.getId() +
+											"/picture?width=10000&height=10000";
+							new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+							if (null != mConnectionProgressDialog) {
+								mConnectionProgressDialog.dismiss();
+							}
+							try {
+								setUpAuthenticatedUser(fbUser);
+							} catch (RoomXpnseMngrException e) {
+								RoomiesHelper.createToast(LoginActivity.this,
+										RoomiesConstants.APP_ERROR, mToast);
+							}
+						}
+					});
+			Bundle parameters = new Bundle();
+			parameters.putString("fields", "id,name,email,link");
+			request.setParameters(parameters);
+			request.executeAsync();
 		}
-		return user;
+
 	}
 
 	private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
@@ -216,7 +267,6 @@ public class LoginActivity extends RoomiesBaseActivity {
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 				fos.flush();
 				fos.close();
-				isStop = true;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
