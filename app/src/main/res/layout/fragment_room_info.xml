@@ -28,9 +28,9 @@
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="Room Name"
+				android:hint="Room Name (max 10 chars)"
 				android:id="@+id/room_name"
-				android:maxLength="20"
+				android:maxLength="10"
 				android:textColorHint="@color/white"
 				android:textColor="@color/white"
 				style="@style/EditTextRoomies"/>
@@ -54,9 +54,9 @@
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="No of members"
+				android:hint="No of members (max 9)"
 				android:id="@+id/no_of_members"
-				android:maxLength="2"
+				android:maxLength="1"
 				android:inputType="number"
 				android:textColorHint="@color/white"
 				android:textColor="@color/white"

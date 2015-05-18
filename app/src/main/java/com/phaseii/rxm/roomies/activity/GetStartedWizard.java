@@ -167,8 +167,8 @@ public class GetStartedWizard extends FragmentActivity {
 				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = mSharedPref.edit();
 
-		mEditor.putString("ROOM_ALIAS", roomName.getText().toString());
-		mEditor.putString("ROOM_NO_OF_MEMBERS", noOfMembers.getText().toString());
+		mEditor.putString(RoomiesConstants.ROOM_ALIAS, roomName.getText().toString());
+		mEditor.putString(RoomiesConstants.ROOM_NO_OF_MEMBERS, noOfMembers.getText().toString());
 		mEditor.putBoolean(IS_LOGGED_IN, true);
 		float total = Float.valueOf(rent.getText().toString()) + Float.valueOf(maid.getText()
 				.toString()) + Float.valueOf(electricity.getText().toString()) + Float.valueOf(

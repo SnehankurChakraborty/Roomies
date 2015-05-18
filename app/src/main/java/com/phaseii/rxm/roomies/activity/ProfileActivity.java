@@ -64,17 +64,27 @@ public class ProfileActivity extends ActionBarActivity {
 	private SharedPreferences.Editor mEditor;
 	private SharedPreferences mSharedPreferences;
 	private boolean isGoogleFBLogin;
+	private Toolbar mToolbar;
+	private int currentApiVersion;
+	private UserService userService;
+	private RoomService roomService;
+	private MiscService miscService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+		currentApiVersion = Build.VERSION.SDK_INT;
+
+		userService = new UserServiceImpl(getBaseContext());
+		roomService = new RoomServiceImpl(getBaseContext());
+		miscService = new MiscServiceImpl(getBaseContext());
 
 		mSpannableString = new SpannableString("Profile");
 		mAlphaForegroundColorSpan = new AlphaForegroundColorSpan(0xFFFFFF);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		toolbar.setTitle("Profile");
-		setSupportActionBar(toolbar);
+		mToolbar = (Toolbar) findViewById(R.id.toolbar);
+		mToolbar.setTitle("Profile");
+		setSupportActionBar(mToolbar);
 		final ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.primary));
 		cd.setAlpha(0);
 		ActionBar actionBar = getSupportActionBar();
@@ -253,12 +263,11 @@ public class ProfileActivity extends ActionBarActivity {
 		field_save_button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
 				if (field_save_button.getVisibility() == View.VISIBLE) {
 					if (!TextUtils.isEmpty(field_edit.getText().toString().trim())) {
 						boolean isUpdateSuccessful = false;
-						UserService userService = new UserServiceImpl(getBaseContext());
-						RoomService roomService = new RoomServiceImpl(getBaseContext());
-						MiscService miscService = new MiscServiceImpl(getBaseContext());
+
 						switch (mode) {
 							case USER:
 
@@ -279,10 +288,18 @@ public class ProfileActivity extends ActionBarActivity {
 								}
 								break;
 							case ROOM:
-
-								isUpdateSuccessful = roomService.updateRoomMargins(username,
-										feildId,
-										field_edit.getText().toString());
+								if ("no_of_members".equals(feildId)) {
+									SharedPreferences.Editor mEditor = getSharedPreferences
+											(RoomiesConstants.ROOM_INFO_FILE_KEY,
+													MODE_PRIVATE).edit();
+									mEditor.putString(RoomiesConstants.ROOM_NO_OF_MEMBERS,
+											field_edit.getText().toString());
+									mEditor.apply();
+									isUpdateSuccessful = true;
+								} else {
+									isUpdateSuccessful = roomService.updateRoomMargins(username,
+											feildId, field_edit.getText().toString());
+								}
 
 								break;
 							default:
@@ -299,6 +316,9 @@ public class ProfileActivity extends ActionBarActivity {
 					field_edit.setVisibility(View.INVISIBLE);
 					field_edit_button.setVisibility(View.VISIBLE);
 					field_save_button.setVisibility(View.INVISIBLE);
+					if (currentApiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+						mToolbar.setVisibility(View.VISIBLE);
+					}
 				}
 			}
 		});
@@ -310,6 +330,9 @@ public class ProfileActivity extends ActionBarActivity {
 					field_edit.setVisibility(View.VISIBLE);
 					field_save_button.setVisibility(View.VISIBLE);
 					field_edit_button.setVisibility(View.INVISIBLE);
+					if (currentApiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+						mToolbar.setVisibility(View.GONE);
+					}
 				}
 			}
 		});

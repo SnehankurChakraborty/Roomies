@@ -19,7 +19,6 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -40,7 +39,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 public class LoginActivity extends RoomiesBaseActivity {
 
@@ -52,8 +50,8 @@ public class LoginActivity extends RoomiesBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
-		loginButton.setReadPermissions(Arrays.asList("public_profile, email"));
+		/*LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+		loginButton.setReadPermissions(Arrays.asList("public_profile, email"));*/
 		final View loginPage = findViewById(R.id.login_page);
 		Button submit = (Button) findViewById(R.id.submit);
 		submit.setOnClickListener(new View.OnClickListener() {

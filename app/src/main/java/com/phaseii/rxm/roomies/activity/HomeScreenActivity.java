@@ -233,7 +233,10 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 		transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
-		mtoolbar.setElevation(0);
+		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP){
+			mtoolbar.setElevation(0);
+		}
 		if (!(fragment instanceof HomeFragment)) {
 			title.setVisibility(View.INVISIBLE);
 			addExpenseButton.setVisibility(View.GONE);
@@ -247,7 +250,10 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 				mtoolbar.setTitle("Savings");
 				DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
 				int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-				mtoolbar.setElevation(px);
+				if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP){
+					mtoolbar.setElevation(px);
+				}
+
 			}
 
 		} else {

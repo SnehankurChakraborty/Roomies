@@ -272,19 +272,21 @@
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
 					style="@style/RadioButtonRoomies"
-					android:id="@+id/quantity_radio">
+					android:id="@+id/quantity_radio"
+					android:checkedButton="@+id/kg">
 
 					<RadioButton
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="kg"
-						android:textColor="@color/secondary_text"
-						android:checked="true"/>
+						android:id="@id/kg"
+						android:textColor="@color/secondary_text"/>
 
 					<RadioButton
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="pcs"
+						android:id="@+id/pcs"
 						android:textColor="@color/secondary_text"/>
 
 				</RadioGroup>
