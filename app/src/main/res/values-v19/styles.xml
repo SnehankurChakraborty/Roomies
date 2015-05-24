@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <resources>
-
-	<style name="ErrorButton">
-		<item name="android:visibility">invisible</item>
-		<item name="android:color">#f2f2f2</item>
-		<item name="android:text">@string/error_symbol</item>
-		<item name="android:background">@drawable/error_shape</item>
-		<item name="android:textSize">20sp</item>
-		<item name="android:textColor">#ffffff</item>
-	</style>
-
-	<style name="CustomActionBarTheme"
-	       parent="@style/Theme.AppCompat">
-		<item name="android:windowActionBarOverlay">true</item>
-	</style>
 
 	<style name="Theme.Roomies"
 	       parent="@style/Theme.AppCompat.Light">
@@ -28,9 +12,11 @@
 		<item name="windowActionBar">false</item>
 		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
+		<item name="android:windowTranslucentStatus">true</item>
+		<!--<item name="windowTranslucentStatus">true</item>-->
+
 		<item name="android:actionBarItemBackground">@drawable/selectable_background_roomies</item>
 		<item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_roomies</item>
-
 
 		<!--S U P P O R T  L I B R A R Y  C O M P A T I B L I T Y-->
 
@@ -60,5 +46,4 @@
 
 
 	</style>
-
 </resources>

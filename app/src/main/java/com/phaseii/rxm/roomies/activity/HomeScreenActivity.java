@@ -32,9 +32,9 @@ import com.facebook.login.LoginResult;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dialogs.AddExpenseDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
-import com.phaseii.rxm.roomies.fragments.SavingsFragment;
-import com.phaseii.rxm.roomies.fragments.TrendFragment;
+import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
@@ -64,7 +64,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	SharedPreferences mSharedPref;
 	RecyclerView.Adapter mRecylerAdapter;
 	FragmentTransaction transaction;
-	String drawerTitles[] = {"Home", "Trends", "Savings", "Profile", "Logout"};
+	String drawerTitles[] = {"Home", "Dashboard", "Stats", "Profile", "Logout"};
 	int drawerIcons[] = {R.drawable.ic_home,
 			R.drawable.ic_trend,
 			R.drawable.ic_savings_bank,
@@ -75,6 +75,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	String email;
 	ImageView addExpenseButton;
 	int profile = R.drawable.ic_camera;
+	final int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,11 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			checkSetupCompleted(name);
 			mtoolbar = (Toolbar) findViewById(R.id.toolbar);
 			mtoolbar.setTitle("");
+			DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+			int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+			if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP){
+				mtoolbar.setElevation(px);
+			}
 			/*mtoolbar.setPadding(0, getStatusBarHeight(), 0, 0);*/
 			if (mtoolbar != null) {
 				setSupportActionBar(mtoolbar);
@@ -233,7 +239,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 		transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
-		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 		if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP){
 			mtoolbar.setElevation(0);
 		}
@@ -244,16 +249,15 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 					RelativeLayout.LayoutParams.MATCH_PARENT,
 					RelativeLayout.LayoutParams.WRAP_CONTENT);
 			mtoolbar.setLayoutParams(params);
-			if (fragment instanceof TrendFragment) {
-				mtoolbar.setTitle("Trends");
-			} else if (fragment instanceof SavingsFragment) {
-				mtoolbar.setTitle("Savings");
+			if (fragment instanceof DashboardFragment) {
+				mtoolbar.setTitle("Dashboard");
 				DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
 				int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
 				if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP){
 					mtoolbar.setElevation(px);
 				}
-
+			} else if (fragment instanceof StatsFragment) {
+				mtoolbar.setTitle("Stats");
 			}
 
 		} else {
@@ -261,6 +265,11 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 					getResources().getDisplayMetrics());
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					RelativeLayout.LayoutParams.MATCH_PARENT, height);
+			DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+			int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+			if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP){
+				mtoolbar.setElevation(px);
+			}
 			mtoolbar.setLayoutParams(params);
 			mtoolbar.setTitle("");
 			title.setVisibility(View.VISIBLE);

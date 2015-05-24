@@ -14,7 +14,8 @@
 			layout="@layout/roomies_toolbar"
 			android:id="@+id/toolbar"
 			android:layout_height="150dip"
-			android:layout_width="match_parent"/>
+			android:layout_width="match_parent"
+			/>
 
 
 		<com.phaseii.rxm.roomies.view.BannerView

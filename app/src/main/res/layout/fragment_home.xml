@@ -4,22 +4,108 @@
                 android:layout_height="match_parent"
                 tools:context="com.phaseii.rxm.roomies.fragments.HomeFragment">
 
+	<android.support.v7.widget.CardView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/budget_layout"
+		android:layout_marginBottom="10dp"
+		android:elevation="8dp">
 
-<com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
-	android:id="@+id/tabs"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:elevation="8dp"
-	android:background="@color/primary"/>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/card_dark">
 
-<android.support.v4.view.ViewPager
-	android:id="@+id/pager"
-	android:layout_height="match_parent"
-	android:layout_width="match_parent"
-	android:layout_weight="1"
-	android:layout_marginTop="15dp"
-	android:elevation="8dp"
-	android:layout_below="@id/tabs"/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/month"
+				android:text="May 2015"
+				android:gravity="center"
+				android:background="@color/white"
+				android:textSize="10pt"
+				android:textColor="@color/card_dark"
+				android:layout_centerHorizontal="true"
+				android:layout_below="@+id/pie_current_budget"/>
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:paddingTop="16dp"
+				android:paddingBottom="16dp"
+				android:background="@color/white"
+				android:id="@+id/current_budget_details"
+				android:gravity="center_vertical"
+				android:layout_below="@id/month">
+
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:orientation="vertical">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="10,000"
+						android:textSize="20pt"
+						android:textColor="@color/card_dark"
+						android:layout_gravity="center"
+						android:id="@+id/spent_data"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Spent"
+						android:textSize="14sp"
+						android:layout_gravity="center"
+						android:textColor="@color/card_dark"
+						android:id="@+id/spent_label"/>
+				</LinearLayout>
+
+				<View
+					android:layout_width="1dp"
+					android:layout_height="80dp"
+					android:background="@color/secondary_text"
+					android:layout_gravity="center_vertical"/>
 
 
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:orientation="vertical"
+					android:gravity="center_vertical">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="10,000"
+						android:textSize="20pt"
+						android:textColor="@color/card_dark"
+						android:layout_gravity="center"
+						android:id="@+id/remaining_data"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Remaining"
+						android:textSize="14sp"
+						android:layout_gravity="center"
+						android:textColor="@color/card_dark"
+						android:id="@+id/remaining_label"/>
+				</LinearLayout>
+			</LinearLayout>
+
+			<com.github.mikephil.charting.charts.PieChart
+				android:id="@id/pie_current_budget"
+				android:layout_height="200dp"
+				android:layout_width="200dp"
+				android:layout_centerHorizontal="true"
+				android:layout_marginTop="10dp"
+				android:layout_marginBottom="10dp"
+				android:elevation="10dp" />
+		</RelativeLayout>
+	</android.support.v7.widget.CardView>
 </RelativeLayout>

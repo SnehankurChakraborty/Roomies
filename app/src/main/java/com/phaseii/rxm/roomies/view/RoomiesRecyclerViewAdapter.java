@@ -16,21 +16,21 @@ import com.facebook.login.LoginManager;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
-import com.phaseii.rxm.roomies.fragments.SavingsFragment;
-import com.phaseii.rxm.roomies.fragments.TrendFragment;
+import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
 import java.io.File;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DASHBOARD_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_EXPENDITURE_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SAVINGS_FRAGMENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TREND_FRAGMENT;
 
 /**
  * Created by Snehankur on 4/4/2015.
@@ -76,7 +76,7 @@ public class RoomiesRecyclerViewAdapter
 			this.itemView = itemView;
 			itemView.setClickable(true);
 			itemView.setOnClickListener(new View.OnClickListener() {
-			Toast mToast;
+				Toast mToast;
 
 				@Override
 				public void onClick(View v) {
@@ -98,7 +98,7 @@ public class RoomiesRecyclerViewAdapter
 						mEditor.clear();
 						mEditor.apply();
 						try {
-							((HomeScreenActivity)mContext).revokeGplusAccess();
+							((HomeScreenActivity) mContext).revokeGplusAccess();
 							LoginManager.getInstance().logOut();
 							RoomiesHelper.startActivityHelper(mContext,
 									mContext.getResources()
@@ -121,10 +121,10 @@ public class RoomiesRecyclerViewAdapter
 						}
 					} else if (pos == 2) {
 						((HomeScreenActivity) mContext).nextFragment(
-								new TrendFragment(), TREND_FRAGMENT);
+								DashboardFragment.getInstance(mContext), DASHBOARD_FRAGMENT);
 					} else if (pos == 3) {
 						((HomeScreenActivity) mContext).nextFragment(
-								new SavingsFragment(), SAVINGS_FRAGMENT);
+								new StatsFragment(), SAVINGS_FRAGMENT);
 					}
 				}
 			});

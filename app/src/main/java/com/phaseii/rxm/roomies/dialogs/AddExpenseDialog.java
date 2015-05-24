@@ -76,7 +76,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		description = (EditText) dialogView.findViewById(R.id.description);
 		amount = (EditText) dialogView.findViewById(R.id.amount);
 		quantity = (EditText) dialogView.findViewById(R.id.quantity);
-		quantityRadio=(RadioGroup)dialogView.findViewById(R.id.quantity_radio);
+		quantityRadio = (RadioGroup) dialogView.findViewById(R.id.quantity_radio);
 		final ToggleButton rent = (ToggleButton) dialogView.findViewById(R.id.rent_icon);
 		final ToggleButton electricity = (ToggleButton) dialogView.findViewById(
 				R.id.electricity_icon);
@@ -468,12 +468,8 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		RoomiesFragment fragment = (RoomiesFragment) getActivity().getSupportFragmentManager()
 				.getFragments().get(0);
 		if (fragment instanceof HomeFragment) {
-			((RoomiesFragment.UpdatableFragment) fragment.getChildFragmentManager().getFragments()
-					.get(0))
-					.update();
-			((RoomiesFragment.UpdatableFragment) fragment.getChildFragmentManager().getFragments().get
-					(1))
-					.update();
+			((RoomiesFragment.UpdatableFragment) fragment).update();
+			((RoomiesFragment.UpdatableFragment) fragment).update();
 		} else if (fragment instanceof DetailExpenseTab) {
 			((DetailExpenseTab) fragment).update();
 		}
@@ -491,8 +487,7 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 					Toast mToast;
 
 					@Override
-					public void onClick(DialogInterface dialogInterface,
-					                    int which) {
+					public void onClick(DialogInterface dialogInterface, int which) {
 						if ("rent".equalsIgnoreCase(category)) {
 							room.updateRoomExpenses(amount.getText().toString(),
 									null, null, username);

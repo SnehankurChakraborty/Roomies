@@ -1,9 +1,9 @@
-package com.phaseii.rxm.roomies.fragments;
-
+package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.RoomBudget;
 import com.phaseii.rxm.roomies.service.RoomService;
@@ -37,8 +38,10 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
-
-public class SavingsFragment extends RoomiesFragment {
+/**
+ * Created by Snehankur on 5/24/2015.
+ */
+public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
 
 	private RoomService roomService;
 	private Context mContext;
@@ -60,20 +63,28 @@ public class SavingsFragment extends RoomiesFragment {
 	private Button previous;
 	private Button next;
 
-
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+	public View getFragmentView() {
+		return rootView;
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
+	public void update() {
+
+	}
+
+	public static LastMonthsTab getInstance() {
+		return new LastMonthsTab();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+	                         @Nullable Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.last_months_tab, container, false);
 		mContext = getActivity().getBaseContext();
 		rowColor = getResources().getColor(R.color.primary_light);
 		altRowColor = getResources().getColor(R.color.accent_light);
-		rootView = inflater.inflate(R.layout.fragment_savings, container, false);
+		rootView = inflater.inflate(R.layout.last_months_tab, container, false);
 		previous = (Button) rootView.findViewById(R.id.previous);
 		next = (Button) rootView.findViewById(R.id.next);
 		rentTable = (TableLayout) rootView.findViewById(R.id.rent_table);
@@ -117,11 +128,10 @@ public class SavingsFragment extends RoomiesFragment {
 			}
 		});
 		return rootView;
-
 	}
 
 	public void createBarChart(int currentMonth) {
-		HorizontalBarChart barChart = (HorizontalBarChart) rootView.findViewById(R.id.savings);
+		BarChart barChart = (BarChart) rootView.findViewById(R.id.savings);
 		ArrayList<String> labels = new ArrayList<>();
 		ArrayList<BarEntry> rentEntries = new ArrayList<>();
 		ArrayList<BarEntry> maidEntries = new ArrayList<>();
@@ -356,9 +366,4 @@ public class SavingsFragment extends RoomiesFragment {
 	}
 
 
-	@Override
-	public View getFragmentView() {
-		return rootView;
-	}
 }
-

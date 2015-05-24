@@ -119,44 +119,54 @@ public class CurrentBudgetStatus extends RoomiesFragment
 		ArrayList<String> labels = new ArrayList<String>();
 		float total = rent + maid + electricity + misc;
 		float spent = getSpentDetails();
-		entries.add(new Entry(total - spent, 0));
-		labels.add("Remaining");
-		entries.add(new Entry(spent, 1));
+		float status = getPercentageLeft(total, spent);
+		entries.add(new Entry(total - spent, 1));
+		if (status < 0) {
+			labels.add("Overflow");
+		} else {
+			labels.add("Remaining");
+		}
+		entries.add(new Entry(spent, 0));
 		labels.add("Spent");
 		PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
 		PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
-		String status = getPercentageLeft(total, spent);
-		if (Float.valueOf(status) < 0) {
+
+		if (status < 0) {
 			dataSet.setColors(ROOMIES_RAG_REVERSE_COLORS);
 		} else {
 			dataSet.setColors(ROOMIES_RAG_COLORS);
 		}
-		dataSet.setValueTextColor(Color.WHITE);
+		dataSet.setDrawValues(false);
 		PieData data = new PieData(labels, dataSet);
+
 		mChart.setData(data);
 		mChart.animateXY(1000, 1000);
 		mChart.setDrawCenterText(true);
-
-		mChart.setCenterText(status + " % Availaible");
+		mChart.setCenterText(String.valueOf((int) status));
+		mChart.setCenterTextColor(Color.GREEN);
+		mChart.setHoleColor(getResources().getColor(R.color.card_dark));
+		mChart.setCenterTextSize(50);
+		mChart.setRotationEnabled(false);
 		mChart.setDescription("");
 		mChart.setClickable(true);
+		mChart.setDrawSliceText(false);
 		mChart.getLegend().setEnabled(false);
 		return mChart;
 	}
 
-	private String getPercentageLeft(float total, float spent) {
+	private float getPercentageLeft(float total, float spent) {
 		float percent = 100f;
 		if (spent > 0) {
 			percent = 100 - ((spent / total) * 100);
 		}
-		return String.valueOf(percent);
+		return percent;
 	}
 
 	private float getSpentDetails() {
 		RoomService roomService = new RoomServiceImpl(getActivity().getBaseContext());
 		String username = getActivity().getSharedPreferences(ROOM_INFO_FILE_KEY,
 				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
-		
+
 		boolean isGoogleFBLogin = getActivity().getSharedPreferences
 				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
 		if (isGoogleFBLogin) {
