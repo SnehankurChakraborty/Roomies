@@ -7,14 +7,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.MiscExpense;
+import com.phaseii.rxm.roomies.model.SortType;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
 import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
 import com.phaseii.rxm.roomies.view.ScrollableLayoutManager;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
@@ -27,6 +35,8 @@ public class DashboardFragment extends RoomiesFragment
 	private RecyclerView recyclerView;
 	private List<MiscExpense> miscExpenses;
 	private static Context mContext;
+	private RecyclerView.Adapter adapter;
+	private LinearLayout sortFilterTab;
 
 	public static DashboardFragment getInstance(Context mContext) {
 		DashboardFragment.mContext = mContext;
@@ -48,21 +58,7 @@ public class DashboardFragment extends RoomiesFragment
 					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
 		}
 		miscExpenses = new MiscServiceImpl(mContext).getCurrentTotalMiscExpense(username);
-		/*Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
-			@Override
-			public int compare(MiscExpense lhs, MiscExpense rhs) {
-				if (lhs.getTransactionDate().after(rhs.getTransactionDate())) {
-					return -1;
-				} else if (lhs.getTransactionDate().before(rhs.getTransactionDate())) {
-					return 1;
-				}
-
-				return 0;
-			}
-		});*/
-
-
-		/*Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+		Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
 			@Override
 			public int compare(MiscExpense lhs, MiscExpense rhs) {
 				if (lhs.getTransactionDate().before(rhs.getTransactionDate())) {
@@ -71,52 +67,260 @@ public class DashboardFragment extends RoomiesFragment
 					return -1;
 				}
 			}
-		});*/
+		});
+
 		recyclerView = (RecyclerView) rootView.findViewById(
 				R.id.expense_detail_view);
-		RecyclerView.Adapter adapter = new DetailExpenseDataAdapter(miscExpenses,
+		adapter = new DetailExpenseDataAdapter(miscExpenses, SortType.DATE_DESC,
 				getActivity().getBaseContext());
 		recyclerView.setAdapter(adapter);
 		RecyclerView.LayoutManager layoutManager = new ScrollableLayoutManager(getActivity(),
 				LinearLayoutManager.VERTICAL, false);
 		recyclerView.setLayoutManager(layoutManager);
 
-		/*RoomiesScrollView scrollViewHelper = (RoomiesScrollView) findViewById(
-				R.id.scrollViewHelper);
-		scrollViewHelper.setOnScrollViewListener(new RoomiesScrollView.OnScrollViewListener() {
-			@Override
-			public void onScrollChanged(RoomiesScrollView v, int l, int t, int oldl, int oldt) {
-				setTitleAlpha(255 - getAlphaforActionBar(v.getScrollY()));
-				cd.setAlpha(getAlphaforActionBar(v.getScrollY()));
-				*//*parallaxImage(coloredBackgroundView);*//*
-			}
+		sortFilterTab = (LinearLayout) rootView.findViewById(R.id.sort_filter_tab);
 
-			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-			private void parallaxImage(View view) {
-				Rect rect = new Rect();
-				view.getLocalVisibleRect(rect);
-				if (lastTopValueAssigned != rect.top) {
-					lastTopValueAssigned = rect.top;
-					view.setY((float) (rect.top / 2.0));
+		final TextView amount = (TextView) rootView.findViewById(R.id.amount);
+		final TextView quantity = (TextView) rootView.findViewById(R.id.quantity);
+		final TextView date = (TextView) rootView.findViewById(R.id.date);
+		final TextView bills = (TextView) rootView.findViewById(R.id.bills);
+		final TextView grocery = (TextView) rootView.findViewById(R.id.grocery);
+		final TextView vegetables = (TextView) rootView.findViewById(R.id.vegetables);
+		final TextView others = (TextView) rootView.findViewById(R.id.others);
+
+		final TextView sortBar = (TextView) rootView.findViewById(R.id.sort);
+		TextView filterBar = (TextView) rootView.findViewById(R.id.filter);
+		final RelativeLayout sortMenu = (RelativeLayout) rootView.findViewById(R.id.sort_menu);
+		final RelativeLayout filterMenu = (RelativeLayout) rootView.findViewById(
+				R.id.filter_menu);
+
+		sortBar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (sortMenu.getVisibility() == View.GONE) {
+					sortMenu.setVisibility(View.VISIBLE);
+					filterMenu.setVisibility(View.GONE);
+				} else {
+					sortMenu.setVisibility(View.GONE);
 				}
 			}
+		});
 
-			private int getAlphaforActionBar(int scrollY) {
-				int minDist = 0, maxDist = (int) TypedValue.applyDimension(TypedValue
-								.COMPLEX_UNIT_DIP, 250,
-						getResources().getDisplayMetrics());
-				if (scrollY > maxDist) {
-					return 255;
+		filterBar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (filterMenu.getVisibility() == View.GONE) {
+					filterMenu.setVisibility(View.VISIBLE);
+					sortMenu.setVisibility(View.GONE);
 				} else {
-					if (scrollY < minDist) {
-						return 0;
-					} else {
-						return (int) ((255.0 / maxDist) * scrollY);
+					filterMenu.setVisibility(View.GONE);
+				}
+			}
+		});
+
+		amount.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean isNotSorted = false;
+				float next = 0f;
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getAmount() < next) {
+						isNotSorted = true;
+						break;
+					}
+					next = miscExpense.getAmount();
+				}
+				if (!isNotSorted) {
+					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+						@Override
+						public int compare(MiscExpense lhs, MiscExpense rhs) {
+							if (lhs.getAmount() < rhs.getAmount()) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses,
+							SortType.AMOUNT);
+				} else {
+					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+						@Override
+						public int compare(MiscExpense lhs, MiscExpense rhs) {
+							if (lhs.getAmount() > rhs.getAmount()) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses,
+							SortType.AMOUNT);
+				}
+				sortMenu.setVisibility(View.GONE);
+
+				adapter.notifyDataSetChanged();
+			}
+		});
+
+		quantity.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean isNotSorted = false;
+				float next = 0f;
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getQuantity() < next) {
+						isNotSorted = true;
+						break;
+					}
+					next = miscExpense.getAmount();
+				}
+				if (isNotSorted) {
+					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+						@Override
+						public int compare(MiscExpense lhs, MiscExpense rhs) {
+							if (lhs.getQuantity() < rhs.getQuantity()) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses,
+							SortType.QUANTITY);
+				} else {
+					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+						@Override
+						public int compare(MiscExpense lhs, MiscExpense rhs) {
+							if (lhs.getQuantity() > rhs.getQuantity()) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses,
+							SortType.QUANTITY);
+				}
+				sortMenu.setVisibility(View.GONE);
+				adapter.notifyDataSetChanged();
+			}
+		});
+
+		date.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean isNotSorted = false;
+				Date next = new Date();
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getTransactionDate().after(next)) {
+						isNotSorted = true;
+						break;
+					}
+					next = miscExpense.getTransactionDate();
+				}
+				if (isNotSorted) {
+					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+						@Override
+						public int compare(MiscExpense lhs, MiscExpense rhs) {
+							if (lhs.getTransactionDate().before(rhs.getTransactionDate())) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses,
+							SortType.DATE_DESC);
+				} else {
+					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+						@Override
+						public int compare(MiscExpense lhs, MiscExpense rhs) {
+							if (lhs.getTransactionDate().after(rhs.getTransactionDate())) {
+								return 1;
+							} else {
+								return -1;
+							}
+						}
+					});
+					((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses,
+							SortType.DATE_ASC);
+				}
+				adapter.notifyDataSetChanged();
+				sortMenu.setVisibility(View.GONE);
+			}
+		});
+
+		bills.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				List<MiscExpense> miscExpenseList = new ArrayList<MiscExpense>();
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getType().equals(getResources().getStringArray(R.array
+							.subcategory)[0])) {
+						miscExpenseList.add(miscExpense);
 					}
 				}
+				((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenseList,
+						SortType.BILLS);
+				adapter.notifyDataSetChanged();
+				filterMenu.setVisibility(View.GONE);
 			}
+		});
 
-		});*/
+		grocery.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				List<MiscExpense> miscExpenseList = new ArrayList<MiscExpense>();
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getType().equals(getResources().getStringArray(R.array
+							.subcategory)[1])) {
+						miscExpenseList.add(miscExpense);
+					}
+				}
+				((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenseList,
+						SortType.GROCERY);
+				adapter.notifyDataSetChanged();
+				filterMenu.setVisibility(View.GONE);
+			}
+		});
+
+		vegetables.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				List<MiscExpense> miscExpenseList = new ArrayList<MiscExpense>();
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getType().equals(getResources().getStringArray(R.array
+							.subcategory)[2])) {
+						miscExpenseList.add(miscExpense);
+					}
+				}
+				((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenseList,
+						SortType.VEGETABLES);
+				adapter.notifyDataSetChanged();
+				filterMenu.setVisibility(View.GONE);
+			}
+		});
+
+		others.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				List<MiscExpense> miscExpenseList = new ArrayList<MiscExpense>();
+				for (MiscExpense miscExpense : miscExpenses) {
+					if (miscExpense.getType().equals(getResources().getStringArray(R.array
+							.subcategory)[3])) {
+						miscExpenseList.add(miscExpense);
+					}
+				}
+				((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenseList,
+						SortType.OTHERS);
+				adapter.notifyDataSetChanged();
+				filterMenu.setVisibility(View.GONE);
+			}
+		});
+
+
+
 		return rootView;
 
 	}
@@ -128,35 +332,21 @@ public class DashboardFragment extends RoomiesFragment
 	}
 
 	@Override
-	public void update() {
-
-	}
-
-/*	@Override
-	public void update() {
-		createCombinedChart();
-	}*/
-
-
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
+	public void update(String username) {
+		if (null != adapter) {
+			miscExpenses = new MiscServiceImpl(mContext).getCurrentTotalMiscExpense(username);
+			Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+				@Override
+				public int compare(MiscExpense lhs, MiscExpense rhs) {
+					if (lhs.getTransactionDate().before(rhs.getTransactionDate())) {
+						return 1;
+					} else {
+						return -1;
+					}
+				}
+			});
+			((DetailExpenseDataAdapter) adapter).addItemsToList(miscExpenses, SortType.DATE_DESC);
+			adapter.notifyDataSetChanged();
 		}
-
-		return super.onOptionsItemSelected(item);
-	}*/
+	}
 }

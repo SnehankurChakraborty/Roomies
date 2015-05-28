@@ -9,6 +9,138 @@
 	<android.support.v7.widget.RecyclerView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/expense_detail_view"	/>
+		android:id="@+id/expense_detail_view"
+		android:paddingBottom="30dp"/>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom">
+
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="30dp"
+			android:id="@+id/sort_filter_tab"
+			android:layout_alignParentBottom="true"
+			android:background="@color/primary_dark"
+			android:elevation="8dp">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="Filter"
+				android:gravity="center_horizontal"
+				android:layout_gravity="center_vertical"
+				android:textColor="@color/white"
+				android:id="@+id/filter"/>
+
+			<View
+				android:layout_width="1dp"
+				android:layout_height="wrap_content"
+				android:background="@color/white"
+				android:layout_marginTop="5dp"
+				android:layout_marginBottom="5dp"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="Sort"
+				android:gravity="center_horizontal"
+				android:layout_gravity="center_vertical"
+				android:textColor="@color/white"
+				android:id="@+id/sort"/>
+		</LinearLayout>
+
+		<RelativeLayout
+			android:layout_width="152dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/sort_menu"
+			android:orientation="horizontal"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			android:paddingLeft="16dp"
+			android:background="@color/accent_light"
+			android:visibility="gone"
+			android:elevation="10dp"
+			android:layout_above="@+id/sort_filter_tab"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Amount"
+				android:textIsSelectable="true"
+				android:id="@+id/amount"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Quantity"
+				android:layout_below="@+id/amount"
+				android:id="@+id/quantity"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Date"
+				android:layout_below="@+id/quantity"
+				android:id="@+id/date"/>
+
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_width="152dp"
+			android:layout_height="wrap_content"
+			android:id="@+id/filter_menu"
+			android:orientation="horizontal"
+			android:background="@color/accent_light"
+			android:paddingTop="8dp"
+			android:paddingBottom="8dp"
+			android:paddingLeft="16dp"
+			android:visibility="gone"
+			android:elevation="10dp"
+			android:layout_marginLeft="10dp"
+			android:layout_above="@+id/sort_filter_tab">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Bills"
+				android:id="@+id/bills"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Grocery"
+				android:id="@+id/grocery"
+				android:layout_below="@id/bills"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Vegetables"
+				android:id="@+id/vegetables"
+				android:layout_below="@id/grocery"/>
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="48dp"
+				android:gravity="center_vertical"
+				android:text="Others"
+				android:id="@+id/others"
+				android:layout_below="@id/vegetables"/>
+
+		</RelativeLayout>
+	</RelativeLayout>
 
 </FrameLayout>

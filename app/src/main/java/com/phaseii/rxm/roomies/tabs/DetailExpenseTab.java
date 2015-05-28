@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -25,7 +24,6 @@ import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.MiscExpense;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
-import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -155,8 +153,9 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 		return lineData;
 	}
 
+
 	@Override
-	public void update() {
+	public void update(String username) {
 		createCombinedChart();
 	}
 }

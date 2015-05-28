@@ -1,13 +1,11 @@
 package com.phaseii.rxm.roomies.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +22,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.model.MiscExpense;
+import com.phaseii.rxm.roomies.model.SortType;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -50,12 +49,17 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 	private int start;
 	private int day;
 	private boolean isSorted;
+	private SortType sortType;
 	private Calendar cal = Calendar.getInstance();
+	private Typeface typeface;
 
-	public DetailExpenseDataAdapter(List<MiscExpense> miscExpenses, Context mContext) {
+	public DetailExpenseDataAdapter(List<MiscExpense> miscExpenses, SortType sortType,
+	                                Context mContext) {
 		this.miscExpenses = miscExpenses;
 		this.mContext = mContext;
-
+		this.sortType = sortType;
+		this.typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/VarelaRound-Regular" +
+				".ttf");
 	}
 
 	@Override
@@ -84,19 +88,17 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 			holder.month.setText(new DateFormatSymbols().getMonths()[Calendar
 					.getInstance().get(Calendar.MONTH)]);
 		} else {
-			holder.amount.setText(String.valueOf(miscExpenses.get(position).getAmount()));
-			holder.description.setText(miscExpenses.get(position).getDescription());
-			holder.quantity.setText(String.valueOf(miscExpenses.get(position).getQuantity()));
-			holder.date.setText(new SimpleDateFormat("dd").format(miscExpenses.get(position)
+			holder.amount.setText(String.valueOf(miscExpenses.get(position - 1).getAmount()));
+			holder.description.setText(miscExpenses.get(position - 1).getDescription());
+			holder.quantity.setText(String.valueOf(miscExpenses.get(position - 1).getQuantity()));
+			holder.date.setText(new SimpleDateFormat("dd").format(miscExpenses.get(position - 1)
 					.getTransactionDate()));
 			holder.date.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
 					"fonts/VarelaRound-Regular.ttf"));
 			ShapeDrawable shapeDrawable = new ShapeDrawable();
 			Paint paint = shapeDrawable.getPaint();
 			ShapeDrawable time = new ShapeDrawable(new OvalShape());
-
-
-			switch (miscExpenses.get(position).getType()) {
+			switch (miscExpenses.get(position - 1).getType()) {
 				case BILLS:
 					holder.expenseImage.setImageResource(R.drawable.ic_bills_selected);
 					time.getPaint().setColor(mContext.getResources().getColor(R.color.blue));
@@ -176,7 +178,7 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 
 	@Override
 	public int getItemCount() {
-		return miscExpenses.size();
+		return miscExpenses.size() + 1;
 	}
 
 	@Override
@@ -225,14 +227,13 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	public void createCombinedChart(LineChart lineChart) {
 		lineChart.setDescription("");
 		lineChart.setDrawGridBackground(false);
-		lineChart.setHighlightEnabled(true);
-		lineChart.setTouchEnabled(true);
+		lineChart.setHighlightEnabled(false);
+		lineChart.setTouchEnabled(false);
 		lineChart.setDragEnabled(true);
-		lineChart.setScaleEnabled(true);
+		lineChart.setScaleEnabled(false);
 
 
 		YAxis rightAxis = lineChart.getAxisRight();
@@ -244,7 +245,10 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 		leftAxis.setEnabled(false);
 
 		XAxis xAxis = lineChart.getXAxis();
-		xAxis.setEnabled(false);
+		xAxis.setEnabled(true);
+		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+		xAxis.setTextColor(Color.WHITE);
+		xAxis.setTypeface(typeface);
 
 		lineChart.setData(getLineChart(miscExpenses));
 		lineChart.setPinchZoom(false);
@@ -252,6 +256,7 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 		lineChart.setDrawGridBackground(false);
 		lineChart.animateY(500);
 		lineChart.animateX(500);
+		lineChart.setPinchZoom(false);
 		lineChart.getLegend().setEnabled(false);
 		lineChart.setNoDataText("No Miscellaneous expenses yet");
 		lineChart.setBackgroundColor(mContext.getResources().getColor(R.color.primary_dark));
@@ -259,26 +264,176 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 
 	private LineData getLineChart(List<MiscExpense> miscExpenses) {
 
+		List<MiscExpense> miscExpenseList = new ArrayList<>();
+		miscExpenseList.addAll(miscExpenses);
+		int index = 0;
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<String> labels = new ArrayList<>();
-		if (miscExpenses.size() > 0) {
-			cal.setTime(miscExpenses.get(0).getTransactionDate());
-			start = cal.get(Calendar.DAY_OF_MONTH);
-			for (MiscExpense misc : miscExpenses) {
-				cal.setTime(misc.getTransactionDate());
-				day = cal.get(Calendar.DAY_OF_MONTH);
-				if (!labels.contains(String.valueOf(day))) {
-					labels.add(String.valueOf(day));
-					entries.add(new Entry(misc.getAmount(), (day - start)));
-				} else {
-					for (Entry entry : entries) {
-						if (entry.getXIndex() == (day - start)) {
-							float val = entry.getVal();
-							val = val + misc.getAmount();
-							entry.setVal(val);
+		if (miscExpenseList.size() > 0) {
+			switch (sortType) {
+				case DATE_ASC:
+					cal.setTime(miscExpenseList.get(0).getTransactionDate());
+					start = cal.get(Calendar.DAY_OF_MONTH);
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), (day - start)));
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == (day - start)) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
 						}
 					}
-				}
+					break;
+				case DATE_DESC:
+					cal.setTime(miscExpenseList.get(0).getTransactionDate());
+					start = cal.get(Calendar.DAY_OF_MONTH);
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), (start - day)));
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == (start - day)) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+				case AMOUNT:
+					index = 0;
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), index));
+							index++;
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == labels.indexOf(String.valueOf(day))) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+
+				case QUANTITY:
+					index = 0;
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getQuantity(), index));
+							index++;
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == labels.indexOf(String.valueOf(day))) {
+									float val = entry.getVal();
+									val = val + misc.getQuantity();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+				case BILLS:
+					index = 0;
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), index));
+							index++;
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == labels.indexOf(String.valueOf(day))) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+				case GROCERY:
+					index = 0;
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), index));
+							index++;
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == labels.indexOf(String.valueOf(day))) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+				case VEGETABLES:
+					index = 0;
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), index));
+							index++;
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == labels.indexOf(String.valueOf(day))) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+				case OTHERS:
+					index = 0;
+					for (MiscExpense misc : miscExpenseList) {
+						cal.setTime(misc.getTransactionDate());
+						day = cal.get(Calendar.DAY_OF_MONTH);
+						if (!labels.contains(String.valueOf(day))) {
+							labels.add(String.valueOf(day));
+							entries.add(new Entry(misc.getAmount(), index));
+							index++;
+						} else {
+							for (Entry entry : entries) {
+								if (entry.getXIndex() == labels.indexOf(String.valueOf(day))) {
+									float val = entry.getVal();
+									val = val + misc.getAmount();
+									entry.setVal(val);
+								}
+							}
+						}
+					}
+					break;
+				default:
+					break;
 			}
 		}
 
@@ -295,8 +450,14 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 		set.setColor(Color.WHITE);
 		set.setDrawCubic(false);
 		set.disableDashedLine();
+		set.setValueTypeface(typeface);
 		set.setFillColor(mContext.getResources().getColor(R.color.primary));
 		LineData lineData = new LineData(labels, set);
 		return lineData;
+	}
+
+	public void addItemsToList(List<MiscExpense> miscExpenses, SortType sortType) {
+		this.miscExpenses = miscExpenses;
+		this.sortType = sortType;
 	}
 }

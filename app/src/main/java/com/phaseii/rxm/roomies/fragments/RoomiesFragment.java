@@ -34,7 +34,7 @@ public abstract class RoomiesFragment extends Fragment {
 
 
 	public interface UpdatableFragment {
-		public void update();
+		public void update(String username);
 	}
 
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
@@ -27,7 +28,6 @@ import com.phaseii.rxm.roomies.service.MiscService;
 import com.phaseii.rxm.roomies.service.MiscServiceImpl;
 import com.phaseii.rxm.roomies.service.RoomService;
 import com.phaseii.rxm.roomies.service.RoomServiceImpl;
-import com.phaseii.rxm.roomies.tabs.DetailExpenseTab;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
@@ -468,10 +468,10 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 		RoomiesFragment fragment = (RoomiesFragment) getActivity().getSupportFragmentManager()
 				.getFragments().get(0);
 		if (fragment instanceof HomeFragment) {
-			((RoomiesFragment.UpdatableFragment) fragment).update();
-			((RoomiesFragment.UpdatableFragment) fragment).update();
-		} else if (fragment instanceof DetailExpenseTab) {
-			((DetailExpenseTab) fragment).update();
+			((RoomiesFragment.UpdatableFragment) fragment).update(null);
+			((RoomiesFragment.UpdatableFragment) fragment).update(null);
+		} else if (fragment instanceof DashboardFragment) {
+			((DashboardFragment) fragment).update(username);
 		}
 		dialog.dismiss();
 	}

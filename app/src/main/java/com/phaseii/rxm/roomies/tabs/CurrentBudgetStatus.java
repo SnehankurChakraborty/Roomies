@@ -89,7 +89,7 @@ public class CurrentBudgetStatus extends RoomiesFragment
 	}
 
 	@Override
-	public void update() {
+	public void update(String username) {
 		showBarGraph(getActivity().getBaseContext());
 	}
 

@@ -36,7 +36,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_K
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 
-public class HomeFragment extends RoomiesFragment implements RoomiesFragment.UpdatableFragment{
+public class HomeFragment extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
 
 	private ViewPager pager;
 	private RoomiesSlidingTabLayout tabs;
@@ -53,23 +53,12 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
 		rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
 
-		/*pager = (ViewPager) rootView.findViewById(R.id.pager);
-		adapter = new RoomiesHomePagerAdapter(getChildFragmentManager(), titles, numboftabs);
-		pager.setAdapter(adapter);
-		tabs = (RoomiesSlidingTabLayout) rootView.findViewById(R.id.tabs);
-		tabs.setDistributeEvenly(true);
-		tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
-			@Override
-			public int getIndicatorColor(int position) {
-				return getResources().getColor(R.color.primary_dark);
-			}
-		});
-		tabs.setViewPager(pager);*/
-		spentData=(TextView)rootView.findViewById(R.id.spent_data);
-		remainingData=(TextView)rootView.findViewById(R.id.remaining_data);
+
+		spentData = (TextView) rootView.findViewById(R.id.spent_data);
+		remainingData = (TextView) rootView.findViewById(R.id.remaining_data);
 		((TextView) rootView.findViewById(R.id.spent_label)).setTypeface(typeface);
 		((TextView) rootView.findViewById(R.id.remaining_label)).setTypeface(typeface);
-		typeface=Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
+		typeface = Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
 				"fonts/VarelaRound-Regular.ttf");
 		showBarGraph(getActivity().getBaseContext());
 		TextView month = (TextView) rootView.findViewById(R.id.month);
@@ -108,6 +97,7 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
 
 		if (status < 0) {
 			labels.add("Overflow");
+			((TextView) rootView.findViewById(R.id.remaining_label)).setText("Overflow");
 		} else {
 			labels.add("Remaining");
 		}
@@ -128,7 +118,7 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
 		mChart.setCenterText(String.valueOf((int) status) + "%");
 		mChart.setCenterTextColor(getResources().getColor(R.color.white));
 		mChart.setCenterTextTypeface(typeface);
-		mChart.setCenterTextColor(getResources().getColor(R.color.pink));
+		mChart.setCenterTextColor(getResources().getColor(R.color.white));
 		mChart.setHoleColor(getResources().getColor(R.color.card_dark));
 		mChart.setCenterTextSize(25);
 		mChart.setRotationEnabled(false);
@@ -162,7 +152,10 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
 
 		return roomService.getTotalSpent(username);
 	}
-	public void update() {
+
+	@Override
+	public void update(String username) {
 		showBarGraph(getActivity().getBaseContext());
+
 	}
 }

@@ -4,7 +4,7 @@
                 android:layout_height="match_parent">
 
 	<android.support.v7.widget.CardView
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/budget_layout"
 		android:layout_marginTop="10dp"
@@ -13,10 +13,144 @@
 		android:layout_marginBottom="10dp"
 		android:elevation="8dp">
 
-		<com.github.mikephil.charting.charts.PieChart
-			android:id="@+id/pie_expense_report"
-			android:layout_height="240dp"
-			android:layout_width="wrap_content"/>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<com.github.mikephil.charting.charts.PieChart
+				android:id="@+id/pie_expense_report"
+				android:layout_height="200dp"
+				android:layout_width="200dp"
+				android:layout_alignParentLeft="true"/>
+
+			<TableLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_toRightOf="@id/pie_expense_report"
+				android:layout_marginLeft="20dp"
+				android:layout_centerVertical="true"
+				android:orientation="vertical">
+
+				<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginBottom="5dp">
+
+					<View
+						android:layout_width="20dp"
+						android:layout_height="20dp"
+						android:background="@drawable/timeline_blue"
+						android:id="@+id/rent_mark"
+						/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="12000 Rent"
+						android:layout_marginLeft="10dp"
+						android:textSize="6pt"
+						android:id="@+id/rent_value"
+						android:layout_toRightOf="@id/rent_mark"/>
+				</RelativeLayout>
+
+				<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginBottom="5dp">
+
+					<View
+						android:layout_width="20dp"
+						android:layout_height="20dp"
+						android:background="@drawable/timeline_blue"
+						android:id="@+id/maid_mark"
+						/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="12000 Maid"
+						android:layout_marginLeft="10dp"
+						android:textSize="6pt"
+						android:id="@+id/maid_value"
+						android:layout_toRightOf="@id/maid_mark"/>
+				</RelativeLayout>
+
+				<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginBottom="5dp">
+
+					<View
+						android:layout_width="20dp"
+						android:layout_height="20dp"
+						android:background="@drawable/timeline_blue"
+						android:id="@+id/electricity_mark"
+						/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="1200 Electricity"
+						android:layout_marginLeft="10dp"
+						android:textSize="6pt"
+						android:id="@+id/electricity_value"
+						android:layout_toRightOf="@id/electricity_mark"/>
+				</RelativeLayout>
+
+				<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:layout_marginBottom="5dp">
+
+					<View
+						android:layout_width="20dp"
+						android:layout_height="20dp"
+						android:background="@drawable/timeline_blue"
+						android:id="@+id/misc_mark"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="12000 Misc"
+						android:layout_marginLeft="10dp"
+						android:textSize="6pt"
+						android:id="@+id/misc_value"
+						android:layout_toRightOf="@id/misc_mark"/>
+				</RelativeLayout>
+
+			</TableLayout>
+
+
+		</RelativeLayout>
+
+
+	</android.support.v7.widget.CardView>
+
+	<android.support.v7.widget.CardView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/summary_profile"
+		android:layout_below="@id/budget_layout"
+		android:layout_marginTop="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginBottom="10dp"
+		android:elevation="8dp">
+
+		<com.github.mikephil.charting.charts.BarChart
+			android:layout_below="@id/month_divider"
+			android:layout_width="wrap_content"
+			android:layout_height="200dp"
+			android:layout_marginBottom="20dp"
+			android:layout_marginTop="20dp"
+			android:layout_marginRight="10dp"
+			android:layout_marginLeft="10dp"
+			android:id="@+id/summary"/>
+
 	</android.support.v7.widget.CardView>
 
 </RelativeLayout>

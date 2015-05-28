@@ -1,6 +1,5 @@
 package com.phaseii.rxm.roomies.activity;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -95,15 +94,17 @@ public class ProfileActivity extends ActionBarActivity {
 
 		RoomiesScrollView scrollViewHelper = (RoomiesScrollView) findViewById(
 				R.id.scrollViewHelper);
+
 		scrollViewHelper.setOnScrollViewListener(new RoomiesScrollView.OnScrollViewListener() {
 			@Override
 			public void onScrollChanged(RoomiesScrollView v, int l, int t, int oldl, int oldt) {
 				setTitleAlpha(255 - getAlphaforActionBar(v.getScrollY()));
 				cd.setAlpha(getAlphaforActionBar(v.getScrollY()));
-				parallaxImage(coloredBackgroundView);
+				if (currentApiVersion >= Build.VERSION_CODES.HONEYCOMB) {
+					parallaxImage(coloredBackgroundView);
+				}
 			}
 
-			@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 			private void parallaxImage(View view) {
 				Rect rect = new Rect();
 				view.getLocalVisibleRect(rect);
@@ -129,6 +130,7 @@ public class ProfileActivity extends ActionBarActivity {
 			}
 
 		});
+
 		populateFeilds();
 		setUpEditors();
 
@@ -267,7 +269,10 @@ public class ProfileActivity extends ActionBarActivity {
 				if (field_save_button.getVisibility() == View.VISIBLE) {
 					if (!TextUtils.isEmpty(field_edit.getText().toString().trim())) {
 						boolean isUpdateSuccessful = false;
-
+						if (isGoogleFBLogin) {
+							username = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+									MODE_PRIVATE).getString(RoomiesConstants.EMAIL_ID, null);
+						}
 						switch (mode) {
 							case USER:
 

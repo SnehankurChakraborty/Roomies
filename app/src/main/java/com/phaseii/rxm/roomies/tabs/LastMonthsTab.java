@@ -68,11 +68,6 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 		return rootView;
 	}
 
-	@Override
-	public void update() {
-
-	}
-
 	public static LastMonthsTab getInstance() {
 		return new LastMonthsTab();
 	}
@@ -366,4 +361,8 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 	}
 
 
+	@Override
+	public void update(String username) {
+
+	}
 }

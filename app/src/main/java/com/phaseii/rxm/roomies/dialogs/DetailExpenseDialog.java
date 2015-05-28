@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.model.MiscExpense;
+import com.phaseii.rxm.roomies.model.SortType;
 import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
 import com.phaseii.rxm.roomies.view.ScrollableLayoutManager;
 
@@ -218,7 +219,7 @@ public class DetailExpenseDialog extends DialogFragment {
 
 	private void setDetails() {
 		RecyclerView.Adapter adapter = new DetailExpenseDataAdapter(miscExpenses,
-				getActivity().getBaseContext());
+				SortType.DATE_DESC, getActivity().getBaseContext());
 		recyclerView.setAdapter(adapter);
 		RecyclerView.LayoutManager layoutManager = new ScrollableLayoutManager(mContext,
 				LinearLayoutManager.VERTICAL, false);
@@ -239,7 +240,7 @@ public class DetailExpenseDialog extends DialogFragment {
 				}
 
 				private void showToolbar() {
-					if(Build.VERSION.SDK_INT>Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 						toolbarContainer
 								.animate()
 								.translationY(0)
@@ -248,7 +249,7 @@ public class DetailExpenseDialog extends DialogFragment {
 				}
 
 				private void hideToolbar() {
-					if(Build.VERSION.SDK_INT>Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 						toolbarContainer
 								.animate()
 								.translationY(-sortFilterTab.getHeight())
@@ -268,11 +269,11 @@ public class DetailExpenseDialog extends DialogFragment {
 
 				private void hideToolbarBy(int dy) {
 					if (cannotHideMore(dy)) {
-							toolbarContainer.setTranslationY(-sortFilterTab.getBottom());
+						toolbarContainer.setTranslationY(-sortFilterTab.getBottom());
 
 					} else {
-							toolbarContainer.setTranslationY(
-									toolbarContainer.getTranslationY() - dy);
+						toolbarContainer.setTranslationY(
+								toolbarContainer.getTranslationY() - dy);
 					}
 				}
 

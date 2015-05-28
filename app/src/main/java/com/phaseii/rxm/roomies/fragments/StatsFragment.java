@@ -20,7 +20,7 @@ public class StatsFragment extends RoomiesFragment {
 	private RoomiesSlidingTabLayout tabs;
 	private RoomiesStatsPagerAdapter adapter;
 	private int numboftabs = 2;
-	private String titles[] = {"Last Three", "Current"};
+	private String titles[] = {"Current", "Trends"};
 
 
 	@Override

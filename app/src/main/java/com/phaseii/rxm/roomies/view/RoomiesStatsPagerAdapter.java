@@ -30,12 +30,12 @@ public class RoomiesStatsPagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(int position) {
 		RoomiesFragment tab;
 		if (position == 0) {
-			tab = LastMonthsTab.getInstance();
+			tab = CurrentExpenseReport.getInstance();
 			String tag = tab.getTag();
 			mTags.put(position, tag);
 
 		} else {
-			tab = CurrentExpenseReport.getInstance();
+			tab = LastMonthsTab.getInstance();
 			String tag = tab.getTag();
 			mTags.put(position, tag);
 		}

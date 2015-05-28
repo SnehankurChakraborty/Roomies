@@ -59,7 +59,7 @@ public class RoomiesHomePagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public int getItemPosition(Object item) {
 		if (item instanceof UpdatableFragment){
-			((UpdatableFragment)item).update();
+			((UpdatableFragment)item).update(null);
 		}
 		return super.getItemPosition(item);
 	}
