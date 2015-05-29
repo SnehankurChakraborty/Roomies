@@ -107,12 +107,13 @@ public class GetStartedWizard extends FragmentActivity {
 	public void joinRoomSelected(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getApplication());
 		builder.setMessage(R.string.join_message)
-				.setTitle(R.string.join_title).setPositiveButton("ok",new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
+				.setTitle(R.string.join_title).setPositiveButton("ok",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 		AlertDialog dialog = builder.create();
 		dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dialog.show();
@@ -208,13 +209,13 @@ public class GetStartedWizard extends FragmentActivity {
 			username = mSharedPref.getString(RoomiesConstants.EMAIL_ID, null);
 		}
 
-		room.insertRoomDetails(null, null, null,
-				username, roomName.getText().toString());
+		room.insertRoomDetails(null, null, null, username, roomName.getText().toString(),
+				Integer.valueOf(noOfMembers.getText().toString()));
 		if (!mSharedPref.getBoolean(IS_GOOGLE_FB_LOGIN, false)) {
 			user.completeSetup(mSharedPref.getString(RoomiesConstants.NAME, null));
-		}else{
-			mEditor=mSharedPref.edit();
-			mEditor.putBoolean(IS_SETUP_COMPLETED,true);
+		} else {
+			mEditor = mSharedPref.edit();
+			mEditor.putBoolean(IS_SETUP_COMPLETED, true);
 			mEditor.apply();
 		}
 	}

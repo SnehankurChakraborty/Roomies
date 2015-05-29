@@ -146,8 +146,21 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			mRecyclerView.setAdapter(mRecylerAdapter);
 			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
 			mRecyclerView.setLayoutManager(mLayoutManager);
+			/*mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+				@Override
+				public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent motionEvent) {
+					View child = rv.findChildViewUnder(motionEvent.getX(),motionEvent.getY());
+					child.setBackgroundDrawable(getResources().getDrawable(R.drawable.drawer_selected));
+					return true;
+				}
+
+				@Override
+				public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+				}
+			});*/
+
 			mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
-			/*mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.primary_dark));*/
 			mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, mtoolbar
 					, R.string.open_drawer, R.string.close_drawer) {
 				public void onDrawerClosed(View view) {
@@ -243,6 +256,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 		transaction = getSupportFragmentManager().beginTransaction();
 		transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
 		transaction.commit();
+
 		if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
 			mtoolbar.setElevation(0);
 		}

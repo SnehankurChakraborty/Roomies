@@ -15,6 +15,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.phaseii.rxm.roomies.R;
+
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
  * the user's scroll progress.
@@ -158,7 +160,7 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
 		getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
 				outValue, true);
 		textView.setBackgroundResource(outValue.resourceId);
-		textView.setAllCaps(true);
+		textView.setTextColor(getResources().getColorStateList(R.color.slidingcolor));
 
 		int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
 		textView.setPadding(padding, padding, padding, padding);

@@ -9,50 +9,55 @@
 	<android.support.v7.widget.RecyclerView
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/expense_detail_view"
-		android:paddingBottom="30dp"/>
+		android:id="@+id/expense_detail_view" />
 
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom">
 
-
-		<LinearLayout
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="30dp"
-			android:id="@+id/sort_filter_tab"
-			android:layout_alignParentBottom="true"
-			android:background="@color/primary_dark"
-			android:elevation="8dp">
+			android:id="@+id/toolbar_container"
+			android:layout_alignParentBottom="true">
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="Filter"
-				android:gravity="center_horizontal"
-				android:layout_gravity="center_vertical"
-				android:textColor="@color/white"
-				android:id="@+id/filter"/>
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="30dp"
+				android:id="@+id/sort_filter_tab"
+				android:layout_alignParentBottom="true"
+				android:background="@color/primary_dark"
+				android:elevation="8dp">
 
-			<View
-				android:layout_width="1dp"
-				android:layout_height="wrap_content"
-				android:background="@color/white"
-				android:layout_marginTop="5dp"
-				android:layout_marginBottom="5dp"/>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Filter"
+					android:gravity="center_horizontal"
+					android:layout_gravity="center_vertical"
+					android:textColor="@color/white"
+					android:id="@+id/filter"/>
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="Sort"
-				android:gravity="center_horizontal"
-				android:layout_gravity="center_vertical"
-				android:textColor="@color/white"
-				android:id="@+id/sort"/>
-		</LinearLayout>
+				<View
+					android:layout_width="1dp"
+					android:layout_height="wrap_content"
+					android:background="@color/white"
+					android:layout_marginTop="5dp"
+					android:layout_marginBottom="5dp"/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="Sort"
+					android:gravity="center_horizontal"
+					android:layout_gravity="center_vertical"
+					android:textColor="@color/white"
+					android:id="@+id/sort"/>
+			</LinearLayout>
+		</RelativeLayout>
 
 		<RelativeLayout
 			android:layout_width="152dp"
@@ -65,7 +70,7 @@
 			android:background="@color/accent_light"
 			android:visibility="gone"
 			android:elevation="10dp"
-			android:layout_above="@+id/sort_filter_tab"
+			android:layout_above="@+id/toolbar_container"
 			android:layout_alignParentRight="true"
 			android:layout_alignParentEnd="true">
 
@@ -107,7 +112,7 @@
 			android:visibility="gone"
 			android:elevation="10dp"
 			android:layout_marginLeft="10dp"
-			android:layout_above="@+id/sort_filter_tab">
+			android:layout_above="@+id/toolbar_container">
 
 			<TextView
 				android:layout_width="match_parent"

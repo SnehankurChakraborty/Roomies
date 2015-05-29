@@ -120,7 +120,7 @@ public class RoomiesContract {
 	public static abstract class Room_Expenses implements BaseColumns {
 		public static final String TABLE_NAME = "room_expenses";
 		public static final String TRIGGER_NAME = "UPDATE_COLUMN_TOTAL_TRG";
-		public static final String COLUMN_ROOM_ID = "room_id";
+		public static final String COLUMN_NO_OF_MEMBERS = "no_of_members";
 		public static final String COLUMN_MONTH = "month";
 		public static final String COLUMN_RENT = "rent";
 		public static final String COLUMN_RENT_MARGIN = "rent_margin";
@@ -138,6 +138,7 @@ public class RoomiesContract {
 				+ _ID + INTEGER_PRIMARY_KEY_AUTOINCREMENT + COMMA_SEP +
 				COLUMN_USERNAME + TEXT_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_ROOM_ALIAS + TEXT_TYPE + NOT_NULL + COMMA_SEP +
+				COLUMN_NO_OF_MEMBERS + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_MONTH + TEXT_TYPE + NOT_NULL + COMMA_SEP +
 				COLUMN_RENT + INTEGER_TYPE + COMMA_SEP +
 				COLUMN_RENT_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +

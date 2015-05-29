@@ -51,7 +51,6 @@
 
 		<!--S U P P O R T  L I B R A R Y  C O M P A T I B L I T Y-->
 
-
 		<item name="actionBarItemBackground">@drawable/selectable_background_roomies</item>
 		<item name="popupMenuStyle">@style/PopupMenu.Roomies</item>
 		<item name="dropDownListViewStyle">@style/DropDownListView.Roomies</item>
@@ -63,17 +62,7 @@
 		<item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Roomies</item>
 		<item name="homeAsUpIndicator">@drawable/ic_action_roomies_home</item>
 		<item name="colorAccent">@color/accent</item>
-
-
-		<item name="android:windowActionBar">false</item>
-		<item name="android:popupMenuStyle">@style/PopupMenu.Roomies</item>
 		<item name="android:dropDownListViewStyle">@style/DropDownListView.Roomies</item>
-		<item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Roomies</item>
-		<item name="android:actionDropDownStyle">@style/DropDownNav.Roomies</item>
-		<item name="android:actionBarStyle">@style/ActionBar.Solid.Roomies</item>
-		<item name="android:actionModeBackground">@drawable/cab_background_top_roomies</item>
-		<item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Roomies</item>
-		<item name="android:homeAsUpIndicator">@drawable/ic_action_roomies_home</item>
 
 
 	</style>
@@ -81,7 +70,7 @@
 	<style name="DrawerArrowStyle"
 	       parent="Widget.AppCompat.DrawerArrowToggle">
 		<item name="spinBars">true</item>
-		<item name="color">@android:color/black</item>
+		<item name="color">@android:color/white</item>
 	</style>
 
 	<style name="ActionBar.Solid.Roomies"

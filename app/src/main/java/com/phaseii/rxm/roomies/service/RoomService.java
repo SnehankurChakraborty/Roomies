@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface RoomService {
 	void insertRoomDetails(String rent, String maid, String electricity, String username,
-	                       String roomAlias);
+	                       String roomAlias, int noOfMembers);
 
 	void updateRoomExpenses(String rent, String maid, String electricity, String username);
 

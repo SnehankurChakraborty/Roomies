@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DASHBOARD_FRAGMENT;
@@ -36,7 +39,8 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SAVINGS_FRAGMENT;
  * Created by Snehankur on 4/4/2015.
  */
 public class RoomiesRecyclerViewAdapter
-		extends RecyclerView.Adapter<RoomiesRecyclerViewAdapter.ViewHolder> {
+		extends RecyclerView.Adapter<RoomiesRecyclerViewAdapter.ViewHolder>
+		implements View.OnClickListener {
 
 	Context mContext;
 	private View headerView;
@@ -60,8 +64,16 @@ public class RoomiesRecyclerViewAdapter
 	private String name;
 	private int profile;
 	private String email;
+	private SparseBooleanArray selectedItems = new SparseBooleanArray();
+	List<View> itemViewList = new ArrayList<>();
 
-	public static class ViewHolder extends RecyclerView.ViewHolder {
+	@Override
+	public void onClick(View v) {
+
+	}
+
+
+	public class ViewHolder extends RecyclerView.ViewHolder {
 
 		int holderId;
 		TextView textView;
@@ -71,7 +83,7 @@ public class RoomiesRecyclerViewAdapter
 		TextView email;
 		View itemView;
 
-		public ViewHolder(View itemView, int ViewType, final Context mContext) {
+		public ViewHolder(final View itemView, int ViewType, final Context mContext) {
 			super(itemView);
 			this.itemView = itemView;
 			itemView.setClickable(true);
@@ -81,6 +93,10 @@ public class RoomiesRecyclerViewAdapter
 				@Override
 				public void onClick(View v) {
 					int pos = getPosition();
+					for (View item : itemViewList) {
+						item.setSelected(false);
+					}
+					itemView.setSelected(true);
 					if (pos == 5) {
 						SharedPreferences mSharedPref = mContext.getSharedPreferences(
 								ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
@@ -109,6 +125,7 @@ public class RoomiesRecyclerViewAdapter
 							System.exit(0);
 						}
 					} else if (pos == 1) {
+
 						((HomeScreenActivity) mContext).nextFragment(
 								new HomeFragment(), HOME_FRAGMENT);
 					} else if (pos == 4) {
@@ -120,9 +137,11 @@ public class RoomiesRecyclerViewAdapter
 							RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
 						}
 					} else if (pos == 2) {
+
 						((HomeScreenActivity) mContext).nextFragment(
 								DashboardFragment.getInstance(mContext), DASHBOARD_FRAGMENT);
 					} else if (pos == 3) {
+
 						((HomeScreenActivity) mContext).nextFragment(
 								new StatsFragment(), SAVINGS_FRAGMENT);
 					}
@@ -188,8 +207,12 @@ public class RoomiesRecyclerViewAdapter
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, int position) {
 		if (viewHolder.holderId == 1) {
+			if (position == 1) {
+				viewHolder.itemView.setSelected(true);
+			}
 			viewHolder.textView.setText(mNavTitles[position - 1]);
 			viewHolder.imageView.setImageResource(mIcons[position - 1]);
+			itemViewList.add(viewHolder.itemView);
 		} else {
 			viewHolder.name.setText(name);
 			viewHolder.email.setText(email);

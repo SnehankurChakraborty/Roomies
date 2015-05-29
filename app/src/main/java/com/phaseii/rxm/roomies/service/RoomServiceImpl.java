@@ -51,7 +51,7 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public void insertRoomDetails(String rent, String maid, String electricity, String username,
-	                              String roomAlias) {
+	                              String roomAlias, int noOfMembers) {
 		ContentValues values = new ContentValues();
 		SharedPreferences mSharedPref = mContext.getSharedPreferences(
 				ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
@@ -74,6 +74,7 @@ public class RoomServiceImpl implements RoomService {
 		values.put(Room_Expenses.COLUMN_TOTAL, "0.0");
 		values.put(Room_Expenses.COLUMN_USERNAME, username);
 		values.put(Room_Expenses.COLUMN_ROOM_ALIAS, roomAlias);
+		values.put(Room_Expenses.COLUMN_NO_OF_MEMBERS, noOfMembers);
 		mContext.getContentResolver().insert(RoomExpenseProvider.CONTENT_URI, values);
 	}
 
@@ -123,7 +124,8 @@ public class RoomServiceImpl implements RoomService {
 				Room_Expenses.COLUMN_MAID, Room_Expenses.COLUMN_MAID_MARGIN,
 				Room_Expenses.COLUMN_ELECTRICITY, Room_Expenses.COLUMN_ELECTRICITY_MARGIN,
 				Room_Expenses.COLUMN_MISCELLANEOUS, Room_Expenses.COLUMN_MISCELLANEOUS_MARGIN,
-				Room_Expenses.COLUMN_TOTAL, Room_Expenses.COLUMN_USERNAME, Room_Expenses.COLUMN_ROOM_ALIAS};
+				Room_Expenses.COLUMN_TOTAL, Room_Expenses.COLUMN_USERNAME,
+				Room_Expenses.COLUMN_ROOM_ALIAS, Room_Expenses.COLUMN_NO_OF_MEMBERS};
 		String selection = Room_Expenses.COLUMN_MONTH + "=? AND " + Room_Expenses.COLUMN_USERNAME
 				+ "=?";
 		String[] selectionArgs = {currentMonth, username};
@@ -188,10 +190,12 @@ public class RoomServiceImpl implements RoomService {
 			cursor.moveToFirst();
 			total = cursor.getFloat(cursor.getColumnIndex(Room_Expenses.COLUMN_TOTAL));
 		} else {
+			int noOfMembers=Integer.valueOf(mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+					Context.MODE_PRIVATE).getString(ROOM_NO_OF_MEMBERS, "0"));
 			SharedPreferences mSharedPreferences = mContext.getSharedPreferences
 					(RoomiesConstants.ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
 			mSharedPreferences.edit().clear();
-			insertRoomDetails(null, null, null, username, roomAlias);
+			insertRoomDetails(null, null, null, username, roomAlias, noOfMembers);
 		}
 		return total;
 	}
@@ -219,6 +223,8 @@ public class RoomServiceImpl implements RoomService {
 					.COLUMN_ELECTRICITY));
 			float misc = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
 					.COLUMN_MISCELLANEOUS));
+			int noOfMembers=cursor.getInt(cursor.getColumnIndex(Room_Expenses
+					.COLUMN_NO_OF_MEMBERS));
 			mEditor.putString(RENT_MARGIN, String.valueOf(rent_margin));
 			mEditor.putString(MAID_MARGIN, String.valueOf(maid_margin));
 			mEditor.putString(ELECTRICITY_MARGIN, String.valueOf(electricity_margin));
@@ -234,6 +240,7 @@ public class RoomServiceImpl implements RoomService {
 			mEditor = sharedPreferences.edit();
 			mEditor.putString(ROOM_ALIAS, cursor.getString(cursor.getColumnIndex
 					(Room_Expenses.COLUMN_ROOM_ALIAS)));
+			mEditor.putString(RoomiesConstants.ROOM_NO_OF_MEMBERS, String.valueOf(noOfMembers));
 			mEditor.apply();
 		}
 	}
@@ -260,11 +267,15 @@ public class RoomServiceImpl implements RoomService {
 				mEditor.apply();
 			}
 		} else if ("no_of_members".equals(column)) {
-			mEditor = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
-					Context.MODE_PRIVATE).edit();
-			mEditor.putString(ROOM_NO_OF_MEMBERS, newVal);
-			mEditor.apply();
-
+			values.put(Room_Expenses.COLUMN_ROOM_ALIAS, newVal);
+			count = mContext.getContentResolver().update(monthUri, values, selection,
+					selectionArgs);
+			if (count > 0) {
+				mEditor = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
+						Context.MODE_PRIVATE).edit();
+				mEditor.putString(ROOM_NO_OF_MEMBERS, newVal);
+				mEditor.apply();
+			}
 		} else if ("rent".equals(column)) {
 			values.put(Room_Expenses.COLUMN_RENT_MARGIN, Float.valueOf(newVal));
 			count = mContext.getContentResolver().update(monthUri, values, selection,

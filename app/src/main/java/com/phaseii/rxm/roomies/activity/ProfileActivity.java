@@ -293,7 +293,7 @@ public class ProfileActivity extends ActionBarActivity {
 								}
 								break;
 							case ROOM:
-								if ("no_of_members".equals(feildId)) {
+								/*if ("no_of_members".equals(feildId)) {
 									SharedPreferences.Editor mEditor = getSharedPreferences
 											(RoomiesConstants.ROOM_INFO_FILE_KEY,
 													MODE_PRIVATE).edit();
@@ -301,10 +301,10 @@ public class ProfileActivity extends ActionBarActivity {
 											field_edit.getText().toString());
 									mEditor.apply();
 									isUpdateSuccessful = true;
-								} else {
-									isUpdateSuccessful = roomService.updateRoomMargins(username,
-											feildId, field_edit.getText().toString());
-								}
+								} else {*/
+								isUpdateSuccessful = roomService.updateRoomMargins(username,
+										feildId, field_edit.getText().toString());
+
 
 								break;
 							default:

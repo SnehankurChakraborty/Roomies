@@ -1,6 +1,7 @@
 package com.phaseii.rxm.roomies.fragments;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class DashboardFragment extends RoomiesFragment
 	private static Context mContext;
 	private RecyclerView.Adapter adapter;
 	private LinearLayout sortFilterTab;
+	private RelativeLayout toolbarContainer;
 
 	public static DashboardFragment getInstance(Context mContext) {
 		DashboardFragment.mContext = mContext;
@@ -79,6 +81,7 @@ public class DashboardFragment extends RoomiesFragment
 		recyclerView.setLayoutManager(layoutManager);
 
 		sortFilterTab = (LinearLayout) rootView.findViewById(R.id.sort_filter_tab);
+		toolbarContainer=(RelativeLayout) rootView.findViewById(R.id.toolbar_container);
 
 		final TextView amount = (TextView) rootView.findViewById(R.id.amount);
 		final TextView quantity = (TextView) rootView.findViewById(R.id.quantity);
@@ -319,7 +322,76 @@ public class DashboardFragment extends RoomiesFragment
 			}
 		});
 
+		recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+					if (Math.abs(
+							toolbarContainer.getTranslationY()) < sortFilterTab.getBottom()) {
+						showToolbar();
+					} else {
+						showToolbar();
+					}
+				}
+			}
 
+			private void showToolbar() {
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					toolbarContainer
+							.animate()
+							.translationY(0)
+							.start();
+				}
+			}
+
+			private void hideToolbar() {
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+					toolbarContainer
+							.animate()
+							.translationY(sortFilterTab.getHeight())
+							.start();
+				}
+			}
+
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+				if (dy > 0) {
+					hideToolbarBy(dy);
+				} else {
+					showToolbarBy(dy);
+				}
+			}
+
+			private void hideToolbarBy(int dy) {
+				if (cannotHideMore(dy)) {
+					toolbarContainer.setTranslationY(sortFilterTab.getBottom());
+
+				} else {
+					toolbarContainer.setTranslationY(
+							toolbarContainer.getTranslationY() + dy);
+				}
+			}
+
+			private boolean cannotHideMore(int dy) {
+				return Math.abs(toolbarContainer.getTranslationY() - dy) >
+						sortFilterTab
+								.getHeight();
+			}
+
+			private void showToolbarBy(int dy) {
+				if (cannotShowMore(dy)) {
+					toolbarContainer.setTranslationY(0);
+				} else {
+					toolbarContainer.setTranslationY(toolbarContainer.getTranslationY() - dy);
+				}
+			}
+
+			private boolean cannotShowMore(int dy) {
+				return toolbarContainer.getTranslationY() - dy > 0;
+			}
+		});
 
 		return rootView;
 
