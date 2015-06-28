@@ -5,4 +5,6 @@
 	<dimen name="elevation_low">1dp</dimen>
 	<dimen name="elevation_high">8dp</dimen>
 	<dimen name="tool_bar_top_padding">0dp</dimen>
+	<dimen name="tablet_list_width">300dp</dimen>
+	<dimen name="phone_list_height">200dp</dimen>
 </resources>

@@ -2,7 +2,9 @@ package com.phaseii.rxm.roomies.activity;
 
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -20,22 +22,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.login.LoginResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dialogs.AddExpenseDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.StatsFragment;
+import com.phaseii.rxm.roomies.gcm.GCMSender;
+import com.phaseii.rxm.roomies.gcm.RegistrationIntentService;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
@@ -57,6 +65,8 @@ import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
 public class HomeScreenActivity extends RoomiesBaseActivity
 		implements CurrentBudgetStatus.OnFragmentInteractionListener {
 
+	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+	private static final String TAG = "HomeScreenActivity";
 	private Toast mToast;
 	private ActionBarDrawerToggle mDrawerTogggle;
 	private DrawerLayout mDrawerLayout;
@@ -76,9 +86,15 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	private String name;
 	private String email;
 	private ImageView addExpenseButton;
+	private ImageView fabButton;
+	private ImageView fabButtonAlt;
+	private ImageView addRoomiesButton;
+	private FrameLayout frameLayout;
 	int profile = R.drawable.ic_camera;
 	private int currentapiVersion;
 	private boolean doubleBackToExitPressedOnce;
+	private int mShortAnimationDuration;
+	private BroadcastReceiver mRegistrationBroadcastReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -124,17 +140,94 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			title.setText(" " + getSharedPreferences(RoomiesConstants
 					.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).
 					getString(ROOM_ALIAS, "Room") + " ");
-			addExpenseButton = (ImageView) findViewById(R.id.addexpense);
+
+			mShortAnimationDuration = getResources().getInteger(
+					android.R.integer.config_shortAnimTime);
+
+			fabButton = (ImageView) findViewById(R.id.fab);
+			addRoomiesButton = (ImageView) findViewById(R.id.add_roomies);
+			frameLayout = (FrameLayout) findViewById(R.id.fab_layout);
+
+			fabButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (frameLayout.getVisibility() == View.GONE) {
+						frameLayout.setVisibility(View.VISIBLE);
+						fabButton.setVisibility(View.GONE);
+					}
+				}
+					/*LinearLayout addRoomiesLayout = (LinearLayout) findViewById(R.id
+							.add_roomies_layout);
+					LinearLayout addExpenseLayout = (LinearLayout) findViewById(R.id
+							.add_expense_layout);
+					if (addRoomiesLayout.getVisibility() == View.GONE) {
+						addRoomiesLayout.setVisibility(View.VISIBLE);
+						fabButton.setVisibility(View.GONE);
+						frameLayout.setVisibility(View.VISIBLE);
+					} else {
+						addRoomiesLayout.setVisibility(View.GONE);
+						frameLayout.setVisibility(View.GONE);
+					}
+					if (addExpenseLayout.getVisibility() == View.GONE) {
+						addExpenseLayout.setVisibility(View.VISIBLE);
+						fabButton.setVisibility(View.GONE);
+						frameLayout.setVisibility(View.VISIBLE);
+					} else {
+						addExpenseLayout.setVisibility(View.GONE);
+
+						frameLayout.setVisibility(View.GONE);
+					}*/
+
+			});
+
+			fabButtonAlt = (ImageView) findViewById(R.id.fab_alt);
+			fabButtonAlt.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (frameLayout.getVisibility() == View.VISIBLE) {
+						frameLayout.setVisibility(View.GONE);
+						frameLayout.setAlpha(100);
+						fabButton.setVisibility(View.VISIBLE);
+					}
+				}
+			});
+
+			frameLayout.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					frameLayout.setVisibility(View.GONE);
+					fabButton.setVisibility(View.VISIBLE);
+				}
+			});
+
+			addExpenseButton = (ImageView) findViewById(R.id.add_expense);
 			addExpenseButton.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					DialogFragment dialog = AddExpenseDialog.getInstance(R.id.pager);
 					dialog.show(getSupportFragmentManager(), "addexpense");
+					frameLayout.setVisibility(View.GONE);
+					fabButton.setVisibility(View.VISIBLE);
 				}
 
 			});
 
+			addRoomiesButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					frameLayout.setVisibility(View.GONE);
+					/*try {
+						RoomiesHelper.startActivityHelper(HomeScreenActivity.this,
+								getResources().getString(R.string
+										.RoomiesConnectActivity), null,false);
+					} catch (RoomXpnseMngrException e) {
+						RoomiesHelper.createToast(HomeScreenActivity.this, APP_ERROR, mToast);
+						System.exit(0);
+					}*/
+					new GCMSender().execute(new String[]{"Hello",RoomiesConstants.getToken()});
+				}
+			});
 
 
 			/*Setting the recycler view for navigation drawer*/
@@ -146,19 +239,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			mRecyclerView.setAdapter(mRecylerAdapter);
 			RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
 			mRecyclerView.setLayoutManager(mLayoutManager);
-			/*mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-				@Override
-				public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent motionEvent) {
-					View child = rv.findChildViewUnder(motionEvent.getX(),motionEvent.getY());
-					child.setBackgroundDrawable(getResources().getDrawable(R.drawable.drawer_selected));
-					return true;
-				}
 
-				@Override
-				public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-				}
-			});*/
 
 			mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
 			mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout, mtoolbar
@@ -174,10 +255,28 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 
 			mDrawerLayout.setDrawerListener(mDrawerTogggle);
 			mDrawerTogggle.syncState();
-
+			if (checkPlayServices()) {
+				// Start IntentService to register this application with GCM.
+				Intent intent = new Intent(this, RegistrationIntentService.class);
+				startService(intent);
+			}
 		}
 	}
 
+	private boolean checkPlayServices() {
+		int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+		if (resultCode != ConnectionResult.SUCCESS) {
+			if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+				GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+						PLAY_SERVICES_RESOLUTION_REQUEST).show();
+			} else {
+				Log.i(TAG, "This device is not supported.");
+				finish();
+			}
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException {
@@ -341,20 +440,24 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 
 	@Override
 	public void onBackPressed() {
-		if (doubleBackToExitPressedOnce) {
-			super.onBackPressed();
-			return;
-		}
-
-		this.doubleBackToExitPressedOnce = true;
-		createToast(this, PRESS_BACK_AGAIN_TO_EXIT, mToast);
-
-		new Handler().postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				doubleBackToExitPressedOnce = false;
+		if (frameLayout.getVisibility() == View.VISIBLE) {
+			frameLayout.setVisibility(View.GONE);
+		} else {
+			if (doubleBackToExitPressedOnce) {
+				super.onBackPressed();
+				return;
 			}
-		}, 2000);
+
+			this.doubleBackToExitPressedOnce = true;
+			createToast(this, PRESS_BACK_AGAIN_TO_EXIT, mToast);
+
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					doubleBackToExitPressedOnce = false;
+				}
+			}, 2000);
+		}
 	}
 }

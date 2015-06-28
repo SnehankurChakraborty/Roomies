@@ -1,95 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- A C T I V I T Y   N A M E S -->
+	<!-- A C T I V I T Y   N A M E S -->
 
-    <string name="HomeScreen_Activity">com.phaseii.rxm.roomies.activity.HomeScreenActivity</string>
-    <string name="GetStartedWizard">com.phaseii.rxm.roomies.activity.GetStartedWizard</string>
-    <string name="LoginActivity">com.phaseii.rxm.roomies.activity.LoginActivity</string>
-    <string name="ProfileActivity">com.phaseii.rxm.roomies.activity.ProfileActivity</string>
+	<string name="HomeScreen_Activity">com.phaseii.rxm.roomies.activity.HomeScreenActivity</string>
+	<string name="GetStartedWizard">com.phaseii.rxm.roomies.activity.GetStartedWizard</string>
+	<string name="LoginActivity">com.phaseii.rxm.roomies.activity.LoginActivity</string>
+	<string name="ProfileActivity">com.phaseii.rxm.roomies.activity.ProfileActivity</string>
 	<string name="DashboardActivity">com.phaseii.rxm.roomies.activity.DashboardActivity</string>
-    <string name="DemoActivity">com.phaseii.rxm.roomies.activity.DemoActivity</string>
-    <string name="app_name">Roomies</string>
-    <string name="action_settings">Settings</string>
-    <string name="login">Login</string>
-    <string name="signup">Signup</string>
-    <string name="or">---------( or )---------</string>
-    <string name="roomxpnsemngr">RoomXpnseManager</string>
-    <string name="roomies">Roomies </string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_signup">SignupActivity</string>
-    <string name="emailaddress">Email Address</string>
-    <string name="password">Password</string>
-    <string name="forgot_password">Forgot Password</string>
-    <string name="username">Username</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="title_activity_home_screen">HomeScreenActivity</string>
+    <string name="RoomiesConnectActivity">com.phaseii.rxm.roomies.activity.RoomiesConnectActivity
+    </string>
+	<string name="app_name">Roomies</string>
+	<string name="action_settings">Settings</string>
+	<string name="login">Login</string>
+	<string name="signup">Signup</string>
+	<string name="or">---------( or )---------</string>
+	<string name="roomxpnsemngr">RoomXpnseManager</string>
+	<string name="roomies">Roomies </string>
+	<string name="title_activity_login">LoginActivity</string>
+	<string name="title_activity_signup">SignupActivity</string>
+	<string name="title_roomies_connect">RoomiesConnectActivity</string>
+	<string name="emailaddress">Email Address</string>
+	<string name="password">Password</string>
+	<string name="forgot_password">Forgot Password</string>
+	<string name="username">Username</string>
+	<string name="phone_number">Phone Number</string>
+	<string name="male">Male</string>
+	<string name="female">Female</string>
+	<string name="title_activity_home_screen">HomeScreenActivity</string>
 
-    <!-- N A VI G A T I O N    D R A W E R -->
-    <string-array name="home_screen_drawer_options">
-        <item>Room Expenses</item>
-        <item>Logout</item>
-    </string-array>
+	<string name="enable_p2p_button">P2P On/Off</string>
+	<string name="discover_peers_button">Discover</string>
+	<string name="connect_peer_button">Connect</string>
+	<string name="disconnect_peer_button">Disconnect</string>
+	<string name="get_file_button">Launch Gallery</string>
+	<string name="empty"></string>
+	<string name="yes">yes</string>
+	<string name="no">no</string>
+	<string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
+	<string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action Bar</string>
+	<string name="p2p_off_warning">Enable P2P from action bar button above or system settings</string>
+	<string name="group_owner_text">"Am I the Group Owner? "</string>
+	<string name="label_me">ME</string>
+	<string name="label_peers">PEERS</string>
 
-    <!-- W I Z A R D -->
+	<!-- N A VI G A T I O N    D R A W E R -->
+	<string-array name="home_screen_drawer_options">
+		<item>Room Expenses</item>
+		<item>Logout</item>
+	</string-array>
 
-    <string name="title_activity_create_room_wizard">CreateRoomWizard</string>
-    <string name="create_room">Create A Room</string>
-    <string name="start_wizard">Start</string>
-    <string name="rent">Rent</string>
-    <string name="maid">Maid</string>
-    <string name="electricity">Electricity</string>
-    <string name="miscellaneous">Miscellanous</string>
-    <string name="next"><![CDATA[Next >>]]></string>
-    <string name="specify_room_budget">Specify Room Budget</string>
-    <string name="finish">FINISH</string>
-    <string name="title_activity_get_started_wizard">GetStartedWizard</string>
-    <string name="get_started">Get Started</string>
-    <string name="join_room">Join A Room</string>
-    <string name="error_symbol">  !  </string>
-    <string name="fixed">Fixed</string>
-    <string name="variable">Variable</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="open_drawer">open drawer</string>
-    <string name="close_drawer">close drawer</string>
+	<!-- W I Z A R D -->
 
-    <!-- A D D  E X P E N S E   D I A L O G -->
+	<string name="title_activity_create_room_wizard">CreateRoomWizard</string>
+	<string name="create_room">Create A Room</string>
+	<string name="start_wizard">Start</string>
+	<string name="rent">Rent</string>
+	<string name="maid">Maid</string>
+	<string name="electricity">Electricity</string>
+	<string name="miscellaneous">Miscellanous</string>
+	<string name="next"><![CDATA[Next >>]]></string>
+	<string name="specify_room_budget">Specify Room Budget</string>
+	<string name="finish">FINISH</string>
+	<string name="title_activity_get_started_wizard">GetStartedWizard</string>
+	<string name="get_started">Get Started</string>
+	<string name="join_room">Join A Room</string>
+	<string name="error_symbol">  !  </string>
+	<string name="fixed">Fixed</string>
+	<string name="variable">Variable</string>
+	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="open_drawer">open drawer</string>
+	<string name="close_drawer">close drawer</string>
 
-    <string name="submit">Submit</string>
-    <string name="cancel">Cancel</string>
+	<!-- A D D  E X P E N S E   D I A L O G -->
 
-    <string-array name="category">
-        <item>RENT</item>
-        <item>MAID</item>
-        <item>ELECTRICITY</item>
-        <item>MISCELLANEOUS</item>
-    </string-array>
-    <string-array name="subcategory">
-        <item>BILLS</item>
-        <item>GROCERY</item>
-        <item>VEGETABLES</item>
-        <item>OTHERS</item>
-    </string-array>
+	<string name="submit">Submit</string>
+	<string name="cancel">Cancel</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="into_your_room">into your room</string>
-    <string name="enter_username">Enter Username</string>
-    <string name="enter_password">Enter Password</string>
-    <string name="enter_name_username">Enter name/username</string>
-    <string name="enter_email">Enter email address</string>
-    <string name="PROFILEJPG">profile.jpg</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_demo">DemoActivity</string>
-    <string name="facebook_app_id">1447058975589912</string>
-    <string name="cancelled">Cancelled</string>
-    <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
-    <string name="ok">OK</string>
-    <string name="hello_user">Hello %1$s!</string>
-    <string name="success">Success</string>
-    <string name="join_message">We are currently working on this option. It would be available in the next update. For now please select "create a room option".</string>
-    <string name="join_title">Available in next update</string>
-    <string name="title_activity_dashboard">DashboardActivity</string>
+	<string-array name="category">
+		<item>RENT</item>
+		<item>MAID</item>
+		<item>ELECTRICITY</item>
+		<item>MISCELLANEOUS</item>
+	</string-array>
+	<string-array name="subcategory">
+		<item>BILLS</item>
+		<item>GROCERY</item>
+		<item>VEGETABLES</item>
+		<item>OTHERS</item>
+	</string-array>
+
+	<string name="hello_world">Hello world!</string>
+	<string name="into_your_room">into your room</string>
+	<string name="enter_username">Enter Username</string>
+	<string name="enter_password">Enter Password</string>
+	<string name="enter_name_username">Enter name/username</string>
+	<string name="enter_email">Enter email address</string>
+	<string name="PROFILEJPG">profile.jpg</string>
+	<string name="title_activity_profile">ProfileActivity</string>
+	<string name="title_activity_demo">DemoActivity</string>
+	<string name="facebook_app_id">1447058975589912</string>
+	<string name="cancelled">Cancelled</string>
+	<string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
+	<string name="ok">OK</string>
+	<string name="hello_user">Hello %1$s!</string>
+	<string name="success">Success</string>
+	<string name="join_message">We are currently working on this option. It would be available in the next update. For now please select "create a room option".</string>
+	<string name="join_title">Available in next update</string>
+	<string name="title_activity_dashboard">DashboardActivity</string>
+	<string name="title_activity_roomies_connect">RoomiesConnectActivity</string>
+
+
+	<!-- P U S H  M E S S A G I N G -->
+
+	<!--<string name="gcm_defaultSenderId">artful-mystery-95705</string>-->
+
 
 </resources>

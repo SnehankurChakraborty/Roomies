@@ -60,10 +60,19 @@ public final class RoomiesConstants {
 	public static final String IS_GOOGLE_FB_LOGIN ="IS_GOOGLE_FB_LOGIN" ;
 	public static final String IS_SETUP_COMPLETED = "IS_SETUP_COMPLETED";
 	public static final String PREVIOUS_MONTH = "PREVIOUS_MONTH";
-
+	public static final String SENT_TOKEN_TO_SERVER="sent_token_to_server";
 	/*
 	static feilds
 	 */
 	public static GoogleApiClient googleApiClient;
+	public static String token;
+
+	public static String getToken() {
+		return RoomiesConstants.token;
+	}
+
+	public static void setToken(String token) {
+		RoomiesConstants.token = token;
+	}
 }
 
