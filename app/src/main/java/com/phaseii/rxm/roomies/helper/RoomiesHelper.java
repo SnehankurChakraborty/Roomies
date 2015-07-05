@@ -4,6 +4,7 @@ package com.phaseii.rxm.roomies.helper;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -19,12 +20,33 @@ import android.widget.ToggleButton;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.model.RoomDetails;
+import com.phaseii.rxm.roomies.model.RoomStats;
+import com.phaseii.rxm.roomies.model.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DELAY_MILLIS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MONTH_YEAR;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_SENDER_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
 
 /**
  * Created by Snehankur on 2/23/2015.
@@ -170,6 +192,42 @@ public class RoomiesHelper {
 		return isValid;
 	}
 
+	public static boolean cacheDBtoPreferences(Context context, UserDetails userDetails,
+	                                           RoomDetails roomDetails, RoomStats roomStats,
+	                                           boolean isGoogleFBLogin) {
+		SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_ROOMIES_KEY,
+				Context.MODE_PRIVATE);
+		SharedPreferences.Editor mEditor = sharedPreferences.edit();
+		mEditor.putString(PREF_USER_ID, String.valueOf(userDetails.getUserId()));
+		mEditor.putString(PREF_USERNAME, userDetails.getUsername());
+		mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
+		mEditor.putString(PREF_SENDER_ID, userDetails.getSenderId());
+		mEditor.putBoolean(PREF_SETUP_COMPLETED, userDetails.isSetupCompleted());
+		mEditor.putString(PREF_ROOM_ID, String.valueOf(roomDetails.getRoomId()));
+		mEditor.putString(PREF_ROOM_ALIAS, roomDetails.getRoomAlias());
+		mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomDetails.getNoOfPersons()));
+		mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomStats.getRentMargin()));
+		mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomStats.getMaidMargin()));
+		mEditor.putString(PREF_ELECTRICITY_MARGIN,
+				String.valueOf(roomStats.getElectricityMargin()));
+		mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
+				String.valueOf(roomStats.getMiscellaneousMargin()));
+		mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
+		mEditor.putBoolean(IS_LOGGED_IN, true);
+		if (isGoogleFBLogin) {
+			mEditor.putBoolean(IS_GOOGLE_FB_LOGIN, true);
+		}
+		return true;
 
+	}
+
+	public static String[] addElement(String[] array, String element) {
+		List<String> result = new ArrayList<>();
+		for (String s : array) {
+			result.add(s);
+		}
+		result.add(element);
+		return result.toArray(new String[array.length + 1]);
+	}
 
 }

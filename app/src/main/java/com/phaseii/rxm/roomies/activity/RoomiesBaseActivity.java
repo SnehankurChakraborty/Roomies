@@ -25,7 +25,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.model.UserDetails;
 
 /**
  * Created by Snehankur on 5/10/2015.
@@ -111,7 +111,7 @@ public abstract class RoomiesBaseActivity extends ActionBarActivity
 		loginType = LoginType.GOOGLE;
 	}
 
-	public abstract void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException;
+	protected abstract void getAllDetails(UserDetails userDetails, boolean isGoogleFBlogin);
 
 	public abstract void getProfileInformation(LoginResult loginResult);
 

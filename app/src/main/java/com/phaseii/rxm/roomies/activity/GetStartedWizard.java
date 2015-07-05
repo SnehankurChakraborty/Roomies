@@ -9,8 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -21,22 +19,29 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.service.RoomDetailsServiceImpl;
 import com.phaseii.rxm.roomies.service.RoomService;
 import com.phaseii.rxm.roomies.service.RoomServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.service.UserService;
 import com.phaseii.rxm.roomies.service.UserServiceImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_SETUP_COMPLETED;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ELECTRICITY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MISC;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NAME;
@@ -50,6 +55,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.replaceFragment;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.setError;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
 
 public class GetStartedWizard extends FragmentActivity {
 
@@ -64,6 +70,11 @@ public class GetStartedWizard extends FragmentActivity {
 	EditText miscellaneous;
 	SharedPreferences mSharedPref;
 
+	/**
+	 * on create
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,34 +87,23 @@ public class GetStartedWizard extends FragmentActivity {
 		}
 	}
 
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_get_started_wizard, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
+	/**
+	 * Invoked when user clicks get started. The
+	 * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.StartFragment} is replaced by
+	 * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.SelectorFragment} fragment
+	 *
+	 * @param view
+	 */
 	public void getStartedClicked(View view) {
 		RoomiesFragment selectorFragment = new SelectorFragment();
 		replaceFragment(this, selectorFragment);
 	}
 
+	/**
+	 * Invoked when user clicks join room.
+	 *
+	 * @param view
+	 */
 	public void joinRoomSelected(View view) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getApplication());
 		builder.setMessage(R.string.join_message)
@@ -119,11 +119,26 @@ public class GetStartedWizard extends FragmentActivity {
 		dialog.show();
 	}
 
+	/**
+	 * Invoked when user clicks create room. The
+	 * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.SelectorFragment} is replaced by
+	 * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.RoomInfoFragment} fragment.
+	 *
+	 * @param view
+	 * @param view
+	 */
 	public void createRoomSelected(View view) {
 		RoomiesFragment roomInfoFragment = new RoomInfoFragment();
 		replaceFragment(TAG_ROOM_INFO, this, roomInfoFragment);
 	}
 
+	/**
+	 * Invoked when user clicks submit on RoomInfoFragment. The
+	 * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.RoomInfoFragment} is replaced by
+	 * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.RoomExpenseFragment} fragment.
+	 *
+	 * @param view
+	 */
 	public void roomInfoCompleted(View view) {
 		View fragmentView = ((RoomInfoFragment) getSupportFragmentManager().findFragmentByTag
 				(TAG_ROOM_INFO)).getFragmentView();
@@ -136,6 +151,14 @@ public class GetStartedWizard extends FragmentActivity {
 			replaceFragment(TAG_ROOM_EXPENSE, this, roomExpenseFragment);
 		}
 	}
+
+	/**
+	 * Invoked when user clicks submit on RoomExpenseFragment. Checks for null and format of
+	 * the entered data and calls method to store into database and also cached into the shared
+	 * preferences.
+	 *
+	 * @param view
+	 */
 
 	public void roomExpenseCompleted(View view) {
 		View fragmentView = ((RoomExpenseFragment) getSupportFragmentManager().findFragmentByTag
@@ -161,16 +184,28 @@ public class GetStartedWizard extends FragmentActivity {
 		}
 	}
 
-
+	/**
+	 * Stores the data into database and also caches the same in shared preferences
+	 */
 	private void storeRoomInfo() {
+		RoomiesService service = null;
+		Map<String, Object> detailsMap = new HashMap<>();
+		SharedPreferences.Editor mEditor = getSharedPreferences( PREF_ROOMIES_KEY, Context
+				.MODE_PRIVATE).edit();
 
-		mSharedPref = getSharedPreferences(
-				ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-		SharedPreferences.Editor mEditor = mSharedPref.edit();
 
-		mEditor.putString(RoomiesConstants.ROOM_ALIAS, roomName.getText().toString());
-		mEditor.putString(RoomiesConstants.ROOM_NO_OF_MEMBERS, noOfMembers.getText().toString());
-		mEditor.putBoolean(IS_LOGGED_IN, true);
+		detailsMap.put(PREF_ROOM_ALIAS, roomName.getText().toString());
+		detailsMap.put(PREF_NO_OF_MEMBERS, noOfMembers.getText().toString());
+		service = new RoomDetailsServiceImpl();
+		service.insertDetails(detailsMap);
+		mEditor.putString(PREF_ROOM_ALIAS, roomName.getText().toString());
+		mEditor.putString(PREF_NO_OF_MEMBERS, noOfMembers.getText().toString());
+
+		detailsMap.clear();
+		detailsMap.put(PREF_RENT_MARGIN, rent.getText().toString());
+		detailsMap.put(PREF_MAID_MARGIN, maid.getText().toString());
+		detailsMap.put(PREF_ELECTRICITY_MARGIN, electricity.getText().toString());
+		detailsMap.put(PREF_MISCELLANEOUS_MARGIN, miscellaneous.getText().toString());
 		float total = Float.valueOf(rent.getText().toString()) + Float.valueOf(maid.getText()
 				.toString()) + Float.valueOf(electricity.getText().toString()) + Float.valueOf(
 				miscellaneous.getText().toString());

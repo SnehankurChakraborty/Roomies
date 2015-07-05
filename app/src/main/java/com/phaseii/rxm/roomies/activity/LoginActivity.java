@@ -25,12 +25,16 @@ import com.google.android.gms.plus.model.people.Person;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dialogs.SignupDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.helper.QueryParam;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.service.RoomService;
-import com.phaseii.rxm.roomies.service.RoomServiceImpl;
-import com.phaseii.rxm.roomies.service.UserService;
-import com.phaseii.rxm.roomies.service.UserServiceImpl;
+import com.phaseii.rxm.roomies.model.RoomDetails;
+import com.phaseii.rxm.roomies.model.RoomStats;
+import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.service.RoomDetailsServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomStatsServiceImpl;
+import com.phaseii.rxm.roomies.service.RoomiesService;
+import com.phaseii.rxm.roomies.service.UserDetailsServiceImpl;
 
 import org.json.JSONObject;
 
@@ -39,19 +43,29 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
+
 
 public class LoginActivity extends RoomiesBaseActivity {
 
 	private static final int PROFILE_PIC_SIZE = 400;
 	private Toast mToast;
 
-
+	/**
+	 * on create
+	 *
+	 * @param savedInstanceState
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		/*LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button);
-		loginButton.setReadPermissions(Arrays.asList("public_profile, email"));*/
 		final View loginPage = findViewById(R.id.login_page);
 		Button submit = (Button) findViewById(R.id.submit);
 		submit.setOnClickListener(new View.OnClickListener() {
@@ -64,24 +78,54 @@ public class LoginActivity extends RoomiesBaseActivity {
 				boolean isValidPassword = RoomiesHelper.setError("password",
 						getBaseContext(), loginPage);
 				if (isValidPassword && isValidUsername) {
-					try {
-						checkValidUser(username, password);
-					} catch (RoomXpnseMngrException e) {
-						RoomiesHelper.createToast(getBaseContext(), RoomiesConstants.APP_ERROR,
-								mToast);
-						System.exit(0);
+					/**
+					 * check if username/password match
+					 */
+					Map<QueryParam, Object> paramMap = new HashMap<>();
+					paramMap.put(QueryParam.USERID, username.getText().toString());
+
+					/**
+					 * get user details based on user id
+					 */
+					RoomiesService service = new UserDetailsServiceImpl();
+					UserDetails userDetails = (UserDetails) service.getDetails(paramMap).get(0);
+					if (null != userDetails.getPassword() && userDetails.getPassword().equals(
+							password.getText().toString())) {
+
+						/**
+						 * call method to get all details of the user and cache into shared
+						 * preferences
+						 */
+						getAllDetails(userDetails, false);
+
+					} else {
+
+						/**
+						 * display toast when userid/password doesn't match
+						 */
+						RoomiesHelper.createToast(getBaseContext(),
+								RoomiesConstants.INVALID_USER_CREDENTIALS, mToast);
 					}
+
 				}
 			}
 		});
+
+		/**
+		 * for signup new user
+		 */
 		TextView signuplink = (TextView) findViewById(R.id.signuplink);
 		signuplink.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogFragment dialog = SignupDialog.getInstance(getBaseContext());
+				DialogFragment dialog = SignupDialog.getInstance();
 				dialog.show(getSupportFragmentManager(), "signup");
 			}
 		});
+
+		/**
+		 * for google sign in
+		 */
 		SignInButton signInButton = (SignInButton) findViewById(R.id.gplus_sign_in_button);
 		if (null != signInButton) {
 			signInButton.setOnClickListener(new View.OnClickListener() {
@@ -94,59 +138,21 @@ public class LoginActivity extends RoomiesBaseActivity {
 
 	}
 
+	/**
+	 * google plus login
+	 *
+	 * @param v
+	 */
 	@Override
 	public void loginGPlus(View v) {
 		super.loginGPlus(v);
 	}
 
-
-	private void checkValidUser(EditText usernameFeild, EditText passwordFeild) throws
-			RoomXpnseMngrException {
-		UserService user = new UserServiceImpl(getBaseContext());
-		RoomService room = new RoomServiceImpl(getBaseContext());
-		String password = user.getPassword(usernameFeild.getText().toString());
-		if (null != password && password.equals(passwordFeild.getText().toString())) {
-			user.retrieveUserData();
-			room.getRoomDetailsWithMargin(usernameFeild.getText().toString());
-			RoomiesHelper.startActivityHelper(this, getResources().getString(R
-					.string.HomeScreen_Activity), null, true);
-		} else {
-			RoomiesHelper.createToast(getBaseContext(),
-					RoomiesConstants.INVALID_USER_CREDENTIALS, mToast);
-		}
-	}
-
-	public void setUpAuthenticatedUser(User user) throws RoomXpnseMngrException {
-		RoomService room = new RoomServiceImpl(this);
-		SharedPreferences sharedPref = getSharedPreferences
-				(RoomiesConstants.ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
-		SharedPreferences.Editor mEditor = sharedPref.edit();
-		mEditor.putString(RoomiesConstants.NAME, user.getUsername());
-		mEditor.putString(RoomiesConstants.EMAIL_ID, user.getEmail());
-		mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
-		mEditor.putBoolean(RoomiesConstants.IS_GOOGLE_FB_LOGIN, true);
-
-		if (room.getRoomDetailsWithMargin(user.getEmail())) {
-			mEditor.putBoolean(RoomiesConstants.IS_SETUP_COMPLETED, true);
-		} else {
-			if (room.isUserSaved(user.getEmail())) {
-				mEditor.putBoolean(RoomiesConstants.IS_SETUP_COMPLETED, true);
-				room.getSpecificMonthDetails(user.getEmail(), sharedPref.getString(RoomiesConstants
-						.PREVIOUS_MONTH, null));
-				room.getTotalSpent(user.getEmail());
-			}
-		}
-		mEditor.apply();
-		RoomiesHelper.startActivityHelper(this, getResources().getString(R
-				.string.HomeScreen_Activity), null, true);
-		try {
-			RoomiesHelper.startActivityHelper(this, getResources()
-					.getString(R.string.HomeScreen_Activity), null, true);
-		} catch (RoomXpnseMngrException e) {
-			RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
-		}
-	}
-
+	/**
+	 * for google login once the connection is established and user is logged in
+	 *
+	 * @param bundle
+	 */
 	@Override
 	public void onConnected(Bundle bundle) {
 		super.onConnected(bundle);
@@ -154,6 +160,11 @@ public class LoginActivity extends RoomiesBaseActivity {
 
 	}
 
+	/**
+	 * for FB login once the connection is established and user is logged in
+	 *
+	 * @param loginResult
+	 */
 	@Override
 	public void onSuccess(LoginResult loginResult) {
 		super.onSuccess(loginResult);
@@ -182,18 +193,63 @@ public class LoginActivity extends RoomiesBaseActivity {
 					File imgProfilePic = new File(getFilesDir(),
 							personName + getResources().getString(R.string.PROFILEJPG));
 					new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
-					try {
-						setUpAuthenticatedUser(user);
-					} catch (RoomXpnseMngrException e) {
-						RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+
+					/**
+					 * get user details based on email address of the user
+					 */
+					RoomiesService service = new UserDetailsServiceImpl();
+					Map<QueryParam, String> paramMap = new HashMap<>();
+					paramMap.put(QueryParam.USERNAME, user.getEmail());
+					UserDetails userDetails = (UserDetails) service.getDetails(paramMap);
+
+					if (null == userDetails) {
+
+						/**
+						 * if the user details from database is null, user has not signed up yet
+						 * So save the details into the database
+						 */
+						userDetails = new UserDetails();
+						userDetails.setIsSetupCompleted(false);
+						userDetails.setUsername(email);
+						userDetails.setUserAlias(personName);
+						Map<String, UserDetails> userMap = new HashMap<>();
+						userMap.put("USER_DETAILS", userDetails);
+						service.insertDetails(userMap);
+
+						/**
+						 * save the same details in shared preferences
+						 */
+						SharedPreferences.Editor mEditor = getSharedPreferences
+								(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).edit();
+						mEditor.putString(PREF_USER_ALIAS, personName);
+						mEditor.putString(PREF_USERNAME, email);
+						mEditor.putBoolean(IS_LOGGED_IN, true);
+						mEditor.apply();
+
+						/**
+						 * start the Get started activity
+						 */
+						try {
+							RoomiesHelper.startActivityHelper(this, getResources()
+									.getString(R.string.GetStartedWizard), null, true);
+						} catch (RoomXpnseMngrException e) {
+							RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+							System.exit(0);
+						}
 					}
+
+					/**
+					 * call method to get all details of the user and cache into shared preferences
+					 */
+					getAllDetails(userDetails, true);
 
 				} else {
 					Toast.makeText(getApplicationContext(),
 							"Person information is null", Toast.LENGTH_LONG).show();
 				}
 			} catch (Exception e) {
-
+				RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+				System.exit(0);
 			}
 		} else {
 
@@ -221,12 +277,12 @@ public class LoginActivity extends RoomiesBaseActivity {
 							if (null != mConnectionProgressDialog) {
 								mConnectionProgressDialog.dismiss();
 							}
-							try {
+							/*try {
 								setUpAuthenticatedUser(fbUser);
 							} catch (RoomXpnseMngrException e) {
 								RoomiesHelper.createToast(LoginActivity.this,
 										RoomiesConstants.APP_ERROR, mToast);
-							}
+							}*/
 						}
 					});
 			Bundle parameters = new Bundle();
@@ -237,6 +293,72 @@ public class LoginActivity extends RoomiesBaseActivity {
 
 	}
 
+
+	/**
+	 * get all the other details from database based on user details
+	 *
+	 * @param userDetails
+	 * @param isGoogleFBlogin
+	 */
+	@Override
+	protected void getAllDetails(UserDetails userDetails, boolean isGoogleFBlogin) {
+		if (!userDetails.isSetupCompleted()) {
+			/**
+			 * if the user has not completed the initial setup, then save the same status in
+			 * shared preferences and load the HomeScreen activity
+			 */
+			SharedPreferences.Editor mEditor = getSharedPreferences(
+					RoomiesConstants.PREF_ROOMIES_KEY, Context.MODE_PRIVATE).edit();
+			mEditor.putBoolean(RoomiesConstants.IS_SETUP_COMPLETED, true);
+			try {
+				RoomiesHelper.startActivityHelper(this, getResources()
+						.getString(R.string.HomeScreen_Activity), null, true);
+			} catch (RoomXpnseMngrException e) {
+				RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+			}
+		}
+
+		RoomiesService service = null;
+		Map<QueryParam, Object> paramMap = new HashMap<>();
+		/**
+		 * get room details based on room id from user details if userid/passwrd match
+		 */
+		paramMap.clear();
+		paramMap.put(QueryParam.ROOMID, userDetails.getRoomId());
+		service = new RoomDetailsServiceImpl();
+		RoomDetails roomDetails = (RoomDetails) service.getDetails(paramMap).get(0);
+
+		/**
+		 * get room stats based on room id and current month from room details
+		 */
+		paramMap.clear();
+		paramMap.put(QueryParam.ROOMID, userDetails.getRoomId());
+		paramMap.put(QueryParam.MONTHYEAR, "july15");
+		service = new RoomStatsServiceImpl();
+		RoomStats roomStats = (RoomStats) service.getDetails(paramMap).get(0);
+
+		/**
+		 * cache all the data onto shared preferences
+		 */
+		RoomiesHelper.cacheDBtoPreferences(LoginActivity.this, userDetails, roomDetails,
+				roomStats, isGoogleFBlogin);
+
+		/**
+		 * start HomeScreen activity
+		 */
+		try {
+			RoomiesHelper.startActivityHelper(this, getResources()
+					.getString(R.string.HomeScreen_Activity), null, true);
+		} catch (RoomXpnseMngrException e) {
+			RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+			System.exit(0);
+		}
+	}
+
+	/**
+	 * Async task to load profile picture from google profile
+	 * Loads and stores the picture in the file <username>profile.jpg
+	 */
 	private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
 		private File imgProfilePic;
 
@@ -244,6 +366,12 @@ public class LoginActivity extends RoomiesBaseActivity {
 			this.imgProfilePic = imgProfilePic;
 		}
 
+		/**
+		 * Load the image from the given url
+		 *
+		 * @param urls
+		 * @return
+		 */
 		@Override
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
@@ -257,6 +385,11 @@ public class LoginActivity extends RoomiesBaseActivity {
 			return mIcon11;
 		}
 
+		/**
+		 * save the picture in the given location
+		 *
+		 * @param bitmap
+		 */
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
 			FileOutputStream fos = null;

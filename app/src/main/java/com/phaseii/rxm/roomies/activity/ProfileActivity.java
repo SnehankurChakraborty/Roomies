@@ -26,16 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.service.MiscService;
-import com.phaseii.rxm.roomies.service.MiscServiceImpl;
-import com.phaseii.rxm.roomies.service.RoomService;
-import com.phaseii.rxm.roomies.service.RoomServiceImpl;
-import com.phaseii.rxm.roomies.service.UserService;
-import com.phaseii.rxm.roomies.service.UserServiceImpl;
+import com.phaseii.rxm.roomies.helper.UpdateParam;
+import com.phaseii.rxm.roomies.service.RoomiesService;
 import com.phaseii.rxm.roomies.view.AlphaForegroundColorSpan;
 import com.phaseii.rxm.roomies.view.RoomiesScrollView;
 
@@ -44,6 +39,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
@@ -65,19 +62,15 @@ public class ProfileActivity extends ActionBarActivity {
 	private boolean isGoogleFBLogin;
 	private Toolbar mToolbar;
 	private int currentApiVersion;
-	private UserService userService;
-	private RoomService roomService;
-	private MiscService miscService;
+	private RoomiesService service;
+	private Map<UpdateParam, ?> detailsMap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		currentApiVersion = Build.VERSION.SDK_INT;
-
-		userService = new UserServiceImpl(getBaseContext());
-		roomService = new RoomServiceImpl(getBaseContext());
-		miscService = new MiscServiceImpl(getBaseContext());
+		detailsMap = new HashMap<>();
 
 		mSpannableString = new SpannableString("Profile");
 		mAlphaForegroundColorSpan = new AlphaForegroundColorSpan(0xFFFFFF);
@@ -275,10 +268,12 @@ public class ProfileActivity extends ActionBarActivity {
 						}
 						switch (mode) {
 							case USER:
-
-								if ("name".equals(feildId)) {
-									if ((userService.update(username,
-											field_edit.getText().toString(),
+								/*if ("name".equals(feildId)) {
+									service = new UserDetailsServiceImpl();
+									detailsMap.clear();
+									UserDetails user = new UserDetails();
+									user.setUserAlias(field_edit.getText().toString());
+									if ((service.update(,
 											RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME)) &&
 											(roomService.updateRoomMargins(username, feildId,
 													field_edit.getText().toString())) && (miscService.updateUser(
@@ -290,7 +285,7 @@ public class ProfileActivity extends ActionBarActivity {
 									isUpdateSuccessful = userService.update(username,
 											field_edit.getText().toString(),
 											RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID);
-								}
+								}*/
 								break;
 							case ROOM:
 								/*if ("no_of_members".equals(feildId)) {
@@ -302,8 +297,8 @@ public class ProfileActivity extends ActionBarActivity {
 									mEditor.apply();
 									isUpdateSuccessful = true;
 								} else {*/
-								isUpdateSuccessful = roomService.updateRoomMargins(username,
-										feildId, field_edit.getText().toString());
+								/*isUpdateSuccessful = roomService.updateRoomMargins(username,
+										feildId, field_edit.getText().toString());*/
 
 
 								break;
@@ -371,27 +366,6 @@ public class ProfileActivity extends ActionBarActivity {
 		}
 	}
 
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_demo, menu);
-		return true;
-	}*/
-
-	/*@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}*/
 
 	@Override
 	public void onBackPressed() {

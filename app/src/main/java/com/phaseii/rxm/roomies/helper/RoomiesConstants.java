@@ -57,10 +57,33 @@ public final class RoomiesConstants {
 	public static final String OTHERS = "OTHERS";
 	public static final int REQUEST_CODE = 1;
 	public static final String DUMMY_PASSWORD = "dummy";
-	public static final String IS_GOOGLE_FB_LOGIN ="IS_GOOGLE_FB_LOGIN" ;
+	public static final String IS_GOOGLE_FB_LOGIN = "IS_GOOGLE_FB_LOGIN";
 	public static final String IS_SETUP_COMPLETED = "IS_SETUP_COMPLETED";
 	public static final String PREVIOUS_MONTH = "PREVIOUS_MONTH";
-	public static final String SENT_TOKEN_TO_SERVER="sent_token_to_server";
+	public static final String SENT_TOKEN_TO_SERVER = "sent_token_to_server";
+
+	/**
+	 * ROOMIES PREFERENCES KEYS
+	 */
+	public static final String PREF_ROOMIES_KEY="ROOMIES_PREFERENCES_KEY";
+	public static final String PREF_USER_ALIAS = "USER_ALIAS";
+	public static final String PREF_USER_ID = "USER_ID";
+	public static final String PREF_USERNAME = "USERNAME";
+	public static final String PREF_SENDER_ID = "SENDER_ID";
+	public static final String PREF_SETUP_COMPLETED = "IS_SETUP_COMPLETED";
+	public static final String PREF_ROOM_ALIAS = "ROOM_ALIAS";
+	public static final String PREF_ROOM_ID = "ROOM_ID";
+	public static final String PREF_NO_OF_MEMBERS = "NO_OF_MEMBERS";
+	public static final String PREF_MONTH_YEAR = "MONTH_YEAR";
+	public static final String PREF_RENT_MARGIN = "RENT_MARGIN";
+	public static final String PREF_MAID_MARGIN = "MAID_MARGIN";
+	public static final String PREF_ELECTRICITY_MARGIN = "ELECTRICITY_MARGIN";
+	public static final String PREF_MISCELLANEOUS_MARGIN = "MISCELLANEOUS_MARGIN";
+	public static final String PREF_TOTAL = "TOTAL";
+	public static final String PREF_IS_RENT_PAID = "isRentPaid";
+	public static final String PREF_IS_MAID_PAID = "isMaidPaid";
+	public static final String PREF_IS_ELEC_PAID = "isElecPaid";
+
 	/*
 	static feilds
 	 */
