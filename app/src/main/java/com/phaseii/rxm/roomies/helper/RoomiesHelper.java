@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -22,14 +23,21 @@ import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
+import com.phaseii.rxm.roomies.model.RoomUserStatData;
 import com.phaseii.rxm.roomies.model.UserDetails;
 
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DATE_FORMAT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DELAY_MILLIS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
@@ -52,6 +60,8 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
  * Created by Snehankur on 2/23/2015.
  */
 public class RoomiesHelper {
+
+	public static final String TAG = "RoomiesHelper";
 
 	public static boolean isFieldBlankOrEmpty(EditText editText) {
 		boolean isBlankOrEmpty = false;
@@ -95,16 +105,6 @@ public class RoomiesHelper {
 		} catch (ClassNotFoundException e) {
 			throw new RoomXpnseMngrException(activity + " class not found", e);
 		}
-	}
-
-	private void delayToast(final Toast mToast) {
-		Handler mHandler = new Handler();
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mToast.cancel();
-			}
-		}, DELAY_MILLIS);
 	}
 
 	public static void replaceFragment(String tag,
@@ -192,31 +192,65 @@ public class RoomiesHelper {
 		return isValid;
 	}
 
-	public static boolean cacheDBtoPreferences(Context context, UserDetails userDetails,
+	public static boolean cacheDBtoPreferences(Context context, RoomUserStatData roomUserStat,
+	                                           UserDetails userDetails,
 	                                           RoomDetails roomDetails, RoomStats roomStats,
 	                                           boolean isGoogleFBLogin) {
 		SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_ROOMIES_KEY,
 				Context.MODE_PRIVATE);
 		SharedPreferences.Editor mEditor = sharedPreferences.edit();
-		mEditor.putString(PREF_USER_ID, String.valueOf(userDetails.getUserId()));
-		mEditor.putString(PREF_USERNAME, userDetails.getUsername());
-		mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
-		mEditor.putString(PREF_SENDER_ID, userDetails.getSenderId());
-		mEditor.putBoolean(PREF_SETUP_COMPLETED, userDetails.isSetupCompleted());
-		mEditor.putString(PREF_ROOM_ID, String.valueOf(roomDetails.getRoomId()));
-		mEditor.putString(PREF_ROOM_ALIAS, roomDetails.getRoomAlias());
-		mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomDetails.getNoOfPersons()));
-		mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomStats.getRentMargin()));
-		mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomStats.getMaidMargin()));
-		mEditor.putString(PREF_ELECTRICITY_MARGIN,
-				String.valueOf(roomStats.getElectricityMargin()));
-		mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
-				String.valueOf(roomStats.getMiscellaneousMargin()));
-		mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
+
 		mEditor.putBoolean(IS_LOGGED_IN, true);
+
+		if (null != roomUserStat) {
+			mEditor.putString(PREF_USER_ID, String.valueOf(roomUserStat.getUserId()));
+			mEditor.putString(PREF_USERNAME, roomUserStat.getUsername());
+			mEditor.putString(PREF_USER_ALIAS, roomUserStat.getUserAlias());
+			mEditor.putString(PREF_SENDER_ID, roomUserStat.getSenderId());
+
+			mEditor.putString(PREF_ROOM_ID, String.valueOf(roomUserStat.getRoomId()));
+			mEditor.putString(PREF_ROOM_ALIAS, roomUserStat.getRoomAlias());
+			mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomUserStat.getNoOfMembers()));
+
+			mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomUserStat.getRentMargin()));
+			mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomUserStat.getMaidMargin()));
+			mEditor.putString(PREF_ELECTRICITY_MARGIN,
+					String.valueOf(roomUserStat.getElectricityMargin()));
+			mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
+					String.valueOf(roomUserStat.getMiscellaneousMargin()));
+			mEditor.putString(PREF_MONTH_YEAR, roomUserStat.getMonthYear());
+			mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
+
+		} else {
+
+			if (null != userDetails) {
+				mEditor.putString(PREF_USER_ID, String.valueOf(userDetails.getUserId()));
+				mEditor.putString(PREF_USERNAME, userDetails.getUsername());
+				mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
+				mEditor.putString(PREF_SENDER_ID, userDetails.getSenderId());
+			}
+
+			if (null != roomDetails) {
+				mEditor.putString(PREF_ROOM_ID, String.valueOf(roomDetails.getRoomId()));
+				mEditor.putString(PREF_ROOM_ALIAS, roomDetails.getRoomAlias());
+				mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomDetails.getNoOfPersons()));
+			}
+
+			if (null != roomStats) {
+				mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomStats.getRentMargin()));
+				mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomStats.getMaidMargin()));
+				mEditor.putString(PREF_ELECTRICITY_MARGIN,
+						String.valueOf(roomStats.getElectricityMargin()));
+				mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
+						String.valueOf(roomStats.getMiscellaneousMargin()));
+				mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
+				mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
+			}
+		}
 		if (isGoogleFBLogin) {
 			mEditor.putBoolean(IS_GOOGLE_FB_LOGIN, true);
 		}
+		mEditor.commit();
 		return true;
 
 	}
@@ -230,4 +264,62 @@ public class RoomiesHelper {
 		return result.toArray(new String[array.length + 1]);
 	}
 
+	/**
+	 * Takes string value of QueryParam from projectionList and creates a string array.
+	 *
+	 * @param projectionList
+	 * @return
+	 */
+	public static String[] listToProjection(List<QueryParam> projectionList) {
+
+		List<String> projectionStringList = new ArrayList<>();
+		String projection[] = null;
+
+		if (null != projectionList && projectionList.size() > 0) {
+
+			for (QueryParam query : projectionList) {
+				projectionStringList.add(query.toString());
+			}
+			projection = new String[projectionStringList.size()];
+			projectionStringList.toArray(projection);
+		}
+
+		return projection;
+	}
+
+	/*
+	* Returns the current month year in format 'April2015'
+    * */
+	public static String getCurrentMonthYear() {
+
+		Calendar calendar = Calendar.getInstance();
+		String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)];
+		String year = String.valueOf(calendar.get(Calendar.YEAR));
+		return month + year;
+	}
+
+	public static Date stringToDateParser(String dateTime) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(DATE_FORMAT).parse(dateTime);
+		} catch (ParseException e) {
+			Log.e(TAG, e.getMessage());
+		}
+		return date;
+	}
+
+	public static String dateToStringFormatter(Date date) {
+		String dateString = new SimpleDateFormat(DATE_FORMAT).format(date);
+		return dateString;
+	}
+
+	private void delayToast(final Toast mToast) {
+		Handler mHandler = new Handler();
+		mHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mToast.cancel();
+			}
+		}, DELAY_MILLIS);
+	}
 }

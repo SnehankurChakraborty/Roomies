@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,31 +15,27 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.dao.RoomDetailsDaoImpl;
+import com.phaseii.rxm.roomies.dao.RoomStatsDaoImpl;
+import com.phaseii.rxm.roomies.dao.RoomiesDao;
+import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.service.RoomDetailsServiceImpl;
-import com.phaseii.rxm.roomies.service.RoomService;
-import com.phaseii.rxm.roomies.service.RoomServiceImpl;
-import com.phaseii.rxm.roomies.service.RoomiesService;
-import com.phaseii.rxm.roomies.service.UserService;
-import com.phaseii.rxm.roomies.service.UserServiceImpl;
+import com.phaseii.rxm.roomies.helper.QueryParam;
+import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.model.RoomDetails;
+import com.phaseii.rxm.roomies.model.RoomStats;
+import com.phaseii.rxm.roomies.model.UserDetails;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_SETUP_COMPLETED;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ELECTRICITY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MAID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MISC;
@@ -49,26 +44,27 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NO_OF_MEMBERS
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_RENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_ROOM_EXPENSE;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_ROOM_INFO;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesHelper.cacheDBtoPreferences;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
+import static com.phaseii.rxm.roomies.helper.RoomiesHelper.getCurrentMonthYear;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.replaceFragment;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.setError;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
 
 public class GetStartedWizard extends FragmentActivity {
 
-
-	FragmentTransaction transaction;
-	Toast mToast;
-	EditText roomName;
-	EditText noOfMembers;
-	EditText rent;
-	EditText maid;
-	EditText electricity;
-	EditText miscellaneous;
-	SharedPreferences mSharedPref;
+	private FragmentTransaction transaction;
+	private Toast mToast;
+	private EditText roomName;
+	private EditText noOfMembers;
+	private EditText rent;
+	private EditText maid;
+	private EditText electricity;
+	private EditText miscellaneous;
+	private SharedPreferences mSharedPref;
+	private RoomDetails roomDetails;
+	private RoomStats roomStats;
+	private RoomiesDao roomiesDao;
 
 	/**
 	 * on create
@@ -78,8 +74,9 @@ public class GetStartedWizard extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_get_started_wizard);
+		mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, MODE_PRIVATE);
+
 		if (savedInstanceState == null) {
 			transaction = getSupportFragmentManager().beginTransaction();
 			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -173,86 +170,84 @@ public class GetStartedWizard extends FragmentActivity {
 		miscellaneous = (EditText) findViewById(R.id.room_misc);
 		boolean isValidMisc = setError(ROOM_MISC, this, fragmentView);
 		if (isValidRent && isValidMaid && isValidElec && isValidMisc) {
-			storeRoomInfo();
+			if (storeRoomInfo()) {
+				cacheDBtoPreferences(this, null, null, roomDetails, roomStats, false);
+			}
 			try {
 				startActivityHelper(this, getString(R.string.HomeScreen_Activity), null, true);
 			} catch (RoomXpnseMngrException e) {
 				createToast(this, APP_ERROR, mToast);
 			}
-
-
 		}
 	}
 
 	/**
 	 * Stores the data into database and also caches the same in shared preferences
 	 */
-	private void storeRoomInfo() {
-		RoomiesService service = null;
-		Map<String, Object> detailsMap = new HashMap<>();
-		SharedPreferences.Editor mEditor = getSharedPreferences( PREF_ROOMIES_KEY, Context
+	private boolean storeRoomInfo() {
+
+		boolean isDataInserted = false;
+		Map<ServiceParam, RoomDetails> roomDetailsMap = new HashMap<>();
+		Map<ServiceParam, RoomStats> roomStatsMap = new HashMap<>();
+		Map<ServiceParam, Object> updateUserMap = new HashMap<>();
+		SharedPreferences.Editor mEditor = getSharedPreferences(PREF_ROOMIES_KEY, Context
 				.MODE_PRIVATE).edit();
 
+		roomDetails = new RoomDetails();
+		roomDetails.setRoomAlias(roomName.getText().toString());
+		roomDetails.setNoOfPersons(Integer.valueOf(noOfMembers.getText().toString()));
+		roomDetailsMap.put(ServiceParam.MODEL, roomDetails);
 
-		detailsMap.put(PREF_ROOM_ALIAS, roomName.getText().toString());
-		detailsMap.put(PREF_NO_OF_MEMBERS, noOfMembers.getText().toString());
-		service = new RoomDetailsServiceImpl();
-		service.insertDetails(detailsMap);
-		mEditor.putString(PREF_ROOM_ALIAS, roomName.getText().toString());
-		mEditor.putString(PREF_NO_OF_MEMBERS, noOfMembers.getText().toString());
-
-		detailsMap.clear();
-		detailsMap.put(PREF_RENT_MARGIN, rent.getText().toString());
-		detailsMap.put(PREF_MAID_MARGIN, maid.getText().toString());
-		detailsMap.put(PREF_ELECTRICITY_MARGIN, electricity.getText().toString());
-		detailsMap.put(PREF_MISCELLANEOUS_MARGIN, miscellaneous.getText().toString());
-		float total = Float.valueOf(rent.getText().toString()) + Float.valueOf(maid.getText()
-				.toString()) + Float.valueOf(electricity.getText().toString()) + Float.valueOf(
-				miscellaneous.getText().toString());
-
-		mEditor.putFloat(TOTAL, total);
-		mEditor.apply();
+		roomStats = new RoomStats();
+		roomStats.setRentMargin(Long.valueOf(rent.getText().toString()));
+		roomStats.setElectricityMargin(Long.valueOf(electricity.getText().toString()));
+		roomStats.setMaidMargin(Long.valueOf(maid.getText().toString()));
+		roomStats.setMiscellaneousMargin(Long.valueOf(miscellaneous.getText().toString()));
+		roomStats.setMonthYear(getCurrentMonthYear());
+		roomStats.setTotal(0);
 
 
-		SharedPreferences sharedPreferences = getSharedPreferences(ROOM_BUDGET_FILE_KEY,
-				MODE_PRIVATE);
-		mEditor = sharedPreferences.edit();
-		String rentVal = TextUtils.isEmpty(rent.getText().toString()) ? "0" : rent.getText()
-				.toString();
-		String maidVal = TextUtils.isEmpty(maid.getText().toString()) ? "0" : maid.getText()
-				.toString();
-		String miscVal = TextUtils.isEmpty(miscellaneous.getText().toString()) ? "0" :
-				miscellaneous.getText().toString();
-		String elecVal = TextUtils.isEmpty(electricity.getText().toString()) ? "0" :
-				electricity.getText().toString();
-		String totalVal = String.valueOf(
-				Float.valueOf(rentVal) + Float.valueOf(maidVal) + Float.valueOf
-						(elecVal) + Float.valueOf(miscVal));
-		mEditor.putString(RENT_MARGIN, rentVal);
-		mEditor.putString(MAID_MARGIN, maidVal);
-		mEditor.putString(ELECTRICITY_MARGIN, elecVal);
-		mEditor.putString(MISC_MARGIN, miscVal);
-		mEditor.putString(TOTAL_MARGIN, totalVal);
-		mEditor.apply();
+		roomiesDao = new RoomDetailsDaoImpl(this);
+		int roomId = roomiesDao.insertDetails(roomDetailsMap);
+		if (roomId >= 0) {
+			roomDetails.setRoomId(roomId);
+
+			roomStats.setRoomId(roomId);
+			roomStatsMap.put(ServiceParam.MODEL, roomStats);
+			roomiesDao = new RoomStatsDaoImpl(this);
+			int statId = roomiesDao.insertDetails(roomStatsMap);
+			if (statId >= 0) {
+				roomStats.setStatsId(statId);
+
+				UserDetails user = new UserDetails();
+				updateUserMap.put(ServiceParam.MODEL, user);
+
+				List<QueryParam> selection = new ArrayList<>();
+				selection.add(QueryParam.USERNAME);
+				updateUserMap.put(ServiceParam.SELECTION, selection);
+
+				List<String> selectionArgs = new ArrayList<>();
+				selectionArgs.add(mSharedPref.getString(PREF_USERNAME, null));
+				updateUserMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+
+				roomiesDao = new UserDetailsDaoImpl(GetStartedWizard.this);
+				if (roomiesDao.updateDetails(updateUserMap) > 0) {
+					isDataInserted = true;
+					RoomiesHelper.createToast(GetStartedWizard.this,
+							"Room details saved and expense set", mToast);
+				}
 
 
-		RoomService room = new RoomServiceImpl(this);
-		UserService user = new UserServiceImpl(this);
-
-		String username = mSharedPref.getString(RoomiesConstants.NAME, null);
-		if (mSharedPref.getBoolean(IS_GOOGLE_FB_LOGIN, false)) {
-			username = mSharedPref.getString(RoomiesConstants.EMAIL_ID, null);
-		}
-
-		room.insertRoomDetails(null, null, null, username, roomName.getText().toString(),
-				Integer.valueOf(noOfMembers.getText().toString()));
-		if (!mSharedPref.getBoolean(IS_GOOGLE_FB_LOGIN, false)) {
-			user.completeSetup(mSharedPref.getString(RoomiesConstants.NAME, null));
+			} else {
+	            /*roomiesDao = new RoomDetailsDaoImpl(this);
+                roomDetailsMap.put(ServiceParam.MODEL, roomDetailsList);
+				roomiesDao.deleteDetails(roomDetailsMap);*/
+			}
 		} else {
-			mEditor = mSharedPref.edit();
-			mEditor.putBoolean(IS_SETUP_COMPLETED, true);
-			mEditor.apply();
+			RoomiesHelper.createToast(GetStartedWizard.this, APP_ERROR, mToast);
+			System.exit(0);
 		}
+		return isDataInserted;
 	}
 
 

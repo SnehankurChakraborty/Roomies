@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.service;
+package com.phaseii.rxm.roomies.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.net.Uri;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.RoomBudget;
-import com.phaseii.rxm.roomies.providers.RoomExpenseProvider;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -34,12 +33,10 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
 /**
  * Created by Snehankur on 3/19/2015.
  */
-public class RoomServiceImpl implements RoomService {
+public class RoomServiceImpl {
 
+	final Uri monthUri = null;
 	Context mContext;
-	final Uri monthUri = Uri.withAppendedPath(RoomExpenseProvider.CONTENT_URI,
-			"month/" + new DateFormatSymbols().getMonths()[Calendar
-					.getInstance().get(Calendar.MONTH)]);
 	String currentMonth = new DateFormatSymbols().getMonths()[Calendar
 			.getInstance().get(Calendar.MONTH)];
 	SharedPreferences mexpenditurePref;
@@ -49,7 +46,7 @@ public class RoomServiceImpl implements RoomService {
 		this.mContext = mContext;
 	}
 
-	@Override
+
 	public void insertRoomDetails(String rent, String maid, String electricity, String username,
 	                              String roomAlias, int noOfMembers) {
 		ContentValues values = new ContentValues();
@@ -75,10 +72,10 @@ public class RoomServiceImpl implements RoomService {
 		values.put(Room_Expenses.COLUMN_USERNAME, username);
 		values.put(Room_Expenses.COLUMN_ROOM_ALIAS, roomAlias);
 		values.put(Room_Expenses.COLUMN_NO_OF_MEMBERS, noOfMembers);
-		mContext.getContentResolver().insert(RoomExpenseProvider.CONTENT_URI, values);
+		mContext.getContentResolver().insert(null, values);
 	}
 
-	@Override
+
 	public void updateRoomExpenses(String rent, String maid, String electricity, String username) {
 		mexpenditurePref = mContext.getSharedPreferences(RoomiesConstants
 				.ROOM_EXPENDITURE_FILE_KEY, Context.MODE_PRIVATE);
@@ -104,7 +101,7 @@ public class RoomServiceImpl implements RoomService {
 		}
 	}
 
-	@Override
+
 	public Cursor getRoomDetails(String username) {
 		String[] projection = {Room_Expenses.COLUMN_MONTH,
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_MAID,
@@ -117,7 +114,7 @@ public class RoomServiceImpl implements RoomService {
 		return cursor;
 	}
 
-	@Override
+
 	public boolean getRoomDetailsWithMargin(String username) {
 		String[] projection = {Room_Expenses.COLUMN_MONTH,
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_RENT_MARGIN,
@@ -135,10 +132,9 @@ public class RoomServiceImpl implements RoomService {
 		return cursor.getCount() > 0 ? true : false;
 	}
 
-	@Override
+
 	public List<RoomBudget> getAllMonthDetailsWithMargin(String username) {
-		Uri allMonthUri = Uri.withAppendedPath(RoomExpenseProvider.CONTENT_URI,
-				"all/" + username);
+		Uri allMonthUri = null;
 		String[] projection = {Room_Expenses.COLUMN_MONTH,
 				Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_RENT_MARGIN,
 				Room_Expenses.COLUMN_MAID, Room_Expenses.COLUMN_MAID_MARGIN,
@@ -175,7 +171,7 @@ public class RoomServiceImpl implements RoomService {
 		return roomBudgets;
 	}
 
-	@Override
+
 	public float getTotalSpent(String username) {
 		float total = 0f;
 		String roomAlias = mContext.getSharedPreferences(ROOM_INFO_FILE_KEY,
@@ -246,7 +242,6 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 
-	@Override
 	public boolean updateRoomMargins(String username, String column, String newVal) {
 
 		int count = 0;
@@ -317,7 +312,7 @@ public class RoomServiceImpl implements RoomService {
 		return count > 0 ? true : false;
 	}
 
-	@Override
+
 	public boolean isUserSaved(String username) {
 		boolean isUserSaved = false;
 		String[] projection = {Room_Expenses.COLUMN_MONTH};
@@ -341,7 +336,7 @@ public class RoomServiceImpl implements RoomService {
 		return isUserSaved;
 	}
 
-	@Override
+
 	public void getSpecificMonthDetails(String username, String month) {
 		currentMonth = month;
 		getRoomDetailsWithMargin(username);
@@ -349,12 +344,11 @@ public class RoomServiceImpl implements RoomService {
 				.getInstance().get(Calendar.MONTH)];
 	}
 
-	@Override
+
 	public List<RoomBudget> getSpecificMonthRoomBudget(String username, List<String> months) {
 		List<RoomBudget> roomBudgets = new ArrayList<>();
 		for (String month : months) {
-			Uri monthUri = Uri.withAppendedPath(RoomExpenseProvider.CONTENT_URI,
-					"month/" + month);
+			Uri monthUri = null;
 			String[] projection = {Room_Expenses.COLUMN_MONTH,
 					Room_Expenses.COLUMN_RENT, Room_Expenses.COLUMN_RENT_MARGIN,
 					Room_Expenses.COLUMN_MAID, Room_Expenses.COLUMN_MAID_MARGIN,

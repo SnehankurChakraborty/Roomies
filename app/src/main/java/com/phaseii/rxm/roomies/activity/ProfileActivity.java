@@ -29,8 +29,7 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.helper.UpdateParam;
-import com.phaseii.rxm.roomies.service.RoomiesService;
+import com.phaseii.rxm.roomies.helper.ServiceParam;
 import com.phaseii.rxm.roomies.view.AlphaForegroundColorSpan;
 import com.phaseii.rxm.roomies.view.RoomiesScrollView;
 
@@ -44,6 +43,15 @@ import java.util.Map;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
 
 public class ProfileActivity extends ActionBarActivity {
 
@@ -56,14 +64,13 @@ public class ProfileActivity extends ActionBarActivity {
 	private int lastTopValueAssigned = 0;
 	private Bitmap bitmap;
 	private Toast mToast;
-	private String username;
+	private String userAlias;
 	private SharedPreferences.Editor mEditor;
 	private SharedPreferences mSharedPreferences;
 	private boolean isGoogleFBLogin;
 	private Toolbar mToolbar;
 	private int currentApiVersion;
-	private RoomiesService service;
-	private Map<UpdateParam, ?> detailsMap;
+	private Map<ServiceParam, ?> detailsMap;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -174,32 +181,27 @@ public class ProfileActivity extends ActionBarActivity {
 
 	private void populateFeilds() {
 
-		mSharedPreferences = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-				MODE_PRIVATE);
-		username = mSharedPreferences.getString(RoomiesConstants.NAME, null);
-		String mailVal = mSharedPreferences.getString(RoomiesConstants.EMAIL_ID, null);
-		String roomAliasVal = mSharedPreferences.getString(RoomiesConstants.ROOM_ALIAS, null);
-		String noOfMembersVal = mSharedPreferences.getString(RoomiesConstants.ROOM_NO_OF_MEMBERS,
-				null);
+		mSharedPreferences = getSharedPreferences(PREF_ROOMIES_KEY, MODE_PRIVATE);
+		userAlias = mSharedPreferences.getString(PREF_USER_ALIAS, null);
+		String mailVal = mSharedPreferences.getString(PREF_USERNAME, null);
+		String roomAliasVal = mSharedPreferences.getString(PREF_ROOM_ALIAS, null);
+		String noOfMembersVal = mSharedPreferences.getString(PREF_NO_OF_MEMBERS, "0");
 		isGoogleFBLogin = mSharedPreferences.getBoolean(IS_GOOGLE_FB_LOGIN, false);
 
-		mSharedPreferences = getSharedPreferences(RoomiesConstants.ROOM_BUDGET_FILE_KEY,
-				MODE_PRIVATE);
-		String rentVal = mSharedPreferences.getString(RoomiesConstants.RENT_MARGIN, null);
-		String maidVal = mSharedPreferences.getString(RoomiesConstants.MAID_MARGIN, null);
-		String electricityVal = mSharedPreferences.getString(RoomiesConstants.ELECTRICITY_MARGIN,
-				null);
-		String miscellaneousVal = mSharedPreferences.getString(RoomiesConstants.MISC_MARGIN, null);
+		String rentVal = mSharedPreferences.getString(PREF_RENT_MARGIN, null);
+		String maidVal = mSharedPreferences.getString(PREF_MAID_MARGIN, null);
+		String electricityVal = mSharedPreferences.getString(PREF_ELECTRICITY_MARGIN, null);
+		String miscellaneousVal = mSharedPreferences.getString(PREF_MISCELLANEOUS_MARGIN, null);
 
 		setupBackground();
 		TextView savedName = (TextView) findViewById(R.id.saved_name);
-		savedName.setText(username);
+		savedName.setText(userAlias);
 
 		TextView savedMail = (TextView) findViewById(R.id.saved_mail);
 		savedMail.setText(mailVal);
 
 		TextView name = (TextView) findViewById(R.id.name);
-		name.setText(username);
+		name.setText(userAlias);
 
 		TextView email = (TextView) findViewById(R.id.email);
 		email.setText(mailVal);
@@ -263,26 +265,26 @@ public class ProfileActivity extends ActionBarActivity {
 					if (!TextUtils.isEmpty(field_edit.getText().toString().trim())) {
 						boolean isUpdateSuccessful = false;
 						if (isGoogleFBLogin) {
-							username = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+							userAlias = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
 									MODE_PRIVATE).getString(RoomiesConstants.EMAIL_ID, null);
 						}
 						switch (mode) {
 							case USER:
 								/*if ("name".equals(feildId)) {
-									service = new UserDetailsServiceImpl();
+									service = new UserDetailsDaoImpl();
 									detailsMap.clear();
 									UserDetails user = new UserDetails();
 									user.setUserAlias(field_edit.getText().toString());
 									if ((service.update(,
 											RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME)) &&
-											(roomService.updateRoomMargins(username, feildId,
+											(roomService.updateRoomMargins(userAlias, feildId,
 													field_edit.getText().toString())) && (miscService.updateUser(
-											username, field_edit.getText().toString()))) {
+											userAlias, field_edit.getText().toString()))) {
 										isUpdateSuccessful = true;
 									}
 
 								} else {
-									isUpdateSuccessful = userService.update(username,
+									isUpdateSuccessful = userService.update(userAlias,
 											field_edit.getText().toString(),
 											RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID);
 								}*/
@@ -297,7 +299,7 @@ public class ProfileActivity extends ActionBarActivity {
 									mEditor.apply();
 									isUpdateSuccessful = true;
 								} else {*/
-								/*isUpdateSuccessful = roomService.updateRoomMargins(username,
+								/*isUpdateSuccessful = roomService.updateRoomMargins(userAlias,
 										feildId, field_edit.getText().toString());*/
 
 
@@ -343,10 +345,10 @@ public class ProfileActivity extends ActionBarActivity {
 				R.id.colored_background_view);
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inSampleSize = 4;
-		username = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-				MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+		/*userAlias = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+				MODE_PRIVATE).getString(RoomiesConstants.NAME, null);*/
 		Bitmap bitmap = BitmapFactory.decodeFile(new File(getFilesDir(),
-				username + getResources().getString(
+				userAlias + getResources().getString(
 						R.string.PROFILEJPG)).getAbsolutePath(), options);
 		if (null != bitmap) {
 			coloredBackgroundView.setImageBitmap(bitmap);

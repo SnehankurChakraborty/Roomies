@@ -1,10 +1,8 @@
 package com.phaseii.rxm.roomies.activity;
 
 
-import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -43,24 +41,21 @@ import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.gcm.GCMSender;
-import com.phaseii.rxm.roomies.gcm.RegistrationIntentService;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.UserDetails;
-import com.phaseii.rxm.roomies.service.UserService;
-import com.phaseii.rxm.roomies.service.UserServiceImpl;
 import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.view.BannerView;
-import com.phaseii.rxm.roomies.view.RoomiesRecyclerViewAdapter;
+import com.phaseii.rxm.roomies.view.RoomiesNavDrawerViewAdapter;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PRESS_BACK_AGAIN_TO_EXIT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.*;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
 
@@ -75,6 +70,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	private static final String TAG = "HomeScreenActivity";
+	int profile = R.drawable.ic_camera;
 	private Toast mToast;
 	private ActionBarDrawerToggle mDrawerTogggle;
 	private DrawerLayout mDrawerLayout;
@@ -98,7 +94,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	private ImageView fabButtonAlt;
 	private ImageView addRoomiesButton;
 	private FrameLayout frameLayout;
-	int profile = R.drawable.ic_camera;
 	private int currentapiVersion;
 	private boolean doubleBackToExitPressedOnce;
 	private int mShortAnimationDuration;
@@ -113,7 +108,9 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/*get the current api version the app is running on */
+		/*
+	    * Get the current api version the app is running on
+		* */
 		currentapiVersion = android.os.Build.VERSION.SDK_INT;
 		mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
 
@@ -133,91 +130,95 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 				createToast(this, APP_ERROR, mToast);
 				System.exit(0);
 			}
-		}
-		setContentView(R.layout.activity_home_screen);
-		/* connect to google plus*/
-		mGoogleApiClient.connect();
+		} else {
+			/**
+			 * Checks if the user has completed the initial setup required to run the app and
+			 * sends then user to {@link com.phaseii.rxm.roomies.activity.GetStartedWizard
+			 * GetStartedWizard} if the setup is required.
+			 */
+			if (!mSharedPref.getBoolean(PREF_SETUP_COMPLETED, false)) {
+				try {
+					startActivityHelper(this, getResources().getString(R.string.GetStartedWizard),
+							null, true);
+				} catch (RoomXpnseMngrException e) {
+					createToast(this, APP_ERROR, mToast);
+					System.exit(0);
+				}
+			} else {
 
-		/**
-		 * start the {@link com.phaseii.rxm.roomies.fragments.HomeFragment homefragment}
-		 */
-		if (savedInstanceState == null) {
-			transaction = getSupportFragmentManager().beginTransaction();
-			transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-			transaction.add(R.id.home_screen_fragment_layout, new HomeFragment(),
-					HOME_FRAGMENT).commit();
-		}
+				setContentView(R.layout.activity_home_screen);
+				/**
+				 * connect to Google plus
+				 */
+				mGoogleApiClient.connect();
 
-		/**
-		 * load details of the user currently logged in
-		 */
-		mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
-		name = mSharedPref.getString(PREF_USER_ALIAS, null);
-		email = mSharedPref.getString(PREF_USERNAME, null);
+				/**
+				 * load details of the user currently logged in
+				 */
+				mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
+				name = mSharedPref.getString(PREF_USER_ALIAS, null);
+				email = mSharedPref.getString(PREF_USERNAME, null);
 
-		/**
-		 * Checks if the user has completed the initial setup required to run the app and
-		 * sends then user to {@link com.phaseii.rxm.roomies.activity.GetStartedWizard
-		 * GetStartedWizard} if the setup is required.
-		 */
-		if (!mSharedPref.getBoolean(IS_SETUP_COMPLETED, false)) {
-			try {
-				startActivityHelper(this, getResources().getString(R.string
-						.GetStartedWizard), null, true);
-			} catch (RoomXpnseMngrException e) {
-				createToast(this, APP_ERROR, mToast);
-				System.exit(0);
+				/**
+				 * start the {@link com.phaseii.rxm.roomies.fragments.HomeFragment homefragment}
+				 */
+				if (savedInstanceState == null) {
+					transaction = getSupportFragmentManager().beginTransaction();
+					transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+					transaction.add(R.id.home_screen_fragment_layout, new HomeFragment(),
+							HOME_FRAGMENT).commit();
+				}
+
+				/**
+				 * Setup toolbar
+				 */
+				mtoolbar = (Toolbar) findViewById(R.id.toolbar);
+				mtoolbar.setTitle("");
+				DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+				int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+				if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+
+					/**
+					 * since the method is currently available only for the devices running {@link
+					 * android.os.Build.VERSION_CODES.LOLLIPOP LOLLIPOP}, checking if the api version is
+					 * greater than or equal to LOLLIPOP.
+					 */
+					mtoolbar.setElevation(px);
+				}
+				if (mtoolbar != null) {
+					setSupportActionBar(mtoolbar);
+				}
+
+				/**
+				 * set room alias as title
+				 */
+				title = (BannerView) findViewById(R.id.toolbartitle);
+				title.setText(" " + getSharedPreferences(PREF_ROOMIES_KEY,
+						Context.MODE_PRIVATE).getString(PREF_ROOM_ALIAS, "Roomies") + " ");
+				mShortAnimationDuration = getResources().getInteger(
+						android.R.integer.config_shortAnimTime);
+
+				/**
+				 * Setup FAB button
+				 */
+				setupFAB();
+
+				/**
+				 * Setup Navigation Drawer
+				 */
+				setupNavigationDrawer();
+
+				/**
+				 * Register for google cloud messaging
+				 */
+	            /*if (checkPlayServices()) {
+                    // Start IntentService to register this application with GCM.
+					Intent intent = new Intent(this, RegistrationIntentService.class);
+					startService(intent);
+				}*/
+
 			}
 		}
-
-		/**
-		 * Setup toolbar
-		 */
-		mtoolbar = (Toolbar) findViewById(R.id.toolbar);
-		mtoolbar.setTitle("");
-		DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-		int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-		if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-
-			/**
-			 * since the method is currently available only for the devices running {@link
-			 * android.os.Build.VERSION_CODES.LOLLIPOP LOLLIPOP}, checking if the api version is
-			 * greater than or equal to LOLLIPOP.
-			 */
-			mtoolbar.setElevation(px);
-		}
-		if (mtoolbar != null) {
-			setSupportActionBar(mtoolbar);
-		}
-
-		/**
-		 * set room alias as title
-		 */
-		title = (BannerView) findViewById(R.id.toolbartitle);
-		title.setText(" " + getSharedPreferences(PREF_ROOMIES_KEY,
-				Context.MODE_PRIVATE).getString(PREF_ROOM_ALIAS, "Roomies") + " ");
-		mShortAnimationDuration = getResources().getInteger(
-				android.R.integer.config_shortAnimTime);
-
-		/**
-		 * Setup FAB button
-		 */
-		setupFAB();
-
-		/**
-		 * Setup Navigation Drawer
-		 */
-		setupNavigationDrawer();
-
-		/**
-		 * Register for google cloud messaging
-		 */
-		if (checkPlayServices()) {
-			// Start IntentService to register this application with GCM.
-			Intent intent = new Intent(this, RegistrationIntentService.class);
-			startService(intent);
-		}
-
 	}
 
 	/**
@@ -243,10 +244,10 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	/**
 	 * sets up navigation drawer
 	 */
-	private void setupNavigationDrawer(){
+	private void setupNavigationDrawer() {
 		RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
 		mRecyclerView.hasFixedSize();
-		mRecylerAdapter = new RoomiesRecyclerViewAdapter(drawerTitles,
+		mRecylerAdapter = new RoomiesNavDrawerViewAdapter(drawerTitles,
 				drawerIcons, name, email, profile, this);
 		mRecyclerView.setAdapter(mRecylerAdapter);
 		RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -292,7 +293,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			public void onClick(View v) {
 				if (frameLayout.getVisibility() == View.VISIBLE) {
 					frameLayout.setVisibility(View.GONE);
-					frameLayout.setAlpha(100);
+					frameLayout.setAlpha(1);
 					fabButton.setVisibility(View.VISIBLE);
 				}
 			}
@@ -323,7 +324,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 			@Override
 			public void onClick(View v) {
 				frameLayout.setVisibility(View.GONE);
-				new GCMSender().execute(new String[]{"Hello", RoomiesConstants.getToken()});
+				new GCMSender().execute("Hello", RoomiesConstants.getToken());
 			}
 		});
 	}
@@ -368,15 +369,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 
 	public ViewPager getViewPager() {
 		return pager;
-	}
-
-	private class DrawerItemClickListener
-			implements ListView.OnItemClickListener {
-
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-		}
 	}
 
 	/**
@@ -436,14 +428,13 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 		mDrawerLayout.closeDrawer(Gravity.LEFT);
 	}
 
-
 	/**
 	 * Update the profile pic in the navigation drawer
 	 *
 	 * @param profilePicBitmap
 	 */
 	public void updateProfilePic(Bitmap profilePicBitmap) {
-		View headerView = ((RoomiesRecyclerViewAdapter) mRecylerAdapter).getHeaderView();
+		View headerView = ((RoomiesNavDrawerViewAdapter) mRecylerAdapter).getHeaderView();
 		ImageView profileFrame = (ImageView) headerView.findViewById(R.id.profileFrame);
 		if (null != profilePicBitmap) {
 			profileFrame.setImageBitmap(profilePicBitmap);
@@ -479,5 +470,14 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 	@Override
 	protected void getAllDetails(UserDetails userDetails, boolean isGoogleFBlogin) {
 
+	}
+
+	private class DrawerItemClickListener
+			implements ListView.OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+		}
 	}
 }

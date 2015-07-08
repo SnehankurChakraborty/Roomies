@@ -7,94 +7,94 @@ import java.util.Date;
  */
 public class RoomExpenses extends RoomiesModel {
 
-	private int expenseId;
-	private int roomId;
-	private int userId;
-	private String expenseCategory;
-	private String expenseSubcategory;
-	private String description;
-	private int quantity;
-	private long amount;
-	private Date expense_date;
-	private String monthYear;
+    private int expenseId;
+    private int roomId;
+    private int userId;
+    private String expenseCategory;
+    private String expenseSubcategory;
+    private String description;
+    private String quantity;
+    private float amount;
+    private Date expenseDate;
+    private String monthYear;
 
-	public int getExpenseId() {
-		return expenseId;
-	}
+    public int getExpenseId() {
+        return expenseId;
+    }
 
-	public void setExpenseId(int expenseId) {
-		this.expenseId = expenseId;
-	}
+    public void setExpenseId(int expenseId) {
+        this.expenseId = expenseId;
+    }
 
-	public int getRoomId() {
-		return roomId;
-	}
+    public int getRoomId() {
+        return roomId;
+    }
 
-	public void setRoomId(int roomId) {
-		this.roomId = roomId;
-	}
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
 
-	public int getUserId() {
-		return userId;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public String getExpenseCategory() {
-		return expenseCategory;
-	}
+    public String getExpenseCategory() {
+        return expenseCategory;
+    }
 
-	public void setExpenseCategory(String expenseCategory) {
-		this.expenseCategory = expenseCategory;
-	}
+    public void setExpenseCategory(String expenseCategory) {
+        this.expenseCategory = expenseCategory;
+    }
 
-	public String getExpenseSubcategory() {
-		return expenseSubcategory;
-	}
+    public String getExpenseSubcategory() {
+        return expenseSubcategory;
+    }
 
-	public void setExpenseSubcategory(String expenseSubcategory) {
-		this.expenseSubcategory = expenseSubcategory;
-	}
+    public void setExpenseSubcategory(String expenseSubcategory) {
+        this.expenseSubcategory = expenseSubcategory;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public String getQuantity() {
+        return quantity;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 
-	public long getAmount() {
-		return amount;
-	}
+    public float getAmount() {
+        return amount;
+    }
 
-	public void setAmount(long amount) {
-		this.amount = amount;
-	}
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
 
-	public Date getExpense_date() {
-		return expense_date;
-	}
+    public Date getExpenseDate() {
+        return expenseDate;
+    }
 
-	public void setExpense_date(Date expense_date) {
-		this.expense_date = expense_date;
-	}
+    public void setExpenseDate(Date expenseDate) {
+        this.expenseDate = expenseDate;
+    }
 
-	public String getMonthYear() {
-		return monthYear;
-	}
+    public String getMonthYear() {
+        return monthYear;
+    }
 
-	public void setMonthYear(String monthYear) {
-		this.monthYear = monthYear;
-	}
+    public void setMonthYear(String monthYear) {
+        this.monthYear = monthYear;
+    }
 }

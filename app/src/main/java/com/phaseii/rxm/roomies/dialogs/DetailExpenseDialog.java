@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.model.MiscExpense;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.SortType;
 import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
 import com.phaseii.rxm.roomies.view.ScrollableLayoutManager;
@@ -30,15 +30,15 @@ import java.util.List;
  */
 public class DetailExpenseDialog extends DialogFragment {
 
-	private static List<MiscExpense> miscExpenses;
+	private static List<RoomExpenses> roomExpensesList;
 	private static Context mContext;
 	private RelativeLayout toolbarContainer;
 	private LinearLayout sortFilterTab;
 	private RecyclerView recyclerView;
 
-	public static DetailExpenseDialog getInstance(List<MiscExpense> miscExpenses,
+	public static DetailExpenseDialog getInstance(List<RoomExpenses> roomExpensesList,
 	                                              Context mContext) {
-		DetailExpenseDialog.miscExpenses = miscExpenses;
+		DetailExpenseDialog.roomExpensesList = roomExpensesList;
 		DetailExpenseDialog.mContext = mContext;
 		return new DetailExpenseDialog();
 	}
@@ -96,17 +96,17 @@ public class DetailExpenseDialog extends DialogFragment {
 			public void onClick(View v) {
 				boolean isNotSorted = false;
 				float next = 0f;
-				for (MiscExpense miscExpense : miscExpenses) {
-					if (miscExpense.getAmount() < next) {
+				for (RoomExpenses roomExpenses : roomExpensesList) {
+					if (roomExpenses.getAmount() < next) {
 						isNotSorted = true;
 						break;
 					}
-					next = miscExpense.getAmount();
+					next = roomExpenses.getAmount();
 				}
 				if (isNotSorted) {
-					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+					Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
 						@Override
-						public int compare(MiscExpense lhs, MiscExpense rhs) {
+						public int compare(RoomExpenses lhs, RoomExpenses rhs) {
 							if (lhs.getAmount() < rhs.getAmount()) {
 								return -1;
 							} else {
@@ -115,9 +115,9 @@ public class DetailExpenseDialog extends DialogFragment {
 						}
 					});
 				} else {
-					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+					Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
 						@Override
-						public int compare(MiscExpense lhs, MiscExpense rhs) {
+						public int compare(RoomExpenses lhs, RoomExpenses rhs) {
 							if (lhs.getAmount() > rhs.getAmount()) {
 								return -1;
 							} else {
@@ -137,18 +137,24 @@ public class DetailExpenseDialog extends DialogFragment {
 			public void onClick(View v) {
 				boolean isNotSorted = false;
 				float next = 0f;
-				for (MiscExpense miscExpense : miscExpenses) {
-					if (miscExpense.getQuantity() < next) {
+				for (RoomExpenses roomExpenses : roomExpensesList) {
+					if (Float.valueOf(
+							roomExpenses.getQuantity().substring(0,
+									roomExpenses.getQuantity().length() - 2)) < next) {
 						isNotSorted = true;
 						break;
 					}
-					next = miscExpense.getAmount();
+					next = roomExpenses.getAmount();
 				}
 				if (isNotSorted) {
-					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+					Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
 						@Override
-						public int compare(MiscExpense lhs, MiscExpense rhs) {
-							if (lhs.getQuantity() < rhs.getQuantity()) {
+						public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+							if (Float.valueOf(
+									lhs.getQuantity().substring(0,
+											lhs.getQuantity().length() - 2)) < Float.valueOf(
+									rhs.getQuantity().substring(0,
+											rhs.getQuantity().length() - 2))) {
 								return -1;
 							} else {
 								return 1;
@@ -156,10 +162,14 @@ public class DetailExpenseDialog extends DialogFragment {
 						}
 					});
 				} else {
-					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+					Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
 						@Override
-						public int compare(MiscExpense lhs, MiscExpense rhs) {
-							if (lhs.getQuantity() > rhs.getQuantity()) {
+						public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+							if (Float.valueOf(
+									lhs.getQuantity().substring(0,
+											lhs.getQuantity().length() - 2)) > Float.valueOf(
+									rhs.getQuantity().substring(0,
+											rhs.getQuantity().length() - 2))) {
 								return -1;
 							} else {
 								return 1;
@@ -178,18 +188,18 @@ public class DetailExpenseDialog extends DialogFragment {
 			public void onClick(View v) {
 				boolean isNotSorted = false;
 				Date next = new Date();
-				for (MiscExpense miscExpense : miscExpenses) {
-					if (miscExpense.getTransactionDate().after(next)) {
+				for (RoomExpenses roomExpenses : roomExpensesList) {
+					if (roomExpenses.getExpenseDate().after(next)) {
 						isNotSorted = true;
 						break;
 					}
-					next = miscExpense.getTransactionDate();
+					next = roomExpenses.getExpenseDate();
 				}
 				if (isNotSorted) {
-					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+					Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
 						@Override
-						public int compare(MiscExpense lhs, MiscExpense rhs) {
-							if (lhs.getTransactionDate().before(rhs.getTransactionDate())) {
+						public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+							if (lhs.getExpenseDate().before(rhs.getExpenseDate())) {
 								return 1;
 							} else {
 								return -1;
@@ -197,10 +207,10 @@ public class DetailExpenseDialog extends DialogFragment {
 						}
 					});
 				} else {
-					Collections.sort(miscExpenses, new Comparator<MiscExpense>() {
+					Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
 						@Override
-						public int compare(MiscExpense lhs, MiscExpense rhs) {
-							if (lhs.getTransactionDate().after(rhs.getTransactionDate())) {
+						public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+							if (lhs.getExpenseDate().after(rhs.getExpenseDate())) {
 								return 1;
 							} else {
 								return -1;
@@ -218,13 +228,13 @@ public class DetailExpenseDialog extends DialogFragment {
 	}
 
 	private void setDetails() {
-		RecyclerView.Adapter adapter = new DetailExpenseDataAdapter(miscExpenses,
+		RecyclerView.Adapter adapter = new DetailExpenseDataAdapter(roomExpensesList,
 				SortType.DATE_DESC, getActivity().getBaseContext());
 		recyclerView.setAdapter(adapter);
 		RecyclerView.LayoutManager layoutManager = new ScrollableLayoutManager(mContext,
 				LinearLayoutManager.VERTICAL, false);
 		recyclerView.setLayoutManager(layoutManager);
-		if (miscExpenses.size() != 1) {
+		if (roomExpensesList.size() != 1) {
 			recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
 				@Override
 				public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

@@ -1,362 +1,368 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:theme="@style/Theme.AppCompat.Dialog"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin">
+                android:theme="@style/Theme.AppCompat.Dialog">
 
 
-	<TableLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:stretchColumns="0,1,2,3"
-		android:id="@+id/selector_layout">
+    <TableLayout
+        android:id="@+id/selector_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2,3">
 
-		<TableRow>
+        <TableRow>
 
-			<LinearLayout
-				android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical">
 
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_electricity_icon"
-					android:gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:layout_gravity="center"
-					android:id="@+id/electricity_icon"
-					android:checked="false"/>
+                <ToggleButton
+                    android:id="@+id/electricity_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_electricity_icon"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:textOff=""
+                    android:textOn=""/>
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Electricity"
-					android:layout_gravity="center"
-					android:textColor="@color/primary"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Electricity"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
 
-			</LinearLayout>
+            </LinearLayout>
 
-			<LinearLayout
-				android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical">
 
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_rent_icon"
-					android:id="@+id/rent_icon"
-					android:gravity="center"
-					android:layout_gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:checked="false"/>
+                <ToggleButton
+                    android:id="@+id/rent_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_rent_icon"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:textOff=""
+                    android:textOn=""/>
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:layout_gravity="center"
-					android:text="Rent"
-					android:textColor="@color/primary"/>
-			</LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Rent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
+            </LinearLayout>
 
-			<LinearLayout
-				android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical">
 
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_maid_icon"
-					android:id="@+id/maid_icon"
-					android:layout_gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:checked="false"/>
+                <ToggleButton
+                    android:id="@+id/maid_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_maid_icon"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn=""/>
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Maid"
-					android:layout_gravity="center"
-					android:textColor="@color/primary"/>
-			</LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Maid"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
+            </LinearLayout>
 
-			<LinearLayout android:orientation="vertical">
+            <LinearLayout android:orientation="vertical">
 
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_misc_icon"
-					android:id="@+id/misc_icon"
-					android:layout_gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:checked="true"/>
+                <ToggleButton
+                    android:id="@+id/misc_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_misc_icon"
+                    android:checked="true"
+                    android:textOff=""
+                    android:textOn=""/>
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Misc"
-					android:layout_gravity="center"
-					android:textColor="@color/primary"/>
-			</LinearLayout>
-
-
-		</TableRow>
-
-		<TableRow android:id="@+id/misc_row">
-
-			<LinearLayout
-				android:orientation="vertical"
-				>
-
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_bills_icon"
-					android:gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:layout_gravity="center"
-					android:id="@+id/bills_icon"
-					android:checked="false"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Bills"
-					android:layout_gravity="center"
-					android:textColor="@color/primary"/>
-
-			</LinearLayout>
-
-			<LinearLayout
-				android:orientation="vertical"
-				>
-
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_grocery_icon"
-					android:id="@+id/grocery_icon"
-					android:gravity="center"
-					android:layout_gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:checked="false"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:layout_gravity="center"
-					android:text="Grocery"
-					android:textColor="@color/primary"/>
-			</LinearLayout>
-
-			<LinearLayout
-				android:orientation="vertical"
-				>
-
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_vegetables_icon"
-					android:id="@+id/vegetable_icon"
-					android:layout_gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:checked="false"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Vegetables"
-					android:layout_gravity="center"
-					android:textColor="@color/primary"/>
-			</LinearLayout>
-
-			<LinearLayout android:orientation="vertical">
-
-				<ToggleButton
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:background="@drawable/roomies_others_icon"
-					android:id="@+id/others_icon"
-					android:layout_gravity="center"
-					android:textOn=""
-					android:textOff=""
-					android:checked="true"/>
-
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Others"
-					android:layout_gravity="center"
-					android:textColor="@color/primary"/>
-			</LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Misc"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
+            </LinearLayout>
 
 
-		</TableRow>
+        </TableRow>
 
-	</TableLayout>
+        <TableRow android:id="@+id/misc_row">
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:id="@+id/description_layout"
-		android:layout_below="@id/selector_layout">
+            <LinearLayout
+                android:orientation="vertical"
+                >
 
-		<EditText
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Description"
-			android:textColorHint="@color/spinnerColor"
-			android:layout_centerHorizontal="true"
-			android:id="@+id/description"
-			style="@style/EditTextRoomies"
-			android:textColor="@color/spinnerColor"
-			android:enabled="true"
-			android:gravity="center"/>
+                <ToggleButton
+                    android:id="@+id/bills_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_bills_icon"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:textOff=""
+                    android:textOn=""/>
 
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			style="@style/ErrorButton"
-			android:layout_centerVertical="true"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentEnd="true"
-			android:id="@+id/description_error"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Bills"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
 
+            </LinearLayout>
 
-	</RelativeLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                >
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/description_layout"
-		android:id="@+id/quantity_layout">
+                <ToggleButton
+                    android:id="@+id/grocery_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_grocery_icon"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:textOff=""
+                    android:textOn=""/>
 
-		<TableLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:stretchColumns="0,1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Grocery"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
+            </LinearLayout>
 
-			<TableRow>
+            <LinearLayout
+                android:orientation="vertical">
 
-				<EditText
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:hint="Quantity"
-					android:textColorHint="@color/spinnerColor"
-					android:layout_centerHorizontal="true"
-					android:id="@+id/quantity"
-					android:numeric="decimal"
-					android:enabled="true"
-					style="@style/EditTextRoomies"
-					android:textColor="@color/spinnerColor"
-					android:gravity="center"/>
+                <ToggleButton
+                    android:id="@+id/vegetable_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_vegetables_icon"
+                    android:checked="false"
+                    android:textOff=""
+                    android:textOn=""/>
 
-				<RadioGroup
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					style="@style/RadioButtonRoomies"
-					android:id="@+id/quantity_radio"
-					android:checkedButton="@+id/kg">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Vegetables"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
+            </LinearLayout>
 
-					<RadioButton
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="kg"
-						android:id="@id/kg"
-						android:textColor="@color/secondary_text"/>
+            <LinearLayout android:orientation="vertical">
 
-					<RadioButton
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="pcs"
-						android:id="@+id/pcs"
-						android:textColor="@color/secondary_text"/>
+                <ToggleButton
+                    android:id="@+id/others_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/roomies_others_icon"
+                    android:checked="true"
+                    android:textOff=""
+                    android:textOn=""/>
 
-				</RadioGroup>
-			</TableRow>
-		</TableLayout>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			style="@style/ErrorButton"
-			android:layout_centerVertical="true"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentEnd="true"
-			android:id="@+id/quantity_error"/>
-	</RelativeLayout>
-
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/quantity_layout"
-		android:id="@+id/amount_layout">
-
-		<EditText
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:hint="Amount"
-			android:textColorHint="@color/spinnerColor"
-			android:layout_centerHorizontal="true"
-			android:id="@+id/amount"
-			android:numeric="decimal"
-			style="@style/EditTextRoomies"
-			android:textColor="@color/spinnerColor"
-			android:gravity="center"/>
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			style="@style/ErrorButton"
-			android:layout_centerVertical="true"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentEnd="true"
-			android:id="@+id/amount_error"/>
-	</RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Others"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/primary"/>
+            </LinearLayout>
 
 
-	<TableLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:stretchColumns="0,1"
-		android:layout_below="@+id/amount_layout"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentStart="true"
-		android:id="@+id/tableLayout">
+        </TableRow>
 
-		<TableRow>
+    </TableLayout>
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Cancel"
-				style="@style/ButtonRoomies"
-				android:id="@+id/negativeButton"/>
+    <RelativeLayout
+        android:id="@+id/description_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/selector_layout">
 
-			<Button
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Submit"
-				style="@style/ButtonRoomies"
-				android:id="@+id/positiveButton"/>
-		</TableRow>
-	</TableLayout>
+        <EditText
+            android:id="@+id/description"
+            style="@style/EditTextRoomies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:enabled="true"
+            android:gravity="center"
+            android:hint="Description"
+            android:textColor="@color/spinnerColor"
+            android:textColorHint="@color/spinnerColor"/>
+
+        <TextView
+            android:id="@+id/description_error"
+            style="@style/ErrorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/quantity_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description_layout">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1">
+
+            <TableRow>
+
+                <EditText
+                    android:id="@+id/quantity"
+                    style="@style/EditTextRoomies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:enabled="true"
+                    android:gravity="center"
+                    android:hint="Quantity"
+                    android:numeric="decimal"
+                    android:textColor="@color/spinnerColor"
+                    android:textColorHint="@color/spinnerColor"/>
+
+                <RadioGroup
+                    android:id="@+id/quantity_radio"
+                    style="@style/RadioButtonRoomies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@+id/kg"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@id/kg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="kg"
+                        android:textColor="@color/secondary_text"/>
+
+                    <RadioButton
+                        android:id="@+id/ltr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="lr"
+                        android:textColor="@color/secondary_text"/>
+
+                    <RadioButton
+                        android:id="@+id/pcs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="pc"
+                        android:textColor="@color/secondary_text"/>
+
+                </RadioGroup>
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/quantity_error"
+            style="@style/ErrorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/amount_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quantity_layout">
+
+        <EditText
+            android:id="@+id/amount"
+            style="@style/EditTextRoomies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:hint="Amount"
+            android:numeric="decimal"
+            android:textColor="@color/spinnerColor"
+            android:textColorHint="@color/spinnerColor"/>
+
+        <TextView
+            android:id="@+id/amount_error"
+            style="@style/ErrorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/amount_layout"
+        android:orientation="horizontal"
+        android:stretchColumns="0,1">
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/negativeButton"
+                style="@style/ButtonRoomies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"/>
+
+            <Button
+                android:id="@+id/positiveButton"
+                style="@style/ButtonRoomies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"/>
+        </TableRow>
+    </TableLayout>
 </RelativeLayout>

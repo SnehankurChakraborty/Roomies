@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.service;
+package com.phaseii.rxm.roomies.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,21 +20,19 @@ import java.util.List;
 /**
  * Created by Snehankur on 4/12/2015.
  */
-public class MiscServiceImpl implements MiscService {
+public class MiscServiceImpl {
 
+	final Uri monthUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,
+			"month/" + new DateFormatSymbols().getMonths()[Calendar
+					.getInstance().get(Calendar.MONTH)]);
 	Context mContext;
+	String currentMonth = new DateFormatSymbols().getMonths()[Calendar
+			.getInstance().get(Calendar.MONTH)];
 
 	public MiscServiceImpl(Context mContext) {
 		this.mContext = mContext;
 	}
 
-	final Uri monthUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,
-			"month/" + new DateFormatSymbols().getMonths()[Calendar
-					.getInstance().get(Calendar.MONTH)]);
-	String currentMonth = new DateFormatSymbols().getMonths()[Calendar
-			.getInstance().get(Calendar.MONTH)];
-
-	@Override
 	public void insertMiscExpenses(EditText description, EditText quantity, EditText amount,
 	                               String type, String username) {
 		ContentValues values = new ContentValues();
@@ -56,7 +54,7 @@ public class MiscServiceImpl implements MiscService {
 		mContext.getContentResolver().insert(monthUri, values);
 	}
 
-	@Override
+
 	public List<MiscExpense> getCurrentTotalMiscExpense(String username) {
 		List<MiscExpense> miscExpenses = new ArrayList<>();
 		final Uri monthTotalUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,
@@ -95,7 +93,7 @@ public class MiscServiceImpl implements MiscService {
 		return miscExpenses;
 	}
 
-	@Override
+
 	public List<String> getMiscMonths(String username) {
 		List<String> months = new ArrayList<>();
 		Uri allMonthsUri = Uri.withAppendedPath(MiscellaneousProvider.CONTENT_URI,
@@ -114,7 +112,7 @@ public class MiscServiceImpl implements MiscService {
 		return months;
 	}
 
-	@Override
+
 	public boolean updateUser(String username, String newVal) {
 		ContentValues values = new ContentValues();
 		values.put(RoomiesContract.Misc_Expenses.COLUMN_USERNAME, newVal);

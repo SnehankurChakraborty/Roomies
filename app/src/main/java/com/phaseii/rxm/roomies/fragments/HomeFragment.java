@@ -15,147 +15,172 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.service.RoomService;
-import com.phaseii.rxm.roomies.service.RoomServiceImpl;
+import com.phaseii.rxm.roomies.dao.RoomStatsDaoImpl;
+import com.phaseii.rxm.roomies.dao.RoomiesDao;
+import com.phaseii.rxm.roomies.helper.QueryParam;
+import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.view.RoomiesHomePagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 
 public class HomeFragment extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
 
-	private ViewPager pager;
-	private RoomiesSlidingTabLayout tabs;
-	private RoomiesHomePagerAdapter adapter;
-	private int numboftabs = 2;
-	private String titles[] = {"Room Budget", "Room Expense"};
-	private Typeface typeface;
-	private TextView spentData;
-	private TextView remainingData;
+    private ViewPager pager;
+    private RoomiesSlidingTabLayout tabs;
+    private RoomiesHomePagerAdapter adapter;
+    private int numboftabs = 2;
+    private String titles[] = {"Room Budget", "Room Expense"};
+    private Typeface typeface;
+    private TextView spentData;
+    private TextView remainingData;
+    private SharedPreferences sharedPreferences;
+    private Context mContext;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_home, container,
-				false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        mContext = getActivity().getBaseContext();
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        spentData = (TextView) rootView.findViewById(R.id.spent_data);
+        remainingData = (TextView) rootView.findViewById(R.id.remaining_data);
+        ((TextView) rootView.findViewById(R.id.spent_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.remaining_label)).setTypeface(typeface);
+        typeface = Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
+                "fonts/VarelaRound-Regular.ttf");
+        sharedPreferences = mContext.getSharedPreferences(PREF_ROOMIES_KEY,
+                Context.MODE_PRIVATE);
 
-		spentData = (TextView) rootView.findViewById(R.id.spent_data);
-		remainingData = (TextView) rootView.findViewById(R.id.remaining_data);
-		((TextView) rootView.findViewById(R.id.spent_label)).setTypeface(typeface);
-		((TextView) rootView.findViewById(R.id.remaining_label)).setTypeface(typeface);
-		typeface = Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
-				"fonts/VarelaRound-Regular.ttf");
-		showBarGraph(getActivity().getBaseContext());
-		TextView month = (TextView) rootView.findViewById(R.id.month);
-		month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(
-				Calendar.MONTH)] + " " +
-				String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-		month.setTypeface(typeface);
-		return rootView;
-	}
+        showBarGraph(getActivity().getBaseContext());
 
-	@Override
-	public View getFragmentView() {
-		return rootView;
-	}
+        TextView month = (TextView) rootView.findViewById(R.id.month);
+        month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(
+                Calendar.MONTH)] + " " +
+                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        month.setTypeface(typeface);
+        return rootView;
+    }
 
-	private PieChart showBarGraph(Context context) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(ROOM_BUDGET_FILE_KEY,
-				context.MODE_PRIVATE);
-		float rent = Float.valueOf(sharedPreferences.getString(RENT_MARGIN, "0"));
-		float maid = Float.valueOf(sharedPreferences.getString(MAID_MARGIN, "0"));
-		float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY_MARGIN, "0"));
-		float misc = Float.valueOf(sharedPreferences.getString(MISC_MARGIN, "0"));
-		ArrayList<Entry> entries = new ArrayList<Entry>();
-		ArrayList<String> labels = new ArrayList<String>();
-		float total = rent + maid + electricity + misc;
-		float spent = getSpentDetails();
-		float status = getPercentageLeft(total, spent);
+    @Override
+    public View getFragmentView() {
+        return rootView;
+    }
 
-		entries.add(new Entry(total - spent, 0));
-		remainingData.setText(String.valueOf(total - spent));
-		remainingData.setTypeface(typeface);
-		entries.add(new Entry(spent, 1));
-		labels.add("Spent");
-		spentData.setText(String.valueOf(spent));
-		spentData.setTypeface(typeface);
+    private PieChart showBarGraph(Context context) {
 
-		if (status < 0) {
-			labels.add("Overflow");
-			((TextView) rootView.findViewById(R.id.remaining_label)).setText("Overflow");
-		} else {
-			labels.add("Remaining");
-		}
-		PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
-		PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
+        float rent = Float.valueOf(sharedPreferences.getString(PREF_RENT_MARGIN, "0"));
+        float maid = Float.valueOf(sharedPreferences.getString(PREF_MAID_MARGIN, "0"));
+        float electricity = Float.valueOf(
+                sharedPreferences.getString(PREF_ELECTRICITY_MARGIN, "0"));
+        float misc = Float.valueOf(sharedPreferences.getString(PREF_MISCELLANEOUS_MARGIN, "0"));
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<String> labels = new ArrayList<String>();
+        float total = rent + maid + electricity + misc;
+        float spent = getSpentDetails();
+        float status = getPercentageLeft(total, spent);
 
-		if (status < 0) {
-			dataSet.setColors(ROOMIES_RAG_REVERSE_COLORS);
-		} else {
-			dataSet.setColors(ROOMIES_RAG_COLORS);
-		}
-		dataSet.setDrawValues(false);
-		PieData data = new PieData(labels, dataSet);
+        entries.add(new Entry(total - spent, 0));
+        remainingData.setText(String.valueOf(total - spent));
+        remainingData.setTypeface(typeface);
+        entries.add(new Entry(spent, 1));
+        labels.add("Spent");
+        spentData.setText(String.valueOf(spent));
+        spentData.setTypeface(typeface);
 
-		mChart.setData(data);
-		mChart.animateXY(1000, 1000);
-		mChart.setDrawCenterText(true);
-		mChart.setCenterText(String.valueOf((int) status) + "%");
-		mChart.setCenterTextColor(getResources().getColor(R.color.white));
-		mChart.setCenterTextTypeface(typeface);
-		mChart.setCenterTextColor(getResources().getColor(R.color.white));
-		mChart.setHoleColor(getResources().getColor(R.color.card_dark));
-		mChart.setCenterTextSize(25);
-		mChart.setRotationEnabled(false);
-		mChart.setDescription("");
-		mChart.setClickable(true);
-		mChart.setDrawSliceText(false);
-		mChart.setHoleRadius(85);
-		mChart.getLegend().setEnabled(false);
-		return mChart;
-	}
+        if (status < 0) {
+            labels.add("Overflow");
+            ((TextView) rootView.findViewById(R.id.remaining_label)).setText("Overflow");
+        } else {
+            labels.add("Remaining");
+        }
+        PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
+        PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
 
-	private float getPercentageLeft(float total, float spent) {
-		float percent = 100f;
-		if (spent > 0) {
-			percent = 100 - ((spent / total) * 100);
-		}
-		return percent;
-	}
+        if (status < 0) {
+            dataSet.setColors(ROOMIES_RAG_REVERSE_COLORS);
+        } else {
+            dataSet.setColors(ROOMIES_RAG_COLORS);
+        }
+        dataSet.setDrawValues(false);
+        PieData data = new PieData(labels, dataSet);
 
-	private float getSpentDetails() {
-		RoomService roomService = new RoomServiceImpl(getActivity().getBaseContext());
-		String username = getActivity().getSharedPreferences(ROOM_INFO_FILE_KEY,
-				Context.MODE_PRIVATE).getString(RoomiesConstants.NAME, null);
+        mChart.setData(data);
+        mChart.animateXY(1000, 1000);
+        mChart.setDrawCenterText(true);
+        mChart.setCenterText(String.valueOf((int) status) + "%");
+        mChart.setCenterTextColor(getResources().getColor(R.color.white));
+        mChart.setCenterTextTypeface(typeface);
+        mChart.setCenterTextColor(getResources().getColor(R.color.white));
+        mChart.setHoleColor(getResources().getColor(R.color.card_dark));
+        mChart.setCenterTextSize(25);
+        mChart.setRotationEnabled(false);
+        mChart.setDescription("");
+        mChart.setClickable(true);
+        mChart.setDrawSliceText(false);
+        mChart.setHoleRadius(85);
+        mChart.getLegend().setEnabled(false);
+        return mChart;
+    }
 
-		boolean isGoogleFBLogin = getActivity().getSharedPreferences
-				(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getBoolean(IS_GOOGLE_FB_LOGIN, false);
-		if (isGoogleFBLogin) {
-			username = getActivity().getSharedPreferences
+    private float getPercentageLeft(float total, float spent) {
+        float percent = 100f;
+        if (spent > 0) {
+            percent = 100 - ((spent / total) * 100);
+        }
+        return percent;
+    }
+
+    private float getSpentDetails() {
+
+        String roomId = sharedPreferences.getString(PREF_ROOM_ID, null);
+
+        Map<ServiceParam, Object> queryMap = new HashMap<>();
+        List<QueryParam> projection = new ArrayList<>();
+        List<QueryParam> selection = new ArrayList<>();
+        List<String> selectionArgs = new ArrayList<>();
+
+        projection.add(QueryParam.TOTAL);
+        queryMap.put(ServiceParam.PROJECTION, projection);
+
+        selection.add(QueryParam.ROOMID);
+        queryMap.put(ServiceParam.SELECTION, selection);
+
+        selectionArgs.add(roomId);
+        queryMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+
+        queryMap.put(ServiceParam.QUERYARGS, QueryParam.MONTH_YEAR);
+
+        boolean isGoogleFBLogin = sharedPreferences.getBoolean(IS_GOOGLE_FB_LOGIN, false);
+        /*if (isGoogleFBLogin) {
+            username = getActivity().getSharedPreferences
 					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
-		}
+		}*/
 
-		return roomService.getTotalSpent(username);
-	}
+        RoomiesDao service = new RoomStatsDaoImpl(mContext);
+        List<RoomStats> roomStats = (List<RoomStats>) service.getDetails(queryMap);
+        return roomStats.get(0).getTotal();
+    }
 
-	@Override
-	public void update(String username) {
-		showBarGraph(getActivity().getBaseContext());
+    @Override
+    public void update(String username) {
+        showBarGraph(getActivity().getBaseContext());
 
-	}
+    }
 }

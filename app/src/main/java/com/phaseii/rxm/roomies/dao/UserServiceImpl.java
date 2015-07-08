@@ -1,6 +1,5 @@
-package com.phaseii.rxm.roomies.service;
+package com.phaseii.rxm.roomies.dao;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,9 +8,7 @@ import android.net.Uri;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
@@ -23,19 +20,20 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.NAME;
 /**
  * Created by Snehankur on 4/9/2015.
  */
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
 
-	Context mContext;
-	Uri userUri;
-	Toast mToast;
-	Cursor mCursor;
-	SharedPreferences.Editor mEditor;
+	private Context mContext;
+	private Uri userUri;
+	private Toast mToast;
+	private Cursor mCursor;
+	private SharedPreferences.Editor mEditor;
+
 
 	public UserServiceImpl(Context mContext) {
 		this.mContext = mContext;
 	}
 
-	@Override
+
 	public String getPassword(String username) {
 		String password = null;
 		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
@@ -55,7 +53,7 @@ public class UserServiceImpl implements UserService {
 		return password;
 	}
 
-	@Override
+
 	public boolean registerUser(EditText username, EditText email, EditText password) {
 		boolean isUserRegistered = false;
 		ContentValues values = new ContentValues();
@@ -75,7 +73,7 @@ public class UserServiceImpl implements UserService {
 		return isUserRegistered;
 	}
 
-	@Override
+
 	public void retrieveUserData() {
 		if (null != mCursor) {
 			SharedPreferences mSharedPreferences = mContext.getSharedPreferences(RoomiesConstants
@@ -94,7 +92,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	@Override
+
 	public void completeSetup(String username) {
 		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
 				"username/" + username);
@@ -105,7 +103,7 @@ public class UserServiceImpl implements UserService {
 		mContext.getContentResolver().update(userUri, values, selection, selectionArgs);
 	}
 
-	@Override
+
 	public boolean isSetupCompleted(String username) {
 		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
 				"username/" + username);
@@ -120,7 +118,7 @@ public class UserServiceImpl implements UserService {
 				mCursor.getColumnIndex(RoomiesContract.UserCredentials.COLUMN_SETUP_COMPLETED)));
 	}
 
-	@Override
+
 	public boolean update(String username, String newVal, String column) {
 		userUri = Uri.withAppendedPath(UserCredentialsProvider.CONTENT_URI,
 				"username/" + username);
@@ -144,7 +142,7 @@ public class UserServiceImpl implements UserService {
 		return count > 0 ? true : false;
 	}
 
-	@Override
+
 	public boolean registerAuthenticatedUser(String username, String email){
 		boolean isUserRegistered = false;
 		ContentValues values = new ContentValues();
@@ -163,4 +161,6 @@ public class UserServiceImpl implements UserService {
 		}
 		return isUserRegistered;
 	}
+
+
 }
