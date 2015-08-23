@@ -114,6 +114,10 @@
             android:name=".providers.UserDetailsProvider"
             android:authorities="com.phaseii.rxm.roomies.providers.UserDetailsProvider"
             android:exported="false"/>
+        <provider
+            android:name=".providers.RoomUserMapProvider"
+            android:authorities="com.phaseii.rxm.roomies.providers.RoomUserMapProvider"
+            android:exported="false"/>
 
         <meta-data
             android:name="com.google.android.gms.version"

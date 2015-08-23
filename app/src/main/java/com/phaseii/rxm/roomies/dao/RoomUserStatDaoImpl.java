@@ -79,13 +79,13 @@ public class RoomUserStatDaoImpl implements RoomiesDao {
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(VIEW_NAME);
-        qb.appendWhere(STATS_MONTH_YEAR + "=" + RoomiesHelper.getCurrentMonthYear());
+        qb.appendWhere(STATS_MONTH_YEAR + "='" + RoomiesHelper.getCurrentMonthYear() + "'");
         Cursor cursor = qb.query(db, projection, selection, selectionArgs, null,
                 null, sortOrder, null);
 
         if (null != cursor) {
             cursor.moveToFirst();
-            while (cursor.isAfterLast()) {
+            while (!cursor.isAfterLast()) {
                 RoomUserStatData roomUserStatData = new RoomUserStatData();
 
                 /**
@@ -135,6 +135,7 @@ public class RoomUserStatDaoImpl implements RoomiesDao {
                                 cursor.getLong(cursor.getColumnIndex(STATS_TOTAL)) : -1);
 
                 roomUserStatDataList.add(roomUserStatData);
+                cursor.moveToNext();
             }
         }
 
