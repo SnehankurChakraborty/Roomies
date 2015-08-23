@@ -61,265 +61,265 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
  */
 public class RoomiesHelper {
 
-	public static final String TAG = "RoomiesHelper";
+    public static final String TAG = "RoomiesHelper";
 
-	public static boolean isFieldBlankOrEmpty(EditText editText) {
-		boolean isBlankOrEmpty = false;
-		String editTextData = editText.getText().toString();
-		if (null == editTextData || editTextData.trim().equals("") || editTextData.length() == 0) {
-			isBlankOrEmpty = true;
-		}
-		return isBlankOrEmpty;
-	}
+    public static boolean isFieldBlankOrEmpty(EditText editText) {
+        boolean isBlankOrEmpty = false;
+        String editTextData = editText.getText().toString();
+        if (null == editTextData || editTextData.trim().equals("") || editTextData.length() == 0) {
+            isBlankOrEmpty = true;
+        }
+        return isBlankOrEmpty;
+    }
 
-	public static void createToast(Context context, String text, Toast mToast) {
-		RoomiesHelper helper = new RoomiesHelper();
-		if (mToast != null) {
-			mToast.cancel();
-		}
-		int duration = Toast.LENGTH_SHORT;
-		mToast = Toast.makeText(context, text, duration);
-		mToast.setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 400);
-		mToast.show();
-		helper.delayToast(mToast);
-	}
+    public static void createToast(Context context, String text, Toast mToast) {
+        RoomiesHelper helper = new RoomiesHelper();
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        int duration = Toast.LENGTH_SHORT;
+        mToast = Toast.makeText(context, text, duration);
+        mToast.setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 400);
+        mToast.show();
+        helper.delayToast(mToast);
+    }
 
-	public static void startActivityHelper(Context context, String activity, Map<String,
-			String> extras, boolean isFinish) throws
-			RoomXpnseMngrException {
-		try {
-			Class activityClass = Class.forName(activity);
-			Intent intent = new Intent(context, activityClass);
-			if (extras != null) {
-				Set<String> keySet = extras.keySet();
-				Iterator<String> keyIterator = keySet.iterator();
-				while (keyIterator.hasNext()) {
-					String key = keyIterator.next();
-					intent.putExtra(key, extras.get(key));
-				}
-			}
-			if (isFinish) {
-				ActivityCompat.finishAffinity((Activity) context);
-			}
-			context.startActivity(intent);
-		} catch (ClassNotFoundException e) {
-			throw new RoomXpnseMngrException(activity + " class not found", e);
-		}
-	}
+    public static void startActivityHelper(Context context, String activity, Map<String,
+            String> extras, boolean isFinish) throws
+            RoomXpnseMngrException {
+        try {
+            Class activityClass = Class.forName(activity);
+            Intent intent = new Intent(context, activityClass);
+            if (extras != null) {
+                Set<String> keySet = extras.keySet();
+                Iterator<String> keyIterator = keySet.iterator();
+                while (keyIterator.hasNext()) {
+                    String key = keyIterator.next();
+                    intent.putExtra(key, extras.get(key));
+                }
+            }
+            if (isFinish) {
+                ActivityCompat.finishAffinity((Activity) context);
+            }
+            context.startActivity(intent);
+        } catch (ClassNotFoundException e) {
+            throw new RoomXpnseMngrException(activity + " class not found", e);
+        }
+    }
 
-	public static void replaceFragment(String tag,
-	                                   FragmentActivity activity, RoomiesFragment fragment) {
-		FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-		transaction.replace(R.id.container, fragment, tag);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
+    public static void replaceFragment(String tag,
+                                       FragmentActivity activity, RoomiesFragment fragment) {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        transaction.replace(R.id.container, fragment, tag);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
-	public static void replaceFragment(FragmentActivity activity, RoomiesFragment fragment) {
-		FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-		transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-		transaction.replace(R.id.container, fragment);
-		transaction.addToBackStack(null);
-		transaction.commit();
-	}
+    public static void replaceFragment(FragmentActivity activity, RoomiesFragment fragment) {
+        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
-	public static boolean setError(String feildId, Context context, View view) {
-		boolean isValid = true;
-		String errorId = feildId + "_error";
-		String togglId = feildId + "_toggle";
-		Resources resources = context.getResources();
-		String packageName = context.getPackageName();
-		int resId = resources.getIdentifier(feildId, "id", packageName);
-		int resErrorId = resources.getIdentifier(errorId, "id", packageName);
-		int resToggleId = resources.getIdentifier(togglId, "id", packageName);
-		EditText feild = (EditText) view.findViewById(resId);
-		TextView errorFeild = (TextView) view.findViewById(resErrorId);
-		if (resToggleId > 0) {
-			ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
-			if (toggleButton.isChecked()) {
-				if (isFieldBlankOrEmpty(feild)) {
-					isValid = false;
-					errorFeild.setVisibility(View.VISIBLE);
-				} else {
-					errorFeild.setVisibility(View.INVISIBLE);
-				}
-			} else {
-				errorFeild.setVisibility(View.INVISIBLE);
-			}
-		} else {
-			if (isFieldBlankOrEmpty(feild)) {
-				isValid = false;
-				errorFeild.setVisibility(View.VISIBLE);
-			} else {
-				errorFeild.setVisibility(View.INVISIBLE);
-			}
-		}
-		return isValid;
-	}
+    public static boolean setError(String feildId, Context context, View view) {
+        boolean isValid = true;
+        String errorId = feildId + "_error";
+        String togglId = feildId + "_toggle";
+        Resources resources = context.getResources();
+        String packageName = context.getPackageName();
+        int resId = resources.getIdentifier(feildId, "id", packageName);
+        int resErrorId = resources.getIdentifier(errorId, "id", packageName);
+        int resToggleId = resources.getIdentifier(togglId, "id", packageName);
+        EditText feild = (EditText) view.findViewById(resId);
+        TextView errorFeild = (TextView) view.findViewById(resErrorId);
+        if (resToggleId > 0) {
+            ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
+            if (toggleButton.isChecked()) {
+                if (isFieldBlankOrEmpty(feild)) {
+                    isValid = false;
+                    errorFeild.setVisibility(View.VISIBLE);
+                } else {
+                    errorFeild.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                errorFeild.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            if (isFieldBlankOrEmpty(feild)) {
+                isValid = false;
+                errorFeild.setVisibility(View.VISIBLE);
+            } else {
+                errorFeild.setVisibility(View.INVISIBLE);
+            }
+        }
+        return isValid;
+    }
 
-	public static boolean setNumericError(String feildId, Context context, View view) {
-		boolean isValid = true;
-		String errorId = feildId + "_error";
-		String togglId = feildId + "_toggle";
-		Resources resources = context.getResources();
-		String packageName = context.getPackageName();
-		int resId = resources.getIdentifier(feildId, "id", packageName);
-		int resErrorId = resources.getIdentifier(errorId, "id", packageName);
-		int resToggleId = resources.getIdentifier(togglId, "id", packageName);
-		EditText feild = (EditText) view.findViewById(resId);
-		TextView errorFeild = (TextView) view.findViewById(resErrorId);
-		if (resToggleId > 0) {
-			ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
-			if (toggleButton.isChecked()) {
-				if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
-					isValid = false;
-					errorFeild.setVisibility(View.VISIBLE);
-				} else {
-					errorFeild.setVisibility(View.INVISIBLE);
-				}
-			} else {
-				errorFeild.setVisibility(View.INVISIBLE);
-			}
-		} else {
-			if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
-				isValid = false;
-				errorFeild.setVisibility(View.VISIBLE);
-			} else {
-				errorFeild.setVisibility(View.INVISIBLE);
-			}
-		}
-		return isValid;
-	}
+    public static boolean setNumericError(String feildId, Context context, View view) {
+        boolean isValid = true;
+        String errorId = feildId + "_error";
+        String togglId = feildId + "_toggle";
+        Resources resources = context.getResources();
+        String packageName = context.getPackageName();
+        int resId = resources.getIdentifier(feildId, "id", packageName);
+        int resErrorId = resources.getIdentifier(errorId, "id", packageName);
+        int resToggleId = resources.getIdentifier(togglId, "id", packageName);
+        EditText feild = (EditText) view.findViewById(resId);
+        TextView errorFeild = (TextView) view.findViewById(resErrorId);
+        if (resToggleId > 0) {
+            ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
+            if (toggleButton.isChecked()) {
+                if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
+                    isValid = false;
+                    errorFeild.setVisibility(View.VISIBLE);
+                } else {
+                    errorFeild.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                errorFeild.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
+                isValid = false;
+                errorFeild.setVisibility(View.VISIBLE);
+            } else {
+                errorFeild.setVisibility(View.INVISIBLE);
+            }
+        }
+        return isValid;
+    }
 
-	public static boolean cacheDBtoPreferences(Context context, RoomUserStatData roomUserStat,
-	                                           UserDetails userDetails,
-	                                           RoomDetails roomDetails, RoomStats roomStats,
-	                                           boolean isGoogleFBLogin) {
-		SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_ROOMIES_KEY,
-				Context.MODE_PRIVATE);
-		SharedPreferences.Editor mEditor = sharedPreferences.edit();
+    public static boolean cacheDBtoPreferences(Context context, RoomUserStatData roomUserStat,
+                                               UserDetails userDetails,
+                                               RoomDetails roomDetails, RoomStats roomStats,
+                                               boolean isGoogleFBLogin) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_ROOMIES_KEY,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = sharedPreferences.edit();
 
-		mEditor.putBoolean(IS_LOGGED_IN, true);
+        mEditor.putBoolean(IS_LOGGED_IN, true);
 
-		if (null != roomUserStat) {
-			mEditor.putString(PREF_USER_ID, String.valueOf(roomUserStat.getUserId()));
-			mEditor.putString(PREF_USERNAME, roomUserStat.getUsername());
-			mEditor.putString(PREF_USER_ALIAS, roomUserStat.getUserAlias());
-			mEditor.putString(PREF_SENDER_ID, roomUserStat.getSenderId());
+        if (null != roomUserStat) {
+            mEditor.putString(PREF_USER_ID, String.valueOf(roomUserStat.getUserId()));
+            mEditor.putString(PREF_USERNAME, roomUserStat.getUsername());
+            mEditor.putString(PREF_USER_ALIAS, roomUserStat.getUserAlias());
+            mEditor.putString(PREF_SENDER_ID, roomUserStat.getSenderId());
 
-			mEditor.putString(PREF_ROOM_ID, String.valueOf(roomUserStat.getRoomId()));
-			mEditor.putString(PREF_ROOM_ALIAS, roomUserStat.getRoomAlias());
-			mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomUserStat.getNoOfMembers()));
+            mEditor.putString(PREF_ROOM_ID, String.valueOf(roomUserStat.getRoomId()));
+            mEditor.putString(PREF_ROOM_ALIAS, roomUserStat.getRoomAlias());
+            mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomUserStat.getNoOfMembers()));
 
-			mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomUserStat.getRentMargin()));
-			mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomUserStat.getMaidMargin()));
-			mEditor.putString(PREF_ELECTRICITY_MARGIN,
-					String.valueOf(roomUserStat.getElectricityMargin()));
-			mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
-					String.valueOf(roomUserStat.getMiscellaneousMargin()));
-			mEditor.putString(PREF_MONTH_YEAR, roomUserStat.getMonthYear());
-			mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
+            mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomUserStat.getRentMargin()));
+            mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomUserStat.getMaidMargin()));
+            mEditor.putString(PREF_ELECTRICITY_MARGIN,
+                    String.valueOf(roomUserStat.getElectricityMargin()));
+            mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
+                    String.valueOf(roomUserStat.getMiscellaneousMargin()));
+            mEditor.putString(PREF_MONTH_YEAR, roomUserStat.getMonthYear());
+            mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
 
-		} else {
+        } else {
 
-			if (null != userDetails) {
-				mEditor.putString(PREF_USER_ID, String.valueOf(userDetails.getUserId()));
-				mEditor.putString(PREF_USERNAME, userDetails.getUsername());
-				mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
-				mEditor.putString(PREF_SENDER_ID, userDetails.getSenderId());
-			}
+            if (null != userDetails) {
+                mEditor.putString(PREF_USER_ID, String.valueOf(userDetails.getUserId()));
+                mEditor.putString(PREF_USERNAME, userDetails.getUsername());
+                mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
+                mEditor.putString(PREF_SENDER_ID, userDetails.getSenderId());
+            }
 
-			if (null != roomDetails) {
-				mEditor.putString(PREF_ROOM_ID, String.valueOf(roomDetails.getRoomId()));
-				mEditor.putString(PREF_ROOM_ALIAS, roomDetails.getRoomAlias());
-				mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomDetails.getNoOfPersons()));
-			}
+            if (null != roomDetails) {
+                mEditor.putString(PREF_ROOM_ID, String.valueOf(roomDetails.getRoomId()));
+                mEditor.putString(PREF_ROOM_ALIAS, roomDetails.getRoomAlias());
+                mEditor.putString(PREF_NO_OF_MEMBERS, String.valueOf(roomDetails.getNoOfPersons()));
+            }
 
-			if (null != roomStats) {
-				mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomStats.getRentMargin()));
-				mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomStats.getMaidMargin()));
-				mEditor.putString(PREF_ELECTRICITY_MARGIN,
-						String.valueOf(roomStats.getElectricityMargin()));
-				mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
-						String.valueOf(roomStats.getMiscellaneousMargin()));
-				mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
-				mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
-			}
-		}
-		if (isGoogleFBLogin) {
-			mEditor.putBoolean(IS_GOOGLE_FB_LOGIN, true);
-		}
-		mEditor.commit();
-		return true;
+            if (null != roomStats) {
+                mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomStats.getRentMargin()));
+                mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomStats.getMaidMargin()));
+                mEditor.putString(PREF_ELECTRICITY_MARGIN,
+                        String.valueOf(roomStats.getElectricityMargin()));
+                mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
+                        String.valueOf(roomStats.getMiscellaneousMargin()));
+                mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
+                mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
+            }
+        }
+        if (isGoogleFBLogin) {
+            mEditor.putBoolean(IS_GOOGLE_FB_LOGIN, true);
+        }
+        mEditor.commit();
+        return true;
 
-	}
+    }
 
-	public static String[] addElement(String[] array, String element) {
-		List<String> result = new ArrayList<>();
-		for (String s : array) {
-			result.add(s);
-		}
-		result.add(element);
-		return result.toArray(new String[array.length + 1]);
-	}
+    public static String[] addElement(String[] array, String element) {
+        List<String> result = new ArrayList<>();
+        for (String s : array) {
+            result.add(s);
+        }
+        result.add(element);
+        return result.toArray(new String[array.length + 1]);
+    }
 
-	/**
-	 * Takes string value of QueryParam from projectionList and creates a string array.
-	 *
-	 * @param projectionList
-	 * @return
-	 */
-	public static String[] listToProjection(List<QueryParam> projectionList) {
+    /**
+     * Takes string value of QueryParam from projectionList and creates a string array.
+     *
+     * @param projectionList
+     * @return
+     */
+    public static String[] listToProjection(List<QueryParam> projectionList) {
 
-		List<String> projectionStringList = new ArrayList<>();
-		String projection[] = null;
+        List<String> projectionStringList = new ArrayList<>();
+        String projection[] = null;
 
-		if (null != projectionList && projectionList.size() > 0) {
+        if (null != projectionList && projectionList.size() > 0) {
 
-			for (QueryParam query : projectionList) {
-				projectionStringList.add(query.toString());
-			}
-			projection = new String[projectionStringList.size()];
-			projectionStringList.toArray(projection);
-		}
+            for (QueryParam query : projectionList) {
+                projectionStringList.add(query.toString());
+            }
+            projection = new String[projectionStringList.size()];
+            projectionStringList.toArray(projection);
+        }
 
-		return projection;
-	}
+        return projection;
+    }
 
-	/*
-	* Returns the current month year in format 'April2015'
+    /*
+    * Returns the current month year in format 'April2015'
     * */
-	public static String getCurrentMonthYear() {
+    public static String getCurrentMonthYear() {
 
-		Calendar calendar = Calendar.getInstance();
-		String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)];
-		String year = String.valueOf(calendar.get(Calendar.YEAR));
-		return month + year;
-	}
+        Calendar calendar = Calendar.getInstance();
+        String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)];
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        return month + year;
+    }
 
-	public static Date stringToDateParser(String dateTime) {
-		Date date = null;
-		try {
-			date = new SimpleDateFormat(DATE_FORMAT).parse(dateTime);
-		} catch (ParseException e) {
-			Log.e(TAG, e.getMessage());
-		}
-		return date;
-	}
+    public static Date stringToDateParser(String dateTime) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat(DATE_FORMAT).parse(dateTime);
+        } catch (ParseException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return date;
+    }
 
-	public static String dateToStringFormatter(Date date) {
-		String dateString = new SimpleDateFormat(DATE_FORMAT).format(date);
-		return dateString;
-	}
+    public static String dateToStringFormatter(Date date) {
+        String dateString = new SimpleDateFormat(DATE_FORMAT).format(date);
+        return dateString;
+    }
 
-	private void delayToast(final Toast mToast) {
-		Handler mHandler = new Handler();
-		mHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				mToast.cancel();
-			}
-		}, DELAY_MILLIS);
-	}
+    private void delayToast(final Toast mToast) {
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mToast.cancel();
+            }
+        }, DELAY_MILLIS);
+    }
 }
