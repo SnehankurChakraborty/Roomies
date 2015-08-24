@@ -22,7 +22,6 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_M
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MONTH_YEAR;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_MARGIN;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ROOM_ID;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_TOTAL;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.getCurrentMonthYear;
@@ -109,9 +108,7 @@ public class RoomStatsDaoImpl implements RoomiesDao {
                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN) >= 0 ?
                                 cursor.getLong(
                                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN)) : -1);
-                roomStats.setTotal(
-                        cursor.getColumnIndex(STATS_TOTAL) >= 0 ?
-                                cursor.getLong(cursor.getColumnIndex(STATS_TOTAL)) : -1);
+
                 roomStatsList.add(roomStats);
 
                 cursor.moveToNext();
@@ -135,6 +132,12 @@ public class RoomStatsDaoImpl implements RoomiesDao {
                 roomStat.getElectricityMargin());
         values.put(RoomiesContract.RoomStats.STATS_MISCELLANEOUS_MARGIN,
                 roomStat.getMiscellaneousMargin());
+        values.put(RoomiesContract.RoomStats.STATS_RENT_SPENT, roomStat.getRentSpent());
+        values.put(RoomiesContract.RoomStats.STATS_MAID_SPENT, roomStat.getMaidSpent());
+        values.put(RoomiesContract.RoomStats.STATS_ELECTRICITY_SPENT,
+                roomStat.getElectricitySpent());
+        values.put(RoomiesContract.RoomStats.STATS_MISCELLANEOUS_SPENT,
+                roomStat.getMiscellaneousSpent());
 
         Uri resultUri = mContext.getContentResolver().insert(RoomStatsProvider.CONTENT_URI,
                 values);

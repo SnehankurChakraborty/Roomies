@@ -8,7 +8,6 @@ public class RoomUserStatData extends RoomiesModel {
     /**
      * User Details
      */
-    private int userId;
     private String username;
     private String userAlias;
     private String senderId;
@@ -28,15 +27,11 @@ public class RoomUserStatData extends RoomiesModel {
     private long maidMargin;
     private long electricityMargin;
     private long miscellaneousMargin;
+    private long rentSpent;
+    private long maidSpent;
+    private long electricitySpent;
+    private long miscellaneousSpent;
     private long total;
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
     public String getUsername() {
         return username;
@@ -124,6 +119,38 @@ public class RoomUserStatData extends RoomiesModel {
 
     public void setMiscellaneousMargin(long miscellaneousMargin) {
         this.miscellaneousMargin = miscellaneousMargin;
+    }
+
+    public long getRentSpent() {
+        return rentSpent;
+    }
+
+    public void setRentSpent(long rentSpent) {
+        this.rentSpent = rentSpent;
+    }
+
+    public long getMaidSpent() {
+        return maidSpent;
+    }
+
+    public void setMaidSpent(long maidSpent) {
+        this.maidSpent = maidSpent;
+    }
+
+    public long getElectricitySpent() {
+        return electricitySpent;
+    }
+
+    public void setElectricitySpent(long electricitySpent) {
+        this.electricitySpent = electricitySpent;
+    }
+
+    public long getMiscellaneousSpent() {
+        return miscellaneousSpent;
+    }
+
+    public void setMiscellaneousSpent(long miscellaneousSpent) {
+        this.miscellaneousSpent = miscellaneousSpent;
     }
 
     public long getTotal() {

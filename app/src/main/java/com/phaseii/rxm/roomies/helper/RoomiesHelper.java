@@ -42,11 +42,15 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DELAY_MILLIS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MONTH_YEAR;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
@@ -203,7 +207,6 @@ public class RoomiesHelper {
         mEditor.putBoolean(IS_LOGGED_IN, true);
 
         if (null != roomUserStat) {
-            mEditor.putString(PREF_USER_ID, String.valueOf(roomUserStat.getUserId()));
             mEditor.putString(PREF_USERNAME, roomUserStat.getUsername());
             mEditor.putString(PREF_USER_ALIAS, roomUserStat.getUserAlias());
             mEditor.putString(PREF_SENDER_ID, roomUserStat.getSenderId());
@@ -218,8 +221,15 @@ public class RoomiesHelper {
                     String.valueOf(roomUserStat.getElectricityMargin()));
             mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
                     String.valueOf(roomUserStat.getMiscellaneousMargin()));
+            mEditor.putString(PREF_RENT_SPENT, String.valueOf(roomUserStat.getRentSpent()));
+            mEditor.putString(PREF_MAID_SPENT, String.valueOf(roomUserStat.getMaidSpent()));
+            mEditor.putString(PREF_ELECTRICITY_SPENT,
+                    String.valueOf(roomUserStat.getElectricitySpent()));
+            mEditor.putString(PREF_MISCELLANEOUS_SPENT,
+                    String.valueOf(roomUserStat.getMiscellaneousSpent()));
             mEditor.putString(PREF_MONTH_YEAR, roomUserStat.getMonthYear());
             mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
+
 
         } else {
 
@@ -250,7 +260,7 @@ public class RoomiesHelper {
         if (isGoogleFBLogin) {
             mEditor.putBoolean(IS_GOOGLE_FB_LOGIN, true);
         }
-        mEditor.commit();
+        boolean isCommitted = mEditor.commit();
         return true;
 
     }

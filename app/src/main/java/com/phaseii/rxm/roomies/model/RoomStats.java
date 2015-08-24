@@ -11,7 +11,10 @@ public class RoomStats extends RoomiesModel {
     private long maidMargin;
     private long electricityMargin;
     private long miscellaneousMargin;
-    private long total;
+    private float rentSpent;
+    private float maidSpent;
+    private float electricitySpent;
+    private float miscellaneousSpent;
 
     public int getStatsId() {
         return statsId;
@@ -69,11 +72,35 @@ public class RoomStats extends RoomiesModel {
         this.miscellaneousMargin = miscellaneousMargin;
     }
 
-    public long getTotal() {
-        return total;
+    public float getRentSpent() {
+        return rentSpent;
     }
 
-    public void setTotal(long total) {
-        this.total = total;
+    public void setRentSpent(float rentSpent) {
+        this.rentSpent = rentSpent;
+    }
+
+    public float getMaidSpent() {
+        return maidSpent;
+    }
+
+    public void setMaidSpent(float maidSpent) {
+        this.maidSpent = maidSpent;
+    }
+
+    public float getElectricitySpent() {
+        return electricitySpent;
+    }
+
+    public void setElectricitySpent(float electricitySpent) {
+        this.electricitySpent = electricitySpent;
+    }
+
+    public float getMiscellaneousSpent() {
+        return miscellaneousSpent;
+    }
+
+    public void setMiscellaneousSpent(float miscellaneousSpent) {
+        this.miscellaneousSpent = miscellaneousSpent;
     }
 }

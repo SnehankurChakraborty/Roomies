@@ -23,6 +23,10 @@ public enum QueryParam {
     MAID_MARGIN("maid_margin"),
     ELECTRICITY_MARGIN("elec_margin"),
     MISCELLANEOUS_MARGIN("misc_margin"),
+    RENT_SPENT("rent_spent"),
+    MAID_SPENT("maid_spent"),
+    ELECTRICITY_SPENT("elec_spent"),
+    MISCELLANEOUS_SPENT("misc_spent"),
     TOTAL("total");
 
     private String value;

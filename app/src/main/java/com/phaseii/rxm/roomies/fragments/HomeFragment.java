@@ -15,28 +15,22 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.dao.RoomStatsDaoImpl;
-import com.phaseii.rxm.roomies.dao.RoomiesDao;
-import com.phaseii.rxm.roomies.helper.QueryParam;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
-import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.view.RoomiesHomePagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_SPENT;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
 
 
@@ -149,7 +143,13 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
 
     private float getSpentDetails() {
 
-        String roomId = sharedPreferences.getString(PREF_ROOM_ID, null);
+        float rentSpent = Float.valueOf(sharedPreferences.getString(PREF_RENT_SPENT, "0"));
+        float maidSpent = Float.valueOf(sharedPreferences.getString(PREF_MAID_SPENT, "0"));
+        float elecSpent = Float.valueOf(sharedPreferences.getString(PREF_ELECTRICITY_SPENT, "0"));
+        float miscSpent = Float.valueOf(sharedPreferences.getString(PREF_MISCELLANEOUS_SPENT, "0"));
+        return rentSpent + maidSpent + elecSpent + miscSpent;
+
+        /*String roomId = sharedPreferences.getString(PREF_ROOM_ID, null);
 
         Map<ServiceParam, Object> queryMap = new HashMap<>();
         List<QueryParam> projection = new ArrayList<>();
@@ -167,15 +167,15 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
 
         queryMap.put(ServiceParam.QUERYARGS, QueryParam.MONTH_YEAR);
 
-        boolean isGoogleFBLogin = sharedPreferences.getBoolean(IS_GOOGLE_FB_LOGIN, false);
+        boolean isGoogleFBLogin = sharedPreferences.getBoolean(IS_GOOGLE_FB_LOGIN, false);*/
         /*if (isGoogleFBLogin) {
             username = getActivity().getSharedPreferences
 					(ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
 		}*/
 
-        RoomiesDao service = new RoomStatsDaoImpl(mContext);
+        /*RoomiesDao service = new RoomStatsDaoImpl(mContext);
         List<RoomStats> roomStats = (List<RoomStats>) service.getDetails(queryMap);
-        return roomStats.get(0).getTotal();
+        return roomStats.get(0).getTotal();*/
     }
 
     @Override

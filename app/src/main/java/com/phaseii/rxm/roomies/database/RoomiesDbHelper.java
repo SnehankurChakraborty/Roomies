@@ -30,7 +30,10 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
         db.execSQL(RoomStats.SQL_CREATE_ENTRIES);
         db.execSQL(RoomUserMap.SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_VIEW);
-        db.execSQL(RoomExpenses.SQL_CREATE_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_RENT_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_MAID_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_ELEC_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_MISC_SPENT_TRIGGER);
     }
 
     @Override
@@ -42,13 +45,19 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
         db.execSQL(RoomStats.SQL_DELETE_ENTRIES);
         db.execSQL(RoomUserMap.SQL_DELETE_ENTRIES);
         db.execSQL(SQL_DROP_VIEW);
-        db.execSQL(RoomExpenses.SQL_DROP_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_DROP_RENT_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_DROP_MAID_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_DROP_ELEC_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_DROP_MISC_SPENT_TRIGGER);
         db.execSQL(UserDetails.SQL_CREATE_ENTRIES);
         db.execSQL(RoomDetails.SQL_CREATE_ENTRIES);
         db.execSQL(RoomExpenses.SQL_CREATE_ENTRIES);
         db.execSQL(RoomStats.SQL_CREATE_ENTRIES);
         db.execSQL(RoomUserMap.SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_VIEW);
-        db.execSQL(RoomExpenses.SQL_CREATE_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_RENT_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_MAID_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_ELEC_SPENT_TRIGGER);
+        db.execSQL(RoomExpenses.SQL_CREATE_MISC_SPENT_TRIGGER);
     }
 }

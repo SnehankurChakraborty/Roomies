@@ -22,7 +22,6 @@ import com.facebook.login.LoginResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.phaseii.rxm.roomies.Manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
 import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
@@ -32,6 +31,7 @@ import com.phaseii.rxm.roomies.helper.QueryParam;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.UserDetails;
 
 import org.json.JSONObject;
@@ -50,6 +50,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
 
 
 public class LoginActivity extends RoomiesBaseActivity {
@@ -106,6 +107,8 @@ public class LoginActivity extends RoomiesBaseActivity {
                             SharedPreferences.Editor mEditor = getSharedPreferences
                                     (PREF_ROOMIES_KEY, Context.MODE_PRIVATE).edit();
                             mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
+                            mEditor.putString(PREF_USER_ID, String.valueOf(
+                                    userDetails.getUserId()));
                             mEditor.putString(PREF_USERNAME, userDetails.getUsername());
                             mEditor.putBoolean(IS_LOGGED_IN, true);
                             mEditor.apply();

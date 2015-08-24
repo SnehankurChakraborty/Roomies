@@ -81,20 +81,10 @@ public final class RoomiesConstants {
     public static final String PREF_MAID_MARGIN = "MAID_MARGIN";
     public static final String PREF_ELECTRICITY_MARGIN = "ELECTRICITY_MARGIN";
     public static final String PREF_MISCELLANEOUS_MARGIN = "MISCELLANEOUS_MARGIN";
-    public static final String PREF_TOTAL = "TOTAL";
-    public static final String PREF_IS_RENT_PAID = "isRentPaid";
-    public static final String PREF_IS_MAID_PAID = "isMaidPaid";
-    public static final String PREF_IS_ELEC_PAID = "isElecPaid";
-
-
-    /**
-     * DB CONSTANTS
-     */
-    public static final String PROJECTION = "PROJECTION";
-    public static final String SELECTION = "SELECTION";
-    public static final String SELECTIONARGS = "SELECTIONARGS";
-    public static final String SORTORDER = "SORTORDER";
-
+    public static final String PREF_RENT_SPENT = "RENT_SPENT";
+    public static final String PREF_MAID_SPENT = "MAID_SPENT";
+    public static final String PREF_ELECTRICITY_SPENT = "ELECTRICITY_SPENT";
+    public static final String PREF_MISCELLANEOUS_SPENT = "MISCELLANEOUS_SPENT";
     /*
     static feilds
      */

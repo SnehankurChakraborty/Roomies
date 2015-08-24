@@ -13,10 +13,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.phaseii.rxm.roomies.Manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
 
@@ -184,7 +184,10 @@ public class GetStartedWizard extends FragmentActivity {
         roomStats.setMaidMargin(Long.valueOf(maid.getText().toString()));
         roomStats.setMiscellaneousMargin(Long.valueOf(miscellaneous.getText().toString()));
         roomStats.setMonthYear(getCurrentMonthYear());
-        roomStats.setTotal(0);
+        roomStats.setRentSpent(0);
+        roomStats.setMaidSpent(0);
+        roomStats.setElectricitySpent(0);
+        roomStats.setMiscellaneousSpent(0);
 
         return manager.storeRoomDetails(roomDetails, roomStats);
     }

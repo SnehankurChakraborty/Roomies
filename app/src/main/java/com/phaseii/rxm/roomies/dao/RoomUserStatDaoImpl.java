@@ -26,11 +26,10 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_M
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MISCELLANEOUS_MARGIN;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MONTH_YEAR;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_MARGIN;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_TOTAL;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.TOTAL;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_SENDER_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USERNAME;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USER_ALIAS;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails._ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.VIEW_NAME;
 import static com.phaseii.rxm.roomies.helper.RoomiesHelper.listToProjection;
 
@@ -91,8 +90,7 @@ public class RoomUserStatDaoImpl implements RoomiesDao {
                 /**
                  * User Details
                  */
-                roomUserStatData.setUserId(cursor.getColumnIndex(_ID) >= 0 ? cursor.getInt(cursor
-                        .getColumnIndex(_ID)) : -1);
+
                 roomUserStatData.setUsername(
                         cursor.getColumnIndex(USER_USERNAME) >= 0 ? cursor.getString(cursor
                                 .getColumnIndex(USER_USERNAME)) : null);
@@ -131,8 +129,8 @@ public class RoomUserStatDaoImpl implements RoomiesDao {
                                 cursor.getLong(
                                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN)) : -1);
                 roomUserStatData.setTotal(
-                        cursor.getColumnIndex(STATS_TOTAL) >= 0 ?
-                                cursor.getLong(cursor.getColumnIndex(STATS_TOTAL)) : -1);
+                        cursor.getColumnIndex(TOTAL) >= 0 ?
+                                cursor.getLong(cursor.getColumnIndex(TOTAL)) : -1);
 
                 roomUserStatDataList.add(roomUserStatData);
                 cursor.moveToNext();
