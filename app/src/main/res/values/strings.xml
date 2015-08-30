@@ -109,6 +109,7 @@
 	<string name="join_title">Available in next update</string>
 	<string name="title_activity_dashboard">DashboardActivity</string>
 	<string name="title_activity_roomies_connect">RoomiesConnectActivity</string>
+	<string name="register">R E G I S T E R</string>
 
 
 	<!-- P U S H  M E S S A G I N G -->

@@ -1,169 +1,169 @@
 <android.support.v4.widget.DrawerLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/home_screen_drawer_layout"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	tools:context="com.phaseii.rxm.roomies.activity.HomeScreenActivity">
+    android:id="@+id/home_screen_drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.phaseii.rxm.roomies.activity.HomeScreenActivity">
 
-	<RelativeLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
-
-
-		<include
-			layout="@layout/roomies_toolbar"
-			android:id="@+id/toolbar"
-			android:layout_height="150dip"
-			android:layout_width="match_parent"
-			/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
 
-		<com.phaseii.rxm.roomies.view.BannerView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/toolbartitle"
-			android:layout_alignParentTop="true"
-			android:layout_centerHorizontal="true"
-			android:layout_marginTop="58dp"
-			android:elevation="8dp"/>
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/roomies_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="150dip"
+            />
 
 
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/home_screen_fragment_layout"
-			android:layout_below="@id/toolbar">
-
-		</FrameLayout>
-
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:visibility="gone"
-			android:id="@+id/fab_layout">
-
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:background="@color/white_translucent" >
-
-				<LinearLayout
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					android:layout_alignParentBottom="true"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"
-					android:layout_marginRight="20dp"
-					android:layout_marginBottom="170dp"
-					android:layout_marginEnd="20dp"
-					android:visibility="visible"
-					android:id="@+id/add_roomies_layout">
-
-					<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Add Roomies"
-						android:gravity="center"
-						android:layout_gravity="center"
-						android:layout_marginRight="20dp"
-						android:paddingLeft="5dp"
-						android:paddingRight="5dp"
-						android:paddingTop="5dp"
-						android:paddingBottom="5dp"
-						android:background="@drawable/fab_label"/>
-
-					<ImageButton
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:src="@drawable/add_roomies"
-						android:background="@drawable/add_expense"
-						android:id="@+id/add_roomies"
-						android:layout_gravity="center|center_horizontal"
-						android:layout_weight="1"/>
-				</LinearLayout>
-
-				<LinearLayout
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					android:layout_marginRight="20dp"
-					android:layout_marginBottom="100dp"
-					android:layout_marginEnd="20dp"
-					android:layout_alignParentBottom="true"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"
-					android:visibility="visible"
-					android:id="@+id/add_expense_layout">
-
-					<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="Add Expenses"
-						android:gravity="center"
-						android:layout_gravity="center"
-						android:layout_marginRight="20dp"
-						android:paddingLeft="5dp"
-						android:paddingRight="5dp"
-						android:paddingTop="5dp"
-						android:paddingBottom="5dp"
-						android:background="@drawable/fab_label"/>
-
-					<ImageButton
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:src="@drawable/ic_spends"
-						android:background="@drawable/add_expense"
-						android:layout_gravity="center"
-						android:id="@+id/add_expense"/>
-				</LinearLayout>
-
-				<ImageButton
-					android:layout_width="70dp"
-					android:layout_height="70dp"
-					android:src="@drawable/ic_cancel"
-					android:background="@drawable/add_expense"
-					android:id="@+id/fab_alt"
-					android:layout_gravity="left|bottom"
-					android:layout_marginRight="10dp"
-					android:layout_marginBottom="10dp"
-					android:layout_marginEnd="10dp"
-					android:layout_alignParentBottom="true"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"
-					android:visibility="visible"/>
-			</RelativeLayout>
-
-		</FrameLayout>
+        <com.phaseii.rxm.roomies.view.BannerView
+            android:id="@+id/toolbartitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="58dp"
+            android:elevation="8dp"/>
 
 
-		<ImageButton
-			android:layout_width="70dp"
-			android:layout_height="70dp"
-			android:src="@drawable/ic_add"
-			android:background="@drawable/add_expense"
-			android:id="@+id/fab"
-			android:layout_gravity="left|bottom"
-			android:layout_marginRight="10dp"
-			android:layout_marginBottom="10dp"
-			android:layout_marginEnd="10dp"
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentEnd="true"/>
+        <FrameLayout
+            android:id="@+id/home_screen_fragment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white_translucent">
+
+                <LinearLayout
+                    android:id="@+id/add_roomies_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="170dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/fab_label"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:text="Add Roomies"/>
+
+                    <ImageButton
+                        android:id="@+id/add_roomies"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center|center_horizontal"
+                        android:layout_weight="1"
+                        android:background="@drawable/add_expense"
+                        android:src="@drawable/add_roomies"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/add_expense_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/fab_label"
+                        android:gravity="center"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        android:text="Add Expenses"/>
+
+                    <ImageButton
+                        android:id="@+id/add_expense"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/add_expense"
+                        android:src="@drawable/ic_spends"/>
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/fab_alt"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="left|bottom"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/add_expense"
+                    android:src="@drawable/ic_cancel"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+
+        </FrameLayout>
 
 
-	</RelativeLayout>
+        <ImageButton
+            android:id="@+id/fab"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/add_expense"
+            android:src="@drawable/ic_add"/>
 
-	<android.support.v7.widget.RecyclerView
-		android:id="@+id/RecyclerView"
-		android:layout_width="320dp"
-		android:layout_height="match_parent"
-		android:layout_gravity="left"
-		android:background="#ffffff"
-		android:scrollbars="vertical">
 
-	</android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView"
+        android:layout_width="320dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="#ffffff"
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.v4.widget.DrawerLayout>
 

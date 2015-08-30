@@ -20,6 +20,7 @@ public final class RoomiesConstants {
     public static final long DELAY_MILLIS = 1000;
     public static final String TAG_ROOM_INFO = "room_info";
     public static final String TAG_ROOM_EXPENSE = "room_expense";
+    public static final String TAG_LOGIN_FRAGMENT="login";
     public static final String ROOM_RENT = "room_rent";
     public static final String ROOM_MAID = "room_maid";
     public static final String ROOM_ELECTRICITY = "room_electricity";

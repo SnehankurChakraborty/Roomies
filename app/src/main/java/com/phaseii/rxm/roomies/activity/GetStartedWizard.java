@@ -66,21 +66,11 @@ public class GetStartedWizard extends FragmentActivity {
         if (savedInstanceState == null) {
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-            transaction.add(R.id.container, new StartFragment()).commit();
+            transaction.add(R.id.container, new SelectorFragment()).commit();
         }
     }
 
-    /**
-     * Invoked when user clicks get started. The
-     * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.StartFragment} is replaced by
-     * {@link com.phaseii.rxm.roomies.activity.GetStartedWizard.SelectorFragment} fragment
-     *
-     * @param view
-     */
-    public void getStartedClicked(View view) {
-        RoomiesFragment selectorFragment = new SelectorFragment();
-        replaceFragment(this, selectorFragment);
-    }
+
 
     /**
      * Invoked when user clicks join room.
@@ -193,30 +183,12 @@ public class GetStartedWizard extends FragmentActivity {
     }
 
 
-    /**
-     * ***************************************
-     * A start fragment containing a simple view.
-     * *****************************************
-     */
-    public static class StartFragment extends RoomiesFragment {
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            rootView = inflater.inflate(R.layout.fragment_start, container,
-                    false);
-            return rootView;
-        }
-
-        public View getFragmentView() {
-            return rootView;
-        }
-    }
 
 
     /**
      * ***************************************
-     * A start fragment containing a simple view.
+     * A selector fragment containing a simple view.
      * *****************************************
      */
 
@@ -242,7 +214,7 @@ public class GetStartedWizard extends FragmentActivity {
 
     /**
      * ***************************************
-     * A start fragment containing a simple view.
+     * A room information fragment containing a simple view.
      * *****************************************
      */
 
@@ -265,7 +237,7 @@ public class GetStartedWizard extends FragmentActivity {
 
     /**
      * ***************************************
-     * A start fragment containing a simple view.
+     * A room expense fragment containing a simple view.
      * *****************************************
      */
 

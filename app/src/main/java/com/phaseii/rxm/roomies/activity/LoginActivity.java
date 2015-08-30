@@ -9,17 +9,17 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.phaseii.rxm.roomies.R;
@@ -27,6 +27,7 @@ import com.phaseii.rxm.roomies.dao.RoomiesDao;
 import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.dialogs.SignupDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.helper.QueryParam;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
@@ -51,6 +52,7 @@ import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_LOGIN_FRAGMENT;
 
 
 public class LoginActivity extends RoomiesBaseActivity {
@@ -60,6 +62,8 @@ public class LoginActivity extends RoomiesBaseActivity {
     private List<UserDetails> userDetailsList;
     private RoomiesDao roomiesDao;
     private RoomUserStatManager manager;
+    private FragmentTransaction transaction;
+    private View loginView;
 
     /**
      * on create
@@ -70,98 +74,144 @@ public class LoginActivity extends RoomiesBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final View loginPage = findViewById(R.id.login_page);
-        Button submit = (Button) findViewById(R.id.submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText username = (EditText) findViewById(R.id.username);
-                EditText password = (EditText) findViewById(R.id.password);
-                boolean isValidUsername = RoomiesHelper.setError("username",
-                        getBaseContext(), loginPage);
-                boolean isValidPassword = RoomiesHelper.setError("password",
-                        getBaseContext(), loginPage);
-                if (isValidPassword && isValidUsername) {
+        if (savedInstanceState == null) {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            transaction.add(R.id.container, new StartFragment()).commit();
+        }
+
+    }
+
+    /**
+     * ***************************************
+     * A login fragment containing a simple view.
+     * *****************************************
+     */
+
+    public static class LoginFragment extends RoomiesFragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            rootView = inflater.inflate(R.layout.fragment_login, container,
+                    false);
+
+            return rootView;
+        }
+
+        @Override
+        public View getFragmentView() {
+            return rootView;
+        }
+    }
+
+    /**
+     * ***************************************
+     * A start fragment containing a simple view.
+     * *****************************************
+     */
+    public static class StartFragment extends RoomiesFragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            rootView = inflater.inflate(R.layout.fragment_start, container,
+                    false);
+            return rootView;
+        }
+
+        public View getFragmentView() {
+            return rootView;
+        }
+    }
+
+    /**
+     * This method is invoked when user clicks on login link.
+     * This method replaces the current fragment with the login fragment.
+     *
+     * @param view
+     */
+    public void onLogin(View view) {
+        RoomiesFragment selectorFragment = new LoginFragment();
+        RoomiesHelper.replaceFragment(TAG_LOGIN_FRAGMENT, this, selectorFragment);
+    }
+
+    /**
+     * This method is invoked when user selects signup/register link
+     *
+     * @param view
+     */
+
+    public void onRegister(View view) {
+        DialogFragment dialog = SignupDialog.getInstance();
+        dialog.show(getSupportFragmentManager(), "signup");
+    }
+
+    /**
+     * This method is invoked when user tries to login with username/password
+     *
+     * @param view
+     */
+    public void onSubmit(View view) {
+        View loginView = ((LoginFragment) getSupportFragmentManager().findFragmentByTag
+                (TAG_LOGIN_FRAGMENT)).getFragmentView();
+        EditText username = (EditText) loginView.findViewById(R.id.username);
+        EditText password = (EditText) loginView.findViewById(R.id.password);
+        boolean isValidUsername = RoomiesHelper.setError("username", LoginActivity.this, loginView);
+        boolean isValidPassword = RoomiesHelper.setError("password", LoginActivity.this, loginView);
+        if (isValidPassword && isValidUsername) {
+            /**
+             * check if username/password match
+             */
+            Map<ServiceParam, Object> paramMap = new HashMap<>();
+            List<QueryParam> params = new ArrayList<QueryParam>();
+            params.add(QueryParam.USERNAME);
+            paramMap.put(ServiceParam.SELECTION, params);
+            List<String> selectionArgs = new ArrayList<String>();
+            selectionArgs.add(username.getText().toString());
+            paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+
+
+            /**
+             * get user details based on user id
+             */
+            roomiesDao = new UserDetailsDaoImpl(LoginActivity.this);
+            userDetailsList = (List<UserDetails>) roomiesDao.getDetails(paramMap);
+            if (null != userDetailsList && userDetailsList.size() > 0) {
+                UserDetails userDetails = userDetailsList.get(0);
+                if (null != userDetails.getPassword() && userDetails.getPassword().equals(
+                        password.getText().toString())) {
+
+                    SharedPreferences.Editor mEditor = getSharedPreferences
+                            (PREF_ROOMIES_KEY, Context.MODE_PRIVATE).edit();
+                    mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
+                    mEditor.putString(PREF_USER_ID, String.valueOf(
+                            userDetails.getUserId()));
+                    mEditor.putString(PREF_USERNAME, userDetails.getUsername());
+                    mEditor.putBoolean(IS_LOGGED_IN, true);
+                    mEditor.apply();
                     /**
-                     * check if username/password match
+                     * call method to get all details of the user and cache into shared
+                     * preferences
                      */
-                    Map<ServiceParam, Object> paramMap = new HashMap<>();
-                    List<QueryParam> params = new ArrayList<QueryParam>();
-                    params.add(QueryParam.USERNAME);
-                    paramMap.put(ServiceParam.SELECTION, params);
-                    List<String> selectionArgs = new ArrayList<String>();
-                    selectionArgs.add(username.getText().toString());
-                    paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+                    getAllDetails(userDetails, false);
 
+                } else {
 
                     /**
-                     * get user details based on user id
+                     * display toast when userid/password doesn't match
                      */
-                    roomiesDao = new UserDetailsDaoImpl(LoginActivity.this);
-                    userDetailsList = (List<UserDetails>) roomiesDao.getDetails(paramMap);
-                    if (null != userDetailsList && userDetailsList.size() > 0) {
-                        UserDetails userDetails = userDetailsList.get(0);
-                        if (null != userDetails.getPassword() && userDetails.getPassword().equals(
-                                password.getText().toString())) {
-
-                            SharedPreferences.Editor mEditor = getSharedPreferences
-                                    (PREF_ROOMIES_KEY, Context.MODE_PRIVATE).edit();
-                            mEditor.putString(PREF_USER_ALIAS, userDetails.getUserAlias());
-                            mEditor.putString(PREF_USER_ID, String.valueOf(
-                                    userDetails.getUserId()));
-                            mEditor.putString(PREF_USERNAME, userDetails.getUsername());
-                            mEditor.putBoolean(IS_LOGGED_IN, true);
-                            mEditor.apply();
-                            /**
-                             * call method to get all details of the user and cache into shared
-                             * preferences
-                             */
-                            getAllDetails(userDetails, false);
-
-                        } else {
-
-                            /**
-                             * display toast when userid/password doesn't match
-                             */
-                            RoomiesHelper.createToast(getBaseContext(),
-                                    RoomiesConstants.INVALID_USER_CREDENTIALS, mToast);
-                        }
-                    } else {
-                        RoomiesHelper.createToast(getBaseContext(),
-                                RoomiesConstants.PLEASE_SIGN_UP_TO_USE_ROOMIES, mToast);
-                        DialogFragment dialog = SignupDialog.getInstance();
-                        dialog.show(getSupportFragmentManager(), "signup");
-                    }
-
+                    RoomiesHelper.createToast(getBaseContext(),
+                            RoomiesConstants.INVALID_USER_CREDENTIALS, mToast);
                 }
-            }
-        });
-
-        /**
-         * for signup new user
-         */
-        TextView signuplink = (TextView) findViewById(R.id.signuplink);
-        signuplink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            } else {
+                RoomiesHelper.createToast(getBaseContext(),
+                        RoomiesConstants.PLEASE_SIGN_UP_TO_USE_ROOMIES, mToast);
                 DialogFragment dialog = SignupDialog.getInstance();
                 dialog.show(getSupportFragmentManager(), "signup");
             }
-        });
 
-        /**
-         * for google sign in
-         */
-        SignInButton signInButton = (SignInButton) findViewById(R.id.gplus_sign_in_button);
-        if (null != signInButton) {
-            signInButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loginGPlus(v);
-                }
-            });
         }
-
     }
 
     /**
