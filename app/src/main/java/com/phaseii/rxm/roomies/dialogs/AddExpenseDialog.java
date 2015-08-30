@@ -26,7 +26,7 @@ import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.helper.SubCategory;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
-import com.phaseii.rxm.roomies.business.RoomExpensesManager;
+import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
 
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_SPENT;

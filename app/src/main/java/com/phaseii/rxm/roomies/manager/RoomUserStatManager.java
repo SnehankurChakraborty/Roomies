@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.business;
+package com.phaseii.rxm.roomies.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
