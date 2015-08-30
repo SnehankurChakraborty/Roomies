@@ -64,7 +64,9 @@ public class RoomDetailsDaoImpl implements RoomiesDao {
                 roomDetailsList.add(roomDetail);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
+
         return roomDetailsList;
     }
 

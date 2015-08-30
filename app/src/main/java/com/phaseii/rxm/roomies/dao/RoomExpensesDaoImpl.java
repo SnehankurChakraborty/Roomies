@@ -88,7 +88,9 @@ public class RoomExpensesDaoImpl implements RoomiesDao {
 
                 cursor.moveToNext();
             }
+            cursor.close();
         }
+
 
         return roomExpensesList;
     }

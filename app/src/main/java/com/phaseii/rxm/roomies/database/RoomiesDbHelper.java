@@ -18,8 +18,10 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails;
  * Created by Snehankur on 4/10/2015.
  */
 public class RoomiesDbHelper extends SQLiteOpenHelper {
+
     public RoomiesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override
@@ -34,6 +36,7 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
         db.execSQL(RoomExpenses.SQL_CREATE_MAID_SPENT_TRIGGER);
         db.execSQL(RoomExpenses.SQL_CREATE_ELEC_SPENT_TRIGGER);
         db.execSQL(RoomExpenses.SQL_CREATE_MISC_SPENT_TRIGGER);
+
     }
 
     @Override
@@ -59,5 +62,6 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
         db.execSQL(RoomExpenses.SQL_CREATE_MAID_SPENT_TRIGGER);
         db.execSQL(RoomExpenses.SQL_CREATE_ELEC_SPENT_TRIGGER);
         db.execSQL(RoomExpenses.SQL_CREATE_MISC_SPENT_TRIGGER);
+
     }
 }

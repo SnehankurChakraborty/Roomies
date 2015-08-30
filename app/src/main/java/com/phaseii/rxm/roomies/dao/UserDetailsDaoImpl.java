@@ -92,7 +92,9 @@ public class UserDetailsDaoImpl implements RoomiesDao {
 
                 cursor.moveToNext();
             }
+            cursor.close();
         }
+
 
         return userDetailsList;
     }

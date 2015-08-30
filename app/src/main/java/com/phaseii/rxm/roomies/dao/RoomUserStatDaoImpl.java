@@ -22,10 +22,14 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomDetails.DETAI
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomDetails.DETAILS_ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomDetails.DETAILS_ROOM_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ELECTRICITY_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MAID_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MISCELLANEOUS_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MONTH_YEAR;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.TOTAL;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_SENDER_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USERNAME;
@@ -128,6 +132,18 @@ public class RoomUserStatDaoImpl implements RoomiesDao {
                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN) >= 0 ?
                                 cursor.getLong(
                                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN)) : -1);
+                roomUserStatData.setRentSpent(cursor.getColumnIndex(STATS_RENT_SPENT) >= 0 ?
+                        cursor.getLong(cursor.getColumnIndex(STATS_RENT_SPENT)) : -1);
+                roomUserStatData.setMaidSpent(cursor.getColumnIndex(STATS_MAID_SPENT) >= 0 ?
+                        cursor.getLong(cursor.getColumnIndex(STATS_MAID_SPENT)) : -1);
+                roomUserStatData.setElectricitySpent(
+                        cursor.getColumnIndex(STATS_ELECTRICITY_SPENT) >= 0 ?
+                                cursor.getLong(
+                                        cursor.getColumnIndex(STATS_ELECTRICITY_SPENT)) : -1);
+                roomUserStatData.setMiscellaneousSpent(
+                        cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT) >= 0 ?
+                                cursor.getLong(
+                                        cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT)) : -1);
                 roomUserStatData.setTotal(
                         cursor.getColumnIndex(TOTAL) >= 0 ?
                                 cursor.getLong(cursor.getColumnIndex(TOTAL)) : -1);
@@ -135,7 +151,9 @@ public class RoomUserStatDaoImpl implements RoomiesDao {
                 roomUserStatDataList.add(roomUserStatData);
                 cursor.moveToNext();
             }
+            cursor.close();
         }
+
 
         return roomUserStatDataList;
     }

@@ -113,7 +113,9 @@ public class RoomStatsDaoImpl implements RoomiesDao {
 
                 cursor.moveToNext();
             }
+            cursor.close();
         }
+
 
         return roomStatsList;
     }

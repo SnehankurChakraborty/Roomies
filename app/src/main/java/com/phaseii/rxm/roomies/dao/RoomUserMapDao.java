@@ -60,7 +60,9 @@ public class RoomUserMapDao implements RoomiesDao {
 
                 cursor.moveToNext();
             }
+            cursor.close();
         }
+
 
         return roomUserMapList;
     }
