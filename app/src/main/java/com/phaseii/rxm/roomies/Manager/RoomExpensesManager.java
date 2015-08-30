@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.Manager;
+package com.phaseii.rxm.roomies.manager;
 
 
 import android.content.Context;
