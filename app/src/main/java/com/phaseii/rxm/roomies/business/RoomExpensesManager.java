@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.manager;
+package com.phaseii.rxm.roomies.business;
 
 
 import android.content.Context;
@@ -64,12 +64,12 @@ public class RoomExpensesManager {
         roomExpenses.setAmount(amount);
         roomExpenses.setExpenseDate(new Date());
         roomExpenses.setMonthYear(RoomiesHelper.getCurrentMonthYear());
-        roomExpenses.setUserId(Integer.parseInt(mSharedPref.getString(PREF_USER_ID, null)));
-        roomExpenses.setRoomId(Integer.parseInt(mSharedPref.getString(PREF_ROOM_ID, null)));
+        roomExpenses.setUserId(Integer.parseInt(mSharedPref.getString(PREF_USER_ID, "0")));
+        roomExpenses.setRoomId(Integer.parseInt(mSharedPref.getString(PREF_ROOM_ID, "0")));
 
         roomExpensesMap.put(ServiceParam.MODEL, roomExpenses);
         int rowsInserted = roomiesDao.insertDetails(roomExpensesMap);
-        if (rowsInserted > 1) {
+        if (rowsInserted > 0) {
             isExpenseAdded = true;
         }
 

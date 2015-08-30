@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
+import com.phaseii.rxm.roomies.business.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
 

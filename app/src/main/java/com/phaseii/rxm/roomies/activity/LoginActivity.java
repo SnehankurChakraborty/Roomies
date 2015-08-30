@@ -32,7 +32,7 @@ import com.phaseii.rxm.roomies.helper.QueryParam;
 import com.phaseii.rxm.roomies.helper.RoomiesConstants;
 import com.phaseii.rxm.roomies.helper.RoomiesHelper;
 import com.phaseii.rxm.roomies.helper.ServiceParam;
-import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
+import com.phaseii.rxm.roomies.business.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.UserDetails;
 
 import org.json.JSONObject;

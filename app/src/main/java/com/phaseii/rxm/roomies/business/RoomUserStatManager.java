@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.manager;
+package com.phaseii.rxm.roomies.business;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -61,6 +61,10 @@ public class RoomUserStatManager {
         projectionParams.add(QueryParam.MAID_MARGIN);
         projectionParams.add(QueryParam.ELECTRICITY_MARGIN);
         projectionParams.add(QueryParam.MISCELLANEOUS_MARGIN);
+        projectionParams.add(QueryParam.RENT_SPENT);
+        projectionParams.add(QueryParam.MAID_SPENT);
+        projectionParams.add(QueryParam.ELECTRICITY_SPENT);
+        projectionParams.add(QueryParam.MISCELLANEOUS_SPENT);
         projectionParams.add(QueryParam.TOTAL);
         paramMap.put(ServiceParam.PROJECTION, projectionParams);
 
