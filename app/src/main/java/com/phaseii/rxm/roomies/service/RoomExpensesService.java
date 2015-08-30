@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 
 import java.util.HashMap;

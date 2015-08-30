@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <permission
         android:name="com.phaseii.rxm.roomies.permission.C2D_MESSAGE"
@@ -79,6 +80,23 @@
             </intent-filter>
         </receiver>
 
+
+        <receiver android:name=".background.RoomiesReceiver">
+            <intent-filter>
+                <action
+                    android:name=".background.RoomiesReciever.ROOMIES_ALARM"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".background.BootAndUpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".background.AlarmService"
+            android:enabled="true"/>
         <service
             android:name="com.phaseii.rxm.roomies.gcm.RoomiesGcmListenerService"
             android:exported="false">

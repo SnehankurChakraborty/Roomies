@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.helper.QueryParam;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.model.UserDetails;
 import com.phaseii.rxm.roomies.providers.UserDetailsProvider;
@@ -21,7 +21,7 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_SENDER_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USERNAME;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USER_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.listToProjection;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.listToProjection;
 
 /**
  * Created by Snehankur on 6/29/2015.

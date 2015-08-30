@@ -16,7 +16,7 @@ import android.text.TextUtils;
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.database.RoomiesDbHelper;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
 
 /**
  * Created by Snehankur on 8/23/2015.

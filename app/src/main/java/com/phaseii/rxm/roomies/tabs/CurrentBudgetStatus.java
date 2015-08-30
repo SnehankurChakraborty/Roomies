@@ -18,21 +18,21 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.RoomServiceImpl;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MAID_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MISC_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.RENT_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 
 public class CurrentBudgetStatus extends RoomiesFragment

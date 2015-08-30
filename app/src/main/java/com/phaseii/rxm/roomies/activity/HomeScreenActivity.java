@@ -41,23 +41,24 @@ import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.gcm.GCMSender;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.model.UserDetails;
 import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.view.BannerView;
 import com.phaseii.rxm.roomies.view.RoomiesNavDrawerViewAdapter;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_SETUP_COMPLETED;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PRESS_BACK_AGAIN_TO_EXIT;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PRESS_BACK_AGAIN_TO_EXIT;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.createToast;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.startActivityHelper;
 
 /**
  * @author Snehankur
@@ -108,6 +109,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         /**
          * Get the current api version the app is running on
          */
@@ -145,6 +147,9 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                     System.exit(0);
                 }
             } else {
+
+                RoomiesHelper.setupAlarm(HomeScreenActivity.this);
+
 
                 setContentView(R.layout.activity_home_screen);
                 /**
@@ -226,6 +231,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
      *
      * @return true if the play services are present.
      */
+
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {

@@ -10,12 +10,12 @@ import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.providers.UserCredentialsProvider;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.NAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.NAME;
 
 /**
  * Created by Snehankur on 4/9/2015.

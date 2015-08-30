@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.helper;
+package com.phaseii.rxm.roomies.util;
 
 /**
  * Created by Snehankur on 8/16/2015.

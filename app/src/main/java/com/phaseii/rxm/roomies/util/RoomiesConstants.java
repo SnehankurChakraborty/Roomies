@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.helper;
+package com.phaseii.rxm.roomies.util;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -20,7 +20,7 @@ public final class RoomiesConstants {
     public static final long DELAY_MILLIS = 1000;
     public static final String TAG_ROOM_INFO = "room_info";
     public static final String TAG_ROOM_EXPENSE = "room_expense";
-    public static final String TAG_LOGIN_FRAGMENT="login";
+    public static final String TAG_LOGIN_FRAGMENT = "login";
     public static final String ROOM_RENT = "room_rent";
     public static final String ROOM_MAID = "room_maid";
     public static final String ROOM_ELECTRICITY = "room_electricity";
@@ -86,6 +86,13 @@ public final class RoomiesConstants {
     public static final String PREF_MAID_SPENT = "MAID_SPENT";
     public static final String PREF_ELECTRICITY_SPENT = "ELECTRICITY_SPENT";
     public static final String PREF_MISCELLANEOUS_SPENT = "MISCELLANEOUS_SPENT";
+
+    /**
+     * ROOMIES PROPERTY KEYS
+     */
+    public static final String PROPERTIES_FILE = "Roomies.properties";
+    public static final String INSERT_NEW_MONTH_STATS = "INSERT_NEW_MONTH_STATS";
+
     /*
     static feilds
      */

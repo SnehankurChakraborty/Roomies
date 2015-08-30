@@ -22,16 +22,16 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_ALIAS;
 
 
 public class HomeFragment extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {

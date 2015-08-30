@@ -16,26 +16,26 @@ import android.widget.Toast;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.business.RoomUserStatManager;
+import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ELECTRICITY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MAID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_MISC;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NAME;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NO_OF_MEMBERS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_RENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_ROOM_EXPENSE;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_ROOM_INFO;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.cacheDBtoPreferences;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.createToast;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.getCurrentMonthYear;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.replaceFragment;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.setError;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.startActivityHelper;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_ELECTRICITY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_MAID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_MISC;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_NAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_RENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.TAG_ROOM_EXPENSE;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.TAG_ROOM_INFO;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.cacheDBtoPreferences;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.createToast;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.getCurrentMonthYear;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.replaceFragment;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.setError;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.startActivityHelper;
 
 public class GetStartedWizard extends FragmentActivity {
 

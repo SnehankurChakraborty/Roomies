@@ -1,6 +1,6 @@
 package com.phaseii.rxm.roomies.dao;
 
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 
 import java.util.List;

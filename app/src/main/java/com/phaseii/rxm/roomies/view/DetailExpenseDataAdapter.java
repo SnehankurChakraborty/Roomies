@@ -21,8 +21,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.helper.Category;
-import com.phaseii.rxm.roomies.helper.SubCategory;
+import com.phaseii.rxm.roomies.util.Category;
+import com.phaseii.rxm.roomies.util.SubCategory;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.SortType;
 

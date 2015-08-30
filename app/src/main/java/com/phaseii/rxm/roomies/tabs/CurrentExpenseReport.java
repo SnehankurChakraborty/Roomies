@@ -2,7 +2,6 @@ package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
@@ -28,32 +27,34 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.MiscServiceImpl;
 import com.phaseii.rxm.roomies.dao.RoomServiceImpl;
-import com.phaseii.rxm.roomies.database.RoomiesContract;
+import com.phaseii.rxm.roomies.exception.RoomiesStateException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.model.MiscExpense;
+import com.phaseii.rxm.roomies.util.Category;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.SubCategory;
+import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
+import com.phaseii.rxm.roomies.manager.RoomStatManager;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.model.RoomStats;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_ELEC_PAID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_MAID_PAID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_RENT_PAID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.NAME;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ELECTRICITY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MAID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MISC;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.NAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.RENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 /**
  * Created by Snehankur on 4/3/2015.
@@ -74,6 +75,9 @@ public class CurrentExpenseReport extends RoomiesFragment
                              @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.tab_current_expense_report, container, false);
         mContext = getActivity().getBaseContext();
+        sharedPreferences = mContext.getSharedPreferences(
+                PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
+
         View rentDot = rootView.findViewById(R.id.rent_mark);
         View maidDot = rootView.findViewById(R.id.maid_mark);
         View electricityDot = rootView.findViewById(R.id.electricity_mark);
@@ -116,23 +120,37 @@ public class CurrentExpenseReport extends RoomiesFragment
                     (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
         }
 
-        List<MiscExpense> miscExpenses = miscService.getCurrentTotalMiscExpense(username);
+        RoomExpensesManager manager = new RoomExpensesManager(mContext);
+        List<RoomExpenses> roomExpensesList = manager.getRoomExpenses();
         float grocery = 0f;
         float vegetables = 0f;
         float others = 0f;
         float bills = 0f;
         String types[] = mContext.getResources().getStringArray(R.array.subcategory);
-        for (MiscExpense miscExpense : miscExpenses) {
-            String type = miscExpense.getType();
-            if (type.equals(types[0])) {
-                bills = bills + miscExpense.getAmount();
-            } else if (type.equals(types[1])) {
-                grocery = grocery + miscExpense.getAmount();
-            } else if (type.equals(types[2])) {
-                vegetables = vegetables + miscExpense.getAmount();
-            } else if (type.equals(types[3])) {
-                others = others + miscExpense.getAmount();
+        for (RoomExpenses roomExpenses : roomExpensesList) {
+            if (Category.MISCELLANEOUS.equals(Category.getCategory(
+                    roomExpenses.getExpenseCategory()))) {
+                SubCategory subCategory = SubCategory.getSubcategory(
+                        roomExpenses.getExpenseSubcategory());
+                switch (subCategory) {
+                    case BILLS:
+                        bills = bills + roomExpenses.getAmount();
+                        break;
+                    case GROCERY:
+                        grocery = grocery + roomExpenses.getAmount();
+                        break;
+                    case VEGETABLES:
+                        vegetables = vegetables + roomExpenses.getAmount();
+                        break;
+                    case OTHERS:
+                        others = others + roomExpenses.getAmount();
+                        break;
+                    default:
+                        throw new RoomiesStateException("Unsupported sub category");
+                }
             }
+
+
         }
         labels.addAll(Arrays.asList(types));
         entries.add(new BarEntry(bills, 0));
@@ -200,39 +218,27 @@ public class CurrentExpenseReport extends RoomiesFragment
                     (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
         }
 
-        Cursor cursor = roomService.getRoomDetails(username);
-        cursor.moveToFirst();
-        float rent = cursor.getFloat(
-                cursor.getColumnIndex(RoomiesContract.Room_Expenses.COLUMN_RENT));
-        float maid = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
-                .COLUMN_MAID));
-        float electricity = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
-                .COLUMN_ELECTRICITY));
-        float misc = cursor.getFloat(cursor.getColumnIndex(RoomiesContract.Room_Expenses
-                .COLUMN_MISCELLANEOUS));
-        sharedPreferences = context.getSharedPreferences(
-                ROOM_BUDGET_FILE_KEY, Context.MODE_PRIVATE);
-        SharedPreferences.Editor mEditor = sharedPreferences.edit();
+        RoomStatManager manager = new RoomStatManager(mContext);
+        RoomStats roomStats = manager.getCurrentRoomStats();
+        float rent = roomStats.getRentSpent();
+        float maid = roomStats.getMaidSpent();
+        float electricity = roomStats.getElectricitySpent();
+        float misc = roomStats.getMiscellaneousSpent();
+
         float spent = rent + maid + electricity + misc;
         ArrayList<Entry> entries = new ArrayList<Entry>();
         ArrayList<String> labels = new ArrayList<String>();
         if (rent > 0) {
             entries.add(new Entry(rent, 0));
             labels.add(RENT);
-            mEditor.putBoolean(IS_RENT_PAID, true);
-            mEditor.apply();
         }
         if (maid > 0) {
             entries.add(new Entry(maid, 1));
             labels.add(MAID);
-            mEditor.putBoolean(IS_MAID_PAID, true);
-            mEditor.apply();
         }
         if (electricity > 0) {
             entries.add(new Entry(electricity, 2));
             labels.add(ELECTRICITY);
-            mEditor.putBoolean(IS_ELEC_PAID, true);
-            mEditor.apply();
         }
         if (misc > 0) {
             entries.add(new Entry(misc, 3));
@@ -264,8 +270,7 @@ public class CurrentExpenseReport extends RoomiesFragment
                 Typeface.createFromAsset(context.getAssets(), "fonts/VarelaRound-Regular.ttf"));
         miscVal.setText(String.valueOf(misc) + " Misc");
 
-        sharedPreferences = context.getSharedPreferences(
-                ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE);
+
         PieDataSet dataSet = new PieDataSet(entries,
                 sharedPreferences.getString(ROOM_ALIAS, ""));
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
@@ -296,10 +301,11 @@ public class CurrentExpenseReport extends RoomiesFragment
     }
 
     private float getTotal() {
-        float rent = Float.valueOf(sharedPreferences.getString(RENT_MARGIN, "0"));
-        float maid = Float.valueOf(sharedPreferences.getString(MAID_MARGIN, "0"));
-        float electricity = Float.valueOf(sharedPreferences.getString(ELECTRICITY_MARGIN, "0"));
-        float misc = Float.valueOf(sharedPreferences.getString(MISC_MARGIN, "0"));
+        float rent = Float.valueOf(sharedPreferences.getString(PREF_RENT_MARGIN, "0"));
+        float maid = Float.valueOf(sharedPreferences.getString(PREF_MAID_MARGIN, "0"));
+        float electricity = Float.valueOf(sharedPreferences.getString(PREF_ELECTRICITY_MARGIN,
+                "0"));
+        float misc = Float.valueOf(sharedPreferences.getString(PREF_MISCELLANEOUS_MARGIN, "0"));
         return rent + maid + electricity + misc;
     }
 

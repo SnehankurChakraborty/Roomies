@@ -18,6 +18,7 @@ public class RoomiesContract {
     public static final String COMMA_SEP = ", ";
     public static final String NOT_NULL = " NOT NULL";
     public static final String INTEGER_TYPE = " INTEGER";
+    public static final String DEFAULT0 = " DEFAULT 0";
     public static final String TOTAL = "total";
     public static final String INTEGER_PRIMARY_KEY = " INTEGER PRIMARY KEY";
     public static final String INTEGER_PRIMARY_KEY_AUTOINCREMENT = " INTEGER PRIMARY KEY " +
@@ -396,10 +397,10 @@ public class RoomiesContract {
                 STATS_MAID_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
                 STATS_ELECTRICITY_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
                 STATS_MISCELLANEOUS_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                STATS_RENT_SPENT + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                STATS_MAID_SPENT + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                STATS_ELECTRICITY_SPENT + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                STATS_MISCELLANEOUS_SPENT + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
+                STATS_RENT_SPENT + INTEGER_TYPE + NOT_NULL + DEFAULT0 + COMMA_SEP +
+                STATS_MAID_SPENT + INTEGER_TYPE + NOT_NULL + DEFAULT0 + COMMA_SEP +
+                STATS_ELECTRICITY_SPENT + INTEGER_TYPE + NOT_NULL + DEFAULT0 + COMMA_SEP +
+                STATS_MISCELLANEOUS_SPENT + INTEGER_TYPE + NOT_NULL + DEFAULT0 + COMMA_SEP +
                 STATS_MONTH_YEAR + TEXT_TYPE + NOT_NULL + COMMA_SEP +
                 "FOREIGN KEY (" + STATS_ROOM_ID + ") " +
                 "REFERENCES " + RoomDetails.DETAILS_TABLE_NAME +

@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.widget.EditText;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.MiscExpense;
 import com.phaseii.rxm.roomies.providers.MiscellaneousProvider;
 

@@ -23,19 +23,19 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.dao.RoomServiceImpl;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.model.RoomBudget;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.manager.RoomStatManager;
+import com.phaseii.rxm.roomies.model.RoomStats;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.EMAIL_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.EMAIL_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_INFO_FILE_KEY;
 
 /**
  * Created by Snehankur on 5/24/2015.
@@ -44,9 +44,9 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 
     private final TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams
             .WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-    private RoomServiceImpl roomService;
+
     private Context mContext;
-    private List<RoomBudget> roomBudgetList;
+
     private ArrayList<BarDataSet> dataSets;
     private float rentSavings;
     private float maidSavings;
@@ -59,6 +59,7 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
     private int rowColor;
     private int altRowColor;
     private int currentMonth;
+    private int currentYear;
     private Button previous;
     private Button next;
 
@@ -85,7 +86,10 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
         maidTable = (TableLayout) rootView.findViewById(R.id.maid_table);
         electricityTable = (TableLayout) rootView.findViewById(R.id.electricity_table);
         miscTable = (TableLayout) rootView.findViewById(R.id.misc_table);
-        currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+
+        Calendar calendar = Calendar.getInstance();
+        currentMonth = calendar.get(Calendar.MONTH);
+        currentYear = calendar.get(Calendar.YEAR);
         createBarChart(currentMonth);
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,24 +148,29 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
         }
 
         List<String> months = new ArrayList<>();
-        months.add(new DateFormatSymbols().getMonths()[currentMonth]);
+        months.add(new DateFormatSymbols().getMonths()[currentMonth]+ String.valueOf(
+                currentYear));
         if ((currentMonth - 1) >= 0) {
-            months.add(new DateFormatSymbols().getMonths()[currentMonth - 1]);
+            months.add(new DateFormatSymbols().getMonths()[currentMonth - 1] + String.valueOf(
+                    currentYear));
         } else {
-            months.add(new DateFormatSymbols().getMonths()[11]);
+            months.add(new DateFormatSymbols().getMonths()[11] + String.valueOf(currentYear - 1));
         }
         if ((currentMonth - 2) >= 0) {
-            months.add(new DateFormatSymbols().getMonths()[currentMonth - 2]);
+            months.add(new DateFormatSymbols().getMonths()[currentMonth - 2] + String.valueOf(
+                    currentYear));
         } else {
-            months.add(new DateFormatSymbols().getMonths()[11]);
+            months.add(new DateFormatSymbols().getMonths()[11] + String.valueOf(
+                    currentYear - 1));
         }
 
-        roomService = new RoomServiceImpl(mContext);
-        roomBudgetList = roomService.getSpecificMonthRoomBudget(username, months);
+        RoomStatManager manager = new RoomStatManager(mContext);
+        List<RoomStats> roomTrendList = manager.getRoomStatsTrend(months);
+
 
         int index = 0;
 
-        if (roomBudgetList.size() < 3) {
+        if (roomTrendList.size() < 3) {
             previous.setEnabled(false);
         } else {
             previous.setEnabled(true);
@@ -178,12 +187,12 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
         electricityTable.removeAllViews();
         miscTable.removeAllViews();
 
-        for (RoomBudget roomBudget : roomBudgetList) {
-            rentSavings = roomBudget.getRent_margin() - roomBudget.getRent();
-            maidSavings = roomBudget.getMaid_margin() - roomBudget.getMaid();
-            electricitySavings = roomBudget.getElectricity_margin() - roomBudget.getElectricity();
-            miscSavings = roomBudget.getMiscellaneous_margin() - roomBudget.getMiscellaneous();
-            labels.add(roomBudget.getMonth());
+        for (RoomStats roomStats : roomTrendList) {
+            rentSavings = roomStats.getRentMargin() - roomStats.getRentSpent();
+            maidSavings = roomStats.getMaidMargin() - roomStats.getMaidSpent();
+            electricitySavings = roomStats.getElectricityMargin() - roomStats.getElectricitySpent();
+            miscSavings = roomStats.getMiscellaneousMargin() - roomStats.getMiscellaneousSpent();
+            labels.add(roomStats.getMonthYear());
             rentEntries.add(new BarEntry(rentSavings, index));
             maidEntries.add(new BarEntry(maidSavings, index));
             elecEntries.add(new BarEntry(electricitySavings, index));
@@ -192,7 +201,7 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 
             TableRow rentRow = new TableRow(mContext);
             TextView rentMonth = new TextView(mContext);
-            rentMonth.setText(roomBudget.getMonth());
+            rentMonth.setText(roomStats.getMonthYear());
 
             rentMonth.setLayoutParams(params);
             rentMonth.setTextColor(Color.BLACK);
@@ -213,7 +222,7 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 
             TableRow maidRow = new TableRow(mContext);
             TextView maidMonth = new TextView(mContext);
-            maidMonth.setText(roomBudget.getMonth());
+            maidMonth.setText(roomStats.getMonthYear());
             maidMonth.setLayoutParams(params);
             maidMonth.setTextColor(Color.BLACK);
             TextView maidValue = new TextView(mContext);
@@ -233,7 +242,7 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 
             TableRow electricityRow = new TableRow(mContext);
             TextView electricityMonth = new TextView(mContext);
-            electricityMonth.setText(roomBudget.getMonth());
+            electricityMonth.setText(roomStats.getMonthYear());
             electricityMonth.setLayoutParams(params);
             electricityMonth.setTextColor(Color.BLACK);
             TextView electricityValue = new TextView(mContext);
@@ -253,7 +262,7 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
 
             TableRow miscRow = new TableRow(mContext);
             TextView miscMonth = new TextView(mContext);
-            miscMonth.setText(roomBudget.getMonth());
+            miscMonth.setText(roomStats.getMonthYear());
             miscMonth.setLayoutParams(params);
             miscMonth.setTextColor(Color.BLACK);
             TextView miscValue = new TextView(mContext);
@@ -318,31 +327,6 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
         xl.setDrawGridLines(false);
     }
 
-	/*private void setCardDetails() {
-
-
-		TextView rentVal = (TextView) rootView.findViewById(R.id.rent_value);
-		TextView rent = (TextView) rootView.findViewById(R.id.rent);
-		TextView maidVal = (TextView) rootView.findViewById(R.id.maid_value);
-		TextView maid = (TextView) rootView.findViewById(R.id.maid);
-		TextView electricityVal = (TextView) rootView.findViewById(R.id.electricity_value);
-		TextView electricity = (TextView) rootView.findViewById(R.id.electricity);
-		TextView miscVal = (TextView) rootView.findViewById(R.id.misc_value);
-		TextView misc = (TextView) rootView.findViewById(R.id.misc);
-		TextView month = (TextView) rootView.findViewById(R.id.month);
-
-		rentVal.setText(String.valueOf(rentSavings));
-		setTextColor(rent, rentVal, rentSavings);
-		maidVal.setText(String.valueOf(maidSavings));
-		setTextColor(maid, maidVal, maidSavings);
-		electricityVal.setText(String.valueOf(electricitySavings));
-		setTextColor(electricity, electricityVal, electricitySavings);
-		miscVal.setText(String.valueOf(miscSavings));
-		setTextColor(misc, miscVal, miscSavings);
-		month.setText(
-				new DateFormatSymbols().getMonths()[Calendar.getInstance().get(Calendar.MONTH)]
-						+ " " + Calendar.getInstance().get(Calendar.YEAR));
-	}*/
 
     private void setTextColor(TextView field, TextView fieldVal, float value) {
         int green = getResources().getColor(R.color.green);

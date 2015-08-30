@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.helper.QueryParam;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.providers.RoomStatsProvider;
@@ -22,10 +22,10 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_M
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MONTH_YEAR;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_MARGIN;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ROOM_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.getCurrentMonthYear;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.listToProjection;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.getCurrentMonthYear;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.listToProjection;
 
 /**
  * Created by Snehankur on 7/1/2015.
@@ -122,12 +122,14 @@ public class RoomStatsDaoImpl implements RoomiesDao {
 
     @Override
     public int insertDetails(Map<ServiceParam, ? extends RoomiesModel> detailsMap) {
-        RoomStats roomStat = (RoomStats) detailsMap.get(ServiceParam.MODEL);
+
         int row = 0;
+
+        RoomStats roomStat = (RoomStats) detailsMap.get(ServiceParam.MODEL);
 
         ContentValues values = new ContentValues();
         values.put(RoomiesContract.RoomStats.STATS_ROOM_ID, roomStat.getRoomId());
-        values.put(RoomiesContract.RoomStats.STATS_MONTH_YEAR, getCurrentMonthYear());
+        values.put(RoomiesContract.RoomStats.STATS_MONTH_YEAR, roomStat.getMonthYear());
         values.put(RoomiesContract.RoomStats.STATS_RENT_MARGIN, roomStat.getRentMargin());
         values.put(RoomiesContract.RoomStats.STATS_MAID_MARGIN, roomStat.getMaidMargin());
         values.put(RoomiesContract.RoomStats.STATS_ELECTRICITY_MARGIN,

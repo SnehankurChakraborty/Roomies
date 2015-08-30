@@ -27,9 +27,9 @@ import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.view.AlphaForegroundColorSpan;
 import com.phaseii.rxm.roomies.view.RoomiesScrollView;
 
@@ -41,17 +41,17 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
 
 public class ProfileActivity extends ActionBarActivity {
 

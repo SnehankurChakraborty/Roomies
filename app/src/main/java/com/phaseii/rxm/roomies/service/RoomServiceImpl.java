@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.model.RoomBudget;
 
 import java.text.DateFormatSymbols;
@@ -16,19 +16,19 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.phaseii.rxm.roomies.database.RoomiesContract.Room_Expenses;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.MISC_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_INFO_FILE_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.ROOM_NO_OF_MEMBERS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TOTAL_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ELECTRICITY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MAID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MAID_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MISC;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.MISC_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.RENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.RENT_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_BUDGET_FILE_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_INFO_FILE_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.TOTAL_MARGIN;
 
 /**
  * Created by Snehankur on 3/19/2015.

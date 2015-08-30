@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.business;
+package com.phaseii.rxm.roomies.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,10 +9,10 @@ import com.phaseii.rxm.roomies.dao.RoomStatsDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomUserMapDao;
 import com.phaseii.rxm.roomies.dao.RoomUserStatDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
-import com.phaseii.rxm.roomies.helper.QueryParam;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.model.RoomUserMap;
@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
 
 /**
  * Created by Snehankur on 8/23/2015.

@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.phaseii.rxm.roomies.database.RoomiesDbHelper;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
-import com.phaseii.rxm.roomies.helper.QueryParam;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomUserStatData;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 
@@ -35,7 +35,7 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USERNAME;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails.USER_USER_ALIAS;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.VIEW_NAME;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.listToProjection;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.listToProjection;
 
 /**
  * Created by Snehankur on 8/23/2015.

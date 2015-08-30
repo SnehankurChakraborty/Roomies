@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.helper.QueryParam;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.providers.RoomExpensesProvider;
@@ -25,11 +25,11 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPE
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPENSE_ROOM_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPENSE_SUBCATEGORY;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPENSE_USER_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.dateToStringFormatter;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.getCurrentMonthYear;
-import static com.phaseii.rxm.roomies.helper.RoomiesHelper.stringToDateParser;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.dateToStringFormatter;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.getCurrentMonthYear;
+import static com.phaseii.rxm.roomies.util.RoomiesHelper.stringToDateParser;
 
 /**
  * Created by Snehankur on 6/29/2015.

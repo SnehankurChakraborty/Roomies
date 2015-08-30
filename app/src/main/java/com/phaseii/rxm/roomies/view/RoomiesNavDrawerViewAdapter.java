@@ -20,18 +20,18 @@ import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.StatsFragment;
-import com.phaseii.rxm.roomies.helper.RoomiesConstants;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DASHBOARD_FRAGMENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.HOME_FRAGMENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.SAVINGS_FRAGMENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.DASHBOARD_FRAGMENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.SAVINGS_FRAGMENT;
 
 /**
  * Created by Snehankur on 4/4/2015.

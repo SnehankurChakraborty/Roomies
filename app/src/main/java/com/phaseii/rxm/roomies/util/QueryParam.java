@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.helper;
+package com.phaseii.rxm.roomies.util;
 
 /**
  * Created by Snehankur on 7/1/2015.
@@ -12,7 +12,7 @@ public enum QueryParam {
     USER_ID("user_id"),
     EXPENSE_CATEGORY("expense_category"),
     EXPENSE_SUBCATEGORY("expense_subcategory"),
-    EXPENSE_DESCRIPTION("expense_description"),
+    EXPENSE_DESCRIPTION("expense_desc"),
     EXPENSE_AMOUNT("expense_amount"),
     EXPENSE_QUANTITY("expense_quantity"),
     EXPENSE_DATE("expense_date"),

@@ -1,7 +1,9 @@
-package com.phaseii.rxm.roomies.helper;
+package com.phaseii.rxm.roomies.util;
 
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.background.RoomiesReceiver;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.model.RoomDetails;
@@ -37,28 +40,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DATE_FORMAT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.DELAY_MILLIS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MONTH_YEAR;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_NO_OF_MEMBERS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_SPENT;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_SENDER_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_SETUP_COMPLETED;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.DATE_FORMAT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.DELAY_MILLIS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MONTH_YEAR;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_NO_OF_MEMBERS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_SENDER_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
 
 /**
  * Created by Snehankur on 2/23/2015.
@@ -297,14 +300,27 @@ public class RoomiesHelper {
         return projection;
     }
 
-    /*
-    * Returns the current month year in format 'April2015'
-    * */
+    /**
+     * Returns the current month year in format 'April2015'
+     */
     public static String getCurrentMonthYear() {
 
         Calendar calendar = Calendar.getInstance();
         String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)];
         String year = String.valueOf(calendar.get(Calendar.YEAR));
+        return month + year;
+    }
+
+    /**
+     * Returns the next month year in format 'April2015'
+     */
+    public static String getNextMonthYear() {
+
+        Calendar calendar = Calendar.getInstance();
+        String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH) + 1];
+        String year = String.valueOf(
+                month.equals("January") ? calendar.get(Calendar.YEAR) + 1 : calendar.get(
+                        Calendar.YEAR));
         return month + year;
     }
 
@@ -331,5 +347,25 @@ public class RoomiesHelper {
                 mToast.cancel();
             }
         }, DELAY_MILLIS);
+    }
+
+    public static void setupAlarm(Context mContext) {
+
+        Intent intent = new Intent(mContext, RoomiesReceiver.class);
+        intent.setAction(RoomiesReceiver.ROOMIES_ALARM);
+        if (null == PendingIntent.getBroadcast(mContext, 1001, intent,
+                PendingIntent.FLAG_NO_CREATE)) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                    mContext, 1001, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH,
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + 1);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 1);
+            calendar.set(Calendar.SECOND, 0);
+            AlarmManager alarm = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+            alarm.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
     }
 }

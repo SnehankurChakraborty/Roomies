@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.business;
+package com.phaseii.rxm.roomies.manager;
 
 
 import android.content.Context;
@@ -6,20 +6,23 @@ import android.content.SharedPreferences;
 
 import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
-import com.phaseii.rxm.roomies.helper.Category;
-import com.phaseii.rxm.roomies.helper.RoomiesHelper;
-import com.phaseii.rxm.roomies.helper.ServiceParam;
-import com.phaseii.rxm.roomies.helper.SubCategory;
+import com.phaseii.rxm.roomies.util.Category;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.ServiceParam;
+import com.phaseii.rxm.roomies.util.SubCategory;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
 
 /**
  * Created by Snehankur on 8/16/2015.
@@ -77,5 +80,31 @@ public class RoomExpensesManager {
                 " Added :" + isExpenseAdded);
 
         return isExpenseAdded;
+    }
+
+    public List<RoomExpenses> getRoomExpenses() {
+        Map<ServiceParam, Object> paramMap = new HashMap<>();
+        List<QueryParam> projectionParams = new ArrayList<QueryParam>();
+
+        projectionParams.add(QueryParam.USER_ID);
+        projectionParams.add(QueryParam.EXPENSE_CATEGORY);
+        projectionParams.add(QueryParam.EXPENSE_SUBCATEGORY);
+        projectionParams.add(QueryParam.EXPENSE_DATE);
+        projectionParams.add(QueryParam.EXPENSE_QUANTITY);
+        projectionParams.add(QueryParam.EXPENSE_AMOUNT);
+        projectionParams.add(QueryParam.EXPENSE_DESCRIPTION);
+        paramMap.put(ServiceParam.PROJECTION, projectionParams);
+
+        List<QueryParam> selectionParams = new ArrayList<QueryParam>();
+        selectionParams.add(QueryParam.MONTH_YEAR);
+        paramMap.put(ServiceParam.SELECTION, selectionParams);
+
+        List<String> selectionArgs = new ArrayList<String>();
+        selectionArgs.add(RoomiesHelper.getCurrentMonthYear());
+        paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+
+        paramMap.put(ServiceParam.QUERYARGS, QueryParam.ROOMID);
+        List<RoomExpenses> roomExpensesList = (List<RoomExpenses>) roomiesDao.getDetails(paramMap);
+        return roomExpensesList;
     }
 }
