@@ -21,21 +21,21 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.util.Category;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
-import com.phaseii.rxm.roomies.util.SubCategory;
+import com.phaseii.rxm.roomies.helper.Category;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.helper.SubCategory;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
-import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
+import com.phaseii.rxm.roomies.business.RoomExpensesManager;
 
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_MARGIN;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MAID_SPENT;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_MARGIN;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_SPENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ELECTRICITY_SPENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MAID_SPENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_RENT_SPENT;
 
 /**
  * Created by Snehankur on 4/5/2015.

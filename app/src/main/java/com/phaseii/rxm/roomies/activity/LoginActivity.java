@@ -28,10 +28,10 @@ import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.dialogs.SignupDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
-import com.phaseii.rxm.roomies.util.ServiceParam;
+import com.phaseii.rxm.roomies.helper.QueryParam;
+import com.phaseii.rxm.roomies.helper.RoomiesConstants;
+import com.phaseii.rxm.roomies.helper.RoomiesHelper;
+import com.phaseii.rxm.roomies.helper.ServiceParam;
 import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.UserDetails;
 
@@ -47,12 +47,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_LOGGED_IN;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.TAG_LOGIN_FRAGMENT;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.helper.RoomiesConstants.TAG_LOGIN_FRAGMENT;
 
 
 public class LoginActivity extends RoomiesBaseActivity {
