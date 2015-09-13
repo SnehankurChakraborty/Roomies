@@ -2,6 +2,7 @@ package com.phaseii.rxm.roomies.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -18,9 +19,9 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.view.RoomiesHomePagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
@@ -55,8 +56,11 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         spentData = (TextView) rootView.findViewById(R.id.spent_data);
         remainingData = (TextView) rootView.findViewById(R.id.remaining_data);
-        ((TextView) rootView.findViewById(R.id.spent_label)).setTypeface(typeface);
-        ((TextView) rootView.findViewById(R.id.remaining_label)).setTypeface(typeface);
+        TextView remainigDays = (TextView) rootView.findViewById(R.id.remaining_days);
+        remainigDays.setText((Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+                - Calendar.getInstance().get(Calendar.MONTH)) + " more days left in this month ");
+        remainigDays.setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.last_update)).setTypeface(typeface);
         typeface = Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
                 "fonts/VarelaRound-Regular.ttf");
         sharedPreferences = mContext.getSharedPreferences(PREF_ROOMIES_KEY,
@@ -65,10 +69,8 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
         showBarGraph(getActivity().getBaseContext());
 
         TextView month = (TextView) rootView.findViewById(R.id.month);
-        month.setText(new DateFormatSymbols().getMonths()[Calendar.getInstance().get(
-                Calendar.MONTH)] + " " +
-                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        month.setTypeface(typeface);
+        month.setTypeface(typeface, Typeface.BOLD);
+        ((TextView) rootView.findViewById(R.id.last_update)).setTypeface(typeface);
         return rootView;
     }
 
@@ -89,29 +91,44 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
         float total = rent + maid + electricity + misc;
         float spent = getSpentDetails();
         float status = getPercentageLeft(total, spent);
+        List<Integer> colors = new ArrayList<>();
 
-        entries.add(new Entry(total - spent, 0));
-        remainingData.setText(String.valueOf(total - spent));
+        for (int i = 1; i <= 100; i++) {
+            entries.add(new Entry(1, i - 1));
+            labels.add(i - 1, String.valueOf(i));
+        }
+
+        for (int i = 0; i < 100 - Math.round(status); i++) {
+            colors.add(Color.parseColor("#0091ea"));
+        }
+
+        for (int i = 100 - Math.round(status); i < 100; i++) {
+            colors.add(Color.parseColor("#ACABAB"));
+        }
+
+        /*entries.add(new Entry(total - spent, 0));*/
+        remainingData.setText("Budget set for this month " + String.valueOf(total));
         remainingData.setTypeface(typeface);
-        entries.add(new Entry(spent, 1));
-        labels.add("Spent");
+        /*entries.add(new Entry(spent, 1));
+        labels.add("Spent");*/
         spentData.setText(String.valueOf(spent));
         spentData.setTypeface(typeface);
 
-        if (status < 0) {
+        /*if (status < 0) {
             labels.add("Overflow");
             ((TextView) rootView.findViewById(R.id.remaining_label)).setText("Overflow");
         } else {
             labels.add("Remaining");
-        }
+        }*/
         PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
         PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
 
-        if (status < 0) {
+        /*if (status < 0) {
             dataSet.setColors(ROOMIES_RAG_REVERSE_COLORS);
         } else {
             dataSet.setColors(ROOMIES_RAG_COLORS);
-        }
+        }*/
+        dataSet.setColors(colors);
         dataSet.setDrawValues(false);
         PieData data = new PieData(labels, dataSet);
 
@@ -119,16 +136,14 @@ public class HomeFragment extends RoomiesFragment implements RoomiesFragment.Upd
         mChart.animateXY(1000, 1000);
         mChart.setDrawCenterText(true);
         mChart.setCenterText(String.valueOf((int) status) + "%");
-        mChart.setCenterTextColor(getResources().getColor(R.color.white));
         mChart.setCenterTextTypeface(typeface);
-        mChart.setCenterTextColor(getResources().getColor(R.color.white));
-        mChart.setHoleColor(getResources().getColor(R.color.card_dark));
+        mChart.setCenterTextColor(getResources().getColor(R.color.accent));
+        mChart.setHoleColor(getResources().getColor(R.color.white));
         mChart.setCenterTextSize(25);
         mChart.setRotationEnabled(false);
         mChart.setDescription("");
-        mChart.setClickable(true);
+        mChart.setClickable(false);
         mChart.setDrawSliceText(false);
-        mChart.setHoleRadius(85);
         mChart.getLegend().setEnabled(false);
         return mChart;
     }
