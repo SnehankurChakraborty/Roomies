@@ -160,7 +160,7 @@
         android:layout_width="320dp"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:background="#ffffff"
+        android:background="@color/drawer"
         android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -199,11 +200,17 @@ public class RoomiesNavDrawerViewAdapter
                 viewHolder.itemView.setSelected(true);
             }
             viewHolder.textView.setText(mNavTitles[position - 1]);
+            viewHolder.textView.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+                    "fonts/VarelaRound-Regular.ttf"), Typeface.BOLD);
             viewHolder.imageView.setImageResource(mIcons[position - 1]);
             itemViewList.add(viewHolder.itemView);
         } else {
             viewHolder.name.setText(name);
+            viewHolder.name.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+                    "fonts/VarelaRound-Regular.ttf"), Typeface.BOLD);
             viewHolder.email.setText(email);
+            viewHolder.email.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+                    "fonts/VarelaRound-Regular.ttf"));
         }
     }
 
