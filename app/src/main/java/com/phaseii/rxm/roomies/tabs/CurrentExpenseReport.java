@@ -25,17 +25,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.dao.MiscServiceImpl;
-import com.phaseii.rxm.roomies.dao.RoomServiceImpl;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.SubCategory;
-import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
-import com.phaseii.rxm.roomies.manager.RoomStatManager;
-import com.phaseii.rxm.roomies.model.RoomExpenses;
-import com.phaseii.rxm.roomies.model.RoomStats;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +61,7 @@ public class CurrentExpenseReport extends RoomiesFragment
     private SharedPreferences sharedPreferences;
     private ShapeDrawable dot;
     private Context mContext;
+    private List<RoomExpenses> roomExpensesList;
 
     public static CurrentExpenseReport getInstance() {
         return new CurrentExpenseReport();
@@ -77,6 +74,8 @@ public class CurrentExpenseReport extends RoomiesFragment
         mContext = getActivity().getBaseContext();
         sharedPreferences = mContext.getSharedPreferences(
                 PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
+        RoomExpensesManager manager = new RoomExpensesManager(mContext);
+        roomExpensesList = manager.getRoomExpenses();
 
         View rentDot = rootView.findViewById(R.id.rent_mark);
         View maidDot = rootView.findViewById(R.id.maid_mark);
@@ -105,7 +104,6 @@ public class CurrentExpenseReport extends RoomiesFragment
     }
 
     public void createBarChart() {
-        MiscServiceImpl miscService = new MiscServiceImpl(mContext);
         BarChart barChart = (BarChart) rootView.findViewById(R.id.summary);
         ArrayList<String> labels = new ArrayList<>();
         ArrayList<BarEntry> entries = new ArrayList<>();
@@ -120,19 +118,16 @@ public class CurrentExpenseReport extends RoomiesFragment
                     (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
         }
 
-        RoomExpensesManager manager = new RoomExpensesManager(mContext);
-        List<RoomExpenses> roomExpensesList = manager.getRoomExpenses();
         float grocery = 0f;
         float vegetables = 0f;
         float others = 0f;
         float bills = 0f;
         String types[] = mContext.getResources().getStringArray(R.array.subcategory);
         for (RoomExpenses roomExpenses : roomExpensesList) {
-            if (Category.MISCELLANEOUS.equals(Category.getCategory(
-                    roomExpenses.getExpenseCategory()))) {
-                SubCategory subCategory = SubCategory.getSubcategory(
-                        roomExpenses.getExpenseSubcategory());
-                switch (subCategory) {
+            if (Category.getCategory(
+                    roomExpenses.getExpenseCategory()).equals(Category.MISCELLANEOUS)) {
+                switch (SubCategory.getSubcategory(
+                        roomExpenses.getExpenseSubcategory())) {
                     case BILLS:
                         bills = bills + roomExpenses.getAmount();
                         break;
@@ -207,7 +202,6 @@ public class CurrentExpenseReport extends RoomiesFragment
 
     private PieChart createPieChart(Context context) {
         PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_expense_report);
-        RoomServiceImpl roomService = new RoomServiceImpl(getActivity());
         String username = getActivity().getSharedPreferences
                 (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(NAME, null);
 
@@ -217,13 +211,26 @@ public class CurrentExpenseReport extends RoomiesFragment
             username = getActivity().getSharedPreferences
                     (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(EMAIL_ID, null);
         }
-
-        RoomStatManager manager = new RoomStatManager(mContext);
-        RoomStats roomStats = manager.getCurrentRoomStats();
-        float rent = roomStats.getRentSpent();
-        float maid = roomStats.getMaidSpent();
-        float electricity = roomStats.getElectricitySpent();
-        float misc = roomStats.getMiscellaneousSpent();
+        float rent = 0f;
+        float maid = 0f;
+        float electricity = 0f;
+        float misc = 0f;
+        for (RoomExpenses roomExpenses : roomExpensesList) {
+            switch (Category.getCategory(roomExpenses.getExpenseCategory())) {
+                case RENT:
+                    rent = rent + roomExpenses.getAmount();
+                    break;
+                case MAID:
+                    maid = maid + roomExpenses.getAmount();
+                    break;
+                case ELECTRICITY:
+                    electricity = electricity + roomExpenses.getAmount();
+                    break;
+                case MISCELLANEOUS:
+                    misc = misc + roomExpenses.getAmount();
+                    break;
+            }
+        }
 
         float spent = rent + maid + electricity + misc;
         ArrayList<Entry> entries = new ArrayList<Entry>();

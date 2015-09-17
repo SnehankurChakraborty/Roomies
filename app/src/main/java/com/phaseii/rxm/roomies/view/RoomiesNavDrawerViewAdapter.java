@@ -18,9 +18,7 @@ import com.facebook.login.LoginManager;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
-import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
-import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 
@@ -29,10 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.DASHBOARD_FRAGMENT;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.SAVINGS_FRAGMENT;
 
 /**
  * Created by Snehankur on 4/4/2015.
@@ -117,7 +113,7 @@ public class RoomiesNavDrawerViewAdapter
 
                         ((HomeScreenActivity) mContext).nextFragment(
                                 new HomeFragment(), HOME_FRAGMENT);
-                    } else if (pos == 4) {
+                    } else if (pos == 3) {
 
                         try {
                             RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
@@ -125,14 +121,6 @@ public class RoomiesNavDrawerViewAdapter
                         } catch (RoomXpnseMngrException e) {
                             RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
                         }
-                    } else if (pos == 2) {
-
-                        ((HomeScreenActivity) mContext).nextFragment(
-                                DashboardFragment.getInstance(mContext), DASHBOARD_FRAGMENT);
-                    } else if (pos == 3) {
-
-                        ((HomeScreenActivity) mContext).nextFragment(
-                                new StatsFragment(), SAVINGS_FRAGMENT);
                     }
                 }
             });

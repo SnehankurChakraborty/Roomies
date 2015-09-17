@@ -15,8 +15,7 @@
             android:id="@+id/toolbar"
             layout="@layout/roomies_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="150dip"
-            />
+            android:layout_height="100dip"/>
 
 
         <com.phaseii.rxm.roomies.view.BannerView
@@ -25,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="58dp"
+            android:layout_marginTop="30dp"
             android:elevation="8dp"/>
 
 
@@ -33,9 +32,8 @@
             android:id="@+id/home_screen_fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar">
+            android:layout_below="@id/toolbar"/>
 
-        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/fab_layout"

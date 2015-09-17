@@ -1,125 +1,22 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context="com.phaseii.rxm.roomies.fragments.HomeFragment">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.phaseii.rxm.roomies.fragments.HomeFragment">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/budget_layout"
+    <com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:elevation="8dp">
+        android:background="@color/primary"
+        android:elevation="8dp"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tabs"
+        android:layout_weight="1"/>
 
-            <TextView
-                android:id="@+id/spent_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="start"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="10,000"
-                android:textColor="@color/accent"
-                android:textSize="12pt"/>
-
-            <TextView
-                android:id="@+id/month"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/spent_data"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="This Month Stats"
-                android:textColor="@color/secondary_text"/>
-
-            <Button
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/refresh"
-                android:background="@drawable/ic_refresh"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"/>
-
-            <Button
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/share"
-                android:background="@drawable/ic_share"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@id/refresh"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"/>
-
-            <TextView
-                android:id="@+id/remaining_days"
-                android:layout_below="@id/refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:text="29 more days to go"
-                android:textColor="@color/secondary_text"
-                android:textSize="6pt"/>
-
-            <TextView
-                android:id="@+id/remaining_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/remaining_days"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                android:text="Remaining budget: 10000 "
-                android:textColor="@color/secondary_text"
-                android:textSize="6pt"/>
-
-            <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pie_current_budget"
-                android:layout_width="220dp"
-                android:layout_height="220dp"
-                android:layout_below="@id/remaining_data"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
-                android:elevation="10dp"
-                android:gravity="center_horizontal"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/last_update"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_below="@id/pie_current_budget"
-                android:text="Update on 16.07.2015 23:15"
-                android:textSize="5pt"/>
-            <Button
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:id="@+id/update"
-                android:background="@drawable/ic_update"
-                android:layout_marginRight="2dp"
-                android:layout_marginBottom="10dp"
-                android:layout_below="@id/pie_current_budget"
-                android:layout_toLeftOf="@id/last_update"/>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-</ScrollView>
+</RelativeLayout>

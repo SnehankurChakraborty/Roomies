@@ -17,10 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ELECTRICITY_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ELECTRICITY_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MAID_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MAID_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MISCELLANEOUS_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MISCELLANEOUS_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_MONTH_YEAR;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_MARGIN;
+import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ROOM_ID;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
@@ -108,6 +112,18 @@ public class RoomStatsDaoImpl implements RoomiesDao {
                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN) >= 0 ?
                                 cursor.getLong(
                                         cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN)) : -1);
+                roomStats.setRentMargin(cursor.getColumnIndex(STATS_RENT_SPENT) >= 0 ?
+                        cursor.getLong(cursor.getColumnIndex(STATS_RENT_SPENT)) : -1);
+                roomStats.setMaidMargin(cursor.getColumnIndex(STATS_MAID_SPENT) >= 0 ?
+                        cursor.getLong(cursor.getColumnIndex(STATS_MAID_SPENT)) : -1);
+                roomStats.setElectricityMargin(
+                        cursor.getColumnIndex(STATS_ELECTRICITY_SPENT) >= 0 ?
+                                cursor.getLong(
+                                        cursor.getColumnIndex(STATS_ELECTRICITY_SPENT)) : -1);
+                roomStats.setMiscellaneousMargin(
+                        cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT) >= 0 ?
+                                cursor.getLong(
+                                        cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT)) : -1);
 
                 roomStatsList.add(roomStats);
 

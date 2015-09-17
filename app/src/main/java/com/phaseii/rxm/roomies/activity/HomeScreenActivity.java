@@ -47,6 +47,7 @@ import com.phaseii.rxm.roomies.model.UserDetails;
 import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.view.BannerView;
 import com.phaseii.rxm.roomies.view.RoomiesNavDrawerViewAdapter;
+import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
@@ -81,7 +82,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
     private SharedPreferences mSharedPref;
     private RecyclerView.Adapter mRecylerAdapter;
     private FragmentTransaction transaction;
-    private String drawerTitles[] = {"Home", "Dashboard", "Stats", "Profile", "Logout"};
+    private String drawerTitles[] = {"Home", "Roommates", "Profile", "Rate us", "Logout"};
     private int drawerIcons[] = {R.drawable.ic_home,
             R.drawable.ic_trend,
             R.drawable.ic_savings_bank,
@@ -188,7 +189,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                      * android.os.Build.VERSION_CODES.LOLLIPOP LOLLIPOP}, checking if the api version is
                      * greater than or equal to LOLLIPOP.
                      */
-                    mtoolbar.setElevation(px);
+                    mtoolbar.setElevation(0);
                 }
                 if (mtoolbar != null) {
                     setSupportActionBar(mtoolbar);
@@ -218,9 +219,9 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                  */
                 /*if (checkPlayServices()) {
                     // Start IntentService to register this application with GCM.
-					Intent intent = new Intent(this, RegistrationIntentService.class);
-					startService(intent);
-				}*/
+                    Intent intent = new Intent(this, RegistrationIntentService.class);
+                    startService(intent);
+                }*/
 
             }
         }
@@ -416,7 +417,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
             }
 
         } else {
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150,
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100,
                     getResources().getDisplayMetrics());
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.MATCH_PARENT, height);

@@ -38,7 +38,7 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
 public class DashboardFragment extends RoomiesFragment
         implements RoomiesFragment.UpdatableFragment {
 
-    private static Context mContext;
+    private Context mContext;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private LinearLayout sortFilterTab;
@@ -48,8 +48,7 @@ public class DashboardFragment extends RoomiesFragment
     private RoomiesDao service;
     private String roomId;
 
-    public static DashboardFragment getInstance(Context mContext) {
-        DashboardFragment.mContext = mContext;
+    public static DashboardFragment getInstance() {
         return new DashboardFragment();
     }
 
@@ -57,6 +56,7 @@ public class DashboardFragment extends RoomiesFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        mContext = getActivity().getBaseContext();
         msharedPref = mContext.getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
         roomId = msharedPref.getString(RoomiesConstants.PREF_ROOM_ID, null);
 
