@@ -45,7 +45,7 @@
 		<item name="actionModeSplitBackground">@drawable/cab_background_bottom_roomies</item>
 		<item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Roomies</item>
 		<item name="homeAsUpIndicator">@drawable/ic_action_roomies_home</item>
-		<item name="colorAccent">@color/accent</item>
+		<item name="colorAccent">@color/accent1</item>
 
 
 		<item name="android:windowActionBar">false</item>

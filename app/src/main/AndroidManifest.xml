@@ -19,7 +19,7 @@
     <uses-permission android:name="com.phaseii.rxm.roomies.permission.C2D_MESSAGE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/>
+    <uses-permission android:name="comi.android.launcher.permission.UNINSTALL_SHORTCUT"/>
     <uses-permission
         android:name="android.permission.ACCESS_WIFI_STATE"
         android:required="true"/>

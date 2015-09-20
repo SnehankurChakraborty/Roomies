@@ -1,8 +1,10 @@
 package com.phaseii.rxm.roomies.activity;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -41,13 +43,12 @@ import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.gcm.GCMSender;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.model.UserDetails;
 import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.view.BannerView;
 import com.phaseii.rxm.roomies.view.RoomiesNavDrawerViewAdapter;
-import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
@@ -82,11 +83,15 @@ public class HomeScreenActivity extends RoomiesBaseActivity
     private SharedPreferences mSharedPref;
     private RecyclerView.Adapter mRecylerAdapter;
     private FragmentTransaction transaction;
-    private String drawerTitles[] = {"Home", "Roommates", "Profile", "Rate us", "Logout"};
+    private String drawerTitles[] = {"Home", "Roommates", "Profile", "Share", "Rate", "Contact me",
+            "Help Improve", "Logout"};
     private int drawerIcons[] = {R.drawable.ic_home,
-            R.drawable.ic_trend,
-            R.drawable.ic_savings_bank,
+            R.drawable.ic_friends_white,
             R.drawable.ic_profile,
+            R.drawable.ic_share_white,
+            R.drawable.ic_play_store_logo,
+            R.drawable.ic_mail_white,
+            R.drawable.ic_idea_bulb,
             R.drawable.ic_logout};
     private Bitmap bitmap;
     private String name;
@@ -190,6 +195,8 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                      * greater than or equal to LOLLIPOP.
                      */
                     mtoolbar.setElevation(0);
+                    getWindow().setNavigationBarColor(
+                            getResources().getColor(R.color.primary_dark));
                 }
                 if (mtoolbar != null) {
                     setSupportActionBar(mtoolbar);
@@ -432,6 +439,48 @@ public class HomeScreenActivity extends RoomiesBaseActivity
             addExpenseButton.setVisibility(View.VISIBLE);
 
         }
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    /**
+     * Takes to play store for user rating
+     */
+    public void goToMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        // To count with Play market backstack, After pressing back button,
+        // to taken back to our application, we need to add following flags to intent.
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(
+                            "http://play.google.com/store/apps/details?id=" + getPackageName())));
+        }
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public void sendEmail() {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"snehankurchakraborty@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Roomies");
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+        mDrawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    public void shareApp() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT,
+                "Checkout the new Roomies app on play store. It's awesome. " +
+                        "http://play.google.com/store/apps/details?id=" + getPackageName());
+        startActivity(Intent.createChooser(intent, "Share with"));
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 

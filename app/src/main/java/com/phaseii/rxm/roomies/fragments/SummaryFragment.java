@@ -68,6 +68,7 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
         TextView month = (TextView) rootView.findViewById(R.id.this_month);
         month.setTypeface(typeface, Typeface.BOLD);
         ((TextView) rootView.findViewById(R.id.last_update)).setTypeface(typeface);
+        /*((Button)rootView.findViewById(R.id.check_now)).setTypeface(typeface);*/
         return rootView;
     }
 
@@ -95,12 +96,12 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
             labels.add(i - 1, String.valueOf(i));
         }
 
-        for (int i = 0; i < 100 - Math.round(status); i++) {
-            colors.add(Color.parseColor("#0091ea"));
+        for (int i = 0; i < Math.round(status); i++) {
+            colors.add(Color.parseColor("#3F51B5"));
         }
 
-        for (int i = 100 - Math.round(status); i < 100; i++) {
-            colors.add(Color.parseColor("#ACABAB"));
+        for (int i = Math.round(status); i < 100; i++) {
+            colors.add(Color.parseColor("#B6B6B6"));
         }
 
 
@@ -118,7 +119,7 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
         mChart.setDrawCenterText(true);
         mChart.setCenterText(String.valueOf((int) status) + "%");
         mChart.setCenterTextTypeface(typeface);
-        mChart.setCenterTextColor(getResources().getColor(R.color.accent));
+        mChart.setCenterTextColor(getResources().getColor(R.color.accent1));
         mChart.setHoleColor(getResources().getColor(R.color.white));
         mChart.setCenterTextSize(25);
         mChart.setRotationEnabled(false);

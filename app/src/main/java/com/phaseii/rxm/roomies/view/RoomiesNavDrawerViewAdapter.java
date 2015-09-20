@@ -92,35 +92,47 @@ public class RoomiesNavDrawerViewAdapter
                         item.setSelected(false);
                     }
                     itemView.setSelected(true);
-                    if (pos == 5) {
-                        SharedPreferences mSharedPref = mContext.getSharedPreferences(
-                                PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor mEditor = mSharedPref.edit();
-                        mEditor.clear();
-                        mEditor.apply();
-                        try {
-                            ((HomeScreenActivity) mContext).revokeGplusAccess();
-                            LoginManager.getInstance().logOut();
-                            RoomiesHelper.startActivityHelper(mContext,
-                                    mContext.getResources()
-                                            .getString(R.string.HomeScreen_Activity), null, true);
-
-                        } catch (RoomXpnseMngrException e) {
-                            RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
-                            System.exit(0);
-                        }
-                    } else if (pos == 1) {
-
+                    switch (pos) {
+                        case 1:
                         ((HomeScreenActivity) mContext).nextFragment(
                                 new HomeFragment(), HOME_FRAGMENT);
-                    } else if (pos == 3) {
+                        break;
+                        case 2:break;
+                        case 3:
+                            try {
+                                RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
+                                        .getString(R.string.ProfileActivity), null, false);
+                            } catch (RoomXpnseMngrException e) {
+                                RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
+                            }
+                            break;
+                        case 4:
+                            ((HomeScreenActivity) mContext).shareApp();
+                            break;
+                        case 5:
+                            ((HomeScreenActivity) mContext).goToMarket();
+                            break;
+                        case 6:
+                            ((HomeScreenActivity) mContext).sendEmail();
+                            break;
+                        case 7:
+                            SharedPreferences mSharedPref = mContext.getSharedPreferences(
+                                    PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor mEditor = mSharedPref.edit();
+                            mEditor.clear();
+                            mEditor.apply();
+                            try {
+                                ((HomeScreenActivity) mContext).revokeGplusAccess();
+                                LoginManager.getInstance().logOut();
+                                RoomiesHelper.startActivityHelper(mContext,
+                                        mContext.getResources()
+                                                .getString(R.string.HomeScreen_Activity), null, true);
 
-                        try {
-                            RoomiesHelper.startActivityHelper(mContext, mContext.getResources()
-                                    .getString(R.string.ProfileActivity), null, false);
-                        } catch (RoomXpnseMngrException e) {
-                            RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
-                        }
+                            } catch (RoomXpnseMngrException e) {
+                                RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
+                                System.exit(0);
+                            }
+                            break;
                     }
                 }
             });

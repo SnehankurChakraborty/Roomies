@@ -7,7 +7,7 @@
 	</item>
 
 	<item
-		android:drawable="@color/accent"
+		android:drawable="@color/accent1"
 		android:left="10dp">
 		<shape android:shape="rectangle"></shape>
 	</item>

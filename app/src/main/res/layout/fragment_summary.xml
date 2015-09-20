@@ -13,15 +13,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
             android:elevation="8dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/primary">
+                android:background="@color/accent1">
 
                 <TextView
                     android:id="@+id/welcome"
@@ -50,12 +50,15 @@
 
                 <Button
                     android:id="@+id/check_now"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="36dp"
                     android:layout_below="@id/last_visit"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/primary"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/accent1"
                     android:paddingBottom="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
                     android:paddingTop="8dp"
                     android:text="CHECK NOW"
                     android:textColor="@color/white"/>
@@ -69,10 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/welcome_card"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:elevation="8dp">
 
             <RelativeLayout
@@ -174,8 +175,8 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0.5"
                     android:elevation="8dp">
@@ -205,7 +206,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/accent"  />
+                            android:background="@color/accent1"/>
 
                         <TextView
                             android:id="@+id/spent_recent"
@@ -253,8 +254,7 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0.5"
                     android:elevation="8dp">
@@ -262,7 +262,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/primary">
+                        android:background="@color/accent1">
 
                         <TextView
                             android:id="@+id/expense_header2"
@@ -338,8 +338,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0.5"
                     android:elevation="8dp">
@@ -347,7 +347,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/primary">
+                        android:background="@color/accent1">
 
                         <TextView
                             android:id="@+id/expense_header"
@@ -407,7 +407,7 @@
                             android:layout_marginTop="15dp"
                             android:background="@drawable/round_rectangle_white"
                             android:text="December"
-                            android:textColor="@color/accent"
+                            android:textColor="@color/accent1"
                             android:textSize="4pt"/>
 
                     </RelativeLayout>
@@ -418,8 +418,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0.5"
                     android:elevation="8dp">
@@ -449,7 +448,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/primary"/>
+                            android:background="@color/accent1"/>
 
                         <TextView
                             android:id="@+id/remaining_data"
@@ -486,8 +485,8 @@
                             android:layout_marginTop="15dp"
                             android:background="@drawable/round_rectangle_accent"
                             android:text="December"
-                            android:textSize="4pt"
-                            android:textColor="@color/white"/>
+                            android:textColor="@color/white"
+                            android:textSize="4pt"/>
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>

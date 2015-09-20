@@ -52,7 +52,7 @@ public class AlarmService extends Service {
                                 "with Roomies.")
                         .setContentText("We have set up the budget details for you.")
                         .setSmallIcon(R.drawable.ic_stat_action_assessment)
-                        .setColor(R.color.accent);
+                        .setColor(R.color.accent1);
 
         int mNotificationId = 101;
         NotificationManager mNotifyMgr =

@@ -172,7 +172,7 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
         set.setValueTextColor(getResources().getColor(R.color.primary_text));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setDrawFilled(true);
-        set.setFillColor(getResources().getColor(R.color.accent));
+        set.setFillColor(getResources().getColor(R.color.accent1));
         LineData lineData = new LineData(labels, set);
         return lineData;
     }
