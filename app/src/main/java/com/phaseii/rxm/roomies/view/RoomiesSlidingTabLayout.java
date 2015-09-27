@@ -60,7 +60,7 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
     private ViewPager mViewPager;
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
-    private ThemeChangeListener mThemeChangeListener;
+    private ThemeChanger mThemeChanger;
 
     private final RoomiesSlidingTabStrip mTabStrip;
 
@@ -120,10 +120,6 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
         mViewPagerPageChangeListener = listener;
     }
 
-    public void setThemeChangeListener(ThemeChangeListener listener) {
-        mThemeChangeListener = listener;
-    }
-
     /**
      * Set the custom layout to be inflated for the tab views.
      *
@@ -133,6 +129,10 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
     public void setCustomTabView(int layoutResId, int textViewId) {
         mTabViewLayoutId = layoutResId;
         mTabViewTextViewId = textViewId;
+    }
+
+    public void setThemeChanger(ThemeChanger mThemeChanger) {
+        this.mThemeChanger = mThemeChanger;
     }
 
     /**
@@ -165,7 +165,7 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
         getContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground,
                 outValue, true);
         textView.setBackgroundResource(outValue.resourceId);
-        textView.setTextColor(getResources().getColorStateList(R.color.slidingcolor0));
+        textView.setTextColor(getResources().getColor(R.color.white));
 
         int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
         textView.setPadding(padding, padding, padding, padding);
@@ -266,9 +266,13 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
                     : 0;
             scrollToTab(position, extraOffset);
 
+
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageScrolled(position, positionOffset,
                         positionOffsetPixels);
+            }
+            if (null != mThemeChanger) {
+                mThemeChanger.onSwipe(mTabStrip, position, positionOffset);
             }
         }
 
@@ -289,36 +293,10 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
             }
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 mTabStrip.getChildAt(i).setSelected(position == i);
-                switch (position) {
-                    case 0:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary));
-                        for (int j = 0; j < 4; j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor0));
-                        }
-                        break;
-                    case 1:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary2));
-                        for (int j = 0; j < 4; j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor1));
-                        }
-                        break;
-                    case 2:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary3));
-                        for (int j = 0; j < 4; j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor2));
-                        }
-                        break;
-                    case 3:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary4));
-                        for (int j = 0; j < 4; j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor3));
-                        }
-                        break;
+                if (null != mThemeChanger) {
+                    mThemeChanger.onTabSelected(mTabStrip, position);
                 }
+
             }
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
@@ -327,21 +305,22 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
 
     }
 
+    public interface ThemeChanger {
+        void onSwipe(RoomiesSlidingTabStrip mTabStrip, int position, float positionOffset);
+
+        void onTabSelected(RoomiesSlidingTabStrip mTabStrip, int position);
+    }
+
     private class TabClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 if (v == mTabStrip.getChildAt(i)) {
-                    mThemeChangeListener.changeTheme(i);
                     mViewPager.setCurrentItem(i);
                     return;
                 }
             }
         }
-    }
-
-    public interface ThemeChangeListener {
-        void changeTheme(int i);
     }
 
 }

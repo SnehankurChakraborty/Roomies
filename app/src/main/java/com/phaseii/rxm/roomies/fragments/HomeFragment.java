@@ -1,5 +1,7 @@
 package com.phaseii.rxm.roomies.fragments;
 
+import android.animation.ArgbEvaluator;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
+import com.phaseii.rxm.roomies.view.RoomiesSlidingTabStrip;
 
 
 public class HomeFragment extends RoomiesFragment {
@@ -24,11 +27,24 @@ public class HomeFragment extends RoomiesFragment {
 
         rootView = inflater.inflate(R.layout.fragment_home, container,
                 false);
-        String titles[] = {"Summary", "Dashboard", "Monthly", "Trends"};
+        Context mContext = getActivity();
+        final ArgbEvaluator argbEvaluator = new ArgbEvaluator();
+        String titles[] = {"Summary", "Dashboard", "Monthly", "Trends", "Members"};
         ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
-        RoomiesPagerAdapter adapter = new RoomiesPagerAdapter(getChildFragmentManager()
-                , titles, 4);
+        final int[] colors = new int[]{mContext.getResources().getColor(R.color.primary),
+                mContext.getResources().getColor(R.color.primary2),
+                mContext.getResources().getColor(R.color.primary3),
+                mContext.getResources().getColor(R.color.primary4),
+                mContext.getResources().getColor(R.color.primary5)};
+        final int[] colorsDark = new int[]{mContext.getResources().getColor(R.color.primary_dark),
+                mContext.getResources().getColor(R.color.primary_dark2),
+                mContext.getResources().getColor(R.color.primary_dark3),
+                mContext.getResources().getColor(R.color.primary_dark4),
+                mContext.getResources().getColor(R.color.primary_dark5)};
+        final RoomiesPagerAdapter adapter = new RoomiesPagerAdapter(getChildFragmentManager()
+                , titles, 5);
         pager.setAdapter(adapter);
+
         RoomiesSlidingTabLayout tabs = (RoomiesSlidingTabLayout) rootView.findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true);
         tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
@@ -38,76 +54,102 @@ public class HomeFragment extends RoomiesFragment {
             }
         });
         tabs.setViewPager(pager);
-        tabs.setThemeChangeListener(
-                new RoomiesSlidingTabLayout.ThemeChangeListener() {
-                    @Override
-                    public void changeTheme(int i) {
+        tabs.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
-                        switch (i) {
-                            case 0:
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    getActivity().getWindow().setNavigationBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark));
-                                    getActivity().getWindow().setStatusBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark));
-                                }
-                                ((ActionBarActivity) getActivity())
-                                        .getSupportActionBar().setBackgroundDrawable(
-                                        new ColorDrawable(getResources()
-                                                .getColor(R.color.primary)));
-                                break;
-                            case 1:
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    getActivity().getWindow().setNavigationBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark2));
-                                    getActivity().getWindow().setStatusBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark2));
-                                }
-                                ((ActionBarActivity) getActivity())
-                                        .getSupportActionBar().setBackgroundDrawable(
-                                        new ColorDrawable(getResources()
-                                                .getColor(R.color.primary2)));
-
-                                break;
-                            case 2:
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    getActivity().getWindow().setNavigationBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark3));
-                                    getActivity().getWindow().setStatusBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark3));
-                                }
-                                ((ActionBarActivity) getActivity())
-                                        .getSupportActionBar().setBackgroundDrawable(
-                                        new ColorDrawable(getResources()
-                                                .getColor(R.color.primary3)));
-                                break;
-                            case 3:
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    getActivity().getWindow().setNavigationBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark4));
-                                    getActivity().getWindow().setStatusBarColor(
-                                            getResources().getColor(
-                                                    R.color.primary_dark4));
-                                }
-                                ((ActionBarActivity) getActivity())
-                                        .getSupportActionBar().setBackgroundDrawable(
-                                        new ColorDrawable(getResources()
-                                                .getColor(R.color.primary4)));
-                                break;
-                        }
-
-                    }
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+                /*super.onPageScrolled(position, positionOffset, positionOffsetPixels);*/
+                if (position >= adapter.getCount() - 1) {
+                    // Guard against ArrayIndexOutOfBoundsException
+                    return;
                 }
 
-        );
+                // Blend the colors and adjust the ActionBar
+                final int blended = blendColors(colors[position + 1], colors[position],
+                        positionOffset);
+                final int blendedDark = blendColors(colorsDark[position + 1], colorsDark[position],
+                        positionOffset);
+                ((ActionBarActivity) getActivity())
+                        .getSupportActionBar().setBackgroundDrawable(
+                        new ColorDrawable(blended));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    getActivity().getWindow().setNavigationBarColor(blendedDark);
+                    getActivity().getWindow().setStatusBarColor(blendedDark);
+                }
+            }
+
+        });
+        tabs.setThemeChanger(new RoomiesSlidingTabLayout.ThemeChanger() {
+            @Override
+            public void onSwipe(RoomiesSlidingTabStrip mTabStrip, int position, float
+                    positionOffset) {
+                if (position >= adapter.getCount() - 1) {
+                    // Guard against ArrayIndexOutOfBoundsException
+                    return;
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mTabStrip.setBackground(
+                            new ColorDrawable(blendColors(colors[position + 1],
+                                    colors[position], positionOffset)));
+                } else {
+                    mTabStrip.setBackgroundDrawable(
+                            new ColorDrawable(blendColors(colors[position + 1],
+                                    colors[position], positionOffset)));
+                }
+            }
+
+            @Override
+            public void onTabSelected(RoomiesSlidingTabStrip mTabStrip, int position) {
+                /*switch (position) {
+                    case 0:
+                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary));
+                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
+                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
+                                    .getColorStateList(R.color.slidingcolor0));
+                        }
+                        break;
+                    case 1:
+                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary2));
+                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
+                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
+                                    .getColorStateList(R.color.slidingcolor1));
+                        }
+                        break;
+                    case 2:
+                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary3));
+                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
+                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
+                                    .getColorStateList(R.color.slidingcolor2));
+                        }
+                        break;
+                    case 3:
+                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary4));
+                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
+                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
+                                    .getColorStateList(R.color.slidingcolor3));
+                        }
+                        break;
+                    case 4:
+                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary5));
+                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
+                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
+                                    .getColorStateList(R.color.slidingcolor4));
+                        }
+                        break;
+                }*/
+            }
+        });
+
         return rootView;
+    }
+
+    private int blendColors(int from, int to, float ratio) {
+        final float inverseRation = 1f - ratio;
+        final float r = Color.red(from) * ratio + Color.red(to) * inverseRation;
+        final float g = Color.green(from) * ratio + Color.green(to) * inverseRation;
+        final float b = Color.blue(from) * ratio + Color.blue(to) * inverseRation;
+        return Color.rgb((int) r, (int) g, (int) b);
     }
 
     @Override

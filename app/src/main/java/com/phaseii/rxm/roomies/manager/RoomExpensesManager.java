@@ -107,4 +107,5 @@ public class RoomExpensesManager {
         List<RoomExpenses> roomExpensesList = (List<RoomExpenses>) roomiesDao.getDetails(paramMap);
         return roomExpensesList;
     }
+
 }

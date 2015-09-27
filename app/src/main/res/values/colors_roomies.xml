@@ -9,12 +9,15 @@
     <color name="primary2">#009688</color>
     <color name="primary3">#795548</color>
     <color name="primary4">#607D8B</color>
+    <color name="primary5">#4CAF50</color>
     <color name="primary_dark">#1A237E</color>
     <color name="primary_dark2">#004D40</color>
     <color name="primary_dark3">#3E2723</color>
     <color name="primary_dark4">#212121</color>
+    <color name="primary_dark5">#1B5E20</color>
     <color name="primary_light">#E1F5FE</color>
-    <color name="accent1">#3F51B5</color>
+
+    <color name="accent1">#E91E63</color>
     <color name="accent2">#009688</color>
     <color name="accent3">#607D8B</color>
     <color name="accent4">#795548</color>

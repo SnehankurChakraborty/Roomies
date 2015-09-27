@@ -47,7 +47,7 @@ public class RoomUserStatManager {
                 .MODE_PRIVATE);
     }
 
-    public boolean loadRoomDetails(String username) {
+    public List<RoomUserStatData> loadRoomDetails(String username) {
         isDataLoaded = false;
         Map<ServiceParam, Object> paramMap = new HashMap<>();
 
@@ -68,24 +68,20 @@ public class RoomUserStatManager {
         projectionParams.add(QueryParam.TOTAL);
         paramMap.put(ServiceParam.PROJECTION, projectionParams);
 
-        List<QueryParam> selectionParams = new ArrayList<QueryParam>();
-        selectionParams.add(QueryParam.USERNAME);
-        paramMap.put(ServiceParam.SELECTION, selectionParams);
+        if (null != username) {
+            List<QueryParam> selectionParams = new ArrayList<QueryParam>();
+            selectionParams.add(QueryParam.USERNAME);
+            paramMap.put(ServiceParam.SELECTION, selectionParams);
 
-        List<String> selectionArgs = new ArrayList<String>();
-        selectionArgs.add(username);
-        paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+            List<String> selectionArgs = new ArrayList<String>();
+            selectionArgs.add(username);
+            paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
+        }
 
         List<RoomUserStatData> roomUserStatDataList = (List<RoomUserStatData>) roomiesDao.getDetails(
                 paramMap);
 
-        if (roomUserStatDataList.size() > 0) {
-            RoomiesHelper.cacheDBtoPreferences(mContext, roomUserStatDataList.get(0), null, null,
-                    null, false);
-            isDataLoaded = true;
-        }
-
-        return isDataLoaded;
+        return roomUserStatDataList;
     }
 
     public boolean storeRoomDetails(RoomDetails roomDetails, RoomStats roomStats) {

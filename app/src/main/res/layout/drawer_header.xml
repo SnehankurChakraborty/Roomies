@@ -4,46 +4,47 @@
                 android:layout_height="200dp"
                 android:orientation="vertical"
                 android:weightSum="1">
-	<ImageView
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:background="@drawable/header_image"
-		android:scaleType="fitStart"/>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/header_image"
+        android:scaleType="fitStart"/>
 
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="56dp"
-		android:orientation="vertical"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentStart="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="vertical">
 
-		<TextView
-			android:id="@+id/name"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="16dp"
-			android:textColor="#ffffff"
-			android:textSize="14sp"
-			android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
-		<TextView
-			android:id="@+id/email"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textColor="#ffffff"
-			android:layout_marginLeft="16dp"
-			android:layout_marginTop="5dp"
-			android:textSize="14sp"
-			android:textStyle="normal"/>
-	</LinearLayout>
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="5dp"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:textStyle="normal"/>
+    </LinearLayout>
 
-	<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
-		android:layout_width="80dp"
-		android:layout_height="80dp"
-		android:layout_marginLeft="16dp"
-		android:layout_marginTop="38dp"
-		android:src="@drawable/ic_user_filled"
-		android:id="@+id/profileFrame"/>
+    <com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+        android:id="@+id/profileFrame"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="38dp"
+        android:src="@drawable/ic_user_filled"/>
 </RelativeLayout>

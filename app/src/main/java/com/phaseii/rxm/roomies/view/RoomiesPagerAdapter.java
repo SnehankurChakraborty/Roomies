@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.phaseii.rxm.roomies.fragments.DashboardFragment;
+import com.phaseii.rxm.roomies.fragments.MemberFragment;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.fragments.SummaryFragment;
 import com.phaseii.rxm.roomies.tabs.CurrentExpenseReport;
@@ -50,6 +51,11 @@ public class RoomiesPagerAdapter extends FragmentStatePagerAdapter {
                 break;
             case 3:
                 tab = LastMonthsTab.getInstance();
+                tag = tab.getTag();
+                mTags.put(position, tag);
+                break;
+            case 4:
+                tab = MemberFragment.getInstance();
                 tag = tab.getTag();
                 mTags.put(position, tag);
                 break;

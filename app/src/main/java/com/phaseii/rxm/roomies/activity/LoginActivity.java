@@ -28,6 +28,8 @@ import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.dialogs.SignupDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.manager.UserDetailsManager;
+import com.phaseii.rxm.roomies.model.RoomUserStatData;
 import com.phaseii.rxm.roomies.util.QueryParam;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
@@ -163,20 +165,8 @@ public class LoginActivity extends RoomiesBaseActivity {
             /**
              * check if username/password match
              */
-            Map<ServiceParam, Object> paramMap = new HashMap<>();
-            List<QueryParam> params = new ArrayList<QueryParam>();
-            params.add(QueryParam.USERNAME);
-            paramMap.put(ServiceParam.SELECTION, params);
-            List<String> selectionArgs = new ArrayList<String>();
-            selectionArgs.add(username.getText().toString());
-            paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
-
-
-            /**
-             * get user details based on user id
-             */
-            roomiesDao = new UserDetailsDaoImpl(LoginActivity.this);
-            userDetailsList = (List<UserDetails>) roomiesDao.getDetails(paramMap);
+            userDetailsList = new UserDetailsManager(LoginActivity.this).getUserDetails(
+                    username.getText().toString());
             if (null != userDetailsList && userDetailsList.size() > 0) {
                 UserDetails userDetails = userDetailsList.get(0);
                 if (null != userDetails.getPassword() && userDetails.getPassword().equals(
@@ -386,7 +376,18 @@ public class LoginActivity extends RoomiesBaseActivity {
         RoomiesHelper.createToast(this, "logged In", mToast);
         manager = new RoomUserStatManager(LoginActivity.this);
 
-        if (!manager.loadRoomDetails(userDetails.getUsername())) {
+
+        List<RoomUserStatData> roomUserStatDataList = manager.loadRoomDetails(userDetails
+                .getUsername());
+        boolean isDataLoaded = false;
+        if (roomUserStatDataList.size() > 0) {
+            RoomiesHelper.cacheDBtoPreferences(LoginActivity.this, roomUserStatDataList.get(0),
+                    null, null, null, false);
+            isDataLoaded = true;
+        }
+
+        if (!isDataLoaded) {
+
             /**
              * if the user has not completed the initial setup, then save the same status in
              * shared preferences and load the HomeScreen activity*/

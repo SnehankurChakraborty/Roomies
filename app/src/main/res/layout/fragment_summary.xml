@@ -21,7 +21,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/accent1">
+                android:background="@color/primary">
 
                 <TextView
                     android:id="@+id/welcome"
@@ -55,7 +55,7 @@
                     android:layout_height="36dp"
                     android:layout_below="@id/last_visit"
                     android:layout_marginTop="16dp"
-                    android:background="@color/accent1"
+                    android:background="@color/primary"
                     android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
@@ -206,7 +206,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/accent1"/>
+                            android:background="@color/primary"/>
 
                         <TextView
                             android:id="@+id/spent_recent"
@@ -262,7 +262,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/accent1">
+                        android:background="@color/primary">
 
                         <TextView
                             android:id="@+id/expense_header2"
@@ -347,7 +347,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/accent1">
+                        android:background="@color/primary">
 
                         <TextView
                             android:id="@+id/expense_header"
@@ -407,7 +407,7 @@
                             android:layout_marginTop="15dp"
                             android:background="@drawable/round_rectangle_white"
                             android:text="December"
-                            android:textColor="@color/accent1"
+                            android:textColor="@color/primary"
                             android:textSize="4pt"/>
 
                     </RelativeLayout>
@@ -448,7 +448,7 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/accent1"/>
+                            android:background="@color/primary"/>
 
                         <TextView
                             android:id="@+id/remaining_data"

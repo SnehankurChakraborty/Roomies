@@ -119,7 +119,7 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
         mChart.setDrawCenterText(true);
         mChart.setCenterText(String.valueOf((int) status) + "%");
         mChart.setCenterTextTypeface(typeface);
-        mChart.setCenterTextColor(getResources().getColor(R.color.accent1));
+        mChart.setCenterTextColor(getResources().getColor(R.color.primary));
         mChart.setHoleColor(getResources().getColor(R.color.white));
         mChart.setCenterTextSize(25);
         mChart.setRotationEnabled(false);

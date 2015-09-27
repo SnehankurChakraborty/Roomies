@@ -21,10 +21,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.util.Category;
-import com.phaseii.rxm.roomies.util.SubCategory;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.SortType;
+import com.phaseii.rxm.roomies.util.Category;
+import com.phaseii.rxm.roomies.util.SubCategory;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -263,11 +263,21 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
     public void createCombinedChart(LineChart lineChart) {
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
-        lineChart.setHighlightEnabled(false);
-        lineChart.setTouchEnabled(false);
+        lineChart.setHighlightEnabled(true);
+        lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);
-
+        lineChart.setData(getLineChart(roomExpensesList));
+        lineChart.setPinchZoom(false);
+        lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.animateY(500);
+        lineChart.animateX(500);
+        lineChart.setPinchZoom(false);
+        lineChart.getLegend().setEnabled(false);
+        lineChart.setNoDataText("No Room expenses yet");
+        lineChart.setBackgroundColor(mContext.getResources().getColor(R.color.primary_dark2));
+        lineChart.setMarkerView(new CustomMarkerView(mContext, R.layout.custom_marker_view));
 
         YAxis rightAxis = lineChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -279,20 +289,10 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setEnabled(true);
+        xAxis.setDrawGridLines(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.WHITE);
         xAxis.setTypeface(typeface);
-
-        lineChart.setData(getLineChart(roomExpensesList));
-        lineChart.setPinchZoom(false);
-        lineChart.setDoubleTapToZoomEnabled(false);
-        lineChart.setDrawGridBackground(false);
-        lineChart.animateY(500);
-        lineChart.animateX(500);
-        lineChart.setPinchZoom(false);
-        lineChart.getLegend().setEnabled(false);
-        lineChart.setNoDataText("No Room expenses yet");
-        lineChart.setBackgroundColor(mContext.getResources().getColor(R.color.primary_dark));
     }
 
     private LineData getLineChart(List<RoomExpenses> expenses) {
@@ -476,19 +476,16 @@ public class DetailExpenseDataAdapter extends RecyclerView.Adapter<DetailExpense
 
         LineDataSet set = new LineDataSet(entries, "Daily Expense Report");
         set.setLineWidth(3f);
-        set.setCircleColor(mContext.getResources().getColor(R.color.primary_dark));
+        set.setCircleColor(mContext.getResources().getColor(R.color.primary_dark2));
         set.setCircleSize(5f);
-        set.setFillColor(mContext.getResources().getColor(R.color.primary));
-        set.setDrawValues(true);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(Color.WHITE);
+        set.setFillColor(mContext.getResources().getColor(R.color.primary2));
+        set.setDrawValues(false);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setDrawFilled(true);
         set.setColor(Color.WHITE);
-        set.setDrawCubic(false);
-        set.disableDashedLine();
+        /*set.enableDashedLine(10f, 5f, 0f);*/
         set.setValueTypeface(typeface);
-        set.setFillColor(mContext.getResources().getColor(R.color.primary));
+        set.setFillColor(mContext.getResources().getColor(R.color.primary2));
         LineData lineData = new LineData(labels, set);
         return lineData;
     }

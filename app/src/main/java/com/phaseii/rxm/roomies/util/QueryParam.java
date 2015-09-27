@@ -27,7 +27,7 @@ public enum QueryParam {
     MAID_SPENT("maid_spent"),
     ELECTRICITY_SPENT("elec_spent"),
     MISCELLANEOUS_SPENT("misc_spent"),
-    TOTAL("total");
+    TOTAL("total"), ID("_ID");
 
     private String value;
 

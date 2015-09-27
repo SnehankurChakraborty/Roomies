@@ -86,6 +86,7 @@ public final class RoomiesConstants {
     public static final String PREF_MAID_SPENT = "MAID_SPENT";
     public static final String PREF_ELECTRICITY_SPENT = "ELECTRICITY_SPENT";
     public static final String PREF_MISCELLANEOUS_SPENT = "MISCELLANEOUS_SPENT";
+    public static final String PREF_TOTAL_MARGIN = "TOTAL_MARGIN";
 
     /**
      * ROOMIES PROPERTY KEYS

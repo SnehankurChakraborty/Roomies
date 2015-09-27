@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.phaseii.rxm.roomies.R;
 
-class RoomiesSlidingTabStrip extends LinearLayout {
+public class RoomiesSlidingTabStrip extends LinearLayout {
 
     private static final int DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS = 0;
     private static final byte DEFAULT_BOTTOM_BORDER_COLOR_ALPHA = 0x26;

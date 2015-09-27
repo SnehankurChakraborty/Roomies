@@ -26,11 +26,17 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginResult;
@@ -97,7 +103,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
     private String name;
     private String email;
     private ImageView addExpenseButton;
-    private ImageView fabButton;
+    private TextView fabButton;
     private ImageView fabButtonAlt;
     private ImageView addRoomiesButton;
     private FrameLayout frameLayout;
@@ -287,7 +293,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
      * Sets up FAB button
      */
     private void setupFAB() {
-        fabButton = (ImageView) findViewById(R.id.fab);
+        fabButton = (TextView) findViewById(R.id.fab);
         addRoomiesButton = (ImageView) findViewById(R.id.add_roomies);
         frameLayout = (FrameLayout) findViewById(R.id.fab_layout);
 
@@ -296,12 +302,51 @@ public class HomeScreenActivity extends RoomiesBaseActivity
             public void onClick(View v) {
                 if (frameLayout.getVisibility() == View.GONE) {
                     frameLayout.setVisibility(View.VISIBLE);
-                    fabButton.setVisibility(View.GONE);
+                    AnimationSet animationSet = new AnimationSet(false);
+                    RotateAnimation rotate = new RotateAnimation(0f, 45,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+                    // prevents View from restoring to original direction.
+                    rotate.setDuration(100);
+                    animationSet.addAnimation(rotate);
+                    ScaleAnimation scale = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scale.setDuration(100);
+                    animationSet.addAnimation(scale);
+                    animationSet.setFillAfter(true);
+                    fabButton.startAnimation(animationSet);
+                    Animation anim = AnimationUtils.loadAnimation(HomeScreenActivity.this, R.anim
+                            .stretch);
+                    addExpenseButton = (ImageView) findViewById(R.id.add_expense);
+                    addExpenseButton.startAnimation(anim);
+                    addRoomiesButton = (ImageView) findViewById(R.id.add_roomies);
+                    Animation anim2 = AnimationUtils.loadAnimation(HomeScreenActivity.this, R.anim
+                            .stretch);
+                    anim2.setStartOffset(200);
+                    addRoomiesButton.startAnimation(anim2);
+
+
+                } else {
+                    frameLayout.setVisibility(View.GONE);
+
+                    AnimationSet animationSet = new AnimationSet(false);
+                    RotateAnimation rotate = new RotateAnimation(45f, 0f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+                    // prevents View from restoring to original direction.
+                    rotate.setDuration(100);
+                    animationSet.addAnimation(rotate);
+                    ScaleAnimation scale = new ScaleAnimation(1.2f, 1.0f, 1.2f, 1.0f,
+                            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    scale.setDuration(100);
+                    animationSet.addAnimation(scale);
+                    animationSet.setFillAfter(true);
+                    fabButton.startAnimation(animationSet);
                 }
             }
         });
 
-        fabButtonAlt = (ImageView) findViewById(R.id.fab_alt);
+        /*fabButtonAlt = (ImageView) findViewById(R.id.fab_alt);
         fabButtonAlt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -311,7 +356,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                     fabButton.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        });*/
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,6 +379,8 @@ public class HomeScreenActivity extends RoomiesBaseActivity
 
         });
 
+
+        addRoomiesButton = (ImageView) findViewById(R.id.add_roomies);
         addRoomiesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

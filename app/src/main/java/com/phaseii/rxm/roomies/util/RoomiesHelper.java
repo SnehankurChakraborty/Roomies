@@ -62,6 +62,7 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_SETUP_COMPLETED
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_TOTAL_MARGIN;
 
 /**
  * Created by Snehankur on 2/23/2015.
@@ -224,6 +225,9 @@ public class RoomiesHelper {
                     String.valueOf(roomUserStat.getElectricityMargin()));
             mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
                     String.valueOf(roomUserStat.getMiscellaneousMargin()));
+            mEditor.putString(PREF_TOTAL_MARGIN,
+                    String.valueOf(roomUserStat.getRentMargin() + roomUserStat.getMaidMargin()
+                            + roomUserStat.getMiscellaneousMargin() + roomUserStat.getElectricityMargin()));
             mEditor.putString(PREF_RENT_SPENT, String.valueOf(roomUserStat.getRentSpent()));
             mEditor.putString(PREF_MAID_SPENT, String.valueOf(roomUserStat.getMaidSpent()));
             mEditor.putString(PREF_ELECTRICITY_SPENT,

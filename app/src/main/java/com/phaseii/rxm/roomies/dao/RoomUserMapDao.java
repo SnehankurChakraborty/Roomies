@@ -6,18 +6,17 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
-import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomUserMap;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.providers.RoomUserMapProvider;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static android.provider.BaseColumns._ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomUserMap.ROOM_USER_ROOM_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomUserMap.ROOM_USER_USER_ID;
 
@@ -52,10 +51,11 @@ public class RoomUserMapDao implements RoomiesDao {
 
                 RoomUserMap roomUserMap = new RoomUserMap();
 
-                roomUserMap.setRoomId(cursor.getColumnIndex(_ID) >= 0 ? cursor.getInt(cursor
-                        .getColumnIndex(ROOM_USER_ROOM_ID)) : -1);
-                roomUserMap.setUserId(cursor.getColumnIndex(_ID) >= 0 ? cursor.getInt(cursor
-                        .getColumnIndex(ROOM_USER_USER_ID)) : -1);
+                roomUserMap.setRoomId(cursor.getColumnIndex(ROOM_USER_ROOM_ID) >= 0 ? cursor.getInt(
+                        cursor.getColumnIndex(ROOM_USER_ROOM_ID)) : -1);
+                roomUserMap.setUserId(
+                        cursor.getColumnIndex(ROOM_USER_USER_ID) >= 0 ? cursor.getInt(cursor
+                                .getColumnIndex(ROOM_USER_USER_ID)) : -1);
                 roomUserMapList.add(roomUserMap);
 
                 cursor.moveToNext();
