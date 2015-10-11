@@ -1,6 +1,7 @@
 package com.phaseii.rxm.roomies.fragments;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -30,6 +31,9 @@ public abstract class RoomiesFragment extends Fragment {
 
     public abstract View getFragmentView();
 
+    public void setTypeface(Typeface typeface){
+
+    }
 
     public interface UpdatableFragment {
         void update(String username);

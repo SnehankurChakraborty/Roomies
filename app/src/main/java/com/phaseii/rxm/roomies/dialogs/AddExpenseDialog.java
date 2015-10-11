@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,12 +22,13 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.logging.RoomiesLogger;
+import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
 import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.SubCategory;
-import com.phaseii.rxm.roomies.logging.RoomiesLogger;
-import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
+import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
@@ -326,8 +328,17 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
         RoomiesFragment fragment = (RoomiesFragment) getActivity().getSupportFragmentManager()
                 .getFragments().get(0);
         if (fragment instanceof HomeFragment) {
-            ((RoomiesFragment.UpdatableFragment) fragment).update(null);
-            ((RoomiesFragment.UpdatableFragment) fragment).update(null);
+            ViewPager viewPager = ((HomeFragment) fragment).getTab().getViewPager();
+            ((RoomiesFragment.UpdatableFragment) ((RoomiesPagerAdapter) viewPager
+                    .getAdapter())
+                    .getRegisteredFragment(viewPager
+                            .getCurrentItem())).update(null);
+
+            /*((RoomiesFragment.UpdatableFragment) ((RoomiesPagerAdapter) ((HomeFragment) fragment)
+                    .getTab().getViewPager()
+                    .getAdapter()).getActiveFragment()).update(null);*/
+            /*((RoomiesFragment.UpdatableFragment) fragment).update(null);
+            ((RoomiesFragment.UpdatableFragment) fragment).update(null);*/
         } else if (fragment instanceof DashboardFragment) {
             ((DashboardFragment) fragment).update(username);
         }

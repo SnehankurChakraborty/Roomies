@@ -2,6 +2,7 @@ package com.phaseii.rxm.roomies.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,13 +19,15 @@ import android.widget.TextView;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.model.SortType;
+import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.QueryParam;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.ServiceParam;
-import com.phaseii.rxm.roomies.model.RoomExpenses;
-import com.phaseii.rxm.roomies.model.SortType;
-import com.phaseii.rxm.roomies.view.DetailExpenseDataAdapter;
+import com.phaseii.rxm.roomies.util.SubCategory;
+import com.phaseii.rxm.roomies.view.DetailExpenseAdapter;
 import com.phaseii.rxm.roomies.view.ScrollableLayoutManager;
 
 import java.util.ArrayList;
@@ -75,29 +80,27 @@ public class DashboardFragment extends RoomiesFragment
         service = new RoomExpensesDaoImpl(mContext);
         roomExpensesList = (List<RoomExpenses>) service.getDetails(paramMap);
 
-        Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-            @Override
-            public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                if (lhs.getExpenseDate().before(rhs.getExpenseDate())) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        });
+        /**
+         * Sort in descending order of transaction dates
+         */
+        roomExpensesList = sortDate(roomExpensesList, false, SortType.DATE_DESC);
 
-        recyclerView = (RecyclerView) rootView.findViewById(
-                R.id.expense_detail_view);
-        adapter = new DetailExpenseDataAdapter(roomExpensesList, SortType.DATE_DESC,
+        /**
+         * Setting up the recycler view for timeline and expense graph
+         */
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.expense_detail_view);
+        adapter = new DetailExpenseAdapter(roomExpensesList, SortType.DATE_DESC,
                 getActivity().getBaseContext());
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new ScrollableLayoutManager(getActivity(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
+        /**
+         * Setting up sort/filter bar
+         */
         sortFilterTab = (LinearLayout) rootView.findViewById(R.id.sort_filter_tab);
         toolbarContainer = (RelativeLayout) rootView.findViewById(R.id.toolbar_container);
-
         final TextView amount = (TextView) rootView.findViewById(R.id.amount);
         final TextView quantity = (TextView) rootView.findViewById(R.id.quantity);
         final TextView date = (TextView) rootView.findViewById(R.id.date);
@@ -105,252 +108,283 @@ public class DashboardFragment extends RoomiesFragment
         final TextView grocery = (TextView) rootView.findViewById(R.id.grocery);
         final TextView vegetables = (TextView) rootView.findViewById(R.id.vegetables);
         final TextView others = (TextView) rootView.findViewById(R.id.others);
-
         final TextView sortBar = (TextView) rootView.findViewById(R.id.sort);
-        TextView filterBar = (TextView) rootView.findViewById(R.id.filter);
+        final TextView filterBar = (TextView) rootView.findViewById(R.id.filter);
         final RelativeLayout sortMenu = (RelativeLayout) rootView.findViewById(R.id.sort_menu);
         final RelativeLayout filterMenu = (RelativeLayout) rootView.findViewById(
                 R.id.filter_menu);
 
+        /**
+         * Show the sort menu on clicking the sort bar on the bottom of the screen
+         */
         sortBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (sortMenu.getVisibility() == View.GONE) {
+                    if (filterMenu.getVisibility() == View.VISIBLE) {
+                        TranslateAnimation translate = new TranslateAnimation(
+                                Animation.RELATIVE_TO_SELF, 0,
+                                Animation.RELATIVE_TO_SELF, -1,
+                                Animation.RELATIVE_TO_SELF, 0,
+                                Animation.RELATIVE_TO_SELF, 0);
+                        translate.setDuration(500);
+                        filterMenu.startAnimation(translate);
+                        filterMenu.setVisibility(View.GONE);
+                    }
                     sortMenu.setVisibility(View.VISIBLE);
+                    TranslateAnimation translate = new TranslateAnimation(
+                            Animation.RELATIVE_TO_SELF, 1,
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0);
+                    translate.setDuration(500);
+                    sortMenu.startAnimation(translate);
                     filterMenu.setVisibility(View.GONE);
                 } else {
+                    TranslateAnimation translate = new TranslateAnimation(
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 1,
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0);
+                    translate.setDuration(500);
+                    sortMenu.startAnimation(translate);
                     sortMenu.setVisibility(View.GONE);
                 }
             }
         });
 
+        /**
+         * Show the filter menu on clicking the filter bar on the bottom of the screen
+         */
         filterBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (filterMenu.getVisibility() == View.GONE) {
+                    if (sortMenu.getVisibility() == View.VISIBLE) {
+                        TranslateAnimation translate = new TranslateAnimation(
+                                Animation.RELATIVE_TO_SELF, 0,
+                                Animation.RELATIVE_TO_SELF, 1,
+                                Animation.RELATIVE_TO_SELF, 0,
+                                Animation.RELATIVE_TO_SELF, 0);
+                        translate.setDuration(500);
+                        sortMenu.startAnimation(translate);
+                        sortMenu.setVisibility(View.GONE);
+                    }
                     filterMenu.setVisibility(View.VISIBLE);
+                    TranslateAnimation translate = new TranslateAnimation(
+                            Animation.RELATIVE_TO_SELF, -1,
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0);
+                    translate.setDuration(500);
+                    filterMenu.startAnimation(translate);
                     sortMenu.setVisibility(View.GONE);
                 } else {
+                    TranslateAnimation translate = new TranslateAnimation(
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, -1,
+                            Animation.RELATIVE_TO_SELF, 0,
+                            Animation.RELATIVE_TO_SELF, 0);
+                    translate.setDuration(500);
+                    filterMenu.startAnimation(translate);
                     filterMenu.setVisibility(View.GONE);
                 }
             }
         });
 
+        /**
+         * Sort the room expenses list in ascending or descending order of amount.
+         */
         amount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isNotSorted = false;
-                float next = 0f;
-                for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (roomExpenses.getAmount() < next) {
-                        isNotSorted = true;
-                        break;
-                    }
-                    next = roomExpenses.getAmount();
-                }
-                if (!isNotSorted) {
-                    Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                        @Override
-                        public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                            if (lhs.getAmount() < rhs.getAmount()) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        }
-                    });
-                    ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                            SortType.AMOUNT);
-                } else {
-                    Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                        @Override
-                        public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                            if (lhs.getAmount() > rhs.getAmount()) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        }
-                    });
-                    ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                            SortType.AMOUNT);
-                }
+                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(Color.WHITE);
+                roomExpensesList = sortAmount(roomExpensesList, true);
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                sortMenu.startAnimation(translate);
                 sortMenu.setVisibility(View.GONE);
-
                 adapter.notifyDataSetChanged();
             }
+
         });
 
+        /**
+         * Sort the room expenses list in ascending or descending order of quantity.
+         */
         quantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isNotSorted = false;
-                float next = 0f;
-                for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (Float.valueOf(
-                            roomExpenses.getQuantity().substring(0,
-                                    roomExpenses.getQuantity().length() - 2)) < next) {
-                        isNotSorted = true;
-                        break;
-                    }
-                    next = roomExpenses.getAmount();
-                }
-                if (isNotSorted) {
-                    Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                        @Override
-                        public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                            if (Float.valueOf(
-                                    lhs.getQuantity().substring(0,
-                                            lhs.getQuantity().length() - 2)) < Float.valueOf(
-                                    rhs.getQuantity().substring(0,
-                                            rhs.getQuantity().length() - 2))) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        }
-                    });
-                    ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                            SortType.QUANTITY);
-                } else {
-                    Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                        @Override
-                        public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                            if (Float.valueOf(
-                                    lhs.getQuantity().substring(0,
-                                            lhs.getQuantity().length() - 2)) > Float.valueOf(
-                                    rhs.getQuantity().substring(0,
-                                            rhs.getQuantity().length() - 2))) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        }
-                    });
-                    ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                            SortType.QUANTITY);
-                }
+                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(Color.WHITE);
+                roomExpensesList = sortQuantity(roomExpensesList, true);
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                sortMenu.startAnimation(translate);
                 sortMenu.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             }
         });
 
+        /**
+         * Sort the room expenses list in ascending or descending order of date.
+         */
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isNotSorted = false;
-                Date next = new Date();
-                for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (roomExpenses.getExpenseDate().after(next)) {
-                        isNotSorted = true;
-                        break;
-                    }
-                    next = roomExpenses.getExpenseDate();
-                }
-                if (isNotSorted) {
-                    Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                        @Override
-                        public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                            if (lhs.getExpenseDate().before(rhs.getExpenseDate())) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        }
-                    });
-                    ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                            SortType.DATE_DESC);
-                } else {
-                    Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                        @Override
-                        public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                            if (lhs.getExpenseDate().after(rhs.getExpenseDate())) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        }
-                    });
-                    ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                            SortType.DATE_ASC);
-                }
+                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(Color.WHITE);
+                roomExpensesList = sortDate(roomExpensesList, true, SortType.NONE);
                 adapter.notifyDataSetChanged();
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                sortMenu.startAnimation(translate);
                 sortMenu.setVisibility(View.GONE);
             }
         });
 
+        /**
+         * Show only the transactions made on miscellaneous bills
+         */
         bills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RoomExpenses> roomExpensesList = new ArrayList<RoomExpenses>();
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(Color.WHITE);
+                List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (roomExpenses.getExpenseSubcategory().equals(
-                            getResources().getStringArray(R.array
-                                    .subcategory)[0])) {
-                        roomExpensesList.add(roomExpenses);
+                    if (Category.getCategory(roomExpenses.getExpenseCategory()).equals(
+                            Category.MISCELLANEOUS)) {
+                        if (SubCategory.getSubcategory(roomExpenses.getExpenseSubcategory()).equals
+                                (SubCategory.BILLS)) {
+                            expensesList.add(roomExpenses);
+                        }
                     }
                 }
-                ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                        SortType.BILLS);
+                sortDate(expensesList, true, SortType.DATE_DESC);
                 adapter.notifyDataSetChanged();
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, -1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                filterMenu.startAnimation(translate);
                 filterMenu.setVisibility(View.GONE);
             }
         });
 
+        /**
+         * Show only the transactions made on miscellaneous grocery
+         */
         grocery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RoomExpenses> roomExpensesList = new ArrayList<RoomExpenses>();
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(Color.WHITE);
+                List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (roomExpenses.getExpenseSubcategory().equals(
-                            getResources().getStringArray(R.array
-                                    .subcategory)[1])) {
-                        roomExpensesList.add(roomExpenses);
+                    if (Category.getCategory(roomExpenses.getExpenseCategory()).equals(
+                            Category.MISCELLANEOUS)) {
+                        if (SubCategory.getSubcategory(roomExpenses.getExpenseSubcategory()).equals
+                                (SubCategory.GROCERY)) {
+                            expensesList.add(roomExpenses);
+                        }
                     }
                 }
-                ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                        SortType.GROCERY);
+                sortDate(expensesList, true, SortType.DATE_DESC);
                 adapter.notifyDataSetChanged();
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, -1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                filterMenu.startAnimation(translate);
                 filterMenu.setVisibility(View.GONE);
             }
         });
 
+        /**
+         * Show only the transactions made on miscellaneous vegetables
+         */
         vegetables.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RoomExpenses> roomExpensesList = new ArrayList<RoomExpenses>();
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(Color.WHITE);
+                List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (roomExpenses.getExpenseSubcategory().equals(
-                            getResources().getStringArray(R.array
-                                    .subcategory)[2])) {
-                        roomExpensesList.add(roomExpenses);
+                    if (Category.getCategory(roomExpenses.getExpenseCategory()).equals(
+                            Category.MISCELLANEOUS)) {
+                        if (SubCategory.getSubcategory(roomExpenses.getExpenseSubcategory()).equals
+                                (SubCategory.VEGETABLES)) {
+                            expensesList.add(roomExpenses);
+                        }
                     }
                 }
-                ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                        SortType.VEGETABLES);
+                sortDate(expensesList, true, SortType.DATE_DESC);
                 adapter.notifyDataSetChanged();
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, -1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                filterMenu.startAnimation(translate);
                 filterMenu.setVisibility(View.GONE);
             }
         });
 
+        /**
+         * Show only the transactions made on miscellaneous others
+         */
         others.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<RoomExpenses> roomExpensesList = new ArrayList<RoomExpenses>();
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(Color.WHITE);
+                List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
-                    if (roomExpenses.getExpenseSubcategory().equals(
-                            getResources().getStringArray(R.array
-                                    .subcategory)[3])) {
-                        roomExpensesList.add(roomExpenses);
+                    if (Category.getCategory(roomExpenses.getExpenseCategory()).equals(
+                            Category.MISCELLANEOUS)) {
+                        if (SubCategory.getSubcategory(roomExpenses.getExpenseSubcategory()).equals
+                                (SubCategory.OTHERS)) {
+                            expensesList.add(roomExpenses);
+                        }
                     }
                 }
-                ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
-                        SortType.OTHERS);
+                sortDate(expensesList, true, SortType.DATE_DESC);
                 adapter.notifyDataSetChanged();
+                TranslateAnimation translate = new TranslateAnimation(
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, -1,
+                        Animation.RELATIVE_TO_SELF, 0,
+                        Animation.RELATIVE_TO_SELF, 0);
+                translate.setDuration(500);
+                filterMenu.startAnimation(translate);
                 filterMenu.setVisibility(View.GONE);
             }
         });
 
+        /**
+         * Add on scroll listener to recycler view for smooth scrolling of the filter/sort menu.
+         * The menu should disappear to bottom of screen while scrolling down and should animate
+         * up(and remain in initial position) while scrolling up the screen.
+         */
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -432,6 +466,11 @@ public class DashboardFragment extends RoomiesFragment
         return null;
     }
 
+    /**
+     * Callback to update the Dashboard screen on any new transaction
+     *
+     * @param username
+     */
     @Override
     public void update(String username) {
         if (null != adapter) {
@@ -459,9 +498,186 @@ public class DashboardFragment extends RoomiesFragment
                     }
                 }
             });
-            ((DetailExpenseDataAdapter) adapter).addItemsToList(roomExpensesList,
+            ((DetailExpenseAdapter) adapter).addItemsToList(roomExpensesList,
                     SortType.DATE_DESC);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    /**
+     * Sorts the expenses list by quantity.
+     * In case of list being is already sorted in ascending order of quantity, then it is sorted in
+     * reverse order and vise versa.
+     *
+     * @return RoomExpenses list sorted by quantity
+     */
+    private List<RoomExpenses> sortQuantity(List<RoomExpenses> roomExpensesList, boolean
+            setAdapter) {
+        boolean isSorted = true;
+        float next = 0f;
+        for (RoomExpenses roomExpenses : roomExpensesList) {
+            if (null != roomExpenses.getQuantity()) {
+                if (Float.valueOf(
+                        roomExpenses.getQuantity().substring(0,
+                                roomExpenses.getQuantity().length() - 2)) < next) {
+                    isSorted = false;
+                    break;
+                }
+                next = roomExpenses.getAmount();
+            }
+        }
+        List<RoomExpenses> expenseList = new ArrayList<>();
+        List<RoomExpenses> expenseListAlt = new ArrayList<>();
+        for (RoomExpenses expenses : roomExpensesList) {
+            if (null == expenses.getQuantity()) {
+                expenseListAlt.add(expenses);
+            } else {
+                expenseList.add(expenses);
+            }
+        }
+        Comparator<RoomExpenses> comparator = new Comparator<RoomExpenses>() {
+            @Override
+            public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+                float lhsQuantity = Float.valueOf(
+                        lhs.getQuantity().substring(0,
+                                lhs.getQuantity().length() - 2));
+                float rhsQuantity = Float.valueOf(
+                        rhs.getQuantity().substring(0,
+                                rhs.getQuantity().length() - 2));
+
+                if (lhsQuantity < rhsQuantity) {
+                    return -1;
+                } else if (lhsQuantity == rhsQuantity) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+
+
+            }
+        };
+        if (!isSorted) {
+            Collections.sort(expenseList, comparator);
+        } else {
+            Collections.sort(expenseList, Collections.reverseOrder(comparator));
+        }
+        expenseList.addAll(expenseListAlt);
+        if (setAdapter) {
+            ((DetailExpenseAdapter) adapter).addItemsToList(expenseList,
+                    SortType.QUANTITY);
+        }
+        return expenseList;
+    }
+
+    /**
+     * Sorts the expenses list by amount.
+     * In case of list being is already sorted in ascending order of amount, then it is sorted in
+     * reverse order and vise versa.
+     *
+     * @return RoomExpenses list sorted by amount
+     */
+    private List<RoomExpenses> sortAmount(List<RoomExpenses> roomExpensesList, boolean setAdapter) {
+        boolean isSorted = true;
+        float next = 0f;
+        for (RoomExpenses roomExpenses : roomExpensesList) {
+            if (roomExpenses.getAmount() < next) {
+                isSorted = false;
+                break;
+            }
+            next = roomExpenses.getAmount();
+        }
+        List<RoomExpenses> expenseList = new ArrayList<>(roomExpensesList);
+        Comparator<RoomExpenses> comparator = new Comparator<RoomExpenses>() {
+            @Override
+            public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+                if (lhs.getAmount() > rhs.getAmount()) {
+                    return 1;
+                } else if (lhs.getAmount() == rhs.getAmount()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
+
+        if (!isSorted) {
+            Collections.sort(expenseList, comparator);
+        } else {
+            Collections.sort(expenseList, Collections.reverseOrder(comparator));
+        }
+        if (setAdapter) {
+            ((DetailExpenseAdapter) adapter).addItemsToList(expenseList,
+                    SortType.AMOUNT);
+        }
+        return expenseList;
+    }
+
+    /**
+     * Sorts the expenses list by date.
+     * In case of list being is already sorted in ascending order of date, then it is sorted in
+     * reverse order and vise versa.
+     *
+     * @return RoomExpenses list sorted by date.
+     */
+    private List<RoomExpenses> sortDate(List<RoomExpenses> roomExpensesList, boolean setAdapter,
+                                        SortType sortType) {
+
+        List<RoomExpenses> expenseList = new ArrayList<>(roomExpensesList);
+        Comparator<RoomExpenses> comparator = new Comparator<RoomExpenses>() {
+            @Override
+            public int compare(RoomExpenses lhs, RoomExpenses rhs) {
+                if (lhs.getExpenseDate().after(rhs.getExpenseDate())) {
+                    return 1;
+                } else if (lhs.getExpenseDate().equals(rhs.getExpenseDate())) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
+        switch (sortType) {
+            case DATE_ASC:
+                Collections.sort(expenseList, comparator);
+                if (setAdapter) {
+                    ((DetailExpenseAdapter) adapter).addItemsToList(expenseList,
+                            SortType.DATE_ASC);
+                }
+                break;
+            case DATE_DESC:
+                Collections.sort(expenseList, Collections.reverseOrder(comparator));
+                if (setAdapter) {
+                    ((DetailExpenseAdapter) adapter).addItemsToList(expenseList,
+                            SortType.DATE_DESC);
+                }
+                break;
+            default:
+                boolean isSorted = true;
+                Date next = null;
+                if (roomExpensesList.size() > 0) {
+                    next = roomExpensesList.get(0).getExpenseDate();
+                }
+                for (RoomExpenses roomExpenses : roomExpensesList) {
+                    if (roomExpenses.getExpenseDate().before(next)) {
+                        isSorted = false;
+                        break;
+                    }
+                    next = roomExpenses.getExpenseDate();
+                }
+                if (!isSorted) {
+                    Collections.sort(expenseList, comparator);
+                    if (setAdapter) {
+                        ((DetailExpenseAdapter) adapter).addItemsToList(expenseList,
+                                SortType.DATE_ASC);
+                    }
+                } else {
+                    Collections.sort(expenseList, Collections.reverseOrder(comparator));
+                    if (setAdapter) {
+                        ((DetailExpenseAdapter) adapter).addItemsToList(expenseList,
+                                SortType.DATE_DESC);
+                    }
+                }
+                break;
+        }
+        return expenseList;
     }
 }

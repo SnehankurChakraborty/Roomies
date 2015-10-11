@@ -303,7 +303,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                 if (frameLayout.getVisibility() == View.GONE) {
                     frameLayout.setVisibility(View.VISIBLE);
                     AnimationSet animationSet = new AnimationSet(false);
-                    RotateAnimation rotate = new RotateAnimation(0f, 45,
+                    RotateAnimation rotate = new RotateAnimation(0f, 135,
                             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
                     // prevents View from restoring to original direction.
@@ -330,7 +330,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                     frameLayout.setVisibility(View.GONE);
 
                     AnimationSet animationSet = new AnimationSet(false);
-                    RotateAnimation rotate = new RotateAnimation(45f, 0f,
+                    RotateAnimation rotate = new RotateAnimation(135f, 0f,
                             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
                     // prevents View from restoring to original direction.
@@ -345,18 +345,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                 }
             }
         });
-
-        /*fabButtonAlt = (ImageView) findViewById(R.id.fab_alt);
-        fabButtonAlt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (frameLayout.getVisibility() == View.VISIBLE) {
-                    frameLayout.setVisibility(View.GONE);
-                    frameLayout.setAlpha(1);
-                    fabButton.setVisibility(View.VISIBLE);
-                }
-            }
-        });*/
 
         frameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -442,50 +430,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home_screen_fragment_layout, fragment, tag);
         transaction.commit();
-
-        if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-            /**
-             * since the method is currently available only for the devices running {@link
-             * android.os.Build.VERSION_CODES.LOLLIPOP LOLLIPOP}, checking if the api version
-             * is greater than or equal to LOLLIPOP.
-             */
-            mtoolbar.setElevation(0);
-        }
-        if (!(fragment instanceof HomeFragment)) {
-            title.setVisibility(View.INVISIBLE);
-            addExpenseButton.setVisibility(View.GONE);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT);
-            mtoolbar.setLayoutParams(params);
-            if (fragment instanceof DashboardFragment) {
-                mtoolbar.setTitle("Dashboard");
-                addExpenseButton.setVisibility(View.VISIBLE);
-                DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-                int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-                if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                    mtoolbar.setElevation(px);
-                }
-            } else if (fragment instanceof StatsFragment) {
-                mtoolbar.setTitle("Stats");
-            }
-
-        } else {
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100,
-                    getResources().getDisplayMetrics());
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT, height);
-            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-            int px = Math.round(8 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-            if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                mtoolbar.setElevation(px);
-            }
-            mtoolbar.setLayoutParams(params);
-            mtoolbar.setTitle("");
-            title.setVisibility(View.VISIBLE);
-            addExpenseButton.setVisibility(View.VISIBLE);
-
-        }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
 

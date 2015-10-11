@@ -261,6 +261,9 @@ public class RoomiesHelper {
                 mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
                         String.valueOf(roomStats.getMiscellaneousMargin()));
                 mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
+                mEditor.putString(PREF_TOTAL_MARGIN,
+                        String.valueOf(roomStats.getRentMargin() + roomStats.getMaidMargin()
+                                + roomStats.getMiscellaneousMargin() + roomStats.getElectricityMargin()));
                 mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
             }
         }

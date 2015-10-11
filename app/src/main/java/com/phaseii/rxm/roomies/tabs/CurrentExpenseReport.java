@@ -191,6 +191,7 @@ public class CurrentExpenseReport extends RoomiesFragment
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(false);
+        xl.setEnabled(true);
         xl.setTypeface(
                 Typeface.createFromAsset(mContext.getAssets(), "fonts/VarelaRound-Regular.ttf"));
     }
@@ -235,22 +236,19 @@ public class CurrentExpenseReport extends RoomiesFragment
         float spent = rent + maid + electricity + misc;
         ArrayList<Entry> entries = new ArrayList<Entry>();
         ArrayList<String> labels = new ArrayList<String>();
-        if (rent > 0) {
-            entries.add(new Entry(rent, 0));
-            labels.add(RENT);
-        }
-        if (maid > 0) {
-            entries.add(new Entry(maid, 1));
-            labels.add(MAID);
-        }
-        if (electricity > 0) {
-            entries.add(new Entry(electricity, 2));
-            labels.add(ELECTRICITY);
-        }
-        if (misc > 0) {
-            entries.add(new Entry(misc, 3));
-            labels.add(MISC);
-        }
+
+        entries.add(new Entry(rent, 0));
+        labels.add(RENT);
+
+        entries.add(new Entry(maid, 1));
+        labels.add(MAID);
+
+        entries.add(new Entry(electricity, 2));
+        labels.add(ELECTRICITY);
+
+        entries.add(new Entry(misc, 3));
+        labels.add(MISC);
+
         float total = getTotal();
         if (total <= 0) {
             entries.add(new Entry(0, 0));
@@ -319,6 +317,6 @@ public class CurrentExpenseReport extends RoomiesFragment
 
     @Override
     public void update(String username) {
-        createPieChart(getActivity().getBaseContext());
+         createPieChart(getActivity().getBaseContext());
     }
 }

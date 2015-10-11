@@ -9,71 +9,12 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/welcome_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
-            android:elevation="8dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primary">
-
-                <TextView
-                    android:id="@+id/welcome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:text="Welcome Snehankur"
-                    android:textColor="@color/white"
-                    android:textSize="14pt"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/last_visit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/welcome"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="1000 spent since your last visit"
-                    android:textColor="@color/white"
-                    android:textSize="8pt"
-                    android:textStyle="bold"/>
-
-                <Button
-                    android:id="@+id/check_now"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_below="@id/last_visit"
-                    android:layout_marginTop="16dp"
-                    android:background="@color/primary"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="8dp"
-                    android:text="CHECK NOW"
-                    android:textColor="@color/white"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-
-        <android.support.v7.widget.CardView
             android:id="@+id/budget_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/welcome_card"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
             android:elevation="8dp">
 
             <RelativeLayout
@@ -183,7 +124,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/primary">
 
                         <TextView
                             android:id="@+id/expense_header3"
@@ -194,7 +136,7 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-condensed"
                             android:text="Spent"
-                            android:textColor="@color/secondary_text"
+                            android:textColor="@color/white"
                             android:textSize="10pt"
                             android:textStyle="bold"/>
 
@@ -206,10 +148,10 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/primary"/>
+                            android:background="@color/white"/>
 
                         <TextView
-                            android:id="@+id/spent_recent"
+                            android:id="@+id/spent_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/divider3"
@@ -218,32 +160,32 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-thin"
                             android:text="10000"
-                            android:textColor="@color/secondary_text"
-                            android:textSize="16pt"/>
+                            android:textColor="@color/white"
+                            android:textSize="14pt"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/spent_recent"
+                            android:layout_below="@id/spent_data"
                             android:layout_gravity="center"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:fontFamily="sans-serif"
                             android:text="on milk by Rohan"
-                            android:textColor="@color/secondary_text"
+                            android:textColor="@color/white"
                             android:textSize="6pt"
                             android:textStyle="bold"/>
 
                         <Button
-                            android:id="@+id/month_btn3"
+                            android:id="@+id/month_btn_spent"
                             android:layout_width="50dp"
                             android:layout_height="15dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="15dp"
-                            android:background="@drawable/round_rectangle_accent"
-                            android:text="Recent"
-                            android:textColor="@color/white"
+                            android:background="@drawable/round_rectangle_white"
+                            android:text="30 DAYS"
+                            android:textColor="@color/primary"
                             android:textSize="4pt"/>
 
                     </RelativeLayout>
@@ -254,6 +196,7 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="0.5"
@@ -265,66 +208,68 @@
                         android:background="@color/primary">
 
                         <TextView
-                            android:id="@+id/expense_header2"
+                            android:id="@+id/remaining_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-condensed"
-                            android:text="Total"
+                            android:text="Remaining"
                             android:textColor="@color/white"
                             android:textSize="10pt"
                             android:textStyle="bold"/>
 
                         <View
-                            android:id="@+id/divider2"
+                            android:id="@+id/divider"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_below="@id/expense_header2"
+                            android:layout_below="@id/remaining_header"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="5dp"
                             android:background="@color/white"/>
 
                         <TextView
-                            android:id="@+id/total_today"
+                            android:id="@+id/remaining_data"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/divider2"
+                            android:layout_below="@id/divider"
                             android:layout_gravity="center"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-thin"
                             android:text="10000"
                             android:textColor="@color/white"
-                            android:textSize="16pt"/>
+                            android:textSize="14pt"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/total_today"
+                            android:layout_below="@id/remaining_data"
                             android:layout_gravity="center"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:fontFamily="sans-serif"
-                            android:text="spent today"
+                            android:text="spent for this month"
                             android:textColor="@color/white"
                             android:textSize="6pt"
                             android:textStyle="bold"/>
 
                         <Button
-                            android:id="@+id/day_btn"
+                            android:id="@+id/month_btn_remaining"
                             android:layout_width="50dp"
                             android:layout_height="15dp"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="10dp"
                             android:layout_marginTop="15dp"
                             android:background="@drawable/round_rectangle_white"
-                            android:text="Today"
+                            android:text="0 DAYS"
+                            android:textColor="@color/primary"
                             android:textSize="4pt"/>
 
                     </RelativeLayout>
+
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
@@ -340,86 +285,6 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.5"
-                    android:elevation="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/primary">
-
-                        <TextView
-                            android:id="@+id/expense_header"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="Expenses"
-                            android:textColor="@color/white"
-                            android:textSize="10pt"
-                            android:textStyle="bold"/>
-
-                        <View
-                            android:id="@+id/divider"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_below="@id/expense_header"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@color/white"/>
-
-                        <TextView
-                            android:id="@+id/spent_data"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/divider"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-thin"
-                            android:text="10000"
-                            android:textColor="@color/white"
-                            android:textSize="16pt"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/spent_data"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:fontFamily="sans-serif"
-                            android:text="spent for this month"
-                            android:textColor="@color/white"
-                            android:textSize="6pt"
-                            android:textStyle="bold"/>
-
-                        <Button
-                            android:id="@+id/month_btn"
-                            android:layout_width="50dp"
-                            android:layout_height="15dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="15dp"
-                            android:background="@drawable/round_rectangle_white"
-                            android:text="December"
-                            android:textColor="@color/primary"
-                            android:textSize="4pt"/>
-
-                    </RelativeLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
                     android:layout_weight="0.5"
                     android:elevation="8dp">
 
@@ -450,34 +315,153 @@
                             android:layout_marginTop="5dp"
                             android:background="@color/primary"/>
 
-                        <TextView
-                            android:id="@+id/remaining_data"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/divider4"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-thin"
-                            android:text="10000"
-                            android:textColor="@color/secondary_text"
-                            android:textSize="16pt"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/remaining_data"
-                            android:layout_gravity="center"
                             android:layout_marginBottom="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:fontFamily="sans-serif"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal"
+                            android:weightSum="1"
+                            android:id="@+id/budgets">
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25">
+
+                                <TextView
+                                    android:id="@+id/rent_budget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="10000"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="14pt"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/rent_budget"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center_horizontal"
+                                    android:text="rent"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="5pt"
+                                    android:textStyle="bold"/>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25">
+
+                                <TextView
+                                    android:id="@+id/maid_budget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="10000"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="14pt"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/maid_budget"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center_horizontal"
+                                    android:text="maid"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="5pt"
+                                    android:textStyle="bold"/>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25">
+
+                                <TextView
+                                    android:id="@+id/elec_budget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="10000"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="14pt"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/elec_budget"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center_horizontal"
+                                    android:text="electricity"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="5pt"/>
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.25">
+
+                                <TextView
+                                    android:id="@+id/misc_budget"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="10000"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="14pt"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/misc_budget"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="sans-serif"
+                                    android:gravity="center_horizontal"
+                                    android:text="misc"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="5pt"
+                                    android:textStyle="bold"/>
+                            </RelativeLayout>
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:text="set for this month"
                             android:textColor="@color/secondary_text"
                             android:textSize="6pt"
-                            android:textStyle="bold"/>
+                            android:textStyle="bold"
+                            android:layout_below="@id/budgets"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"/>
+
+
 
                         <Button
-                            android:id="@+id/day_btn4"
+                            android:id="@+id/month_btn_budget"
                             android:layout_width="50dp"
                             android:layout_height="15dp"
                             android:layout_alignParentRight="true"

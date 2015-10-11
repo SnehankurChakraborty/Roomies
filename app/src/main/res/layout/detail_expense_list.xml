@@ -1,129 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:id="@+id/timeline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="10dp"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="4dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/secondary_text"/>
-
-        <View
-            android:id="@+id/timeline_dot"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/timeline_blue"/>
-
-        <View
-            android:layout_width="4dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/secondary_text"/>
-
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/timeline_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/timeline"
-        android:background="@drawable/timeline_bubble_blue">
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:gravity="end"
-            android:paddingLeft="20dp"
-            android:text="23"
-            android:textColor="@color/white"
-            android:textSize="15pt"/>
-
-        <TextView
-            android:id="@+id/spender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/date"
-            android:fontFamily="sans-serif-thin"
-            android:text="You"
-            android:textColor="@color/white"
-            android:textSize="10pt"/>
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/timeline_card"
-        android:layout_width="match_parent"
-        android:layout_height="88dp"
-        android:layout_below="@id/timeline_banner"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@id/timeline"
-        android:background="@drawable/timeline_card">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
 
-        <ImageView
-            android:id="@+id/expense_icon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:paddingLeft="16dp"
-            android:src="@drawable/ic_misc_selected"/>
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="23 March"
+                android:textSize="6pt"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/date"
+                android:layout_marginRight="5dp"
+                android:fontFamily="sans-serif-thin"
+                android:text="16:35"/>
+
+            <TextView
+                android:id="@+id/expense_elapsed_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time"
+                android:text="5 days ago"
+                android:textSize="4pt"/>
+        </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/timeline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical"
-            android:paddingLeft="72dp">
+            android:layout_marginLeft="70dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-thin"
-                android:text="Amount"
-                android:textColor="@color/primary_text"
-                android:textSize="16sp"/>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="30dp"
+                android:layout_gravity="start"
+                android:layout_marginLeft="9dp"
+                android:background="@color/secondary_text"/>
 
-            <TextView
-                android:id="@+id/quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="Quantity"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp"/>
+            <ImageView
+                android:id="@+id/expense_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="start"
+                android:background="@drawable/timeline_blue"/>
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:layout_marginLeft="9dp"
+                android:background="@color/secondary_text"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="115dp"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Potatos"
+                android:textSize="8pt"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description"
                 android:fontFamily="sans-serif"
-                android:text="Description"
-                android:textColor="@color/secondary_text"
-                android:textSize="14sp"/>
-        </LinearLayout>
+                android:text="5 KG"
+                android:textSize="4pt"/>
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/quantity"
+                android:fontFamily="sans-serif-thin"
+                android:text="Rs 100"
+                android:layout_marginTop="2dp"
+                android:textSize="12pt"
+                android:textStyle="normal"/>
+
+            <com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+                android:id="@+id/user_image1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_user_filled"/>
+
+            <TextView
+                android:id="@+id/spender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/amount"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:text="Snehankur"
+                android:textSize="5pt"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_below="@id/timeline_card"
+        android:background="@color/secondary_text"/>
 </RelativeLayout>

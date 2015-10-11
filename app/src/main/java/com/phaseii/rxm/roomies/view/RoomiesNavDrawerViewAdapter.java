@@ -116,6 +116,8 @@ public class RoomiesNavDrawerViewAdapter
                             ((HomeScreenActivity) mContext).sendEmail();
                             break;
                         case 7:
+                            break;
+                        case 8:
                             SharedPreferences mSharedPref = mContext.getSharedPreferences(
                                     PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
                             SharedPreferences.Editor mEditor = mSharedPref.edit();

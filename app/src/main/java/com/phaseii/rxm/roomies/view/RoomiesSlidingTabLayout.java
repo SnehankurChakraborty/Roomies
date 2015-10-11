@@ -58,6 +58,7 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
     private boolean mDistributeEvenly;
 
     private ViewPager mViewPager;
+
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
     private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
     private ThemeChanger mThemeChanger;
@@ -147,6 +148,10 @@ public class RoomiesSlidingTabLayout extends HorizontalScrollView {
             viewPager.setOnPageChangeListener(new InternalViewPagerListener());
             populateTabStrip();
         }
+    }
+
+    public ViewPager getViewPager() {
+        return mViewPager;
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.phaseii.rxm.roomies.fragments;
 
-import android.animation.ArgbEvaluator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,7 +18,7 @@ import com.phaseii.rxm.roomies.view.RoomiesSlidingTabStrip;
 
 
 public class HomeFragment extends RoomiesFragment {
-
+    private RoomiesSlidingTabLayout tabs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,7 +27,6 @@ public class HomeFragment extends RoomiesFragment {
         rootView = inflater.inflate(R.layout.fragment_home, container,
                 false);
         Context mContext = getActivity();
-        final ArgbEvaluator argbEvaluator = new ArgbEvaluator();
         String titles[] = {"Summary", "Dashboard", "Monthly", "Trends", "Members"};
         ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
         final int[] colors = new int[]{mContext.getResources().getColor(R.color.primary),
@@ -45,7 +43,7 @@ public class HomeFragment extends RoomiesFragment {
                 , titles, 5);
         pager.setAdapter(adapter);
 
-        RoomiesSlidingTabLayout tabs = (RoomiesSlidingTabLayout) rootView.findViewById(R.id.tabs);
+        tabs = (RoomiesSlidingTabLayout) rootView.findViewById(R.id.tabs);
         tabs.setDistributeEvenly(true);
         tabs.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
             @Override
@@ -59,7 +57,6 @@ public class HomeFragment extends RoomiesFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
-                /*super.onPageScrolled(position, positionOffset, positionOffsetPixels);*/
                 if (position >= adapter.getCount() - 1) {
                     // Guard against ArrayIndexOutOfBoundsException
                     return;
@@ -101,47 +98,15 @@ public class HomeFragment extends RoomiesFragment {
 
             @Override
             public void onTabSelected(RoomiesSlidingTabStrip mTabStrip, int position) {
-                /*switch (position) {
-                    case 0:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary));
-                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor0));
-                        }
-                        break;
-                    case 1:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary2));
-                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor1));
-                        }
-                        break;
-                    case 2:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary3));
-                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor2));
-                        }
-                        break;
-                    case 3:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary4));
-                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor3));
-                        }
-                        break;
-                    case 4:
-                        mTabStrip.setBackgroundColor(getResources().getColor(R.color.primary5));
-                        for (int j = 0; j < mTabStrip.getChildCount(); j++) {
-                            ((TextView) mTabStrip.getChildAt(j)).setTextColor(getResources()
-                                    .getColorStateList(R.color.slidingcolor4));
-                        }
-                        break;
-                }*/
+
             }
         });
 
         return rootView;
+    }
+
+    public RoomiesSlidingTabLayout getTab() {
+        return tabs;
     }
 
     private int blendColors(int from, int to, float ratio) {

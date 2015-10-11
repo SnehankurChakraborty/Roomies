@@ -8,8 +8,5 @@ public enum SortType {
     DATE_DESC,
     QUANTITY,
     AMOUNT,
-    BILLS,
-    GROCERY,
-    VEGETABLES,
-    OTHERS
+    NONE
 }
