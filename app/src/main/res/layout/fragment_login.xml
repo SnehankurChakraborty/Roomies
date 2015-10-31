@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:textAllCaps="true"
-        android:textColor="@color/primary"
+        android:textColor="@color/primary_home"
         android:textSize="40sp"/>
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/into_your_room"
-        android:textColor="@color/primary"/>
+        android:textColor="@color/primary_home"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.activity.HomeScreenActivity;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.fragments.RoommatesFragment;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 
@@ -29,6 +30,7 @@ import java.util.List;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOMMATES_FRAGMENT;
 
 /**
  * Created by Snehankur on 4/4/2015.
@@ -97,7 +99,10 @@ public class RoomiesNavDrawerViewAdapter
                         ((HomeScreenActivity) mContext).nextFragment(
                                 new HomeFragment(), HOME_FRAGMENT);
                         break;
-                        case 2:break;
+                        case 2:
+                            ((HomeScreenActivity) mContext).nextFragment(
+                                    new RoommatesFragment(), ROOMMATES_FRAGMENT);
+                            break;
                         case 3:
                             try {
                                 RoomiesHelper.startActivityHelper(mContext, mContext.getResources()

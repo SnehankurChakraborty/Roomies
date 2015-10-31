@@ -160,20 +160,20 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
             }
         }
 
-        LineDataSet set = new LineDataSet(entries, "Daily Expense Report");
-        set.enableDashedLine(10f, 5f, 0f);
-        set.setColor(Color.BLACK);
-        set.setLineWidth(1f);
-        set.setCircleColor(getResources().getColor(R.color.primary_dark));
-        set.setCircleSize(5f);
-        set.setFillColor(getResources().getColor(R.color.primary));
-        set.setDrawValues(true);
-        set.setValueTextSize(10f);
-        set.setValueTextColor(getResources().getColor(R.color.primary_text));
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setDrawFilled(true);
-        set.setFillColor(getResources().getColor(R.color.accent1));
-        LineData lineData = new LineData(labels, set);
+        LineDataSet lineDataSet = new LineDataSet(entries, "Daily Expense Report");
+        lineDataSet.enableDashedLine(10f, 5f, 0f);
+        lineDataSet.setColor(Color.BLACK);
+        lineDataSet.setLineWidth(1f);
+        lineDataSet.setCircleColor(getResources().getColor(R.color.primary_dark_home));
+        lineDataSet.setCircleSize(5f);
+        lineDataSet.setFillColor(getResources().getColor(R.color.primary_home));
+        lineDataSet.setDrawValues(true);
+        lineDataSet.setValueTextSize(10f);
+        lineDataSet.setValueTextColor(getResources().getColor(R.color.primary_text));
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setFillColor(getResources().getColor(R.color.accent1));
+        LineData lineData = new LineData(labels, lineDataSet);
         return lineData;
     }
 

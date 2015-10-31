@@ -14,13 +14,13 @@
 		android:text="@string/signup"
 		android:textAllCaps="true"
 		android:textSize="40sp"
-		android:textColor="@color/primary"/>
+		android:textColor="@color/primary_home"/>
 
 	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="for your room"
-		android:textColor="@color/primary"/>
+		android:textColor="@color/primary_home"/>
 
 	<RelativeLayout
 		android:layout_width="match_parent"

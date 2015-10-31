@@ -66,7 +66,9 @@ public class MemberDetailsManager {
                 }
             }
             member.setTotalExpense(amount);
-            member.setRecentExpense(roomExpensesList.get(roomExpensesList.size() - 1));
+            if (roomExpensesList.size() > 0) {
+                member.setRecentExpense(roomExpensesList.get(roomExpensesList.size() - 1));
+            }
             memberList.add(member);
         }
         return memberList;

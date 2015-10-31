@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary_dark2"
+        android:background="@color/primary_dark2_home"
         android:paddingBottom="40dp">
 
         <com.github.mikephil.charting.charts.LineChart

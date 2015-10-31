@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_ALIAS;
 /**
  * Created by Snehankur on 9/17/2015.
  */
-public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
+public class SummaryTab extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
 
     private Typeface typeface;
     private SharedPreferences sharedPreferences;
@@ -45,9 +46,10 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
     private float electricity;
     private float misc;
     private float spent;
+    private Calendar calendar;
 
-    public static SummaryFragment getInstance() {
-        return new SummaryFragment();
+    public static SummaryTab getInstance() {
+        return new SummaryTab();
     }
 
     @Override
@@ -55,11 +57,12 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
                              Bundle savedInstanceState) {
 
         Context mContext = getActivity().getBaseContext();
-        rootView = inflater.inflate(R.layout.fragment_summary, container, false);
+        rootView = inflater.inflate(R.layout.tab_summary, container, false);
         typeface = Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
                 "fonts/VarelaRound-Regular.ttf");
         sharedPreferences = mContext.getSharedPreferences(PREF_ROOMIES_KEY,
                 Context.MODE_PRIVATE);
+        calendar = Calendar.getInstance();
 
         rent = Float.valueOf(sharedPreferences.getString(PREF_RENT_MARGIN, "0"));
         maid = Float.valueOf(sharedPreferences.getString(PREF_MAID_MARGIN, "0"));
@@ -104,27 +107,28 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
         colors.add(Color.parseColor("#B6B6B6"));
 
         PieDataSet dataSet = new PieDataSet(entries, sharedPreferences.getString(ROOM_ALIAS, null));
-        PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
+        PieChart pieChart = (PieChart) rootView.findViewById(R.id.pie_current_budget);
         dataSet.setColors(colors);
         dataSet.setDrawValues(false);
         PieData data = new PieData(labels, dataSet);
 
-        mChart.setData(data);
-        mChart.animateXY(1000, 1000);
-        mChart.setDrawCenterText(true);
-        mChart.setCenterText(String.valueOf((int) status) + "%");
-        mChart.setCenterTextTypeface(typeface);
-        mChart.setCenterTextColor(getResources().getColor(R.color.primary));
-        mChart.setHoleColor(getResources().getColor(R.color.white));
-        mChart.setCenterTextSize(25);
-        mChart.setRotationEnabled(false);
-        mChart.setDescription("");
-        mChart.setClickable(false);
-        mChart.setDrawSliceText(false);
-        mChart.getLegend().setEnabled(false);
+        pieChart.setData(data);
+        pieChart.animateXY(1000, 1000);
+        pieChart.setDrawCenterText(true);
+        pieChart.setCenterText(String.valueOf((int) status) + "%");
+        pieChart.setCenterTextTypeface(typeface);
+        pieChart.setCenterTextColor(getResources().getColor(R.color.primary_home));
+        pieChart.setHoleColor(getResources().getColor(R.color.white));
+        pieChart.setCenterTextSize(25);
+        pieChart.setRotationEnabled(false);
+        pieChart.setDescription("");
+        pieChart.setClickable(false);
+        pieChart.setDrawSliceText(false);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setTouchEnabled(false);
 
         ((TextView) rootView.findViewById(R.id.remaining_days)).setText(String.valueOf(
-                Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+                calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
                         - Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) + " more " +
                 "days to go");
     }
@@ -149,15 +153,15 @@ public class SummaryFragment extends RoomiesFragment implements RoomiesFragment.
 
     private void prepareSpentCard() {
         ((Button) rootView.findViewById(R.id.month_btn_spent)).setText(
-                Calendar.getInstance().get(
+                calendar.get(
                         Calendar.DAY_OF_MONTH) + " DAYS");
         ((TextView) rootView.findViewById(R.id.spent_data)).setText(String.valueOf(spent));
     }
 
     private void prepareRemainingCard() {
-        ((Button) rootView.findViewById(R.id.month_btn_remaining)).setText(
-                Calendar.getInstance().get(
-                        Calendar.DAY_OF_MONTH) + " DAYS");
+        ((Button) rootView.findViewById(R.id.month_btn_remaining)).setText((calendar.
+                getActualMaximum(Calendar.DAY_OF_MONTH) - calendar.get(
+                Calendar.DAY_OF_MONTH)) + " DAYS");
 
         float total = rent + maid + electricity + misc;
         ((TextView) rootView.findViewById(R.id.remaining_data)).setText(String.valueOf

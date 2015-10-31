@@ -19,7 +19,7 @@
 				android:id="@+id/colored_background_view"
 				android:layout_width="match_parent"
 				android:layout_height="400dp"
-				android:background="@color/primary"
+				android:background="@color/primary_home"
 				android:src="@drawable/user_back"
 				android:scaleType="centerInside"/>
 
@@ -46,7 +46,7 @@
 						android:gravity="start"
 						android:paddingTop="5dp"
 						android:paddingBottom="5dp"
-						android:background="@color/primary">
+						android:background="@color/primary_home">
 
 
 						<TextView

@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,32 +10,32 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.view.MembersAdapter;
 
 /**
  * Created by Snehankur on 9/20/2015.
  */
-public class MemberFragment extends RoomiesFragment {
+public class RoommateExpensesTab extends RoomiesFragment {
 
     private Context mContext;
     private Typeface typeface;
 
-    public static MemberFragment getInstance() {
-        return new MemberFragment();
+    public static RoommateExpensesTab getInstance() {
+        return new RoommateExpensesTab();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_members, container, false);
+        rootView = inflater.inflate(R.layout.tab_roommate_expenses, container, false);
         mContext = getActivity().getBaseContext();
 
         typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/VarelaRound-Regular" +
                 ".ttf");
-
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(
                 R.id.room_members_view);
-        RecyclerView.Adapter adapter = new MembersAdapter(getActivity().getBaseContext());
+        RecyclerView.Adapter adapter = new MembersAdapter(getActivity().getBaseContext(), getChildFragmentManager());
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext,
                 LinearLayoutManager.VERTICAL, false);

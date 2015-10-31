@@ -5,15 +5,23 @@
     <color name="back">#fff</color>
     <color name="edit">#d4cece</color>
 
-    <color name="primary">#3F51B5</color>
-    <color name="primary2">#009688</color>
-    <color name="primary3">#795548</color>
-    <color name="primary4">#607D8B</color>
+    <!--Colors for tabs in home fragment-->
+    <color name="primary_home">#3F51B5</color>
+    <color name="primary2_home">#2196f3</color>
+    <color name="primary3_home">#03a9f4</color>
+    <color name="primary4_home">#00bcd4</color>
+    <color name="primary_dark_home">#1A237E</color>
+    <color name="primary_dark2_home">#0d47a1</color>
+    <color name="primary_dark3_home">#01579b</color>
+    <color name="primary_dark4_home">#006064</color>
+
+    <!--Colors for tabs in roommate fragment-->
+    <color name="primary_roommate">#009688</color>
+    <color name="primary_dark_roommate">#004d40</color>
+    <color name="primary2_roommate">#4caf50</color>
+    <color name="primary2_dark_roommate">#1b5e20</color>
+
     <color name="primary5">#4CAF50</color>
-    <color name="primary_dark">#1A237E</color>
-    <color name="primary_dark2">#004D40</color>
-    <color name="primary_dark3">#3E2723</color>
-    <color name="primary_dark4">#212121</color>
     <color name="primary_dark5">#1B5E20</color>
     <color name="primary_light">#E1F5FE</color>
 

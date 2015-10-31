@@ -5,7 +5,7 @@
             android:isScrollContainer="true"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
-            tools:context="com.phaseii.rxm.roomies.fragments.StatsFragment">
+            tools:context="com.phaseii.rxm.roomies.fragments.StatsTab">
 
 	<RelativeLayout
 		android:layout_width="match_parent"

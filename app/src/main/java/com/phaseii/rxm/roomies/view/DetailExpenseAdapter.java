@@ -77,7 +77,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (holder.holderId == HEADER) {
-            createCombinedChart(holder.lineChart);
+            createLineChart(holder.lineChart);
             holder.month.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
                     "fonts/VarelaRound-Regular.ttf"));
             holder.month.setText(new DateFormatSymbols().getMonths()[Calendar
@@ -149,7 +149,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         return position == 0;
     }
 
-    public void createCombinedChart(LineChart lineChart) {
+    public void createLineChart(LineChart lineChart) {
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
         lineChart.setHighlightEnabled(true);
@@ -165,7 +165,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         lineChart.setPinchZoom(false);
         lineChart.getLegend().setEnabled(false);
         lineChart.setNoDataText("No Room expenses yet");
-        lineChart.setBackgroundColor(mContext.getResources().getColor(R.color.primary_dark2));
+        lineChart.setBackgroundColor(mContext.getResources().getColor(R.color.primary_dark2_home));
         lineChart.setMarkerView(new CustomMarkerView(mContext, R.layout.custom_marker_view));
 
         YAxis rightAxis = lineChart.getAxisRight();
@@ -250,9 +250,9 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
 
         LineDataSet set = new LineDataSet(entries, "Daily Expense Report");
         set.setLineWidth(3f);
-        set.setCircleColor(mContext.getResources().getColor(R.color.primary_dark2));
+        set.setCircleColor(mContext.getResources().getColor(R.color.primary_dark2_home));
         set.setCircleSize(5f);
-        set.setFillColor(mContext.getResources().getColor(R.color.primary2));
+        set.setFillColor(mContext.getResources().getColor(R.color.primary2_home));
         set.setDrawValues(true);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setDrawFilled(true);
@@ -261,7 +261,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         set.setValueTypeface(typeface);
         set.setValueTextColor(Color.WHITE);
         set.setDrawCubic(false);
-        set.setFillColor(mContext.getResources().getColor(R.color.primary2));
+        set.setFillColor(mContext.getResources().getColor(R.color.primary2_home));
         LineData lineData = new LineData(labels, set);
         return lineData;
     }

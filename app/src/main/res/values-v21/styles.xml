@@ -6,8 +6,8 @@
 
 
 		<!-- N A V I G A T I O N  D R A W E R-->
-		<item name="colorPrimary">@color/primary</item>
-		<item name="colorPrimaryDark">@color/primary_dark</item>
+		<item name="colorPrimary">@color/primary_home</item>
+		<item name="colorPrimaryDark">@color/primary_dark_home</item>
 		<item name="android:windowNoTitle">true</item>
 		<item name="windowActionBar">false</item>
 		<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
@@ -17,7 +17,7 @@
 		<item name="statusBarColor">@color/primary_dark</item>-->
 
 		<item name="android:windowDrawsSystemBarBackgrounds">true</item>
-		<item name="android:statusBarColor">@color/primary_dark</item>
+		<item name="android:statusBarColor">@color/primary_dark_home</item>
 		<item name="android:windowTranslucentStatus">true</item>
 
 		<item name="android:actionBarItemBackground">@drawable/selectable_background_roomies</item>

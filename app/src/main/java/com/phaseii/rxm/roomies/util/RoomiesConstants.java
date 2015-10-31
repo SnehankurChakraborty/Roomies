@@ -48,7 +48,7 @@ public final class RoomiesConstants {
     public static final String IS_MAID_PAID = "isMaidPaid";
     public static final String IS_ELEC_PAID = "isElecPaid";
     public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
-    public static final String DASHBOARD_FRAGMENT = "DASHBOARD_FRAGMENT";
+    public static final String ROOMMATES_FRAGMENT = "ROOMMATES_FRAGMENT";
     public static final String PROFILE_FRAGMENT = "PROFILE_FRAGMENT";
     public static final String TREND_FRAGMENT = "TREND_FRAGMENT";
     public static final String SAVINGS_FRAGMENT = "SAVINGS_FRAGMENT";

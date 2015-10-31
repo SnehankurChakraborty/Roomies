@@ -40,7 +40,7 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_INFO_FILE_KEY;
 /**
  * Created by Snehankur on 5/24/2015.
  */
-public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
+public class TrendsTab extends RoomiesFragment implements RoomiesFragment.UpdatableFragment {
 
     private final TableRow.LayoutParams params = new TableRow.LayoutParams(TableRow.LayoutParams
             .WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
@@ -63,8 +63,8 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
     private Button previous;
     private Button next;
 
-    public static LastMonthsTab getInstance() {
-        return new LastMonthsTab();
+    public static TrendsTab getInstance() {
+        return new TrendsTab();
     }
 
     @Override
@@ -307,6 +307,7 @@ public class LastMonthsTab extends RoomiesFragment implements RoomiesFragment.Up
         barChart.setPinchZoom(true);
         barChart.setScaleMinima(1f, 1f);
         barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setHighlightEnabled(false);
 
         Legend l = barChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);

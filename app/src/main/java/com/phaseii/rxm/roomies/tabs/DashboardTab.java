@@ -1,4 +1,4 @@
-package com.phaseii.rxm.roomies.fragments;
+package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
+import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.SortType;
 import com.phaseii.rxm.roomies.util.Category;
@@ -40,7 +41,7 @@ import java.util.Map;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
 
-public class DashboardFragment extends RoomiesFragment
+public class DashboardTab extends RoomiesFragment
         implements RoomiesFragment.UpdatableFragment {
 
     private Context mContext;
@@ -53,8 +54,8 @@ public class DashboardFragment extends RoomiesFragment
     private RoomiesDao service;
     private String roomId;
 
-    public static DashboardFragment getInstance() {
-        return new DashboardFragment();
+    public static DashboardTab getInstance() {
+        return new DashboardTab();
     }
 
     @Override
@@ -198,7 +199,7 @@ public class DashboardFragment extends RoomiesFragment
         amount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 filterBar.setTextColor(Color.WHITE);
                 roomExpensesList = sortAmount(roomExpensesList, true);
                 TranslateAnimation translate = new TranslateAnimation(
@@ -220,7 +221,7 @@ public class DashboardFragment extends RoomiesFragment
         quantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 filterBar.setTextColor(Color.WHITE);
                 roomExpensesList = sortQuantity(roomExpensesList, true);
                 TranslateAnimation translate = new TranslateAnimation(
@@ -241,7 +242,7 @@ public class DashboardFragment extends RoomiesFragment
         date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                sortBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 filterBar.setTextColor(Color.WHITE);
                 roomExpensesList = sortDate(roomExpensesList, true, SortType.NONE);
                 adapter.notifyDataSetChanged();
@@ -262,7 +263,7 @@ public class DashboardFragment extends RoomiesFragment
         bills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 sortBar.setTextColor(Color.WHITE);
                 List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
@@ -293,7 +294,7 @@ public class DashboardFragment extends RoomiesFragment
         grocery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 sortBar.setTextColor(Color.WHITE);
                 List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
@@ -324,7 +325,7 @@ public class DashboardFragment extends RoomiesFragment
         vegetables.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 sortBar.setTextColor(Color.WHITE);
                 List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {
@@ -355,7 +356,7 @@ public class DashboardFragment extends RoomiesFragment
         others.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2));
+                filterBar.setTextColor(getResources().getColor(R.color.primary_dark2_home));
                 sortBar.setTextColor(Color.WHITE);
                 List<RoomExpenses> expensesList = new ArrayList<RoomExpenses>();
                 for (RoomExpenses roomExpenses : roomExpensesList) {

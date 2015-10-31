@@ -55,7 +55,7 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_INFO_FILE_KEY;
 /**
  * Created by Snehankur on 4/3/2015.
  */
-public class CurrentExpenseReport extends RoomiesFragment
+public class MonthlyTab extends RoomiesFragment
         implements RoomiesFragment.UpdatableFragment {
 
     private SharedPreferences sharedPreferences;
@@ -63,8 +63,8 @@ public class CurrentExpenseReport extends RoomiesFragment
     private Context mContext;
     private List<RoomExpenses> roomExpensesList;
 
-    public static CurrentExpenseReport getInstance() {
-        return new CurrentExpenseReport();
+    public static MonthlyTab getInstance() {
+        return new MonthlyTab();
     }
 
     @Override
@@ -169,6 +169,7 @@ public class CurrentExpenseReport extends RoomiesFragment
         barChart.setPinchZoom(false);
         barChart.setDoubleTapToZoomEnabled(false);
         barChart.getLegend().setEnabled(false);
+        barChart.setHighlightEnabled(false);
 
         YAxis yl = barChart.getAxisLeft();
         yl.setDrawAxisLine(false);
@@ -202,7 +203,7 @@ public class CurrentExpenseReport extends RoomiesFragment
     }
 
     private PieChart createPieChart(Context context) {
-        PieChart mChart = (PieChart) rootView.findViewById(R.id.pie_expense_report);
+        PieChart pieChart = (PieChart) rootView.findViewById(R.id.pie_expense_report);
         String username = getActivity().getSharedPreferences
                 (ROOM_INFO_FILE_KEY, Context.MODE_PRIVATE).getString(NAME, null);
 
@@ -281,20 +282,21 @@ public class CurrentExpenseReport extends RoomiesFragment
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         dataSet.setDrawValues(false);
         PieData data = new PieData(labels, dataSet);
-        mChart.setData(data);
-        mChart.animateXY(1000, 1000);
-        mChart.setDrawCenterText(true);
-        mChart.setCenterText(String.valueOf((int) getPercentageLeft(total, spent)) + "%");
-        mChart.setDescription("");
-        mChart.setClickable(true);
-        mChart.setNoDataText("");
-        mChart.setCenterTextColor(Color.BLACK);
-        mChart.setCenterTextSize(30);
-        mChart.setCenterTextTypeface(Typeface.createFromAsset(context.getAssets(),
+        pieChart.setData(data);
+        pieChart.animateXY(1000, 1000);
+        pieChart.setDrawCenterText(true);
+        pieChart.setCenterText(String.valueOf((int) getPercentageLeft(total, spent)) + "%");
+        pieChart.setDescription("");
+        pieChart.setClickable(true);
+        pieChart.setNoDataText("");
+        pieChart.setCenterTextColor(Color.BLACK);
+        pieChart.setCenterTextSize(30);
+        pieChart.setCenterTextTypeface(Typeface.createFromAsset(context.getAssets(),
                 "fonts/VarelaRound-Regular.ttf"));
-        mChart.getLegend().setEnabled(false);
-        mChart.setDrawSliceText(false);
-        return mChart;
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setDrawSliceText(false);
+        pieChart.setTouchEnabled(false);
+        return pieChart;
     }
 
     private float getPercentageLeft(float total, float expense) {

@@ -23,7 +23,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -35,7 +34,6 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,12 +43,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dialogs.AddExpenseDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
-import com.phaseii.rxm.roomies.fragments.DashboardFragment;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
-import com.phaseii.rxm.roomies.fragments.StatsFragment;
 import com.phaseii.rxm.roomies.gcm.GCMSender;
 import com.phaseii.rxm.roomies.model.UserDetails;
-import com.phaseii.rxm.roomies.tabs.CurrentBudgetStatus;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.view.BannerView;
@@ -74,8 +69,7 @@ import static com.phaseii.rxm.roomies.util.RoomiesHelper.startActivityHelper;
  * <p/>
  * This is the launcher activity for the application.
  */
-public class HomeScreenActivity extends RoomiesBaseActivity
-        implements CurrentBudgetStatus.OnFragmentInteractionListener {
+public class HomeScreenActivity extends RoomiesBaseActivity {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "HomeScreenActivity";
@@ -202,7 +196,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity
                      */
                     mtoolbar.setElevation(0);
                     getWindow().setNavigationBarColor(
-                            getResources().getColor(R.color.primary_dark));
+                            getResources().getColor(R.color.primary_dark_home));
                 }
                 if (mtoolbar != null) {
                     setSupportActionBar(mtoolbar);
@@ -409,11 +403,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity
     @Override
     public void revokeGplusAccess() {
         super.revokeGplusAccess();
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     public ViewPager getViewPager() {

@@ -84,7 +84,7 @@ public class ProfileActivity extends ActionBarActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("Profile");
         setSupportActionBar(mToolbar);
-        final ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.primary));
+        final ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.primary_home));
         cd.setAlpha(0);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

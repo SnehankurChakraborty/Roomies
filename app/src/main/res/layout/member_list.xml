@@ -100,6 +100,20 @@
                     android:textColor="@color/white"
                     android:textSize="5pt"/>
 
+                <com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/spent_percent1"
+                    android:background="@color/primary5"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@id/member_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_below="@id/tabs"
+                    android:background="@color/white"
+                    android:layout_weight="1"/>
 
             </RelativeLayout>
 

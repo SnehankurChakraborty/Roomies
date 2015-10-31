@@ -19,7 +19,7 @@ import android.widget.TableRow;
 import android.widget.ToggleButton;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.fragments.DashboardFragment;
+import com.phaseii.rxm.roomies.tabs.DashboardTab;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
@@ -28,7 +28,6 @@ import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.SubCategory;
-import com.phaseii.rxm.roomies.view.RoomiesPagerAdapter;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
@@ -329,18 +328,18 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
                 .getFragments().get(0);
         if (fragment instanceof HomeFragment) {
             ViewPager viewPager = ((HomeFragment) fragment).getTab().getViewPager();
-            ((RoomiesFragment.UpdatableFragment) ((RoomiesPagerAdapter) viewPager
+            ((RoomiesFragment.UpdatableFragment) ((HomeFragment.RoomiesHomePagerAdapter) viewPager
                     .getAdapter())
                     .getRegisteredFragment(viewPager
                             .getCurrentItem())).update(null);
 
-            /*((RoomiesFragment.UpdatableFragment) ((RoomiesPagerAdapter) ((HomeFragment) fragment)
+            /*((RoomiesFragment.UpdatableFragment) ((RoomiesHomePagerAdapter) ((HomeFragment) fragment)
                     .getTab().getViewPager()
                     .getAdapter()).getActiveFragment()).update(null);*/
             /*((RoomiesFragment.UpdatableFragment) fragment).update(null);
             ((RoomiesFragment.UpdatableFragment) fragment).update(null);*/
-        } else if (fragment instanceof DashboardFragment) {
-            ((DashboardFragment) fragment).update(username);
+        } else if (fragment instanceof DashboardTab) {
+            ((DashboardTab) fragment).update(username);
         }
         dialog.dismiss();
     }

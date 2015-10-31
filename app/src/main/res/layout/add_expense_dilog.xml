@@ -38,7 +38,7 @@
                     android:layout_gravity="center"
                     android:text="Electricity"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
 
             </LinearLayout>
 
@@ -62,7 +62,7 @@
                     android:layout_gravity="center"
                     android:text="Rent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
             </LinearLayout>
 
             <LinearLayout
@@ -84,7 +84,7 @@
                     android:layout_gravity="center"
                     android:text="Maid"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
             </LinearLayout>
 
             <LinearLayout android:orientation="vertical">
@@ -105,7 +105,7 @@
                     android:layout_gravity="center"
                     android:text="Misc"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
             </LinearLayout>
 
 
@@ -134,7 +134,7 @@
                     android:layout_gravity="center"
                     android:text="Bills"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
 
             </LinearLayout>
 
@@ -159,7 +159,7 @@
                     android:layout_gravity="center"
                     android:text="Grocery"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
             </LinearLayout>
 
             <LinearLayout
@@ -181,7 +181,7 @@
                     android:layout_gravity="center"
                     android:text="Vegetables"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
             </LinearLayout>
 
             <LinearLayout android:orientation="vertical">
@@ -202,7 +202,7 @@
                     android:layout_gravity="center"
                     android:text="Others"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary"/>
+                    android:textColor="@color/primary_home"/>
             </LinearLayout>
 
 
