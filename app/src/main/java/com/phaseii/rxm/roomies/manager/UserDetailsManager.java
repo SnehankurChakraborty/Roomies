@@ -20,12 +20,18 @@ public class UserDetailsManager {
     private Context mContext;
     private RoomiesDao roomiesDao;
 
+    /**
+     *
+     * @param mContext
+     */
     public UserDetailsManager(Context mContext) {
         this.mContext = mContext;
     }
 
     /**
      * get user details based on user name
+     * @param username
+     * @return
      */
     public List<UserDetails> getUserDetails(String username) {
         Map<ServiceParam, Object> paramMap = new HashMap<>();
@@ -41,7 +47,9 @@ public class UserDetailsManager {
     }
 
     /**
-     * get user details based on user id
+     * * get user details based on user id
+     * @param userId
+     * @return
      */
     public List<UserDetails> getUserDetails(int userId) {
         Map<ServiceParam, Object> paramMap = new HashMap<>();

@@ -1,5 +1,6 @@
 package com.phaseii.rxm.roomies.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,15 +19,20 @@ import android.widget.TableRow;
 import android.widget.ToggleButton;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.tabs.DashboardTab;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.fragments.RoommatesFragment;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
 import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.tabs.DashboardTab;
 import com.phaseii.rxm.roomies.util.Category;
+import com.phaseii.rxm.roomies.util.DateUtils;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.SubCategory;
+
+import java.util.Date;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_SPENT;
@@ -37,11 +42,13 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_M
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_MISCELLANEOUS_SPENT;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_MARGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_RENT_SPENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
 
 /**
  * Created by Snehankur on 4/5/2015.
  */
-public class AddExpenseDialog extends DialogFragment implements DialogInterface.OnShowListener {
+public class AddExpenseDialog extends DialogFragment {
 
     private static int pagerId;
     private RoomiesLogger log;
@@ -73,12 +80,37 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
     private SubCategory subCategory;
     private RoomExpensesManager manager;
     private boolean isExceedConfirmed;
+    private OnSubmitListener mOnSubmitListener;
 
+    /**
+     * Creates a new instance of the Dialog for adding transaction.
+     *
+     * @param pagerId
+     * @return
+     */
     public static AddExpenseDialog getInstance(int pagerId) {
         AddExpenseDialog.pagerId = pagerId;
         return new AddExpenseDialog();
     }
 
+    public interface OnSubmitListener {
+        void onSubmit();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mOnSubmitListener = (OnSubmitListener) activity;
+        } catch (ClassCastException cce) {
+            throw new ClassCastException(activity.toString() + " must implement OnSubmitListener");
+        }
+    }
+
+    /**
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -174,7 +206,6 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 
         });
 
-
         positive = (Button) dialogView.findViewById(R.id.positiveButton);
         negative = (Button) dialogView.findViewById(R.id.negativeButton);
 
@@ -214,6 +245,9 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
         return dialog;
     }
 
+    /**
+     * Submit expenses.
+     */
     public void submitExpenses() {
 
         log.createEntryLoggingMessage(AddExpenseDialog.class.getName(), "submitExpenses",
@@ -312,38 +346,51 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 
         if (isExpenseAdded && null != dialog) {
             updateGraphs(dialog);
+            mOnSubmitListener.onSubmit();
             dialog.dismiss();
         }
         log.createExitLoggingMessage(AddExpenseDialog.class.getName(), "submitExpenses", null);
 
     }
 
-    @Override
-    public void onShow(DialogInterface dialog) {
-
-    }
-
+    /**
+     * Update the UI with the recently added expense.
+     *
+     * @param dialog
+     */
     private void updateGraphs(AlertDialog dialog) {
+        RoomExpenses roomExpenses = new RoomExpenses();
+        roomExpenses.setExpenseCategory(category.toString());
+        if (null != subCategory) {
+            roomExpenses.setExpenseSubcategory(subCategory.toString());
+        }
+        if (null != description) {
+            roomExpenses.setDescription(description.getText().toString());
+        }
+        if (null != quantity) {
+            roomExpenses.setQuantity(quantity.getText().toString());
+        }
+        roomExpenses.setAmount(Float.valueOf(amount.getText().toString()));
+        roomExpenses.setExpenseDate(new Date());
+        roomExpenses.setMonthYear(DateUtils.getCurrentMonthYear());
+        roomExpenses.setUserId(Integer.parseInt(mSharedPref.getString(PREF_USER_ID, "0")));
+        roomExpenses.setRoomId(Integer.parseInt(mSharedPref.getString(PREF_ROOM_ID, "0")));
         RoomiesFragment fragment = (RoomiesFragment) getActivity().getSupportFragmentManager()
                 .getFragments().get(0);
         if (fragment instanceof HomeFragment) {
-            ViewPager viewPager = ((HomeFragment) fragment).getTab().getViewPager();
-            ((RoomiesFragment.UpdatableFragment) ((HomeFragment.RoomiesHomePagerAdapter) viewPager
-                    .getAdapter())
-                    .getRegisteredFragment(viewPager
-                            .getCurrentItem())).update(null);
+            HomeFragment.RoomiesHomePagerAdapter adapter = ((HomeFragment.RoomiesHomePagerAdapter)
+                    ((HomeFragment) fragment).getTab().getViewPager().getAdapter());
+            ((DashboardTab) adapter.getRegisteredFragment(1)).update(roomExpenses);
 
-            /*((RoomiesFragment.UpdatableFragment) ((RoomiesHomePagerAdapter) ((HomeFragment) fragment)
-                    .getTab().getViewPager()
-                    .getAdapter()).getActiveFragment()).update(null);*/
-            /*((RoomiesFragment.UpdatableFragment) fragment).update(null);
-            ((RoomiesFragment.UpdatableFragment) fragment).update(null);*/
-        } else if (fragment instanceof DashboardTab) {
-            ((DashboardTab) fragment).update(username);
+        } else if (fragment instanceof RoommatesFragment) {
+
         }
         dialog.dismiss();
     }
 
+    /**
+     * set up the default setting for the options
+     */
     private void defaultSettings() {
 
         category = Category.MISCELLANEOUS;
@@ -355,6 +402,11 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
         quantityRadio.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * set up the on click listeners for the buttons.
+     *
+     * @param controls
+     */
     private void setupOnClickListener(Controls controls) {
 
         category = null;
@@ -441,6 +493,13 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
 
     }
 
+    /**
+     * Check if the expenses are within the pre defined range.
+     *
+     * @param category
+     * @param margin
+     * @param spent
+     */
     private void confirmMarginExceedAlert(final String category, final String margin, final String
             spent) {
 
@@ -469,6 +528,10 @@ public class AddExpenseDialog extends DialogFragment implements DialogInterface.
         confirmBuilder.show();
     }
 
-    public enum Controls {RENT, MAID, ELEC, MISC, BILLS, GROCERY, VEGETABLES, OTHERS}
-
+    /**
+     *
+     */
+    public enum Controls {
+        RENT, MAID, ELEC, MISC, BILLS, GROCERY, VEGETABLES, OTHERS
+    }
 }

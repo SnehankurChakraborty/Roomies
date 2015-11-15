@@ -18,9 +18,13 @@ public final class RoomiesConstants {
     public static final String ENTER_ALL_FEILDS = "Please enter all the fields ";
     public static final String APP_ERROR = "Application Error: Please reinstall from play store";
     public static final long DELAY_MILLIS = 1000;
+    public static final String TAG_PERSONAL_INFO = "personal_info";
     public static final String TAG_ROOM_INFO = "room_info";
     public static final String TAG_ROOM_EXPENSE = "room_expense";
     public static final String TAG_LOGIN_FRAGMENT = "login";
+    public static final String USER_NAME = "user_name";
+    public static final String USER_PHONE = "user_phone";
+    public static final String USER_EMAIL = "user_email";
     public static final String ROOM_RENT = "room_rent";
     public static final String ROOM_MAID = "room_maid";
     public static final String ROOM_ELECTRICITY = "room_electricity";

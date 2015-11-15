@@ -24,17 +24,21 @@ import java.util.List;
  * Created by Snehankur on 10/24/2015.
  */
 public class MemberDailyTab extends RoomiesFragment {
-    private static List<RoomExpenses> memberExpenses;
+    private static List<RoomExpenses> memberExpenses = new ArrayList<>();
     private static Context mContext;
 
     public static MemberDailyTab getInstance(Context context, List<RoomExpenses> expenses) {
-        memberExpenses = expenses;
+        if (null != expenses) {
+            memberExpenses.clear();
+            memberExpenses.addAll(expenses);
+        }
         mContext = context;
         return new MemberDailyTab();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         rootView = inflater.inflate(R.layout.memberdaily, container, false);
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.member_daily);
         createLineChart(lineChart);
@@ -44,7 +48,7 @@ public class MemberDailyTab extends RoomiesFragment {
     public void createLineChart(LineChart lineChart) {
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
-        lineChart.setHighlightEnabled(true);
+        lineChart.setHighlightPerTapEnabled(true);
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);

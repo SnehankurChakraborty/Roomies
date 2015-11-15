@@ -1,7 +1,6 @@
 package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +28,21 @@ import java.util.Locale;
  */
 public class MemberWeeklyTab extends RoomiesFragment {
 
-    private static List<RoomExpenses> memberExpenses;
+    private static List<RoomExpenses> memberExpenses = new ArrayList<>();
     private static Context mContext;
 
     public static MemberWeeklyTab getInstance(Context context, List<RoomExpenses> expenses) {
-        memberExpenses = expenses;
+        if (null != expenses) {
+            memberExpenses.clear();
+            memberExpenses.addAll(expenses);
+        }
         mContext = context;
         return new MemberWeeklyTab();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
         rootView = inflater.inflate(R.layout.memberweekly, container, false);
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.member_weekly);
         createLineChart(lineChart);
@@ -49,7 +52,7 @@ public class MemberWeeklyTab extends RoomiesFragment {
     public void createLineChart(LineChart lineChart) {
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
-        lineChart.setHighlightEnabled(true);
+        lineChart.setHighlightPerTapEnabled(false);
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);

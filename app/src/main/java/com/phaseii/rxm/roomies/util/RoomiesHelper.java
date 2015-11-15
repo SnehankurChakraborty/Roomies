@@ -1,47 +1,27 @@
 package com.phaseii.rxm.roomies.util;
 
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.background.RoomiesReceiver;
-import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
-import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.model.RoomUserStatData;
 import com.phaseii.rxm.roomies.model.UserDetails;
 
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.DATE_FORMAT;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.DELAY_MILLIS;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_GOOGLE_FB_LOGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_LOGGED_IN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ELECTRICITY_MARGIN;
@@ -59,10 +39,10 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ALIAS;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_SENDER_ID;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_SETUP_COMPLETED;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_TOTAL_MARGIN;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_TOTAL_MARGIN;
 
 /**
  * Created by Snehankur on 2/23/2015.
@@ -71,6 +51,11 @@ public class RoomiesHelper {
 
     public static final String TAG = "RoomiesHelper";
 
+    /**
+     *
+     * @param editText
+     * @return
+     */
     public static boolean isFieldBlankOrEmpty(EditText editText) {
         boolean isBlankOrEmpty = false;
         String editTextData = editText.getText().toString();
@@ -80,58 +65,13 @@ public class RoomiesHelper {
         return isBlankOrEmpty;
     }
 
-    public static void createToast(Context context, String text, Toast mToast) {
-        RoomiesHelper helper = new RoomiesHelper();
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        int duration = Toast.LENGTH_SHORT;
-        mToast = Toast.makeText(context, text, duration);
-        mToast.setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 400);
-        mToast.show();
-        helper.delayToast(mToast);
-    }
-
-    public static void startActivityHelper(Context context, String activity, Map<String,
-            String> extras, boolean isFinish) throws
-            RoomXpnseMngrException {
-        try {
-            Class activityClass = Class.forName(activity);
-            Intent intent = new Intent(context, activityClass);
-            if (extras != null) {
-                Set<String> keySet = extras.keySet();
-                Iterator<String> keyIterator = keySet.iterator();
-                while (keyIterator.hasNext()) {
-                    String key = keyIterator.next();
-                    intent.putExtra(key, extras.get(key));
-                }
-            }
-            if (isFinish) {
-                ActivityCompat.finishAffinity((Activity) context);
-            }
-            context.startActivity(intent);
-        } catch (ClassNotFoundException e) {
-            throw new RoomXpnseMngrException(activity + " class not found", e);
-        }
-    }
-
-    public static void replaceFragment(String tag,
-                                       FragmentActivity activity, RoomiesFragment fragment) {
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        transaction.replace(R.id.container, fragment, tag);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    public static void replaceFragment(FragmentActivity activity, RoomiesFragment fragment) {
-        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        transaction.replace(R.id.container, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
+    /**
+     *
+     * @param feildId
+     * @param context
+     * @param view
+     * @return
+     */
     public static boolean setError(String feildId, Context context, View view) {
         boolean isValid = true;
         String errorId = feildId + "_error";
@@ -166,6 +106,13 @@ public class RoomiesHelper {
         return isValid;
     }
 
+    /**
+     *
+     * @param feildId
+     * @param context
+     * @param view
+     * @return
+     */
     public static boolean setNumericError(String feildId, Context context, View view) {
         boolean isValid = true;
         String errorId = feildId + "_error";
@@ -200,6 +147,16 @@ public class RoomiesHelper {
         return isValid;
     }
 
+    /**
+     *
+     * @param context
+     * @param roomUserStat
+     * @param userDetails
+     * @param roomDetails
+     * @param roomStats
+     * @param isGoogleFBLogin
+     * @return
+     */
     public static boolean cacheDBtoPreferences(Context context, RoomUserStatData roomUserStat,
                                                UserDetails userDetails,
                                                RoomDetails roomDetails, RoomStats roomStats,
@@ -275,6 +232,12 @@ public class RoomiesHelper {
 
     }
 
+    /**
+     *
+     * @param array
+     * @param element
+     * @return
+     */
     public static String[] addElement(String[] array, String element) {
         List<String> result = new ArrayList<>();
         for (String s : array) {
@@ -308,54 +271,9 @@ public class RoomiesHelper {
     }
 
     /**
-     * Returns the current month year in format 'April2015'
+     *
+     * @param mContext
      */
-    public static String getCurrentMonthYear() {
-
-        Calendar calendar = Calendar.getInstance();
-        String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH)];
-        String year = String.valueOf(calendar.get(Calendar.YEAR));
-        return month + year;
-    }
-
-    /**
-     * Returns the next month year in format 'April2015'
-     */
-    public static String getNextMonthYear() {
-
-        Calendar calendar = Calendar.getInstance();
-        String month = new DateFormatSymbols().getMonths()[calendar.get(Calendar.MONTH) + 1];
-        String year = String.valueOf(
-                month.equals("January") ? calendar.get(Calendar.YEAR) + 1 : calendar.get(
-                        Calendar.YEAR));
-        return month + year;
-    }
-
-    public static Date stringToDateParser(String dateTime) {
-        Date date = null;
-        try {
-            date = new SimpleDateFormat(DATE_FORMAT).parse(dateTime);
-        } catch (ParseException e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return date;
-    }
-
-    public static String dateToStringFormatter(Date date) {
-        String dateString = new SimpleDateFormat(DATE_FORMAT).format(date);
-        return dateString;
-    }
-
-    private void delayToast(final Toast mToast) {
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mToast.cancel();
-            }
-        }, DELAY_MILLIS);
-    }
-
     public static void setupAlarm(Context mContext) {
 
         Intent intent = new Intent(mContext, RoomiesReceiver.class);

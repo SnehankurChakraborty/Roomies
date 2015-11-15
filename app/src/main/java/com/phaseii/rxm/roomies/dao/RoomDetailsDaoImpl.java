@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.providers.RoomDetailsProvider;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,7 @@ public class RoomDetailsDaoImpl implements RoomiesDao {
     private String sortOrder;
     private ContentValues values;
     private RoomDetails roomDetails;
+    private Uri roomDetailsUri;
 
     public RoomDetailsDaoImpl(Context mContext) {
         this.mContext = mContext;
@@ -37,34 +38,46 @@ public class RoomDetailsDaoImpl implements RoomiesDao {
     public List<? extends RoomiesModel> getDetails(Map<ServiceParam, ?> queryMap) {
 
         prepareStatement(queryMap);
-        Cursor cursor = mContext.getContentResolver().query(RoomDetailsProvider
-                .CONTENT_URI, projection, null, null, sortOrder);
-
         List<RoomDetails> roomDetailsList = new ArrayList<>();
-        if (null != cursor) {
-            cursor.moveToFirst();
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(roomDetailsUri, projection, null, null,
+                    sortOrder);
 
-            while (!cursor.isAfterLast()) {
 
-                RoomDetails roomDetail = new RoomDetails();
+            if (null != cursor) {
+                cursor.moveToFirst();
 
-                if (cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ID) >= 0) {
-                    roomDetail.setRoomId(cursor.getInt(
-                            cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ID)));
+                while (!cursor.isAfterLast()) {
+
+                    RoomDetails roomDetail = new RoomDetails();
+
+                    if (cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ID) >= 0) {
+                        roomDetail.setRoomId(cursor.getInt(
+                                cursor.getColumnIndex(RoomiesContract.RoomDetails
+                                        .DETAILS_ROOM_ID)));
+                    }
+                    if (cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ALIAS) >=
+                            0) {
+                        roomDetail.setRoomAlias(cursor.getString(
+                                cursor.getColumnIndex(RoomiesContract.RoomDetails
+                                        .DETAILS_ROOM_ALIAS)));
+                    }
+                    if (cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_NO_OF_PERSONS)
+                            >= 0) {
+                        roomDetail.setNoOfPersons(cursor.getInt(
+                                cursor.getColumnIndex(RoomiesContract.RoomDetails
+                                        .DETAILS_ROOM_ALIAS)));
+                    }
+
+                    roomDetailsList.add(roomDetail);
+                    cursor.moveToNext();
                 }
-                if (cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ALIAS) >= 0) {
-                    roomDetail.setRoomAlias(cursor.getString(
-                            cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ALIAS)));
-                }
-                if (cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_NO_OF_PERSONS) >= 0) {
-                    roomDetail.setNoOfPersons(cursor.getInt(
-                            cursor.getColumnIndex(RoomiesContract.RoomDetails.DETAILS_ROOM_ALIAS)));
-                }
-
-                roomDetailsList.add(roomDetail);
-                cursor.moveToNext();
+                cursor.close();
             }
-            cursor.close();
+        } finally {
+            if (cursor != null && !cursor.isClosed())
+                cursor.close();
         }
 
         return roomDetailsList;
@@ -133,6 +146,23 @@ public class RoomDetailsDaoImpl implements RoomiesDao {
                 selectionArgs = new String[selectionArgsList.size()];
                 selectionArgsList.toArray(selectionArgs);
             }
+        }
+
+        String queryArg = null;
+        Map<QueryParam, String> queryParams = (Map<QueryParam, String>) detailsMap.get
+                (ServiceParam.QUERYARGS);
+        if (null != queryParams && queryParams.size() > 0) {
+            for (QueryParam param : queryParams.keySet()) {
+                if (param.equals(QueryParam.ROOM_ID)) {
+                    queryArg = "room/" + queryParams.get(param);
+                }
+            }
+        }
+        if (null != queryArg) {
+            roomDetailsUri = Uri.withAppendedPath(RoomDetailsProvider.CONTENT_URI,
+                    queryArg);
+        } else {
+            roomDetailsUri = RoomDetailsProvider.CONTENT_URI;
         }
 
         if (null != detailsMap.get(ServiceParam.MODEL)) {

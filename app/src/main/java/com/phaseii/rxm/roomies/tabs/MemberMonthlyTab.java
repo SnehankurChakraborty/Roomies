@@ -1,7 +1,6 @@
 package com.phaseii.rxm.roomies.tabs;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +25,14 @@ import java.util.List;
  * Created by Snehankur on 10/24/2015.
  */
 public class MemberMonthlyTab extends RoomiesFragment {
-    private static List<RoomExpenses> memberExpenses;
+    private static List<RoomExpenses> memberExpenses=new ArrayList<>();
     private static Context mContext;
 
     public static MemberMonthlyTab getInstance(Context context, List<RoomExpenses> expenses) {
-        memberExpenses = expenses;
+        if (null != expenses) {
+            memberExpenses.clear();
+            memberExpenses.addAll(expenses);
+        }
         mContext = context;
         return new MemberMonthlyTab();
     }
@@ -46,7 +48,7 @@ public class MemberMonthlyTab extends RoomiesFragment {
     public void createLineChart(LineChart lineChart) {
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
-        lineChart.setHighlightEnabled(true);
+        lineChart.setHighlightPerTapEnabled(true);
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);

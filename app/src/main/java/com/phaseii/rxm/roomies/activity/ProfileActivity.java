@@ -27,9 +27,10 @@ import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.util.ActivityUtils;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.ServiceParam;
+import com.phaseii.rxm.roomies.util.ToastUtils;
 import com.phaseii.rxm.roomies.view.AlphaForegroundColorSpan;
 import com.phaseii.rxm.roomies.view.RoomiesScrollView;
 
@@ -258,86 +259,126 @@ public class ProfileActivity extends ActionBarActivity {
         final Button field_edit_button = (Button) findViewById(resEditButtonId);
         final Button field_save_button = (Button) findViewById(resSaveButtonId);
         field_save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                                                 @Override
+                                                 public void onClick(View v) {
 
-                if (field_save_button.getVisibility() == View.VISIBLE) {
-                    if (!TextUtils.isEmpty(field_edit.getText().toString().trim())) {
-                        boolean isUpdateSuccessful = false;
-                        if (isGoogleFBLogin) {
-                            userAlias = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-                                    MODE_PRIVATE).getString(RoomiesConstants.EMAIL_ID, null);
-                        }
-                        switch (mode) {
-                            case USER:
-                                /*if ("name".equals(feildId)) {
-									service = new UserDetailsDaoImpl();
-									detailsMap.clear();
-									UserDetails user = new UserDetails();
-									user.setUserAlias(field_edit.getText().toString());
-									if ((service.update(,
-											RoomiesContract.UserCredentials.COLUMN_NAME_USERNAME)) &&
-											(roomService.updateRoomMargins(userAlias, feildId,
-													field_edit.getText().toString())) && (miscService.updateUser(
-											userAlias, field_edit.getText().toString()))) {
-										isUpdateSuccessful = true;
-									}
+                                                     if (field_save_button.getVisibility() ==
+                                                             View.VISIBLE) {
+                                                         if (!TextUtils.isEmpty(field_edit
+                                                                 .getText().toString().trim())) {
+                                                             boolean isUpdateSuccessful = false;
+                                                             if (isGoogleFBLogin) {
+                                                                 userAlias = getSharedPreferences
+                                                                         (RoomiesConstants
+                                                                                         .ROOM_INFO_FILE_KEY,
+                                                                                 MODE_PRIVATE)
+                                                                         .getString
+                                                                                 (RoomiesConstants
+                                                                                         .EMAIL_ID, null);
+                                                             }
+                                                             switch (mode) {
+                                                                 case USER:
+                                                                     if ("name".equals(feildId)) {
+                                                                         /*service = new
+                                                                                 UserDetailsDaoImpl();
+                                                                         detailsMap.clear();
+                                                                         UserDetails user = new
+                                                                                 UserDetails();
+                                                                         user.setUserAlias
+                                                                                 (field_edit
+                                                                                         .getText
+                                                                                         ()
+                                                                                         .toString());
+                                                                         if ((service.update(,
+                                                                                 RoomiesContract
+                                                                                         .UserCredentials.COLUMN_NAME_USERNAME)
+                                                                         ) &&
+                                                                                 (roomService
+                                                                                         .updateRoomMargins(userAlias, feildId,
+                                                                                                 field_edit.getText().toString())) &&
+                                                                                 (miscService
+                                                                                         .updateUser(
+                                                                                                 userAlias, field_edit.getText().toString()))) {
+                                                                             isUpdateSuccessful =
+                                                                                     true;
+                                                                         }
 
-								} else {
-									isUpdateSuccessful = userService.update(userAlias,
-											field_edit.getText().toString(),
-											RoomiesContract.UserCredentials.COLUMN_NAME_EMAIL_ID);
-								}*/
-                                break;
-                            case ROOM:
-								/*if ("no_of_members".equals(feildId)) {
-									SharedPreferences.Editor mEditor = getSharedPreferences
-											(RoomiesConstants.ROOM_INFO_FILE_KEY,
-													MODE_PRIVATE).edit();
-									mEditor.putString(RoomiesConstants.ROOM_NO_OF_MEMBERS,
-											field_edit.getText().toString());
-									mEditor.apply();
-									isUpdateSuccessful = true;
-								} else {*/
-								/*isUpdateSuccessful = roomService.updateRoomMargins(userAlias,
-										feildId, field_edit.getText().toString());*/
+                                                                     } else {
+                                                                         isUpdateSuccessful =
+                                                                                 userService
+                                                                                         .update
+                                                                                         (userAlias,
+                                                                                                 field_edit
+                                                                                                         .getText().toString(),
+                                                                                                 RoomiesContract
+                                                                                                         .UserCredentials.COLUMN_NAME_EMAIL_ID);*/
+                                                                     }
+                                                                     break;
+                                                                 case ROOM:
+                                /*if ("no_of_members".equals(feildId)) {
+                                    SharedPreferences.Editor mEditor = getSharedPreferences
+                                            (RoomiesConstants.ROOM_INFO_FILE_KEY,
+                                                    MODE_PRIVATE).edit();
+                                    mEditor.putString(RoomiesConstants.ROOM_NO_OF_MEMBERS,
+                                            field_edit.getText().toString());
+                                    mEditor.apply();
+                                    isUpdateSuccessful = true;
+                                } else {
+                                    isUpdateSuccessful = roomService.updateRoomMargins(userAlias,
+                                            feildId, field_edit.getText().toString());*/
 
 
-                                break;
-                            default:
-                                break;
+                                                                     break;
+                                                                 default:
+                                                                     break;
 
-                        }
-                        if (isUpdateSuccessful) {
-                            RoomiesHelper.createToast(getBaseContext(), feildId + " updated",
-                                    mToast);
-                            populateFeilds();
-                        }
-                    }
-                    field.setVisibility(View.VISIBLE);
-                    field_edit.setVisibility(View.INVISIBLE);
-                    field_edit_button.setVisibility(View.VISIBLE);
-                    field_save_button.setVisibility(View.INVISIBLE);
-                    if (currentApiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                        mToolbar.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
-        field_edit_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (field_edit_button.getVisibility() == View.VISIBLE) {
-                    field.setVisibility(View.INVISIBLE);
-                    field_edit.setVisibility(View.VISIBLE);
-                    field_save_button.setVisibility(View.VISIBLE);
-                    field_edit_button.setVisibility(View.INVISIBLE);
-                    if (currentApiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                        mToolbar.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
+                                                             }
+                                                             if (isUpdateSuccessful) {
+                                                                 ToastUtils.createToast
+                                                                         (getBaseContext(),
+                                                                                 feildId + " " +
+                                                                                         "updated",
+                                                                                 mToast);
+                                                                 populateFeilds();
+                                                             }
+                                                         }
+                                                         field.setVisibility(View.VISIBLE);
+                                                         field_edit.setVisibility(View.INVISIBLE);
+                                                         field_edit_button.setVisibility(View
+                                                                 .VISIBLE);
+                                                         field_save_button.setVisibility(View
+                                                                 .INVISIBLE);
+                                                         if (currentApiVersion >= Build
+                                                                 .VERSION_CODES.LOLLIPOP) {
+                                                             mToolbar.setVisibility(View.VISIBLE);
+                                                         }
+                                                     }
+                                                 }
+                                             }
+
+        );
+        field_edit_button.setOnClickListener(new View.OnClickListener()
+
+                                             {
+                                                 @Override
+                                                 public void onClick(View v) {
+                                                     if (field_edit_button.getVisibility() ==
+                                                             View.VISIBLE) {
+                                                         field.setVisibility(View.INVISIBLE);
+                                                         field_edit.setVisibility(View.VISIBLE);
+                                                         field_save_button.setVisibility(View
+                                                                 .VISIBLE);
+                                                         field_edit_button.setVisibility(View
+                                                                 .INVISIBLE);
+                                                         if (currentApiVersion >= Build
+                                                                 .VERSION_CODES.LOLLIPOP) {
+                                                             mToolbar.setVisibility(View.GONE);
+                                                         }
+                                                     }
+                                                 }
+                                             }
+
+        );
     }
 
     private void setupBackground() {
@@ -345,8 +386,8 @@ public class ProfileActivity extends ActionBarActivity {
                 R.id.colored_background_view);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 4;
-		/*userAlias = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
-				MODE_PRIVATE).getString(RoomiesConstants.NAME, null);*/
+        /*userAlias = getSharedPreferences(RoomiesConstants.ROOM_INFO_FILE_KEY,
+                MODE_PRIVATE).getString(RoomiesConstants.NAME, null);*/
         Bitmap bitmap = BitmapFactory.decodeFile(new File(getFilesDir(),
                 userAlias + getResources().getString(
                         R.string.PROFILEJPG)).getAbsolutePath(), options);
@@ -373,11 +414,11 @@ public class ProfileActivity extends ActionBarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         try {
-            RoomiesHelper.startActivityHelper(this,
+            ActivityUtils.startActivityHelper(this,
                     getResources()
                             .getString(R.string.HomeScreen_Activity), null, true);
         } catch (RoomXpnseMngrException e) {
-            RoomiesHelper.createToast(this, APP_ERROR, mToast);
+            ToastUtils.createToast(this, APP_ERROR, mToast);
             System.exit(0);
         }
     }

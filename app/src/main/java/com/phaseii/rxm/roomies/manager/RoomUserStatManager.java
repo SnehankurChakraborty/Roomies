@@ -9,14 +9,16 @@ import com.phaseii.rxm.roomies.dao.RoomStatsDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomUserMapDao;
 import com.phaseii.rxm.roomies.dao.RoomUserStatDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
-import com.phaseii.rxm.roomies.util.ServiceParam;
+import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.model.RoomDetails;
 import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.model.RoomUserMap;
 import com.phaseii.rxm.roomies.model.RoomUserStatData;
+import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.ServiceParam;
+import com.phaseii.rxm.roomies.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
 
 /**
  * Created by Snehankur on 8/23/2015.
@@ -38,6 +39,10 @@ public class RoomUserStatManager {
     private boolean isDataInserted;
     private SharedPreferences mSharedPref;
 
+    /**
+     *
+     * @param mContext
+     */
     public RoomUserStatManager(Context mContext) {
         this.mContext = mContext;
         roomiesDao = new RoomUserStatDaoImpl(mContext);
@@ -47,13 +52,18 @@ public class RoomUserStatManager {
                 .MODE_PRIVATE);
     }
 
+    /**
+     *
+     * @param username
+     * @return
+     */
     public List<RoomUserStatData> loadRoomDetails(String username) {
         isDataLoaded = false;
         Map<ServiceParam, Object> paramMap = new HashMap<>();
 
         List<QueryParam> projectionParams = new ArrayList<QueryParam>();
-        projectionParams.add(QueryParam.USERALIAS);
-        projectionParams.add(QueryParam.ROOMID);
+        projectionParams.add(QueryParam.USER_ALIAS);
+        projectionParams.add(QueryParam.ROOM_ID);
         projectionParams.add(QueryParam.ROOM_ALIAS);
         projectionParams.add(QueryParam.NO_OF_PERSONS);
         projectionParams.add(QueryParam.MONTH_YEAR);
@@ -78,54 +88,67 @@ public class RoomUserStatManager {
             paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
         }
 
-        List<RoomUserStatData> roomUserStatDataList = (List<RoomUserStatData>) roomiesDao.getDetails(
-                paramMap);
+        List<RoomUserStatData> roomUserStatDataList = (List<RoomUserStatData>) roomiesDao
+                .getDetails(paramMap);
 
         return roomUserStatDataList;
     }
 
-    public boolean storeRoomDetails(RoomDetails roomDetails, RoomStats roomStats) {
+    /**
+     *
+     * @param userDetails
+     * @param roomDetails
+     * @param roomStats
+     * @return
+     */
+    public boolean storeRoomDetails(UserDetails userDetails, RoomDetails roomDetails, RoomStats
+            roomStats) {
 
         isDataInserted = false;
         Map<ServiceParam, RoomDetails> roomDetailsMap = new HashMap<>();
         Map<ServiceParam, RoomStats> roomStatsMap = new HashMap<>();
         Map<ServiceParam, RoomUserMap> roomUserMap = new HashMap<>();
-        SharedPreferences.Editor mEditor = mSharedPref.edit();
 
-        roomDetailsMap.put(ServiceParam.MODEL, roomDetails);
-        roomiesDao = new RoomDetailsDaoImpl(mContext);
-        int roomId = roomiesDao.insertDetails(roomDetailsMap);
+        Map<ServiceParam, UserDetails> userMap = new HashMap<>();
+        userMap.put(ServiceParam.MODEL, userDetails);
+        roomiesDao = new UserDetailsDaoImpl(mContext);
+        int userId = roomiesDao.insertDetails(userMap);
 
-        if (roomId >= 0) {
+        if (userId >= 0) {
+            roomDetailsMap.put(ServiceParam.MODEL, roomDetails);
+            roomiesDao = new RoomDetailsDaoImpl(mContext);
+            int roomId = roomiesDao.insertDetails(roomDetailsMap);
 
-            roomDetails.setRoomId(roomId);
-            roomStats.setRoomId(roomId);
+            if (roomId >= 0) {
+                roomDetails.setRoomId(roomId);
+                roomStats.setRoomId(roomId);
+                roomStatsMap.put(ServiceParam.MODEL, roomStats);
+                roomiesDao = new RoomStatsDaoImpl(mContext);
+                int statId = roomiesDao.insertDetails(roomStatsMap);
 
-            roomStatsMap.put(ServiceParam.MODEL, roomStats);
-            roomiesDao = new RoomStatsDaoImpl(mContext);
-            int statId = roomiesDao.insertDetails(roomStatsMap);
-
-            if (statId >= 0) {
-                roomStats.setStatsId(statId);
-
-                RoomUserMap roomUser = new RoomUserMap();
-                roomUser.setUserId(Integer.valueOf(mSharedPref.getString(PREF_USER_ID, null)));
-                roomUser.setRoomId(roomId);
-                roomUserMap.put(ServiceParam.MODEL, roomUser);
-
-                roomiesDao = new RoomUserMapDao(mContext);
-                if (roomiesDao.insertDetails(roomUserMap) > 0) {
-                    isDataInserted = true;
-                    RoomiesHelper.createToast(mContext,
-                            "Room details saved and expense set", mToast);
+                if (statId >= 0) {
+                    roomStats.setStatsId(statId);
+                    RoomUserMap roomUser = new RoomUserMap();
+                    roomUser.setUserId(userId);
+                    roomUser.setRoomId(roomId);
+                    roomUserMap.put(ServiceParam.MODEL, roomUser);
+                    roomiesDao = new RoomUserMapDao(mContext);
+                    if (roomiesDao.insertDetails(roomUserMap) > 0) {
+                        isDataInserted = true;
+                        ToastUtils.createToast(mContext,
+                                "Room details saved and expense set", mToast);
+                    }
+                } else {
+                    ToastUtils.createToast(mContext, APP_ERROR, mToast);
+                    System.exit(0);
                 }
 
             } else {
-                RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
+                ToastUtils.createToast(mContext, APP_ERROR, mToast);
                 System.exit(0);
             }
         } else {
-            RoomiesHelper.createToast(mContext, APP_ERROR, mToast);
+            ToastUtils.createToast(mContext, APP_ERROR, mToast);
             System.exit(0);
         }
         return isDataInserted;

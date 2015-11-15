@@ -6,11 +6,12 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.providers.RoomExpensesProvider;
+import com.phaseii.rxm.roomies.util.DateUtils;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,6 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPE
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPENSE_ROOM_ID;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPENSE_SUBCATEGORY;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses.EXPENSE_USER_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.dateToStringFormatter;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.getCurrentMonthYear;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.stringToDateParser;
 
 /**
  * Created by Snehankur on 6/29/2015.
@@ -53,42 +49,48 @@ public class RoomExpensesDaoImpl implements RoomiesDao {
     public List<? extends RoomiesModel> getDetails(Map<ServiceParam, ?> queryMap) {
 
         prepareStatement(queryMap);
+        Cursor cursor = null;
+        List<RoomExpenses> roomExpensesList = new ArrayList<>();
+        try {
+            cursor = mContext.getContentResolver().query(expenseUri, projection, selection,
+                    selectionArgs, sortOrder);
 
-        Cursor cursor = mContext.getContentResolver().query(expenseUri, projection, selection,
-                selectionArgs, sortOrder);
-        List<RoomExpenses> roomExpensesList = null;
-        if (null != cursor) {
-            cursor.moveToFirst();
-            roomExpensesList = new ArrayList<>();
-            while (!cursor.isAfterLast()) {
+            if (null != cursor) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
 
-                RoomExpenses roomExpenses = new RoomExpenses();
+                    RoomExpenses roomExpenses = new RoomExpenses();
 
-                roomExpenses.setRoomId(cursor.getColumnIndex(EXPENSE_ROOM_ID) >= 0 ? cursor.getInt
-                        (cursor.getColumnIndex(EXPENSE_ROOM_ID)) : -1);
-                roomExpenses.setUserId(cursor.getColumnIndex(EXPENSE_USER_ID) >= 0 ? cursor.getInt
-                        (cursor.getColumnIndex(EXPENSE_USER_ID)) : -1);
-                roomExpenses.setExpenseDate(cursor.getColumnIndex(EXPENSE_DATE) >= 0 ?
-                        stringToDateParser(
-                                cursor.getString(cursor.getColumnIndex(EXPENSE_DATE))) : null);
-                roomExpenses.setExpenseCategory(cursor.getColumnIndex(EXPENSE_CATEGORY) >= 0 ?
-                        cursor.getString(cursor.getColumnIndex(EXPENSE_CATEGORY)) : null);
-                roomExpenses.setExpenseSubcategory(cursor.getColumnIndex(EXPENSE_SUBCATEGORY) >= 0 ?
-                        cursor.getString(cursor.getColumnIndex(EXPENSE_SUBCATEGORY)) : null);
-                roomExpenses.setAmount(cursor.getColumnIndex(EXPENSE_AMOUNT) >= 0 ? cursor.getLong
-                        (cursor.getColumnIndex(EXPENSE_AMOUNT)) : -1);
-                roomExpenses.setQuantity(
-                        cursor.getColumnIndex(EXPENSE_QUANTITY) >= 0 ? cursor.getString
-                                (cursor.getColumnIndex(EXPENSE_QUANTITY)) : null);
-                roomExpenses.setDescription(cursor.getColumnIndex(EXPENSE_DESCRIPTION) >= 0 ?
-                        cursor.getString(cursor.getColumnIndex(EXPENSE_DESCRIPTION)) : null);
-                roomExpenses.setMonthYear(cursor.getColumnIndex(EXPENSE_MONTH_YEAR) >= 0 ?
-                        cursor.getString(cursor.getColumnIndex(EXPENSE_MONTH_YEAR)) : null);
-                roomExpensesList.add(roomExpenses);
+                    roomExpenses.setRoomId(cursor.getColumnIndex(EXPENSE_ROOM_ID) >= 0 ? cursor
+                            .getInt(cursor.getColumnIndex(EXPENSE_ROOM_ID)) : -1);
+                    roomExpenses.setUserId(cursor.getColumnIndex(EXPENSE_USER_ID) >= 0 ? cursor
+                            .getInt(cursor.getColumnIndex(EXPENSE_USER_ID)) : -1);
+                    roomExpenses.setExpenseDate(cursor.getColumnIndex(EXPENSE_DATE) >= 0 ?
+                            DateUtils.stringToDateParser(
+                                    cursor.getString(cursor.getColumnIndex(EXPENSE_DATE))) : null);
+                    roomExpenses.setExpenseCategory(cursor.getColumnIndex(EXPENSE_CATEGORY) >= 0 ?
+                            cursor.getString(cursor.getColumnIndex(EXPENSE_CATEGORY)) : null);
+                    roomExpenses.setExpenseSubcategory(cursor.getColumnIndex(EXPENSE_SUBCATEGORY)
+                            >= 0 ?
+                            cursor.getString(cursor.getColumnIndex(EXPENSE_SUBCATEGORY)) : null);
+                    roomExpenses.setAmount(cursor.getColumnIndex(EXPENSE_AMOUNT) >= 0 ? cursor
+                            .getLong(cursor.getColumnIndex(EXPENSE_AMOUNT)) : -1);
+                    roomExpenses.setQuantity(
+                            cursor.getColumnIndex(EXPENSE_QUANTITY) >= 0 ? cursor.getString
+                                    (cursor.getColumnIndex(EXPENSE_QUANTITY)) : null);
+                    roomExpenses.setDescription(cursor.getColumnIndex(EXPENSE_DESCRIPTION) >= 0 ?
+                            cursor.getString(cursor.getColumnIndex(EXPENSE_DESCRIPTION)) : null);
+                    roomExpenses.setMonthYear(cursor.getColumnIndex(EXPENSE_MONTH_YEAR) >= 0 ?
+                            cursor.getString(cursor.getColumnIndex(EXPENSE_MONTH_YEAR)) : null);
+                    roomExpensesList.add(roomExpenses);
 
-                cursor.moveToNext();
+                    cursor.moveToNext();
+                }
             }
-            cursor.close();
+        } finally {
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
         }
 
 
@@ -101,7 +103,8 @@ public class RoomExpensesDaoImpl implements RoomiesDao {
         int row = -1;
         prepareStatement(detailsMap);
 
-        Uri resultUri = mContext.getContentResolver().insert(RoomExpensesProvider.CONTENT_URI,
+        Uri resultUri = mContext.getContentResolver().insert(RoomExpensesProvider
+                        .CONTENT_URI,
                 values);
         row = Integer.parseInt(resultUri.getLastPathSegment());
         return row;
@@ -154,20 +157,22 @@ public class RoomExpensesDaoImpl implements RoomiesDao {
 
             List<String> selectionArgsList = (List<String>) detailsMap.get(
                     ServiceParam.SELECTIONARGS);
-            if (null != selectionArgsList && null != selection && selectionArgsList.size() > 0) {
+            if (null != selectionArgsList && null != selection && selectionArgsList.size() >
+                    0) {
                 selectionArgs = new String[selectionArgsList.size()];
                 selectionArgsList.toArray(selectionArgs);
             }
         }
         String queryArg = null;
-        QueryParam queryParam = (QueryParam) detailsMap.get(ServiceParam.QUERYARGS);
-        if (null != queryParam) {
-            if (queryParam.equals(QueryParam.MONTH_YEAR)) {
-                queryArg = "month/" + getCurrentMonthYear();
-            } else if (queryParam.equals(QueryParam.ROOMID)) {
-                queryArg = "room/" + mContext.getSharedPreferences(PREF_ROOMIES_KEY,
-                        Context.MODE_PRIVATE).getString
-                        (PREF_ROOM_ID, null);
+        Map<QueryParam, String> queryParams = (Map<QueryParam, String>) detailsMap.get
+                (ServiceParam.QUERYARGS);
+        if (null != queryParams && queryParams.size() > 0) {
+            for (QueryParam param : queryParams.keySet()) {
+                if (param.equals(QueryParam.MONTH_YEAR)) {
+                    queryArg = "month/" + queryParams.get(param);
+                } else if (param.equals(QueryParam.ROOM_ID)) {
+                    queryArg = "room/" + queryParams.get(param);
+                }
             }
         }
 
@@ -184,10 +189,12 @@ public class RoomExpensesDaoImpl implements RoomiesDao {
             roomExpenses = (RoomExpenses) detailsMap.get(ServiceParam.MODEL);
 
             if (roomExpenses.getRoomId() >= 0) {
-                values.put(RoomiesContract.RoomExpenses.EXPENSE_ROOM_ID, roomExpenses.getRoomId());
+                values.put(RoomiesContract.RoomExpenses.EXPENSE_ROOM_ID, roomExpenses
+                        .getRoomId());
             }
             if (roomExpenses.getUserId() >= 0) {
-                values.put(RoomiesContract.RoomExpenses.EXPENSE_USER_ID, roomExpenses.getUserId());
+                values.put(RoomiesContract.RoomExpenses.EXPENSE_USER_ID, roomExpenses
+                        .getUserId());
             }
             if (null != roomExpenses.getMonthYear()) {
                 values.put(RoomiesContract.RoomExpenses.EXPENSE_MONTH_YEAR,
@@ -215,7 +222,7 @@ public class RoomExpensesDaoImpl implements RoomiesDao {
             }
             if (null != roomExpenses.getExpenseDate()) {
                 values.put(RoomiesContract.RoomExpenses.EXPENSE_DATE,
-                        dateToStringFormatter(roomExpenses.getExpenseDate()));
+                        DateUtils.dateToStringFormatter(roomExpenses.getExpenseDate()));
             }
         }
     }

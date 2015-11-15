@@ -152,7 +152,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
     public void createLineChart(LineChart lineChart) {
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
-        lineChart.setHighlightEnabled(true);
+        lineChart.setHighlightPerTapEnabled(true);
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(false);

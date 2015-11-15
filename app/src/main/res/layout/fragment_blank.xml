@@ -1,0 +1,60 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Click on the"
+                android:textColor="@color/divider"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/plus"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@id/click"
+                android:background="@drawable/add_expense"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/divider"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:id="@+id/add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/plus"
+                android:paddingTop="10dp"
+                android:text="button to add a room"
+                android:textColor="@color/divider"
+                android:textSize="10pt"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/help"
+            android:layout_centerHorizontal="true"
+            android:text="IT'S EMPTY HERE!!"
+            android:textColor="@color/divider"
+            android:textSize="15pt"/>
+    </RelativeLayout>
+
+
+</FrameLayout>

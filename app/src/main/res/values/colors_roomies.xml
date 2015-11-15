@@ -43,6 +43,7 @@
     <color name="card_light">#CFD8DC</color>
     <color name="pink">#F48FB1</color>
     <color name="white_translucent">#CCFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
     <color name="orange">#FF9800</color>
     <color name="blue">#0D47A1</color>
     <color name="yellow">#FFEB3B</color>

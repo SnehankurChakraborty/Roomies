@@ -2,13 +2,18 @@ package com.phaseii.rxm.roomies.fragments;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 
 /**
  * Created by Snehankur on 3/18/2015.
  */
 public abstract class RoomiesFragment extends Fragment {
+
+    private Bundle parceableBundle;
 
     public static final int SEGMENT_ONE = Color.parseColor("#3cbf97");
     public static final int SEGMENT_TWO = Color.parseColor("#23dfa5");
@@ -36,9 +41,13 @@ public abstract class RoomiesFragment extends Fragment {
     }
 
     public interface UpdatableFragment {
-        void update(String username);
+        void update(RoomExpenses roomExpense);
+    }
+    public Bundle getParceableBundle() {
+        return parceableBundle;
     }
 
+    public void setParceableBundle(Bundle parceableBundle) {
+        this.parceableBundle = parceableBundle;
+    }
 }
-
-

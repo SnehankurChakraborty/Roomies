@@ -17,16 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.SortType;
 import com.phaseii.rxm.roomies.util.Category;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
-import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.util.SubCategory;
 import com.phaseii.rxm.roomies.view.DetailExpenseAdapter;
 import com.phaseii.rxm.roomies.view.ScrollableLayoutManager;
@@ -35,12 +30,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
 
+/**
+ *
+ */
 public class DashboardTab extends RoomiesFragment
         implements RoomiesFragment.UpdatableFragment {
 
@@ -50,11 +46,15 @@ public class DashboardTab extends RoomiesFragment
     private LinearLayout sortFilterTab;
     private RelativeLayout toolbarContainer;
     private SharedPreferences msharedPref;
-    private List<RoomExpenses> roomExpensesList;
+    private static List<RoomExpenses> roomExpensesList = new ArrayList<>();
     private RoomiesDao service;
     private String roomId;
 
-    public static DashboardTab getInstance() {
+    public static DashboardTab getInstance(List<RoomExpenses> roomExpenses) {
+        if (null != roomExpenses) {
+            roomExpensesList.clear();
+            roomExpensesList.addAll(roomExpenses);
+        }
         return new DashboardTab();
     }
 
@@ -64,22 +64,6 @@ public class DashboardTab extends RoomiesFragment
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         mContext = getActivity().getBaseContext();
         msharedPref = mContext.getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
-        roomId = msharedPref.getString(RoomiesConstants.PREF_ROOM_ID, null);
-
-        Map<ServiceParam, Object> paramMap = new HashMap<>();
-        List<QueryParam> params = new ArrayList<QueryParam>();
-        List<String> selectionArgs = new ArrayList<String>();
-
-        params.add(QueryParam.MONTH_YEAR);
-        paramMap.put(ServiceParam.SELECTION, params);
-
-        selectionArgs.add(RoomiesHelper.getCurrentMonthYear());
-        paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
-
-        paramMap.put(ServiceParam.QUERYARGS, QueryParam.ROOMID);
-
-        service = new RoomExpensesDaoImpl(mContext);
-        roomExpensesList = (List<RoomExpenses>) service.getDetails(paramMap);
 
         /**
          * Sort in descending order of transaction dates
@@ -470,40 +454,16 @@ public class DashboardTab extends RoomiesFragment
     /**
      * Callback to update the Dashboard screen on any new transaction
      *
-     * @param username
+     * @param expenses
      */
     @Override
-    public void update(String username) {
+    public void update(RoomExpenses expenses) {
         if (null != adapter) {
-
-            Map<ServiceParam, Object> paramMap = new HashMap<>();
-            List<QueryParam> params = new ArrayList<QueryParam>();
-            List<String> selectionArgs = new ArrayList<String>();
-
-            params.add(QueryParam.ROOMID);
-            paramMap.put(ServiceParam.SELECTION, params);
-
-            selectionArgs.add(roomId);
-            paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
-
-            paramMap.put(ServiceParam.QUERYARGS, QueryParam.MONTH_YEAR);
-
-            roomExpensesList = (List<RoomExpenses>) service.getDetails(paramMap);
-            Collections.sort(roomExpensesList, new Comparator<RoomExpenses>() {
-                @Override
-                public int compare(RoomExpenses lhs, RoomExpenses rhs) {
-                    if (lhs.getExpenseDate().before(rhs.getExpenseDate())) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-            });
-            ((DetailExpenseAdapter) adapter).addItemsToList(roomExpensesList,
-                    SortType.DATE_DESC);
+            roomExpensesList.add(expenses);
             adapter.notifyDataSetChanged();
         }
     }
+
 
     /**
      * Sorts the expenses list by quantity.

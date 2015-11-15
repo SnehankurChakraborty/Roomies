@@ -4,7 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +23,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,16 +54,27 @@ public class SummaryTab extends RoomiesFragment implements RoomiesFragment.Updat
     private float misc;
     private float spent;
     private Calendar calendar;
+    private String rs;
 
+    /**
+     * @return
+     */
     public static SummaryTab getInstance() {
         return new SummaryTab();
     }
 
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         Context mContext = getActivity().getBaseContext();
+        rs = getResources().getString(R.string.Rs);
         rootView = inflater.inflate(R.layout.tab_summary, container, false);
         typeface = Typeface.createFromAsset(getActivity().getBaseContext().getAssets(),
                 "fonts/VarelaRound-Regular.ttf");
@@ -72,25 +90,47 @@ public class SummaryTab extends RoomiesFragment implements RoomiesFragment.Updat
         spent = getSpentDetails();
 
         prepareBudgetGraph(mContext);
-        prepareSpentCard();
-        prepareRemainingCard();
+        prepareStatsCard();
         prepareBudgetCard();
         setTypeface(typeface);
         
         return rootView;
     }
 
+    /**
+     * @return
+     */
     @Override
     public View getFragmentView() {
         return rootView;
     }
 
+    /**
+     * @param typeface
+     */
     @Override
     public void setTypeface(Typeface typeface) {
         ((TextView) rootView.findViewById(R.id.this_month)).setTypeface(typeface, Typeface.BOLD);
         ((TextView) rootView.findViewById(R.id.last_update)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.spent_value)).setTypeface(typeface, Typeface.BOLD);
+        ((TextView) rootView.findViewById(R.id.spent_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.remaining_value)).setTypeface(typeface,
+                Typeface.BOLD);
+        ((TextView) rootView.findViewById(R.id.remaining_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.rent_budget)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.maid_budget)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.elec_budget)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.misc_budget)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.rent_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.maid_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.elec_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.misc_label)).setTypeface(typeface);
+        ((TextView) rootView.findViewById(R.id.set_for_this_month)).setTypeface(typeface);
     }
 
+    /**
+     * @param context
+     */
     private void prepareBudgetGraph(Context context) {
 
         ArrayList<Entry> entries = new ArrayList<Entry>();
@@ -114,12 +154,14 @@ public class SummaryTab extends RoomiesFragment implements RoomiesFragment.Updat
 
         pieChart.setData(data);
         pieChart.animateXY(1000, 1000);
-        pieChart.setDrawCenterText(true);
-        pieChart.setCenterText(String.valueOf((int) status) + "%");
         pieChart.setCenterTextTypeface(typeface);
-        pieChart.setCenterTextColor(getResources().getColor(R.color.primary_home));
-        pieChart.setHoleColor(getResources().getColor(R.color.white));
-        pieChart.setCenterTextSize(25);
+        pieChart.setCenterText(generateCenterSpannableText(status));
+
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColorTransparent(true);
+
+        pieChart.setTransparentCircleColor(Color.WHITE);
+        pieChart.setTransparentCircleAlpha(110);
         pieChart.setRotationEnabled(false);
         pieChart.setDescription("");
         pieChart.setClickable(false);
@@ -133,6 +175,26 @@ public class SummaryTab extends RoomiesFragment implements RoomiesFragment.Updat
                 "days to go");
     }
 
+    private SpannableString generateCenterSpannableText(float percent) {
+
+        SpannableString s = new SpannableString((int) percent + "%\nleft from \nTotal Budget");
+        s.setSpan(new RelativeSizeSpan(2f), 0, s.length() - 24, 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), 0, s.length() - 24, 0);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary_home)),
+                0, s.length() - 24, 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), s.length() - 24, s.length() - 12, 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), s.length() - 12, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(Color.BLACK), s.length() - 24, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(.8f), s.length() - 24, s.length() - 12, 0);
+        s.setSpan(new RelativeSizeSpan(1.2f), s.length() - 12, s.length(), 0);
+        return s;
+    }
+
+    /**
+     * @param total
+     * @param spent
+     * @return
+     */
     private float getPercentageLeft(float total, float spent) {
         float percent = 100f;
         if (spent > 0) {
@@ -141,6 +203,9 @@ public class SummaryTab extends RoomiesFragment implements RoomiesFragment.Updat
         return percent;
     }
 
+    /**
+     * @return
+     */
     private float getSpentDetails() {
 
         float rentSpent = Float.valueOf(sharedPreferences.getString(PREF_RENT_SPENT, "0"));
@@ -151,37 +216,51 @@ public class SummaryTab extends RoomiesFragment implements RoomiesFragment.Updat
 
     }
 
-    private void prepareSpentCard() {
-        ((Button) rootView.findViewById(R.id.month_btn_spent)).setText(
-                calendar.get(
-                        Calendar.DAY_OF_MONTH) + " DAYS");
-        ((TextView) rootView.findViewById(R.id.spent_data)).setText(String.valueOf(spent));
-    }
-
-    private void prepareRemainingCard() {
-        ((Button) rootView.findViewById(R.id.month_btn_remaining)).setText((calendar.
-                getActualMaximum(Calendar.DAY_OF_MONTH) - calendar.get(
-                Calendar.DAY_OF_MONTH)) + " DAYS");
-
+    /**
+     *
+     */
+    private void prepareStatsCard() {
+        ((TextView) rootView.findViewById(R.id.spent_value)).setText(rs + String.valueOf(spent));
         float total = rent + maid + electricity + misc;
-        ((TextView) rootView.findViewById(R.id.remaining_data)).setText(String.valueOf
+        ((TextView) rootView.findViewById(R.id.remaining_value)).setText(rs + String.valueOf
                 (total - spent));
 
+        View spentIndex = rootView.findViewById(R.id.spent_index);
+        View remainingIndex = rootView.findViewById(R.id.remaining_index);
+
+        ShapeDrawable dot = new ShapeDrawable(new OvalShape());
+        dot.getPaint().setColor(getResources().getColor(R.color.primary_home));
+        spentIndex.setBackgroundDrawable(dot);
+
+        dot = new ShapeDrawable(new OvalShape());
+        dot.getPaint().setColor(getResources().getColor(R.color.secondary_text));
+        remainingIndex.setBackgroundDrawable(dot);
     }
 
+
+    /**
+     *
+     */
     private void prepareBudgetCard() {
-        String month = RoomiesHelper.getCurrentMonthYear();
+        String month = DateUtils.getCurrentMonthYear();
         ((Button) rootView.findViewById(R.id.month_btn_budget)).setText(
                 month.substring(0, month.length() - 4));
 
-        ((TextView) rootView.findViewById(R.id.rent_budget)).setText(String.valueOf(rent));
-        ((TextView) rootView.findViewById(R.id.maid_budget)).setText(String.valueOf(maid));
-        ((TextView) rootView.findViewById(R.id.elec_budget)).setText(String.valueOf(electricity));
-        ((TextView) rootView.findViewById(R.id.misc_budget)).setText(String.valueOf(misc));
+        ((TextView) rootView.findViewById(R.id.rent_budget)).setText(rs +
+                String.valueOf((int) rent));
+        ((TextView) rootView.findViewById(R.id.maid_budget)).setText(rs +
+                String.valueOf((int) maid));
+        ((TextView) rootView.findViewById(R.id.elec_budget)).setText(rs +
+                String.valueOf((int) electricity));
+        ((TextView) rootView.findViewById(R.id.misc_budget)).setText(rs +
+                String.valueOf((int) misc));
     }
 
+    /**
+     * @param expenses
+     */
     @Override
-    public void update(String username) {
+    public void update(RoomExpenses expenses) {
         prepareBudgetGraph(getActivity().getBaseContext());
 
     }

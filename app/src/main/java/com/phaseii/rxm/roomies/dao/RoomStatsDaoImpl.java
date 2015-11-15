@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.providers.RoomStatsProvider;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +26,6 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_M
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_MARGIN;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_RENT_SPENT;
 import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats.STATS_ROOM_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.getCurrentMonthYear;
 import static com.phaseii.rxm.roomies.util.RoomiesHelper.listToProjection;
 
 /**
@@ -48,7 +45,6 @@ public class RoomStatsDaoImpl implements RoomiesDao {
         List<QueryParam> selectionList = (List<QueryParam>) queryMap.get(ServiceParam.SELECTION);
         List<String> selectionArgsList = (List<String>) queryMap.get(ServiceParam.SELECTIONARGS);
         String sortOrder = (String) queryMap.get(ServiceParam.SORTORDER);
-        QueryParam queryParam = (QueryParam) queryMap.get(ServiceParam.QUERYARGS);
 
         String[] projection = listToProjection(projectionList);
         String selection = null;
@@ -69,69 +65,77 @@ public class RoomStatsDaoImpl implements RoomiesDao {
         }
 
         String queryArg = null;
-        if (null != queryParam) {
-            if (queryParam.equals(QueryParam.MONTH_YEAR)) {
-                queryArg = "month/" + getCurrentMonthYear();
-            } else if (queryParam.equals(QueryParam.ROOMID)) {
-                queryArg = "room/" + mContext.getSharedPreferences(PREF_ROOMIES_KEY,
-                        Context.MODE_PRIVATE).getString
-                        (PREF_ROOM_ID, null);
+        Map<QueryParam, String> queryParams = (Map<QueryParam, String>) queryMap.get
+                (ServiceParam.QUERYARGS);
+        if (null != queryParams && queryParams.size() > 0) {
+            for (QueryParam param : queryParams.keySet()) {
+                if (param.equals(QueryParam.MONTH_YEAR)) {
+                    queryArg = "month/" + queryParams.get(param);
+                } else if (param.equals(QueryParam.ROOM_ID)) {
+                    queryArg = "room/" + queryParams.get(param);
+                }
             }
         }
 
         if (null != queryArg) {
-            statUri = Uri.withAppendedPath(RoomStatsProvider.CONTENT_URI,
-                    queryArg);
+            statUri = Uri.withAppendedPath(RoomStatsProvider.CONTENT_URI, queryArg);
         } else {
             statUri = RoomStatsProvider.CONTENT_URI;
         }
-        Cursor cursor = mContext.getContentResolver().query(statUri, projection, selection,
-                selectionArgs, sortOrder);
-        List<RoomStats> roomStatsList = null;
-        if (null != cursor) {
-            cursor.moveToFirst();
-            roomStatsList = new ArrayList<>();
-            while (!cursor.isAfterLast()) {
 
-                RoomStats roomStats = new RoomStats();
+        List<RoomStats> roomStatsList = new ArrayList<>();
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(statUri, projection, selection,
+                    selectionArgs, sortOrder);
 
-                roomStats.setRoomId(cursor.getColumnIndex(STATS_ROOM_ID) >= 0 ? cursor.getInt
-                        (cursor.getColumnIndex(STATS_ROOM_ID)) : -1);
-                roomStats.setMonthYear(
-                        cursor.getColumnIndex(STATS_MONTH_YEAR) >= 0 ? cursor.getString
-                                (cursor.getColumnIndex(STATS_MONTH_YEAR)) : null);
-                roomStats.setRentMargin(cursor.getColumnIndex(STATS_RENT_MARGIN) >= 0 ?
-                        cursor.getLong(cursor.getColumnIndex(STATS_RENT_MARGIN)) : -1);
-                roomStats.setMaidMargin(cursor.getColumnIndex(STATS_MAID_MARGIN) >= 0 ?
-                        cursor.getLong(cursor.getColumnIndex(STATS_MAID_MARGIN)) : -1);
-                roomStats.setElectricityMargin(
-                        cursor.getColumnIndex(STATS_ELECTRICITY_MARGIN) >= 0 ?
-                                cursor.getLong(
-                                        cursor.getColumnIndex(STATS_ELECTRICITY_MARGIN)) : -1);
-                roomStats.setMiscellaneousMargin(
-                        cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN) >= 0 ?
-                                cursor.getLong(
-                                        cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN)) : -1);
-                roomStats.setRentMargin(cursor.getColumnIndex(STATS_RENT_SPENT) >= 0 ?
-                        cursor.getLong(cursor.getColumnIndex(STATS_RENT_SPENT)) : -1);
-                roomStats.setMaidMargin(cursor.getColumnIndex(STATS_MAID_SPENT) >= 0 ?
-                        cursor.getLong(cursor.getColumnIndex(STATS_MAID_SPENT)) : -1);
-                roomStats.setElectricityMargin(
-                        cursor.getColumnIndex(STATS_ELECTRICITY_SPENT) >= 0 ?
-                                cursor.getLong(
-                                        cursor.getColumnIndex(STATS_ELECTRICITY_SPENT)) : -1);
-                roomStats.setMiscellaneousMargin(
-                        cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT) >= 0 ?
-                                cursor.getLong(
-                                        cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT)) : -1);
+            if (null != cursor) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
 
-                roomStatsList.add(roomStats);
+                    RoomStats roomStats = new RoomStats();
 
-                cursor.moveToNext();
+                    roomStats.setRoomId(cursor.getColumnIndex(STATS_ROOM_ID) >= 0 ? cursor.getInt
+                            (cursor.getColumnIndex(STATS_ROOM_ID)) : -1);
+                    roomStats.setMonthYear(
+                            cursor.getColumnIndex(STATS_MONTH_YEAR) >= 0 ? cursor.getString
+                                    (cursor.getColumnIndex(STATS_MONTH_YEAR)) : null);
+                    roomStats.setRentMargin(cursor.getColumnIndex(STATS_RENT_MARGIN) >= 0 ?
+                            cursor.getLong(cursor.getColumnIndex(STATS_RENT_MARGIN)) : -1);
+                    roomStats.setMaidMargin(cursor.getColumnIndex(STATS_MAID_MARGIN) >= 0 ?
+                            cursor.getLong(cursor.getColumnIndex(STATS_MAID_MARGIN)) : -1);
+                    roomStats.setElectricityMargin(
+                            cursor.getColumnIndex(STATS_ELECTRICITY_MARGIN) >= 0 ?
+                                    cursor.getLong(
+                                            cursor.getColumnIndex(STATS_ELECTRICITY_MARGIN)) : -1);
+                    roomStats.setMiscellaneousMargin(
+                            cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN) >= 0 ?
+                                    cursor.getLong(
+                                            cursor.getColumnIndex(STATS_MISCELLANEOUS_MARGIN)) :
+                                    -1);
+                    roomStats.setRentSpent(cursor.getColumnIndex(STATS_RENT_SPENT) >= 0 ?
+                            cursor.getLong(cursor.getColumnIndex(STATS_RENT_SPENT)) : -1);
+                    roomStats.setMaidSpent(cursor.getColumnIndex(STATS_MAID_SPENT) >= 0 ?
+                            cursor.getLong(cursor.getColumnIndex(STATS_MAID_SPENT)) : -1);
+                    roomStats.setElectricitySpent(
+                            cursor.getColumnIndex(STATS_ELECTRICITY_SPENT) >= 0 ?
+                                    cursor.getLong(
+                                            cursor.getColumnIndex(STATS_ELECTRICITY_SPENT)) : -1);
+                    roomStats.setMiscellaneousSpent(
+                            cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT) >= 0 ?
+                                    cursor.getLong(
+                                            cursor.getColumnIndex(STATS_MISCELLANEOUS_SPENT)) : -1);
+
+                    roomStatsList.add(roomStats);
+
+                    cursor.moveToNext();
+                }
             }
-            cursor.close();
+        } finally {
+            if (null != cursor && !cursor.isClosed()) {
+                cursor.close();
+            }
         }
-
 
         return roomStatsList;
     }

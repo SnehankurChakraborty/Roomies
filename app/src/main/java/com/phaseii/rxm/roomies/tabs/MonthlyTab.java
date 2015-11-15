@@ -27,7 +27,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.exception.RoomiesStateException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
@@ -61,9 +60,13 @@ public class MonthlyTab extends RoomiesFragment
     private SharedPreferences sharedPreferences;
     private ShapeDrawable dot;
     private Context mContext;
-    private List<RoomExpenses> roomExpensesList;
+    private static List<RoomExpenses> roomExpensesList = new ArrayList<>();
 
-    public static MonthlyTab getInstance() {
+    public static MonthlyTab getInstance(List<RoomExpenses> roomExpenses) {
+        if (null != roomExpenses) {
+            roomExpensesList.clear();
+            roomExpensesList.addAll(roomExpenses);
+        }
         return new MonthlyTab();
     }
 
@@ -74,8 +77,6 @@ public class MonthlyTab extends RoomiesFragment
         mContext = getActivity().getBaseContext();
         sharedPreferences = mContext.getSharedPreferences(
                 PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
-        RoomExpensesManager manager = new RoomExpensesManager(mContext);
-        roomExpensesList = manager.getRoomExpenses();
 
         View rentDot = rootView.findViewById(R.id.rent_mark);
         View maidDot = rootView.findViewById(R.id.maid_mark);
@@ -169,7 +170,7 @@ public class MonthlyTab extends RoomiesFragment
         barChart.setPinchZoom(false);
         barChart.setDoubleTapToZoomEnabled(false);
         barChart.getLegend().setEnabled(false);
-        barChart.setHighlightEnabled(false);
+        barChart.setHighlightPerTapEnabled(false);
 
         YAxis yl = barChart.getAxisLeft();
         yl.setDrawAxisLine(false);
@@ -318,7 +319,7 @@ public class MonthlyTab extends RoomiesFragment
 
 
     @Override
-    public void update(String username) {
-         createPieChart(getActivity().getBaseContext());
+    public void update(RoomExpenses expenses) {
+        createPieChart(getActivity().getBaseContext());
     }
 }

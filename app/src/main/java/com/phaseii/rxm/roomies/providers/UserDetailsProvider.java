@@ -45,13 +45,18 @@ public class UserDetailsProvider extends ContentProvider {
     public static final Uri CONTENT_URI = Uri.parse(URL);
     public static final String UNKNOWN_URI = "Unknown URI ";
     private static final UriMatcher uriMatcher;
+
     private static final int ALL_USER_DETAILS = 0;
     private static final int SPECIFIC_USER_DETAILS = 1;
+    private static final int SPECIFIC_USER_ALIAS_DETAILS = 2;
+    private static final int SPECIFIC_SENDER_DETAILS = 3;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, "userdetails", ALL_USER_DETAILS);
         uriMatcher.addURI(AUTHORITY, "userdetails/user/*", SPECIFIC_USER_DETAILS);
+        uriMatcher.addURI(AUTHORITY, "userdetails/alias/*", SPECIFIC_USER_ALIAS_DETAILS);
+        uriMatcher.addURI(AUTHORITY, "userdetails/sender/*", SPECIFIC_SENDER_DETAILS);
     }
 
     private SQLiteOpenHelper mdbHelper;
@@ -74,6 +79,12 @@ public class UserDetailsProvider extends ContentProvider {
                 break;
             case SPECIFIC_USER_DETAILS:
                 qb.appendWhere(UserDetails._ID + "=" + uri.getLastPathSegment());
+                break;
+            case SPECIFIC_USER_ALIAS_DETAILS:
+                qb.appendWhere(UserDetails.USER_USER_ALIAS + "=" + uri.getLastPathSegment());
+                break;
+            case SPECIFIC_SENDER_DETAILS:
+                qb.appendWhere(UserDetails.USER_SENDER_ID + "=" + uri.getLastPathSegment());
                 break;
             default:
                 throw new IllegalStateException("Unknown URI " + uri);
@@ -153,8 +164,15 @@ public class UserDetailsProvider extends ContentProvider {
             default:
                 throw new IllegalStateException(UNKNOWN_URI + uri);
         }
-        int count = db.update(UserDetails.USER_TABLE_NAME, values,
-                selection, selectionArgs);
+        int count = db.update(UserDetails.USER_TABLE_NAME, values, selection, selectionArgs);
         return count;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if (null != db && db.isOpen()) {
+            db.close();
+        }
     }
 }

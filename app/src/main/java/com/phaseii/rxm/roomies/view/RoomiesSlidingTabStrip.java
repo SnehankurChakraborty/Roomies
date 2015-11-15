@@ -83,8 +83,7 @@ public class RoomiesSlidingTabStrip extends LinearLayout {
         final int height = getHeight();
         final int childCount = getChildCount();
         final RoomiesSlidingTabLayout.TabColorizer tabColorizer = mCustomTabColorizer != null
-                ? mCustomTabColorizer
-                : mDefaultTabColorizer;
+                ? mCustomTabColorizer : mDefaultTabColorizer;
 
         // Thick colored underline below the current selection
         if (childCount > 0) {

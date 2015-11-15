@@ -19,11 +19,19 @@ import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails;
  */
 public class RoomiesDbHelper extends SQLiteOpenHelper {
 
+    /**
+     *
+     * @param context
+     */
     public RoomiesDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     }
 
+    /**
+     *
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(UserDetails.SQL_CREATE_ENTRIES);
@@ -39,9 +47,14 @@ public class RoomiesDbHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     *
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL(UserDetails.SQL_DELETE_ENTRIES);
         db.execSQL(RoomDetails.SQL_DELETE_ENTRIES);
         db.execSQL(RoomExpenses.SQL_DELETE_ENTRIES);

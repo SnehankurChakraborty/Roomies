@@ -1,7 +1,6 @@
 package com.phaseii.rxm.roomies.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -14,24 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.manager.MemberDetailsManager;
-import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
 import com.phaseii.rxm.roomies.model.MemberDetail;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.util.DateUtils;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Snehankur on 9/20/2015.
@@ -52,7 +41,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
     private float totalMargin;
     private static final int HEADER = 0;
 
-    public MembersAdapter(Context mContext, FragmentManager fragmentManager) {
+    public MembersAdapter(Context mContext, FragmentManager fragmentManager, List<RoomExpenses>
+            expenses) {
         this.mContext = mContext;
         this.members = new MemberDetailsManager(mContext).getMemberDetails();
         totalMargin = Float.valueOf(
@@ -60,7 +50,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
                         Context.MODE_PRIVATE).getString(RoomiesConstants.PREF_TOTAL_MARGIN, "0"));
         typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/VarelaRound-Regular" +
                 ".ttf");
-        expenses = new RoomExpensesManager(mContext).getRoomExpenses();
+        this.expenses = expenses;
         mFragmentManager = fragmentManager;
         index = 0;
 
@@ -84,9 +74,10 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
                     String.valueOf((members.get(index).getTotalExpense()
                             / totalMargin) * 100) + "%");
             holder.spentLeft.setText(String.valueOf(members.get(index).getTotalExpense()));
-            holder.dateLeft.setText(RoomiesHelper.getCurrentMonthYear());
+            holder.dateLeft.setText(DateUtils.getCurrentMonthYear());
             holder.adminLeft.setVisibility(View.VISIBLE);
-            adapter = new MemberPagerAdapter(mContext, mFragmentManager, titles, numOfTabs, expenses);
+            adapter = new MemberPagerAdapter(mContext, mFragmentManager, titles, numOfTabs,
+                    expenses);
             holder.pagerLeft.setAdapter(adapter);
             holder.tabLeft.setDistributeEvenly(true);
             holder.tabLeft.setCustomTabColorizer(new RoomiesSlidingTabLayout.TabColorizer() {
@@ -105,7 +96,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.ViewHold
                     String.valueOf((members.get(index).getTotalExpense()
                             / totalMargin) * 100) + "%");
             holder.spentRight.setText(String.valueOf(members.get(index).getTotalExpense()));
-            holder.dateRight.setText(RoomiesHelper.getCurrentMonthYear());
+            holder.dateRight.setText(DateUtils.getCurrentMonthYear());
             holder.adminRight.setVisibility(View.VISIBLE);
             index++;
         }

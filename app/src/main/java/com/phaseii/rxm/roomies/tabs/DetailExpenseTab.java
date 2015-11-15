@@ -16,17 +16,17 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
 import com.phaseii.rxm.roomies.dialogs.DetailExpenseDialog;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.util.QueryParam;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.ServiceParam;
-import com.phaseii.rxm.roomies.model.RoomExpenses;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +82,7 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
         List<QueryParam> params = new ArrayList<QueryParam>();
         List<String> selectionArgs = new ArrayList<String>();
 
-        params.add(QueryParam.ROOMID);
+        params.add(QueryParam.ROOM_ID);
         paramMap.put(ServiceParam.SELECTION, params);
 
         selectionArgs.add(roomId);
@@ -98,7 +98,6 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 
         lineChart.setDescription("");
         lineChart.setDrawGridBackground(false);
-        lineChart.setHighlightEnabled(true);
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
@@ -179,7 +178,7 @@ public class DetailExpenseTab extends RoomiesFragment implements RoomiesFragment
 
 
     @Override
-    public void update(String username) {
+    public void update(RoomExpenses expenses) {
         createCombinedChart();
     }
 }

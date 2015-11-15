@@ -23,6 +23,10 @@ public class RoomiesLogger {
     private static final String EXIT = "EXIT";
     private static RoomiesLogger instance = null;
 
+    /**
+     *
+     * @return
+     */
     public static RoomiesLogger getInstance() {
         if (null == instance) {
             instance = new RoomiesLogger();
@@ -30,37 +34,74 @@ public class RoomiesLogger {
         return instance;
     }
 
+    /**
+     *
+     * @return
+     */
     private static String getCurrentTime() {
         return new SimpleDateFormat(LOGGING_DATE_FORMAT).format(new Date());
     }
 
+    /**
+     *
+     * @param errorMsg
+     * @param e
+     */
     public void error(String errorMsg, Exception e) {
         StringBuffer buf = new StringBuffer(errorMsg);
         buf.append("|" + e);
         Log.d(ERROR, buf.toString());
     }
 
+    /**
+     *
+     * @param errorMsg
+     */
     public void error(String errorMsg) {
         Log.e(ERROR, errorMsg);
     }
 
+    /**
+     *
+     * @param infoMsg
+     */
     public void info(String infoMsg) {
         Log.i(INFO, infoMsg);
     }
 
+    /**
+     *
+     * @param debugMsg
+     */
     public void debug(String debugMsg) {
         Log.d(DEBUG, debugMsg);
     }
 
+    /**
+     *
+     * @param classname
+     * @param methodName
+     * @param data
+     */
     public void debug(String classname, String methodName, Object data) {
         String debugMsg = createLoggingMessage(classname, methodName, data);
         Log.d(DEBUG, debugMsg);
     }
 
+    /**
+     *
+     * @param warnMsg
+     */
     public void warn(String warnMsg) {
         Log.w(WARN, warnMsg);
     }
 
+    /**
+     *
+     * @param classname
+     * @param methodName
+     * @param message
+     */
     public void createEntryLoggingMessage(String classname, String methodName, String message) {
 
         StringBuffer buf = null;
@@ -73,6 +114,12 @@ public class RoomiesLogger {
         Log.i(ENTRY, buf.toString());
     }
 
+    /**
+     *
+     * @param classname
+     * @param methodName
+     * @param message
+     */
     public void createExitLoggingMessage(String classname, String methodName, String message) {
         StringBuffer buf = null;
         String messageString = createLoggingMessage(classname, methodName, null);
@@ -84,6 +131,13 @@ public class RoomiesLogger {
         Log.i(EXIT, buf.toString());
     }
 
+    /**
+     *
+     * @param classname
+     * @param methodname
+     * @param object
+     * @return
+     */
     private String createLoggingMessage(String classname, String methodname,
                                         Object object) {
 

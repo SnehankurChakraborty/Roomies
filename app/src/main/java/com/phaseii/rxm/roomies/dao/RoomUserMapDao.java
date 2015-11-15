@@ -32,6 +32,7 @@ public class RoomUserMapDao implements RoomiesDao {
     private String sortOrder;
     private RoomUserMap roomUserMap;
     private ContentValues values;
+    private Uri roomUserMapUri;
 
     public RoomUserMapDao(Context mContext) {
         this.mContext = mContext;
@@ -40,30 +41,31 @@ public class RoomUserMapDao implements RoomiesDao {
     @Override
     public List<? extends RoomiesModel> getDetails(Map<ServiceParam, ?> queryMap) {
         prepareStatement(queryMap);
+        Cursor cursor = null;
+        List<RoomUserMap> roomUserMapList = new ArrayList<>();
+        try {
+            cursor = mContext.getContentResolver().query(roomUserMapUri, projection, selection,
+                    selectionArgs, sortOrder);
 
-        Cursor cursor = mContext.getContentResolver().query(RoomUserMapProvider
-                .CONTENT_URI, projection, selection, selectionArgs, sortOrder);
-        List<RoomUserMap> roomUserMapList = null;
-        if (null != cursor) {
-            cursor.moveToFirst();
-            roomUserMapList = new ArrayList<>();
-            while (!cursor.isAfterLast()) {
+            if (null != cursor) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
 
-                RoomUserMap roomUserMap = new RoomUserMap();
-
-                roomUserMap.setRoomId(cursor.getColumnIndex(ROOM_USER_ROOM_ID) >= 0 ? cursor.getInt(
-                        cursor.getColumnIndex(ROOM_USER_ROOM_ID)) : -1);
-                roomUserMap.setUserId(
-                        cursor.getColumnIndex(ROOM_USER_USER_ID) >= 0 ? cursor.getInt(cursor
-                                .getColumnIndex(ROOM_USER_USER_ID)) : -1);
-                roomUserMapList.add(roomUserMap);
-
-                cursor.moveToNext();
+                    RoomUserMap roomUserMap = new RoomUserMap();
+                    roomUserMap.setRoomId(cursor.getColumnIndex(ROOM_USER_ROOM_ID) >= 0 ? cursor
+                            .getInt(cursor.getColumnIndex(ROOM_USER_ROOM_ID)) : -1);
+                    roomUserMap.setUserId(
+                            cursor.getColumnIndex(ROOM_USER_USER_ID) >= 0 ? cursor.getInt(cursor
+                                    .getColumnIndex(ROOM_USER_USER_ID)) : -1);
+                    roomUserMapList.add(roomUserMap);
+                    cursor.moveToNext();
+                }
             }
-            cursor.close();
+        } finally {
+            if (null != cursor && !cursor.isClosed()) {
+                cursor.close();
+            }
         }
-
-
         return roomUserMapList;
     }
 
@@ -116,6 +118,25 @@ public class RoomUserMapDao implements RoomiesDao {
         if (null != selectionArgsList && null != selection && selectionArgsList.size() > 0) {
             selectionArgs = new String[selectionArgsList.size()];
             selectionArgsList.toArray(selectionArgs);
+        }
+
+        String queryArg = null;
+        Map<QueryParam, String> queryParams = (Map<QueryParam, String>) detailsMap.get
+                (ServiceParam.QUERYARGS);
+        if (null != queryParams && queryParams.size() > 0) {
+            for (QueryParam param : queryParams.keySet()) {
+                if (param.equals(QueryParam.MONTH_YEAR)) {
+                    queryArg = "month/" + queryParams.get(param);
+                } else if (param.equals(QueryParam.ROOM_ID)) {
+                    queryArg = "room/" + queryParams.get(param);
+                }
+            }
+        }
+        if (null != queryArg) {
+            roomUserMapUri = Uri.withAppendedPath(RoomUserMapProvider.CONTENT_URI,
+                    queryArg);
+        } else {
+            roomUserMapUri = RoomUserMapProvider.CONTENT_URI;
         }
 
         if (null != detailsMap.get(ServiceParam.MODEL)) {

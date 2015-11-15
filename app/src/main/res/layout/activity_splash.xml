@@ -5,18 +5,19 @@
               android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:background="@drawable/roomies_launcher"
         android:layout_centerInParent="true"/>
 
-    <TextView
+    <com.phaseii.rxm.roomies.view.BannerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
         android:layout_centerHorizontal="true"
-        android:text="Roomies"
+        android:text=" Roomies "
+        android:textColor="@color/primary_roommate"
         android:textSize="20pt"/>
 
 </RelativeLayout>

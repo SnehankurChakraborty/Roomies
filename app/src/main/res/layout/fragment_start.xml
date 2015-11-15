@@ -17,7 +17,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
         android:layout_alignParentTop="true"
-        android:text="@string/roomies"/>
+        android:text="@string/roomies"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/get_started_button"

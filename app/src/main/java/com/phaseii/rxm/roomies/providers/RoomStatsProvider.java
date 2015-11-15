@@ -196,4 +196,12 @@ public class RoomStatsProvider extends ContentProvider {
                 selection, selectionArgs);
         return count;
     }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if (null != db && db.isOpen()) {
+            db.close();
+        }
+    }
 }

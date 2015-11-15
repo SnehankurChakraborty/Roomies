@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -18,7 +19,17 @@ import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
 import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.model.RoomDetails;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.RoomStats;
+import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.util.ActivityUtils;
+import com.phaseii.rxm.roomies.util.DateUtils;
+import com.phaseii.rxm.roomies.util.ToastUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
@@ -28,26 +39,22 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_MISC;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_NAME;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_NO_OF_MEMBERS;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.ROOM_RENT;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.TAG_PERSONAL_INFO;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.TAG_ROOM_EXPENSE;
 import static com.phaseii.rxm.roomies.util.RoomiesConstants.TAG_ROOM_INFO;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.USER_EMAIL;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.USER_NAME;
+import static com.phaseii.rxm.roomies.util.RoomiesConstants.USER_PHONE;
 import static com.phaseii.rxm.roomies.util.RoomiesHelper.cacheDBtoPreferences;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.createToast;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.getCurrentMonthYear;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.replaceFragment;
 import static com.phaseii.rxm.roomies.util.RoomiesHelper.setError;
-import static com.phaseii.rxm.roomies.util.RoomiesHelper.startActivityHelper;
+
 
 public class GetStartedWizard extends FragmentActivity {
 
     private FragmentTransaction transaction;
     private Toast mToast;
-    private EditText roomName;
-    private EditText noOfMembers;
-    private EditText rent;
-    private EditText maid;
-    private EditText electricity;
-    private EditText miscellaneous;
     private SharedPreferences mSharedPref;
+    private UserDetails userDetails;
     private RoomDetails roomDetails;
     private RoomStats roomStats;
     private RoomUserStatManager manager;
@@ -64,13 +71,30 @@ public class GetStartedWizard extends FragmentActivity {
         mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, MODE_PRIVATE);
 
         if (savedInstanceState == null) {
-            transaction = getSupportFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-            transaction.add(R.id.container, new SelectorFragment()).commit();
+            ActivityUtils.replaceFragmentWithTag(TAG_PERSONAL_INFO, this, new
+                    PersonalInfoFragment(), R.id.container);
         }
     }
 
 
+    public void personalInfoCompleted(View view) {
+        View fragmentView = ((PersonalInfoFragment) getSupportFragmentManager().findFragmentByTag
+                (TAG_PERSONAL_INFO)).getFragmentView();
+        EditText name = (EditText) findViewById(R.id.user_name);
+        boolean isValidName = setError(USER_NAME, this, fragmentView);
+        EditText phoneNumber = (EditText) findViewById(R.id.user_phone);
+        boolean isValidPhone = setError(USER_PHONE, this, fragmentView);
+        EditText email = (EditText) findViewById(R.id.user_email);
+        boolean isValidEmail = setError(USER_EMAIL, this, fragmentView);
+        if (isValidName && isValidPhone && isValidEmail) {
+            userDetails = new UserDetails();
+            userDetails.setUserAlias(name.getText().toString());
+            userDetails.setUsername(email.getText().toString());
+            RoomiesFragment selectorFragment = new SelectorFragment();
+            ActivityUtils.replaceFragmentWithTag(TAG_ROOM_INFO, this, selectorFragment, R.id
+                    .container);
+        }
+    }
 
     /**
      * Invoked when user clicks join room.
@@ -102,7 +126,7 @@ public class GetStartedWizard extends FragmentActivity {
      */
     public void createRoomSelected(View view) {
         RoomiesFragment roomInfoFragment = new RoomInfoFragment();
-        replaceFragment(TAG_ROOM_INFO, this, roomInfoFragment);
+        ActivityUtils.replaceFragmentWithTag(TAG_ROOM_INFO, this, roomInfoFragment, R.id.container);
     }
 
     /**
@@ -115,13 +139,17 @@ public class GetStartedWizard extends FragmentActivity {
     public void roomInfoCompleted(View view) {
         View fragmentView = ((RoomInfoFragment) getSupportFragmentManager().findFragmentByTag
                 (TAG_ROOM_INFO)).getFragmentView();
-        roomName = (EditText) findViewById(R.id.room_name);
+        EditText roomName = (EditText) findViewById(R.id.room_name);
         boolean isValidName = setError(ROOM_NAME, this, fragmentView);
-        noOfMembers = (EditText) findViewById(R.id.no_of_members);
+        EditText noOfMembers = (EditText) findViewById(R.id.no_of_members);
         boolean isValidNumber = setError(ROOM_NO_OF_MEMBERS, this, fragmentView);
         if (isValidName && isValidNumber) {
+            roomDetails = new RoomDetails();
+            roomDetails.setRoomAlias(roomName.getText().toString());
+            roomDetails.setNoOfPersons(Integer.valueOf(noOfMembers.getText().toString()));
             RoomiesFragment roomExpenseFragment = new RoomExpenseFragment();
-            replaceFragment(TAG_ROOM_EXPENSE, this, roomExpenseFragment);
+            ActivityUtils.replaceFragmentWithTag(TAG_ROOM_EXPENSE, this, roomExpenseFragment, R
+                    .id.container);
         }
     }
 
@@ -137,22 +165,39 @@ public class GetStartedWizard extends FragmentActivity {
         View fragmentView = ((RoomExpenseFragment) getSupportFragmentManager().findFragmentByTag
                 (TAG_ROOM_EXPENSE)).getFragmentView();
 
-        rent = (EditText) findViewById(R.id.room_rent);
+        EditText rent = (EditText) findViewById(R.id.room_rent);
         boolean isValidRent = setError(ROOM_RENT, this, fragmentView);
-        maid = (EditText) findViewById(R.id.room_maid);
+        EditText maid = (EditText) findViewById(R.id.room_maid);
         boolean isValidMaid = setError(ROOM_MAID, this, fragmentView);
-        electricity = (EditText) findViewById(R.id.room_electricity);
+        EditText electricity = (EditText) findViewById(R.id.room_electricity);
         boolean isValidElec = setError(ROOM_ELECTRICITY, this, fragmentView);
-        miscellaneous = (EditText) findViewById(R.id.room_misc);
+        EditText miscellaneous = (EditText) findViewById(R.id.room_misc);
         boolean isValidMisc = setError(ROOM_MISC, this, fragmentView);
         if (isValidRent && isValidMaid && isValidElec && isValidMisc) {
+            roomStats = new RoomStats();
+            roomStats.setRentMargin(Long.valueOf(rent.getText().toString()));
+            roomStats.setElectricityMargin(Long.valueOf(electricity.getText().toString()));
+            roomStats.setMaidMargin(Long.valueOf(maid.getText().toString()));
+            roomStats.setMiscellaneousMargin(Long.valueOf(miscellaneous.getText().toString()));
+            roomStats.setMonthYear(DateUtils.getCurrentMonthYear());
+            roomStats.setRentSpent(0);
+            roomStats.setMaidSpent(0);
+            roomStats.setElectricitySpent(0);
+            roomStats.setMiscellaneousSpent(0);
             if (storeRoomInfo()) {
-                cacheDBtoPreferences(this, null, null, roomDetails, roomStats, false);
+                cacheDBtoPreferences(this, null, userDetails, roomDetails, roomStats, false);
             }
             try {
-                startActivityHelper(this, getString(R.string.HomeScreen_Activity), null, true);
+                List<RoomExpenses> roomExpensesList = new ArrayList<>();
+                List<RoomStats> roomStatsList = new ArrayList<>();
+                roomStatsList.add(roomStats);
+                Map<ActivityUtils.Extras, List<? extends Parcelable>> extrasMap = new HashMap<>();
+                extrasMap.put(ActivityUtils.Extras.ROOM_EXPENSES, roomExpensesList);
+                extrasMap.put(ActivityUtils.Extras.ROOM_STATS, roomStatsList);
+                ActivityUtils.startActivityHelper(this, getResources().getString(R.string
+                        .HomeScreen_Activity), extrasMap, true);
             } catch (RoomXpnseMngrException e) {
-                createToast(this, APP_ERROR, mToast);
+                ToastUtils.createToast(this, APP_ERROR, mToast);
             }
         }
     }
@@ -162,29 +207,30 @@ public class GetStartedWizard extends FragmentActivity {
      */
     private boolean storeRoomInfo() {
 
-        manager=new RoomUserStatManager(GetStartedWizard.this);
-
-        roomDetails = new RoomDetails();
-        roomDetails.setRoomAlias(roomName.getText().toString());
-        roomDetails.setNoOfPersons(Integer.valueOf(noOfMembers.getText().toString()));
-
-        roomStats = new RoomStats();
-        roomStats.setRentMargin(Long.valueOf(rent.getText().toString()));
-        roomStats.setElectricityMargin(Long.valueOf(electricity.getText().toString()));
-        roomStats.setMaidMargin(Long.valueOf(maid.getText().toString()));
-        roomStats.setMiscellaneousMargin(Long.valueOf(miscellaneous.getText().toString()));
-        roomStats.setMonthYear(getCurrentMonthYear());
-        roomStats.setRentSpent(0);
-        roomStats.setMaidSpent(0);
-        roomStats.setElectricitySpent(0);
-        roomStats.setMiscellaneousSpent(0);
-
-        return manager.storeRoomDetails(roomDetails, roomStats);
+        manager = new RoomUserStatManager(GetStartedWizard.this);
+        return manager.storeRoomDetails(userDetails, roomDetails, roomStats);
     }
 
+    /**
+     * ********************************************
+     * A selector fragment containing a simple view.
+     * ********************************************
+     */
 
+    public static class PersonalInfoFragment extends RoomiesFragment {
 
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+                savedInstanceState) {
+            rootView = inflater.inflate(R.layout.fragment_personal_info, container, false);
+            return rootView;
+        }
 
+        @Override
+        public View getFragmentView() {
+            return rootView;
+        }
+    }
 
     /**
      * ***************************************

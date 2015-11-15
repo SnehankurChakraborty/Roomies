@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 
 import com.phaseii.rxm.roomies.dao.RoomExpensesDaoImpl;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
-import com.phaseii.rxm.roomies.util.Category;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
-import com.phaseii.rxm.roomies.util.ServiceParam;
-import com.phaseii.rxm.roomies.util.SubCategory;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
 import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.util.Category;
+import com.phaseii.rxm.roomies.util.DateUtils;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
+import com.phaseii.rxm.roomies.util.SubCategory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +35,10 @@ public class RoomExpensesManager {
     private Map<ServiceParam, RoomExpenses> roomExpensesMap;
     private RoomiesLogger log;
 
+    /**
+     *
+     * @param mContext
+     */
     public RoomExpensesManager(Context mContext) {
         this.mContext = mContext;
         this.mSharedPref = mContext.getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
@@ -42,6 +46,15 @@ public class RoomExpensesManager {
         this.log = RoomiesLogger.getInstance();
     }
 
+    /**
+     *
+     * @param category
+     * @param subCategory
+     * @param description
+     * @param quantity
+     * @param amount
+     * @return
+     */
     public boolean addRoomExpense(Category category, SubCategory subCategory, String
             description, String quantity, float amount) {
 
@@ -66,7 +79,7 @@ public class RoomExpensesManager {
         }
         roomExpenses.setAmount(amount);
         roomExpenses.setExpenseDate(new Date());
-        roomExpenses.setMonthYear(RoomiesHelper.getCurrentMonthYear());
+        roomExpenses.setMonthYear(DateUtils.getCurrentMonthYear());
         roomExpenses.setUserId(Integer.parseInt(mSharedPref.getString(PREF_USER_ID, "0")));
         roomExpenses.setRoomId(Integer.parseInt(mSharedPref.getString(PREF_ROOM_ID, "0")));
 
@@ -82,9 +95,17 @@ public class RoomExpensesManager {
         return isExpenseAdded;
     }
 
-    public List<RoomExpenses> getRoomExpenses() {
+    /**
+     *
+     * @param roomId
+     * @return
+     */
+    public List<RoomExpenses> getRoomExpenses(String roomId) {
         Map<ServiceParam, Object> paramMap = new HashMap<>();
+        List<QueryParam> selectionParams = new ArrayList<QueryParam>();
         List<QueryParam> projectionParams = new ArrayList<QueryParam>();
+        List<String> selectionArgs = new ArrayList<String>();
+        Map<QueryParam, String> queryParams = new HashMap<>();
 
         projectionParams.add(QueryParam.USER_ID);
         projectionParams.add(QueryParam.EXPENSE_CATEGORY);
@@ -93,17 +114,16 @@ public class RoomExpensesManager {
         projectionParams.add(QueryParam.EXPENSE_QUANTITY);
         projectionParams.add(QueryParam.EXPENSE_AMOUNT);
         projectionParams.add(QueryParam.EXPENSE_DESCRIPTION);
-        paramMap.put(ServiceParam.PROJECTION, projectionParams);
 
-        List<QueryParam> selectionParams = new ArrayList<QueryParam>();
         selectionParams.add(QueryParam.MONTH_YEAR);
-        paramMap.put(ServiceParam.SELECTION, selectionParams);
+        selectionArgs.add(DateUtils.getCurrentMonthYear());
 
-        List<String> selectionArgs = new ArrayList<String>();
-        selectionArgs.add(RoomiesHelper.getCurrentMonthYear());
+        queryParams.put(QueryParam.ROOM_ID, roomId);
+
+        paramMap.put(ServiceParam.PROJECTION, projectionParams);
         paramMap.put(ServiceParam.SELECTIONARGS, selectionArgs);
-
-        paramMap.put(ServiceParam.QUERYARGS, QueryParam.ROOMID);
+        paramMap.put(ServiceParam.SELECTION, selectionParams);
+        paramMap.put(ServiceParam.QUERYARGS, queryParams);
         List<RoomExpenses> roomExpensesList = (List<RoomExpenses>) roomiesDao.getDetails(paramMap);
         return roomExpensesList;
     }

@@ -35,8 +35,8 @@ public class RoomUserMapProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, "roomusermap", ALL_DETAILS);
-        uriMatcher.addURI(AUTHORITY, "roomusermap/month/#", SPECIFIC_USER_DETAILS);
-        uriMatcher.addURI(AUTHORITY, "roomusermap/room/#", SPECIFIC_ROOM_DETAILS);
+        uriMatcher.addURI(AUTHORITY, "roomusermap/month/*", SPECIFIC_USER_DETAILS);
+        uriMatcher.addURI(AUTHORITY, "roomusermap/room/*", SPECIFIC_ROOM_DETAILS);
     }
 
     private SQLiteOpenHelper mdbHelper;
@@ -106,7 +106,8 @@ public class RoomUserMapProvider extends ContentProvider {
                 throw new IllegalStateException(UNKNOWN_URI + uri);
         }
         try {
-            long rowId = db.insertOrThrow(RoomiesContract.RoomUserMap.ROOM_USER_MAP_TABLE_NAME, null, values);
+            long rowId = db.insertOrThrow(RoomiesContract.RoomUserMap.ROOM_USER_MAP_TABLE_NAME,
+                    null, values);
             if (rowId > 0) {
                 newUri = ContentUris.withAppendedId(uri, rowId);
                 getContext().getContentResolver().notifyChange(newUri, null);
@@ -174,5 +175,13 @@ public class RoomUserMapProvider extends ContentProvider {
         int count = db.update(RoomiesContract.RoomUserMap.ROOM_USER_MAP_TABLE_NAME, values,
                 selection, selectionArgs);
         return count;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if (null != db && db.isOpen()) {
+            db.close();
+        }
     }
 }

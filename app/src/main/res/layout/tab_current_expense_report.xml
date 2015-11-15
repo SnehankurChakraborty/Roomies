@@ -41,7 +41,7 @@
                         android:id="@+id/rent_mark"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/timeline_blue"
+                        android:background="@drawable/pie_chart_index"
                         />
 
                     <TextView
@@ -64,7 +64,7 @@
                         android:id="@+id/maid_mark"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/timeline_blue"
+                        android:background="@drawable/pie_chart_index"
                         />
 
                     <TextView
@@ -87,7 +87,7 @@
                         android:id="@+id/electricity_mark"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/timeline_blue"
+                        android:background="@drawable/pie_chart_index"
                         />
 
                     <TextView
@@ -110,7 +110,7 @@
                         android:id="@+id/misc_mark"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:background="@drawable/timeline_blue"/>
+                        android:background="@drawable/pie_chart_index"/>
 
                     <TextView
                         android:id="@+id/misc_value"

@@ -28,14 +28,16 @@ import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.dialogs.SignupDialog;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
 import com.phaseii.rxm.roomies.manager.UserDetailsManager;
 import com.phaseii.rxm.roomies.model.RoomUserStatData;
+import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.util.ActivityUtils;
 import com.phaseii.rxm.roomies.util.QueryParam;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.ServiceParam;
-import com.phaseii.rxm.roomies.manager.RoomUserStatManager;
-import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.util.ToastUtils;
 
 import org.json.JSONObject;
 
@@ -135,7 +137,8 @@ public class LoginActivity extends RoomiesBaseActivity {
      */
     public void onLogin(View view) {
         RoomiesFragment selectorFragment = new LoginFragment();
-        RoomiesHelper.replaceFragment(TAG_LOGIN_FRAGMENT, this, selectorFragment);
+        ActivityUtils.replaceFragmentWithTag(TAG_LOGIN_FRAGMENT, this, selectorFragment, R.id
+                .container);
     }
 
     /**
@@ -191,11 +194,11 @@ public class LoginActivity extends RoomiesBaseActivity {
                     /**
                      * display toast when userid/password doesn't match
                      */
-                    RoomiesHelper.createToast(getBaseContext(),
+                    ToastUtils.createToast(getBaseContext(),
                             RoomiesConstants.INVALID_USER_CREDENTIALS, mToast);
                 }
             } else {
-                RoomiesHelper.createToast(getBaseContext(),
+                ToastUtils.createToast(getBaseContext(),
                         RoomiesConstants.PLEASE_SIGN_UP_TO_USE_ROOMIES, mToast);
                 DialogFragment dialog = SignupDialog.getInstance();
                 dialog.show(getSupportFragmentManager(), "signup");
@@ -300,10 +303,10 @@ public class LoginActivity extends RoomiesBaseActivity {
                              * start the Get started activity
                              */
                             try {
-                                RoomiesHelper.startActivityHelper(this, getResources()
+                                ActivityUtils.startActivityHelper(this, getResources()
                                         .getString(R.string.GetStartedWizard), null, true);
                             } catch (RoomXpnseMngrException e) {
-                                RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+                                ToastUtils.createToast(this, RoomiesConstants.APP_ERROR, mToast);
                                 System.exit(0);
                             }
                         }
@@ -319,7 +322,7 @@ public class LoginActivity extends RoomiesBaseActivity {
                             "Person information is null", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
-                RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
+                ToastUtils.createToast(this, RoomiesConstants.APP_ERROR, mToast);
                 System.exit(0);
             }
         } else {
@@ -347,13 +350,13 @@ public class LoginActivity extends RoomiesBaseActivity {
                             new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
                             if (null != mConnectionProgressDialog) {
                                 mConnectionProgressDialog.dismiss();
-                            }
-                            /*try {
+                            }/*
+                            try {
                                 setUpAuthenticatedUser(fbUser);
-							} catch (RoomXpnseMngrException e) {
-								RoomiesHelper.createToast(LoginActivity.this,
-										RoomiesConstants.APP_ERROR, mToast);
-							}*/
+                            } catch (RoomXpnseMngrException e) {
+                                RoomiesHelper.createToast(LoginActivity.this,
+                                        RoomiesConstants.APP_ERROR, mToast);
+                            }*/
                         }
                     });
             Bundle parameters = new Bundle();
@@ -373,7 +376,7 @@ public class LoginActivity extends RoomiesBaseActivity {
      */
     @Override
     protected void getAllDetails(UserDetails userDetails, boolean isGoogleFBlogin) {
-        RoomiesHelper.createToast(this, "logged In", mToast);
+        ToastUtils.createToast(this, "logged In", mToast);
         manager = new RoomUserStatManager(LoginActivity.this);
 
 
@@ -396,25 +399,12 @@ public class LoginActivity extends RoomiesBaseActivity {
                     RoomiesConstants.PREF_ROOMIES_KEY, Context.MODE_PRIVATE).edit();
             mEditor.putBoolean(RoomiesConstants.IS_SETUP_COMPLETED, false);
             mEditor.apply();
-            try {
-                RoomiesHelper.startActivityHelper(this, getResources()
-                        .getString(R.string.HomeScreen_Activity), null, true);
-            } catch (RoomXpnseMngrException e) {
-                RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
-            }
-        } else {
-
-            /**
-             * start HomeScreen activity
-             * */
-
-            try {
-                RoomiesHelper.startActivityHelper(this, getResources()
-                        .getString(R.string.HomeScreen_Activity), null, true);
-            } catch (RoomXpnseMngrException e) {
-                RoomiesHelper.createToast(this, RoomiesConstants.APP_ERROR, mToast);
-                System.exit(0);
-            }
+        }
+        try {
+            ActivityUtils.startActivityHelper(this, getResources()
+                    .getString(R.string.HomeScreen_Activity), null, true);
+        } catch (RoomXpnseMngrException e) {
+            ToastUtils.createToast(this, RoomiesConstants.APP_ERROR, mToast);
         }
     }
 

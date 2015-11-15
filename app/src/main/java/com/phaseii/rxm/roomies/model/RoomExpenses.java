@@ -1,11 +1,16 @@
 package com.phaseii.rxm.roomies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.phaseii.rxm.roomies.util.DateUtils;
+
 import java.util.Date;
 
 /**
  * Created by Snehankur on 6/29/2015.
  */
-public class RoomExpenses extends RoomiesModel {
+public class RoomExpenses extends RoomiesModel implements Parcelable {
 
     private int expenseId;
     private int roomId;
@@ -17,6 +22,44 @@ public class RoomExpenses extends RoomiesModel {
     private float amount;
     private Date expenseDate;
     private String monthYear;
+
+    public RoomExpenses() {
+        expenseId = 0;
+        roomId = 0;
+        userId = 0;
+        expenseCategory = null;
+        expenseSubcategory = null;
+        description = null;
+        quantity = null;
+        amount = 0f;
+        monthYear = null;
+        expenseDate = new Date();
+    }
+
+    protected RoomExpenses(Parcel in) {
+        expenseId = in.readInt();
+        roomId = in.readInt();
+        userId = in.readInt();
+        expenseCategory = in.readString();
+        expenseSubcategory = in.readString();
+        description = in.readString();
+        quantity = in.readString();
+        amount = in.readFloat();
+        monthYear = in.readString();
+        expenseDate = DateUtils.stringToDateParser(in.readString());
+    }
+
+    public static final Creator<RoomExpenses> CREATOR = new Creator<RoomExpenses>() {
+        @Override
+        public RoomExpenses createFromParcel(Parcel in) {
+            return new RoomExpenses(in);
+        }
+
+        @Override
+        public RoomExpenses[] newArray(int size) {
+            return new RoomExpenses[size];
+        }
+    };
 
     public int getExpenseId() {
         return expenseId;
@@ -96,5 +139,24 @@ public class RoomExpenses extends RoomiesModel {
 
     public void setMonthYear(String monthYear) {
         this.monthYear = monthYear;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(expenseId);
+        dest.writeInt(roomId);
+        dest.writeInt(userId);
+        dest.writeString(expenseCategory);
+        dest.writeString(expenseSubcategory);
+        dest.writeString(description);
+        dest.writeString(quantity);
+        dest.writeFloat(amount);
+        dest.writeString(monthYear);
+        dest.writeString(DateUtils.dateToStringFormatter(expenseDate));
     }
 }

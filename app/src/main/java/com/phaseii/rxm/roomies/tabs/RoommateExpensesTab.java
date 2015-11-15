@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.view.MembersAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Snehankur on 9/20/2015.
@@ -20,8 +24,14 @@ public class RoommateExpensesTab extends RoomiesFragment {
 
     private Context mContext;
     private Typeface typeface;
+    private static List<RoomExpenses> roomExpensesList = new ArrayList<>();
 
-    public static RoommateExpensesTab getInstance() {
+    public static RoommateExpensesTab getInstance(List<RoomExpenses> roomExpenses) {
+        if (null != roomExpenses) {
+            roomExpensesList.clear();
+            roomExpensesList.addAll(roomExpenses);
+        }
+
         return new RoommateExpensesTab();
     }
 
@@ -35,7 +45,8 @@ public class RoommateExpensesTab extends RoomiesFragment {
                 ".ttf");
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(
                 R.id.room_members_view);
-        RecyclerView.Adapter adapter = new MembersAdapter(getActivity().getBaseContext(), getChildFragmentManager());
+        RecyclerView.Adapter adapter = new MembersAdapter(getActivity().getBaseContext(),
+                getChildFragmentManager(), roomExpensesList);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext,
                 LinearLayoutManager.VERTICAL, false);

@@ -24,6 +24,12 @@ public class RoomiesContract {
     public static final String INTEGER_PRIMARY_KEY_AUTOINCREMENT = " INTEGER PRIMARY KEY " +
             "AUTOINCREMENT";
     public static final String VIEW_NAME = "room_user_stat_view";
+
+    /**
+     * empty constructor to prevent someone from accidentally instantiating the contract class
+     */
+    private RoomiesContract() {
+    }
     /**
      * ************************************************************************************
      * R O O M   U S E R  S T A T  V I E W
@@ -61,153 +67,6 @@ public class RoomiesContract {
     public static final String SQL_DROP_VIEW = "DROP VIEW " + VIEW_NAME;
     public static String INTEGER_UNIQUE_KEY_AUTOINCREMENT = "INTEGER UNIQUE KEY AUTOINCREMENT";
 
-    /**
-     * empty constructor to prevent someone from accidentally instantiating the contract class
-     */
-    private RoomiesContract() {
-    }
-
-    public static abstract class UserCredentials implements BaseColumns {
-        public static final String TABLE_NAME = "user_credentials";
-        public static final String COLUMN_PERSON_ID = "person_id";
-        public static final String COLUMN_NAME_EMAIL_ID = "email_id";
-        public static final String COLUMN_NAME_USERNAME = "username";
-        public static final String COLUMN_NAME_PASSWORD = "password";
-        public static final String COLUMN_SETUP_COMPLETED = "setup_completed";
-        public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME +
-                " (" + _ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
-                COLUMN_PERSON_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_NAME_USERNAME + TEXT_TYPE + UNIQUE_KEY + COMMA_SEP +
-                COLUMN_NAME_EMAIL_ID + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NAME_PASSWORD + TEXT_TYPE + COMMA_SEP +
-                COLUMN_SETUP_COMPLETED + TEXT_TYPE + COMMA_SEP +
-                /*"FOREIGN KEY (" + COLUMN_PERSON_ID + ") " +
-                "REFERENCES " + Person.EXPENSE_TABLE_NAME + "(" + Person._ID + ") "+*/" )";
-        public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
-    }
-
-    public static abstract class Person implements BaseColumns {
-        public static final String TABLE_NAME = "person";
-        public static final String COLUMN_ROOM_ID = "room_id";
-        public static final String COLUMN_NAME_PHONE = "phone";
-        public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME +
-                " (" + _ID + INTEGER_PRIMARY_KEY +
-                COLUMN_ROOM_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_NAME_PHONE + INTEGER_TYPE + COMMA_SEP +
-                "FOREIGN KEY (" + COLUMN_ROOM_ID + ") " +
-                "REFERENCES " + Room.TABLE_NAME + "(" + Room._ID + ") )";
-        public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
-    }
-
-    public static abstract class Room implements BaseColumns {
-        public static final String TABLE_NAME = "room";
-        public static final String COLUMN_ROOM_ALIAS = "room_alias";
-        public static final String COLUMN_NO_OF_PERSONS = "no_of_persons";
-        public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME +
-                " (" + _ID + INTEGER_PRIMARY_KEY +
-                _ID + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_ROOM_ALIAS + TEXT_TYPE + COMMA_SEP +
-                COLUMN_NO_OF_PERSONS + INTEGER_TYPE + COMMA_SEP + " )";
-        public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
-    }
-
-    public static abstract class PersonalExpenses implements BaseColumns {
-        public static final String TABLE_NAME = "personal_expenses";
-        public static final String COLUMN_NAME_PERSON_ID = "person_id";
-        public static final String COLUMN_NAME_MONTH = "month";
-        public static final String COLUMN_NAME_YEAR = "year";
-        public static final String COLUMN_NAME_RENT = "rent";
-        public static final String COLUMN_NAME_MAID = "maid";
-        public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " " +
-                "(" + _ID + INTEGER_PRIMARY_KEY +
-                COLUMN_NAME_PERSON_ID + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_NAME_MONTH + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_NAME_YEAR + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_NAME_RENT + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_NAME_MAID + INTEGER_TYPE + COMMA_SEP +
-                FOREIGN_KEY + COLUMN_NAME_PERSON_ID + ") " +
-                REFERENCES + Person.TABLE_NAME + "(" + Person._ID + ") )";
-        public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
-    }
-
-    public static abstract class Room_Expenses implements BaseColumns {
-        public static final String TABLE_NAME = "room_expenses";
-        public static final String TRIGGER_NAME = "UPDATE_COLUMN_TOTAL_TRG";
-        public static final String COLUMN_NO_OF_MEMBERS = "no_of_members";
-        public static final String COLUMN_MONTH = "month";
-        public static final String COLUMN_RENT = "rent";
-        public static final String COLUMN_RENT_MARGIN = "rent_margin";
-        public static final String COLUMN_MAID = "maid";
-        public static final String COLUMN_MAID_MARGIN = "maid_margin";
-        public static final String COLUMN_ELECTRICITY = "elec";
-        public static final String COLUMN_ELECTRICITY_MARGIN = "elec_margin";
-        public static final String COLUMN_MISCELLANEOUS = "misc";
-        public static final String COLUMN_MISCELLANEOUS_MARGIN = "misc_margin";
-        public static final String COLUMN_TOTAL = "total";
-        public static final String COLUMN_USERNAME = "username";
-        public static final String COLUMN_ROOM_ALIAS = "room_alias";
-
-        public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
-                + _ID + INTEGER_PRIMARY_KEY + COMMA_SEP +
-                COLUMN_USERNAME + TEXT_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_ROOM_ALIAS + TEXT_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_NO_OF_MEMBERS + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_MONTH + TEXT_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_RENT + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_RENT_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_MAID + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_MAID_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_ELECTRICITY + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_ELECTRICITY_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_MISCELLANEOUS + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_MISCELLANEOUS_MARGIN + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                COLUMN_TOTAL + INTEGER_TYPE + NOT_NULL + COMMA_SEP +
-                /*FOREIGN_KEY + EXPENSE_ROOM_ID + ") " +
-                REFERENCES + Room.EXPENSE_TABLE_NAME + " (" + Room._ID + ")" +*/ " )";
-        public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER " + TRIGGER_NAME
-                + " AFTER UPDATE ON " + TABLE_NAME +
-                " BEGIN" +
-                " UPDATE " + RoomStats.STATS_TABLE_NAME + " SET " + COLUMN_TOTAL + " = " + "new." +
-                COLUMN_RENT
-                + "+ " +
-                "new." + COLUMN_MAID + "+ new." + COLUMN_MISCELLANEOUS + "+ new." + COLUMN_ELECTRICITY +
-                " WHERE _ID = new._ID; END;";
-
-        public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        public static final String SQL_DROP_TRIGGER = "DROP TRIGGER " + TRIGGER_NAME;
-    }
-
-    public static abstract class Misc_Expenses implements BaseColumns {
-        public static final String TABLE_NAME = "misc_expenses";
-        public static final String TRIGGER_NAME = "UPDATE_TOTAL_MISC_TRG ";
-        public static final String COLUMN_DESCRIPTION = "misc_desc";
-        public static final String COLUMN_TYPE = "misc_type";
-        public static final String COLUMN_AMOUNT = "misc_amount";
-        public static final String COLUMN_QUANTITY = "misc_quantity";
-        public static final String COLUMN_DATE = "misc_date";
-        public static final String COLUMN_MONTH = "month";
-        public static final String COLUMN_USERNAME = "username";
-        public static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " ("
-                + _ID + INTEGER_PRIMARY_KEY + NOT_NULL + COMMA_SEP +
-                COLUMN_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
-                COLUMN_TYPE + TEXT_TYPE + COMMA_SEP +
-                COLUMN_QUANTITY + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_AMOUNT + INTEGER_TYPE + COMMA_SEP +
-                COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
-                COLUMN_USERNAME + TEXT_TYPE + COMMA_SEP +
-                COLUMN_DATE + DATETIME_TYPE + NOT_NULL + " )";
-        public static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_NAME;
-        public static final String SQL_CREATE_TRIGGER = "CREATE TRIGGER " + TRIGGER_NAME +
-                "AFTER INSERT ON " + TABLE_NAME + " BEGIN " +
-                "UPDATE " + Room_Expenses.TABLE_NAME + " SET " + Room_Expenses
-                .COLUMN_MISCELLANEOUS + "= (SELECT SUM(" + COLUMN_AMOUNT + ") FROM " +
-                TABLE_NAME + " WHERE " + TABLE_NAME + "." + COLUMN_MONTH + " = new."
-                + COLUMN_MONTH + " AND " + TABLE_NAME + "." + COLUMN_USERNAME + " = new." +
-                COLUMN_USERNAME + " )" + " WHERE " + Room_Expenses.COLUMN_MONTH +
-                " = new." + COLUMN_MONTH + " AND " + Room_Expenses.COLUMN_USERNAME + " = new." +
-                COLUMN_USERNAME + "; END;";
-        public static final String SQL_DROP_TRIGGER = "DROP TRIGGER " + TRIGGER_NAME;
-    }
 
     /**
      * ***********************************************************************************

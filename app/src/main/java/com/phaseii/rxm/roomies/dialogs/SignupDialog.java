@@ -16,10 +16,12 @@ import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.dao.RoomiesDao;
 import com.phaseii.rxm.roomies.dao.UserDetailsDaoImpl;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.util.ActivityUtils;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
 import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.ServiceParam;
-import com.phaseii.rxm.roomies.model.UserDetails;
+import com.phaseii.rxm.roomies.util.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,8 +69,7 @@ public class SignupDialog extends DialogFragment {
                 EditText password = (EditText) signupDialog.findViewById(R.id.password);
                 boolean isValidUsername = RoomiesHelper.setError("name", mContext, signupDialog);
                 boolean isValidemail = RoomiesHelper.setError("email", mContext, signupDialog);
-                boolean isValidPassword = RoomiesHelper.setError("password", mContext,
-                        signupDialog);
+                boolean isValidPassword = RoomiesHelper.setError("password", mContext, signupDialog);
 
                 if (isValidUsername && isValidemail && isValidPassword) {
 
@@ -100,14 +101,14 @@ public class SignupDialog extends DialogFragment {
                                 String.valueOf(userId));
                         mEditor.putBoolean(RoomiesConstants.IS_LOGGED_IN, true);
                         mEditor.apply();
-                        RoomiesHelper.createToast(mContext,
+                        ToastUtils.createToast(mContext,
                                 "Welcome " + username.getText().toString() + ".\n You are now " +
                                         "registered with Roomies.", mToast);
                         try {
-                            RoomiesHelper.startActivityHelper(getActivity(), mContext.getResources()
+                            ActivityUtils.startActivityHelper(getActivity(), mContext.getResources()
                                     .getString(R.string.GetStartedWizard), null, true);
                         } catch (RoomXpnseMngrException e) {
-                            RoomiesHelper.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
+                            ToastUtils.createToast(mContext, RoomiesConstants.APP_ERROR, mToast);
                         }
                         dialog.dismiss();
                     }

@@ -4,8 +4,8 @@ package com.phaseii.rxm.roomies.util;
  * Created by Snehankur on 7/1/2015.
  */
 public enum QueryParam {
-    ROOMID("room_id"),
-    USERALIAS("user_alias"),
+    ROOM_ID("room_id"),
+    USER_ALIAS("user_alias"),
     USERNAME("username"),
     PASSWORD("password"),
     SENDER_ID("sender_id"),

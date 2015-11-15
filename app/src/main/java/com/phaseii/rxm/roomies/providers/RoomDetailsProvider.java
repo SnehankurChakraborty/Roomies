@@ -48,7 +48,7 @@ public class RoomDetailsProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(AUTHORITY, "roomdetails", ALL_ROOM_DETAILS);
-        uriMatcher.addURI(AUTHORITY, "roomdetails/*", SPECIFIC_ROOM_DETAILS);
+        uriMatcher.addURI(AUTHORITY, "roomdetails/room/*", SPECIFIC_ROOM_DETAILS);
     }
 
     private SQLiteOpenHelper mdbHelper;
@@ -159,5 +159,13 @@ public class RoomDetailsProvider extends ContentProvider {
         int count = db.update(RoomDetails.DETAILS_TABLE_NAME, values,
                 selection, selectionArgs);
         return count;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        if (null != db && db.isOpen()) {
+            db.close();
+        }
     }
 }

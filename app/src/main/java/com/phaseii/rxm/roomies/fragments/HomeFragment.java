@@ -16,27 +16,51 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
+import com.phaseii.rxm.roomies.model.RoomStats;
 import com.phaseii.rxm.roomies.tabs.DashboardTab;
 import com.phaseii.rxm.roomies.tabs.MonthlyTab;
 import com.phaseii.rxm.roomies.tabs.SummaryTab;
 import com.phaseii.rxm.roomies.tabs.TrendsTab;
+import com.phaseii.rxm.roomies.util.ActivityUtils;
 import com.phaseii.rxm.roomies.util.ColorUtils;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout;
 import com.phaseii.rxm.roomies.view.RoomiesSlidingTabStrip;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class HomeFragment extends RoomiesFragment {
     private RoomiesSlidingTabLayout tabs;
+    private List<RoomExpenses> roomExpensesList;
+    private List<RoomStats> roomStatsList;
 
+    /**
+     *
+     * @return
+     */
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
+    }
+
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_home, container,
-                false);
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        roomExpensesList = getParceableBundle().getParcelableArrayList(
+                ActivityUtils.Extras.ROOM_EXPENSES.getValue());
+        roomStatsList = getParceableBundle().getParcelableArrayList(
+                ActivityUtils.Extras.ROOM_STATS.getValue());
         Context mContext = getActivity();
         final String titles[] = {"Summary", "Dashboard", "Monthly", "Trends"};
         ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
@@ -45,13 +69,15 @@ public class HomeFragment extends RoomiesFragment {
                 mContext.getResources().getColor(R.color.primary3_home),
                 mContext.getResources().getColor(R.color.primary4_home),
                 mContext.getResources().getColor(R.color.primary5)};
-        final int[] colorsDark = new int[]{mContext.getResources().getColor(R.color.primary_dark_home),
+        final int[] colorsDark = new int[]{mContext.getResources().getColor(R.color
+                .primary_dark_home),
                 mContext.getResources().getColor(R.color.primary_dark2_home),
                 mContext.getResources().getColor(R.color.primary_dark3_home),
                 mContext.getResources().getColor(R.color.primary_dark4_home),
                 mContext.getResources().getColor(R.color.primary_dark5)};
-        final RoomiesHomePagerAdapter adapter = new RoomiesHomePagerAdapter(getChildFragmentManager()
-                , titles, 4);
+        final RoomiesHomePagerAdapter adapter = new RoomiesHomePagerAdapter
+                (getChildFragmentManager()
+                        , titles, 4);
 
         pager.setAdapter(adapter);
 
@@ -77,7 +103,8 @@ public class HomeFragment extends RoomiesFragment {
                 // Blend the colors and adjust the ActionBar
                 final int blended = ColorUtils.blendColors(colors[position + 1], colors[position],
                         positionOffset);
-                final int blendedDark = ColorUtils.blendColors(colorsDark[position + 1], colorsDark[position],
+                final int blendedDark = ColorUtils.blendColors(colorsDark[position + 1],
+                        colorsDark[position],
                         positionOffset);
                 ((ActionBarActivity) getActivity())
                         .getSupportActionBar().setBackgroundDrawable(
@@ -118,21 +145,38 @@ public class HomeFragment extends RoomiesFragment {
         return rootView;
     }
 
+    /**
+     *
+     * @return
+     */
     public RoomiesSlidingTabLayout getTab() {
         return tabs;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public View getFragmentView() {
         return rootView;
     }
 
+    /**
+     *
+     */
     public class RoomiesHomePagerAdapter extends FragmentPagerAdapter {
         String titles[];
         int numbOfTabs;
         private Map<Integer, String> mTags = new HashMap<>();
         private SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
+        /**
+         *
+         * @param fm
+         * @param mTitles
+         * @param mNumbOfTabs
+         */
         public RoomiesHomePagerAdapter(FragmentManager fm, String mTitles[],
                                        int mNumbOfTabs) {
             super(fm);
@@ -140,6 +184,11 @@ public class HomeFragment extends RoomiesFragment {
             this.numbOfTabs = mNumbOfTabs;
         }
 
+        /**
+         *
+         * @param position
+         * @return
+         */
         @Override
         public Fragment getItem(int position) {
             RoomiesFragment tab = null;
@@ -151,17 +200,17 @@ public class HomeFragment extends RoomiesFragment {
                     mTags.put(position, tag);
                     break;
                 case 1:
-                    tab = DashboardTab.getInstance();
+                    tab = DashboardTab.getInstance(roomExpensesList);
                     tag = tab.getTag();
                     mTags.put(position, tag);
                     break;
                 case 2:
-                    tab = MonthlyTab.getInstance();
+                    tab = MonthlyTab.getInstance(roomExpensesList);
                     tag = tab.getTag();
                     mTags.put(position, tag);
                     break;
                 case 3:
-                    tab = TrendsTab.getInstance();
+                    tab = TrendsTab.getInstance(roomStatsList);
                     tag = tab.getTag();
                     mTags.put(position, tag);
                     break;
@@ -169,6 +218,12 @@ public class HomeFragment extends RoomiesFragment {
             return tab;
         }
 
+        /**
+         *
+         * @param container
+         * @param position
+         * @return
+         */
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
@@ -176,21 +231,41 @@ public class HomeFragment extends RoomiesFragment {
             return fragment;
         }
 
+        /**
+         *
+         * @param container
+         * @param position
+         * @param object
+         */
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             registeredFragments.remove(position);
             super.destroyItem(container, position, object);
         }
 
+        /**
+         *
+         * @param position
+         * @return
+         */
         public Fragment getRegisteredFragment(int position) {
             return registeredFragments.get(position);
         }
 
+        /**
+         *
+         * @param position
+         * @return
+         */
         @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];
         }
 
+        /**
+         *
+         * @return
+         */
         @Override
         public int getCount() {
             return numbOfTabs;

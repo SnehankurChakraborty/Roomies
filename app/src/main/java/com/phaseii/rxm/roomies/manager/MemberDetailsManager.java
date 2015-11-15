@@ -38,11 +38,11 @@ public class MemberDetailsManager {
 
         List<QueryParam> projectionParams = new ArrayList<QueryParam>();
         projectionParams.add(QueryParam.USER_ID);
-        projectionParams.add(QueryParam.ROOMID);
+        projectionParams.add(QueryParam.ROOM_ID);
         paramMap.put(ServiceParam.PROJECTION, projectionParams);
 
         List<QueryParam> selectionParams = new ArrayList<QueryParam>();
-        selectionParams.add(QueryParam.ROOMID);
+        selectionParams.add(QueryParam.ROOM_ID);
         paramMap.put(ServiceParam.SELECTION, selectionParams);
 
         List<String> selectionArgs = new ArrayList<String>();
@@ -51,7 +51,7 @@ public class MemberDetailsManager {
 
         roomiesDao = new RoomUserMapDao(mContext);
         List<RoomUserMap> users = (List<RoomUserMap>) roomiesDao.getDetails(paramMap);
-        List<RoomExpenses> roomExpensesList = new RoomExpensesManager(mContext).getRoomExpenses();
+        List<RoomExpenses> roomExpensesList = new RoomExpensesManager(mContext).getRoomExpenses(roomId);
         for (RoomUserMap user : users) {
             MemberDetail member = new MemberDetail();
             UserDetails userDetails = new UserDetailsManager(mContext).getUserDetails(user

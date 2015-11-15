@@ -20,13 +20,13 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.RoomiesFragment;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.manager.RoomStatManager;
+import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.RoomStats;
+import com.phaseii.rxm.roomies.util.RoomiesConstants;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -62,8 +62,13 @@ public class TrendsTab extends RoomiesFragment implements RoomiesFragment.Updata
     private int currentYear;
     private Button previous;
     private Button next;
+    private static List<RoomStats> roomStatsList = new ArrayList<>();
 
-    public static TrendsTab getInstance() {
+    public static TrendsTab getInstance(List<RoomStats> roomStatses) {
+        if (null != roomStatses) {
+            roomStatsList.clear();
+            roomStatsList = roomStatses;
+        }
         return new TrendsTab();
     }
 
@@ -148,7 +153,7 @@ public class TrendsTab extends RoomiesFragment implements RoomiesFragment.Updata
         }
 
         List<String> months = new ArrayList<>();
-        months.add(new DateFormatSymbols().getMonths()[currentMonth]+ String.valueOf(
+        months.add(new DateFormatSymbols().getMonths()[currentMonth] + String.valueOf(
                 currentYear));
         if ((currentMonth - 1) >= 0) {
             months.add(new DateFormatSymbols().getMonths()[currentMonth - 1] + String.valueOf(
@@ -164,13 +169,10 @@ public class TrendsTab extends RoomiesFragment implements RoomiesFragment.Updata
                     currentYear - 1));
         }
 
-        RoomStatManager manager = new RoomStatManager(mContext);
-        List<RoomStats> roomTrendList = manager.getRoomStatsTrend(months);
-
 
         int index = 0;
 
-        if (roomTrendList.size() < 3) {
+        if (roomStatsList.size() < 3) {
             previous.setEnabled(false);
         } else {
             previous.setEnabled(true);
@@ -187,7 +189,7 @@ public class TrendsTab extends RoomiesFragment implements RoomiesFragment.Updata
         electricityTable.removeAllViews();
         miscTable.removeAllViews();
 
-        for (RoomStats roomStats : roomTrendList) {
+        for (RoomStats roomStats : roomStatsList) {
             rentSavings = roomStats.getRentMargin() - roomStats.getRentSpent();
             maidSavings = roomStats.getMaidMargin() - roomStats.getMaidSpent();
             electricitySavings = roomStats.getElectricityMargin() - roomStats.getElectricitySpent();
@@ -307,7 +309,7 @@ public class TrendsTab extends RoomiesFragment implements RoomiesFragment.Updata
         barChart.setPinchZoom(true);
         barChart.setScaleMinima(1f, 1f);
         barChart.setDoubleTapToZoomEnabled(false);
-        barChart.setHighlightEnabled(false);
+        barChart.setHighlightPerTapEnabled(false);
 
         Legend l = barChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
@@ -346,7 +348,7 @@ public class TrendsTab extends RoomiesFragment implements RoomiesFragment.Updata
 
 
     @Override
-    public void update(String username) {
+    public void update(RoomExpenses expenses) {
 
     }
 }

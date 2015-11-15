@@ -6,11 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.phaseii.rxm.roomies.database.RoomiesContract;
-import com.phaseii.rxm.roomies.util.QueryParam;
-import com.phaseii.rxm.roomies.util.ServiceParam;
 import com.phaseii.rxm.roomies.model.RoomiesModel;
 import com.phaseii.rxm.roomies.model.UserDetails;
 import com.phaseii.rxm.roomies.providers.UserDetailsProvider;
+import com.phaseii.rxm.roomies.util.QueryParam;
+import com.phaseii.rxm.roomies.util.ServiceParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +35,7 @@ public class UserDetailsDaoImpl implements RoomiesDao {
     private String sortOrder;
     private UserDetails user;
     private ContentValues values;
+    private Uri userDetailsUri;
 
     public UserDetailsDaoImpl(Context mContext) {
         this.mContext = mContext;
@@ -67,32 +68,56 @@ public class UserDetailsDaoImpl implements RoomiesDao {
             selectionArgsList.toArray(selectionArgs);
         }
 
-        Cursor cursor = mContext.getContentResolver().query(UserDetailsProvider
-                .CONTENT_URI, projection, selection, selectionArgs, sortOrder);
-        List<UserDetails> userDetailsList = null;
-        if (null != cursor) {
-            cursor.moveToFirst();
-            userDetailsList = new ArrayList<>();
-            while (!cursor.isAfterLast()) {
-
-                UserDetails user = new UserDetails();
-
-                user.setUserId(cursor.getColumnIndex(_ID) >= 0 ? cursor.getInt(cursor
-                        .getColumnIndex(_ID)) : -1);
-                user.setUsername(cursor.getColumnIndex(USER_USERNAME) >= 0 ? cursor.getString(cursor
-                        .getColumnIndex(USER_USERNAME)) : null);
-                user.setPassword(cursor.getColumnIndex(USER_PASSWORD) >= 0 ? cursor.getString(cursor
-                        .getColumnIndex(USER_PASSWORD)) : null);
-                user.setUserAlias(
-                        cursor.getColumnIndex(USER_USER_ALIAS) >= 0 ? cursor.getString(cursor
-                                .getColumnIndex(USER_USER_ALIAS)) : null);
-                user.setSenderId(cursor.getColumnIndex(USER_SENDER_ID) >= 0 ?
-                        cursor.getString(cursor.getColumnIndex(USER_SENDER_ID)) : null);
-                userDetailsList.add(user);
-
-                cursor.moveToNext();
+        String queryArg = null;
+        Map<QueryParam, String> queryParams = (Map<QueryParam, String>) queryMap.get
+                (ServiceParam.QUERYARGS);
+        if (null != queryParams && queryParams.size() > 0) {
+            for (QueryParam param : queryParams.keySet()) {
+                if (param.equals(QueryParam.USER_ID)) {
+                    queryArg = "month/" + queryParams.get(param);
+                } else if (param.equals(QueryParam.USER_ALIAS)) {
+                    queryArg = "room/" + queryParams.get(param);
+                }else if(param.equals(QueryParam.SENDER_ID)){
+                    queryArg = "room/" + queryParams.get(param);
+                }
             }
-            cursor.close();
+        }
+        if (null != queryArg) {
+            userDetailsUri = Uri.withAppendedPath(UserDetailsProvider.CONTENT_URI,
+                    queryArg);
+        } else {
+            userDetailsUri = UserDetailsProvider.CONTENT_URI;
+        }
+
+        Cursor cursor = null;
+        List<UserDetails> userDetailsList = new ArrayList<>();
+        try {
+            cursor = mContext.getContentResolver().query(userDetailsUri, projection, selection,
+                    selectionArgs, sortOrder);
+            if (null != cursor) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+
+                    UserDetails user = new UserDetails();
+                    user.setUserId(cursor.getColumnIndex(_ID) >= 0 ? cursor.getInt(cursor
+                            .getColumnIndex(_ID)) : -1);
+                    user.setUsername(cursor.getColumnIndex(USER_USERNAME) >= 0 ? cursor.getString
+                            (cursor.getColumnIndex(USER_USERNAME)) : null);
+                    user.setPassword(cursor.getColumnIndex(USER_PASSWORD) >= 0 ? cursor.getString
+                            (cursor.getColumnIndex(USER_PASSWORD)) : null);
+                    user.setUserAlias(
+                            cursor.getColumnIndex(USER_USER_ALIAS) >= 0 ? cursor.getString(cursor
+                                    .getColumnIndex(USER_USER_ALIAS)) : null);
+                    user.setSenderId(cursor.getColumnIndex(USER_SENDER_ID) >= 0 ?
+                            cursor.getString(cursor.getColumnIndex(USER_SENDER_ID)) : null);
+                    userDetailsList.add(user);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            if (null != cursor && !cursor.isClosed()) {
+                cursor.close();
+            }
         }
 
 

@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.phaseii.rxm.roomies.R;
 
 /**
@@ -28,19 +29,17 @@ public class CustomMarkerView extends MarkerView {
     // callbacks everytime the MarkerView is redrawn, can be used to update the
     // content (user-interface)
     @Override
-    public void refreshContent(Entry e, int highlight) {
-        tvContent.setText("" + e.getVal()); // set the entry-value as the display text
+    public void refreshContent(Entry entry, Highlight highlight) {
+        tvContent.setText("" + entry.getVal()); // set the entry-value as the display text
     }
 
     @Override
-    public int getXOffset() {
-        // this will center the marker-view horizontally
+    public int getXOffset(float v) {
         return -(getWidth() / 2);
     }
 
     @Override
-    public int getYOffset() {
-        // this will cause the marker-view to be above the selected value
+    public int getYOffset(float v) {
         return -getHeight();
     }
 }

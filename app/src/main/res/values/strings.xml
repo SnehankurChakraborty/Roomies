@@ -89,6 +89,8 @@
         <item>VEGETABLES</item>
         <item>OTHERS</item>
     </string-array>
+    <string name="Rs">\u20B9</string>
+    <string name="rs">\u20A8</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="into_your_room">into your room</string>
