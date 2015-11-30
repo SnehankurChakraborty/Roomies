@@ -13,7 +13,6 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
         <item name="android:windowTranslucentStatus">true</item>
-        <!--<item name="windowTranslucentStatus">true</item>-->
 
         <item name="android:actionBarItemBackground">@drawable/selectable_background_roomies</item>
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_roomies

@@ -4,880 +4,880 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-	<com.phaseii.rxm.roomies.view.RoomiesScrollView
-		android:id="@+id/scrollViewHelper"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<RelativeLayout
-			android:orientation="vertical"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-
-			<ImageView
-				android:id="@+id/colored_background_view"
-				android:layout_width="match_parent"
-				android:layout_height="400dp"
-				android:background="@color/primary_home"
-				android:src="@drawable/user_back"
-				android:scaleType="centerInside"/>
-
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="280dp"
-				android:elevation="15dp">
-
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="40dp"
-					android:id="@+id/non_transparent"
-					android:background="@color/primary_light">
-
-
-					<LinearLayout
-						android:id="@+id/informations_container"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:orientation="vertical"
-						android:layout_gravity="start"
-						android:gravity="start"
-						android:paddingTop="5dp"
-						android:paddingBottom="5dp"
-						android:background="@color/primary_home">
-
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:text="Name"
-							android:textSize="30sp"
-							android:layout_marginLeft="20dp"
-							android:id="@+id/saved_name"
-							android:fontFamily="sans-serif-condensed"
-							android:textColor="@color/icons"/>
-
-						<TextView
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:gravity="center"
-							android:layout_marginLeft="20dp"
-							android:text="mail"
-							android:textSize="25sp"
-							android:fontFamily="sans-serif-thin"
-							android:id="@+id/saved_mail"
-							android:textColor="@color/icons"/>
-
-
-					</LinearLayout>
-
-
-					<android.support.v7.widget.CardView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:id="@+id/personal_profile"
-						android:layout_marginTop="5dp"
-						android:layout_marginRight="20dp"
-						android:layout_marginLeft="20dp"
-						android:layout_below="@id/informations_container">
-
-						<RelativeLayout
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:orientation="horizontal"
-							android:paddingTop="20dp"
-
-							android:paddingLeft="20dp"
-							android:paddingBottom="20dp">
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_user"
-								android:id="@+id/name_image"/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/name_image"
-								android:paddingLeft="10dp"
-								android:id="@+id/name_layout">
-
+    <com.phaseii.rxm.roomies.view.RoomiesScrollView
+        android:id="@+id/scrollViewHelper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/colored_background_view"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:background="@color/primary_home"
+                android:scaleType="centerInside"
+                android:src="@drawable/user_back"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="280dp"
+                android:elevation="15dp">
+
+                <RelativeLayout
+                    android:id="@+id/non_transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:background="@color/primary_light">
+
+
+                    <LinearLayout
+                        android:id="@+id/informations_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:background="@color/primary_home"
+                        android:gravity="start"
+                        android:orientation="vertical"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp">
+
+
+                        <TextView
+                            android:id="@+id/saved_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="Name"
+                            android:textColor="@color/icons"
+                            android:textSize="30sp"/>
+
+                        <TextView
+                            android:id="@+id/saved_mail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:fontFamily="sans-serif-thin"
+                            android:gravity="center"
+                            android:text="mail"
+                            android:textColor="@color/icons"
+                            android:textSize="25sp"/>
+
+
+                    </LinearLayout>
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/personal_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/informations_container"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="20dp"
+
+                            android:paddingLeft="20dp"
+                            android:paddingTop="20dp">
+
+                            <ImageView
+                                android:id="@+id/name_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_user"/>
+
+                            <RelativeLayout
+                                android:id="@+id/name_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/name_image"
+                                android:paddingLeft="10dp">
+
 
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/name"
-									android:text="Name"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/name_edit"
-									android:hint="Name"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="textAutoCorrect"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Name"
-									android:textSize="10sp"
-									android:layout_below="@id/name"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-
-							<View
-								android:layout_width="match_parent"
-								android:layout_height="1dp"
-								android:layout_below="@id/name_layout"
-								android:layout_marginTop="10dp"
-								android:layout_marginBottom="10dp"
-								android:layout_alignParentRight="true"
-								android:layout_marginLeft="40dp"
-								android:id="@+id/name_divider"
-								android:background="@color/button_material_light"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/name_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/name_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/name_divider"
-								android:layout_marginBottom="10dp"
-								android:layout_gravity="center_vertical"
-								android:id="@+id/name_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_mail"
-								android:id="@+id/email_image"
-
-								android:layout_below="@id/name_divider"/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/name_image"
-								android:layout_below="@id/name_divider"
-								android:paddingLeft="10dp"
-								android:id="@+id/email_layout">
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/email"
-									android:text="Email"
-									android:textSize="15sp"
-									android:fontFamily="sans-serif-thin"
-									android:textStyle="bold"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/email_edit"
-									android:hint="Email"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="textEmailAddress"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Email"
-									android:textSize="10sp"
-									android:layout_below="@id/email"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_marginRight="20dp"
-								android:layout_below="@id/name_divider"
-								android:layout_marginTop="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/email_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_below="@id/name_divider"
-								android:layout_marginTop="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/email_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-						</RelativeLayout>
-					</android.support.v7.widget.CardView>
-
-
-					<android.support.v7.widget.CardView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:id="@+id/room_profile"
-						android:layout_below="@id/personal_profile"
-						android:layout_marginTop="5dp"
-						android:layout_marginRight="20dp"
-						android:layout_marginLeft="20dp">
-
-						<RelativeLayout
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:orientation="horizontal"
-							android:paddingTop="20dp"
-							android:paddingLeft="20dp"
-							android:paddingBottom="20dp">
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_room"
-								android:id="@+id/room_alias_image"
-								/>
-
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/room_alias_image"
-								android:paddingLeft="10dp"
-								android:id="@+id/room_alias_layout">>
-
-								<TextView
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/room_alias"
-									android:text="Room"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:textColor="@color/primary_text"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/room_alias_edit"
-									android:hint="Room Name"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:maxLength="10"
-									android:fontFamily="sans-serif"
-									android:layout_gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="textAutoCorrect"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Room Alias"
-									android:textSize="10sp"
-									android:layout_below="@id/room_alias"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-
-							<View
-								android:layout_width="match_parent"
-								android:layout_height="1dp"
-								android:layout_below="@id/room_alias_layout"
-								android:layout_marginTop="10dp"
-								android:layout_marginLeft="40dp"
-								android:layout_alignParentRight="true"
-								android:layout_marginBottom="10dp"
-								android:id="@+id/room_alias_divider"
-								android:background="@color/button_material_light"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/room_alias_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/room_alias_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/room_alias_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/room_alias_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_number"
-								android:id="@+id/no_of_members_image"
-								android:layout_below="@id/room_alias_divider"/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/no_of_members_image"
-								android:layout_below="@id/room_alias_divider"
-								android:paddingLeft="10dp"
-								android:id="@+id/no_of_members_layout">
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/no_of_members"
-									android:text="No of Members"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/no_of_members_edit"
-									android:hint="No of Members"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:maxLength="1"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="number"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="No of Members"
-									android:textSize="10sp"
-									android:layout_below="@id/no_of_members"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_below="@id/room_alias_divider"
-								android:layout_marginTop="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/no_of_members_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_below="@id/room_alias_divider"
-								android:layout_marginTop="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/no_of_members_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-						</RelativeLayout>
-
-					</android.support.v7.widget.CardView>
-
-					<android.support.v7.widget.CardView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:id="@+id/room_expense_profile"
-						android:layout_below="@id/room_profile"
-						android:layout_marginTop="5dp"
-						android:layout_marginRight="20dp"
-						android:layout_marginLeft="20dp"
-						android:layout_marginBottom="10dp">
-
-						<RelativeLayout
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:orientation="vertical"
-							android:paddingTop="20dp"
-							android:paddingLeft="20dp"
-							android:paddingBottom="20dp">
-
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_rent_selected"
-								android:id="@+id/rent_image"
-								/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/rent_image"
-								android:paddingLeft="10dp"
-								android:id="@+id/rent_layout">
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/rent"
-									android:text="Rent"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/rent_edit"
-									android:hint="Rent"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="number"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Rent"
-									android:textSize="10sp"
-									android:layout_below="@id/rent"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-
-							<View
-								android:layout_width="match_parent"
-								android:layout_height="1dp"
-								android:layout_below="@id/rent_layout"
-								android:layout_marginTop="10dp"
-								android:layout_marginBottom="10dp"
-								android:layout_marginLeft="40dp"
-								android:id="@+id/rent_divider"
-								android:background="@color/button_material_light"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/rent_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/rent_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/rent_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/rent_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_electricity_selected"
-								android:id="@+id/electricity_image"
-
-								android:layout_below="@id/rent_divider"/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/electricity_image"
-								android:layout_below="@id/rent_divider"
-								android:paddingLeft="10dp"
-								android:id="@+id/electricity_layout">
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/electricity"
-									android:text="Electricity"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/electricity_edit"
-									android:hint="Electricity"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="number"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Electricity"
-									android:textSize="10sp"
-									android:layout_below="@id/electricity"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-
-							<View
-								android:layout_width="match_parent"
-								android:layout_height="1dp"
-								android:layout_below="@id/electricity_layout"
-								android:layout_marginTop="10dp"
-								android:layout_marginLeft="40dp"
-								android:layout_marginBottom="10dp"
-								android:id="@+id/electricity_divider"
-								android:background="@color/button_material_light"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/electricity_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/electricity_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/electricity_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/electricity_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_maid_selected"
-								android:id="@+id/maid_image"
-
-								android:layout_below="@id/electricity_divider"/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/maid_image"
-								android:layout_below="@id/electricity_divider"
-								android:paddingLeft="10dp"
-								android:id="@+id/maid_layout">
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/maid"
-									android:text="Maid"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/maid_edit"
-									android:hint="Maid"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="number"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Maid"
-									android:textSize="10sp"
-									android:layout_below="@id/maid"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-							<View
-								android:layout_width="match_parent"
-								android:layout_height="1dp"
-								android:layout_below="@id/maid_layout"
-								android:layout_marginTop="10dp"
-								android:layout_marginBottom="10dp"
-								android:layout_marginLeft="40dp"
-								android:id="@+id/maid_divider"
-								android:background="@color/button_material_light"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/maid_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/maid_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_above="@id/maid_divider"
-								android:layout_marginBottom="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/maid_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-
-							<ImageView
-								android:layout_width="30dp"
-								android:layout_height="30dp"
-								android:src="@drawable/ic_misc_selected"
-								android:id="@+id/misc_image"
-
-								android:layout_below="@id/maid_divider"/>
-
-							<RelativeLayout
-								android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_toRightOf="@id/misc_image"
-								android:layout_below="@id/maid_divider"
-								android:paddingLeft="10dp"
-								android:id="@+id/misc_layout">
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:id="@+id/misc"
-									android:text="Miscellaneous"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:gravity="center_horizontal"
-									android:textColor="@color/primary_text"
-									android:background="@color/back"/>
-
-								<EditText
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:id="@+id/misc_edit"
-									android:hint="Miscellaneous"
-									android:textSize="15sp"
-									android:textStyle="bold"
-									android:fontFamily="sans-serif-thin"
-									android:layout_gravity="center_horizontal"
-									android:background="@drawable/roomiesprofileedittext"
-									android:inputType="number"
-									android:textColor="@color/primary_text"
-									android:visibility="invisible"/>
-
-								<TextView
-									android:layout_width="wrap_content"
-									android:layout_height="wrap_content"
-									android:text="Miscellaneous"
-									android:textSize="10sp"
-									android:layout_below="@id/misc"
-									android:layout_marginTop="5dp"
-									android:fontFamily="sans-serif-medium"
-									android:textColor="@color/secondary_text"
-									android:background="@color/back"/>
-
-
-							</RelativeLayout>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_below="@id/maid_divider"
-								android:layout_marginTop="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/misc_edit_button"
-								android:background="@drawable/ic_edit"/>
-
-							<Button
-								android:layout_width="20dp"
-								android:layout_height="20dp"
-								android:layout_marginRight="20dp"
-								android:layout_alignParentEnd="true"
-								android:layout_alignParentRight="true"
-								android:layout_below="@id/maid_divider"
-								android:layout_marginTop="10dp"
-								android:gravity="center_vertical"
-								android:id="@+id/misc_save_button"
-								android:background="@drawable/ic_save"
-								android:visibility="invisible"/>
-
-						</RelativeLayout>
-
-
-					</android.support.v7.widget.CardView>
-				</RelativeLayout>
-
-				<com.phaseii.rxm.roomies.view.RoomiesCircularImageView
-					android:layout_width="50dp"
-					android:layout_height="50dp"
-					android:src="@drawable/roomies_launcher"
-					android:background="@drawable/add_expense"
-					android:elevation="25dp"
-					android:scaleType="centerCrop"
-					android:layout_marginBottom="-60dp"
-					android:layout_above="@id/non_transparent"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentEnd="true"
-					android:layout_marginRight="5dp"
-					android:layout_marginEnd="5dp"/>
-			</RelativeLayout>
-
-		</RelativeLayout>
-
-	</com.phaseii.rxm.roomies.view.RoomiesScrollView>
-
-
-	<include
-		layout="@layout/roomies_toolbar"
-		android:id="@+id/toolbar"
-		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-		android:minHeight="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		tools:ignore="MissingPrefix"/>
+                                <TextView
+                                    android:id="@+id/name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="Name"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/name_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="Name"
+                                    android:inputType="textAutoCorrect"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/name"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Name"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+
+                            <View
+                                android:id="@+id/name_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/name_layout"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/button_material_light"/>
+
+                            <Button
+                                android:id="@+id/name_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/name_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/name_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/name_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_save"
+                                android:visibility="invisible"/>
+
+                            <ImageView
+                                android:id="@+id/email_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_below="@id/name_divider"
+
+                                android:src="@drawable/ic_mail"/>
+
+                            <RelativeLayout
+                                android:id="@+id/email_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/name_divider"
+                                android:layout_toRightOf="@id/name_image"
+                                android:paddingLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/email"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="Email"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/email_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="Email"
+                                    android:inputType="textEmailAddress"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/email"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Email"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+                            <Button
+                                android:id="@+id/email_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/name_divider"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/email_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/name_divider"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+                        </RelativeLayout>
+                    </android.support.v7.widget.CardView>
+
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/room_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/personal_profile"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="20dp"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="20dp">
+
+                            <ImageView
+                                android:id="@+id/room_alias_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_room"
+                                />
+
+
+                            <RelativeLayout
+                                android:id="@+id/room_alias_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/room_alias_image"
+                                android:paddingLeft="10dp">>
+
+                                <TextView
+                                    android:id="@+id/room_alias"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:text="Room"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/room_alias_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif"
+                                    android:hint="Room Name"
+                                    android:inputType="textAutoCorrect"
+                                    android:maxLength="10"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/room_alias"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Room Alias"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+
+                            <View
+                                android:id="@+id/room_alias_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/room_alias_layout"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/button_material_light"/>
+
+                            <Button
+                                android:id="@+id/room_alias_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/room_alias_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/room_alias_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/room_alias_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+                            <ImageView
+                                android:id="@+id/no_of_members_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_below="@id/room_alias_divider"
+                                android:src="@drawable/ic_number"/>
+
+                            <RelativeLayout
+                                android:id="@+id/no_of_members_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/room_alias_divider"
+                                android:layout_toRightOf="@id/no_of_members_image"
+                                android:paddingLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/no_of_members"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="No of Members"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/no_of_members_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="No of Members"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/no_of_members"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="No of Members"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+                            <Button
+                                android:id="@+id/no_of_members_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/room_alias_divider"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/no_of_members_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/room_alias_divider"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/room_expense_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/room_profile"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="20dp"
+                            android:paddingLeft="20dp"
+                            android:paddingTop="20dp">
+
+
+                            <ImageView
+                                android:id="@+id/rent_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_rent"
+                                />
+
+                            <RelativeLayout
+                                android:id="@+id/rent_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@id/rent_image"
+                                android:paddingLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/rent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="Rent"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/rent_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="Rent"
+                                    android:inputType="number"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/rent"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Rent"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+
+                            <View
+                                android:id="@+id/rent_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@id/rent_layout"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/button_material_light"/>
+
+                            <Button
+                                android:id="@+id/rent_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/rent_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/rent_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/rent_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+                            <ImageView
+                                android:id="@+id/electricity_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_below="@id/rent_divider"
+
+                                android:src="@drawable/ic_electricity"/>
+
+                            <RelativeLayout
+                                android:id="@+id/electricity_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/rent_divider"
+                                android:layout_toRightOf="@id/electricity_image"
+                                android:paddingLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/electricity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="Electricity"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/electricity_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="Electricity"
+                                    android:inputType="number"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/electricity"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Electricity"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+
+                            <View
+                                android:id="@+id/electricity_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@id/electricity_layout"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/button_material_light"/>
+
+                            <Button
+                                android:id="@+id/electricity_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/electricity_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/electricity_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/electricity_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+                            <ImageView
+                                android:id="@+id/maid_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_below="@id/electricity_divider"
+
+                                android:src="@drawable/ic_maid"/>
+
+                            <RelativeLayout
+                                android:id="@+id/maid_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/electricity_divider"
+                                android:layout_toRightOf="@id/maid_image"
+                                android:paddingLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/maid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="Maid"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/maid_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="Maid"
+                                    android:inputType="number"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/maid"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Maid"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+                            <View
+                                android:id="@+id/maid_divider"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@id/maid_layout"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="40dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/button_material_light"/>
+
+                            <Button
+                                android:id="@+id/maid_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/maid_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/maid_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_above="@id/maid_divider"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+
+                            <ImageView
+                                android:id="@+id/misc_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_below="@id/maid_divider"
+
+                                android:src="@drawable/ic_misc"/>
+
+                            <RelativeLayout
+                                android:id="@+id/misc_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/maid_divider"
+                                android:layout_toRightOf="@id/misc_image"
+                                android:paddingLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/misc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:gravity="center_horizontal"
+                                    android:text="Miscellaneous"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"/>
+
+                                <EditText
+                                    android:id="@+id/misc_edit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/roomiesprofileedittext"
+                                    android:fontFamily="sans-serif-thin"
+                                    android:hint="Miscellaneous"
+                                    android:inputType="number"
+                                    android:textColor="@color/primary_text"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:visibility="invisible"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/misc"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@color/back"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:text="Miscellaneous"
+                                    android:textColor="@color/secondary_text"
+                                    android:textSize="10sp"/>
+
+
+                            </RelativeLayout>
+
+                            <Button
+                                android:id="@+id/misc_edit_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/maid_divider"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_edit"
+                                android:gravity="center_vertical"/>
+
+                            <Button
+                                android:id="@+id/misc_save_button"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/maid_divider"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/ic_save"
+                                android:gravity="center_vertical"
+                                android:visibility="invisible"/>
+
+                        </RelativeLayout>
+
+
+                    </android.support.v7.widget.CardView>
+                </RelativeLayout>
+
+                <com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_above="@id/non_transparent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="-60dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/add_expense"
+                    android:elevation="25dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/roomies_launcher"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </com.phaseii.rxm.roomies.view.RoomiesScrollView>
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/roomies_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        tools:ignore="MissingPrefix"/>
 
 
 </FrameLayout>

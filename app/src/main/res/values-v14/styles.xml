@@ -8,7 +8,7 @@
         <item name="android:color">#f2f2f2</item>
         <item name="android:text">@string/error_symbol</item>
         <item name="android:background">@drawable/error_shape</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 

@@ -115,7 +115,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:background="@drawable/add_expense"
-                        android:src="@drawable/ic_spends"
+                        android:src="@drawable/spends"
                         android:visibility="visible"/>
                 </LinearLayout>
             </RelativeLayout>

@@ -8,7 +8,7 @@
         <item name="android:color">#f2f2f2</item>
         <item name="android:text">@string/error_symbol</item>
         <item name="android:background">@drawable/error_shape</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
@@ -37,6 +37,12 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <style name="Theme.Roomies"
            parent="@style/Theme.AppCompat.Light">

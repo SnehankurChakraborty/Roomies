@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<declare-styleable name="CircleImageView">
-		<attr name="border_width"
-		      format="dimension"/>
-		<attr name="border_color"
-		      format="color"/>
-	</declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width"
+              format="dimension"/>
+        <attr name="border_color"
+              format="color"/>
+    </declare-styleable>
+
+    <!-- Define the values for the attribute -->
+    <attr name="typeface" format="enum">
+        <enum name="roboto" value="0"/>
+        <enum name="latoblack" value="1"/>
+        <enum name="latobold" value="2"/>
+        <enum name="latohairline" value="3"/>
+        <enum name="latoheavy" value="4"/>
+        <enum name="latomedium" value="5"/>
+        <enum name="latoregular" value="6"/>
+        <enum name="latosemibold" value="7"/>
+        <enum name="latothin" value="8"/>
+        <enum name="lilyscriptone" value="9"/>
+        <enum name="varelaround" value="10"/>
+    </attr>
+
+    <!-- Tell Android that the class "CustomButton" can be styled,
+         and which attributes it supports -->
+    <declare-styleable name="RoomiesEditText">
+        <attr name="typeface"/>
+    </declare-styleable>
+    <declare-styleable name="RoomiesTextView">
+        <attr name="typeface"/>
+    </declare-styleable>
 </resources>

@@ -10,205 +10,314 @@
                 android:theme="@style/Theme.AppCompat.Dialog">
 
 
-    <TableLayout
+    <RelativeLayout
         android:id="@+id/selector_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="0,1,2,3">
+        android:layout_height="wrap_content">
 
-        <TableRow>
+        <TableLayout
+            android:id="@+id/category_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/category_label"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="5dp"
+            android:stretchColumns="*">
 
-            <LinearLayout
-                android:orientation="vertical">
+            <TableRow
+                android:id="@+id/category_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <ToggleButton
-                    android:id="@+id/electricity_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_electricity_icon"
-                    android:checked="false"
-                    android:gravity="center"
-                    android:textOff=""
-                    android:textOn=""/>
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Electricity"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/electricity_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/electricity_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_electricity"/>
 
-            <LinearLayout
-                android:orientation="vertical">
+                    <ImageButton
+                        android:id="@+id/electricity_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-                <ToggleButton
-                    android:id="@+id/rent_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_rent_icon"
-                    android:checked="false"
-                    android:gravity="center"
-                    android:textOff=""
-                    android:textOn=""/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/electricity_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Electricity"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Rent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/rent_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rent_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_rent"/>
 
-                <ToggleButton
-                    android:id="@+id/maid_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_maid_icon"
-                    android:checked="false"
-                    android:textOff=""
-                    android:textOn=""/>
+                    <ImageButton
+                        android:id="@+id/rent_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/rent_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Rent"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Maid"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/maid_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/maid_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_maid"/>
 
-                <ToggleButton
-                    android:id="@+id/misc_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_misc_icon"
-                    android:checked="true"
-                    android:textOff=""
-                    android:textOn=""/>
+                    <ImageButton
+                        android:id="@+id/maid_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/maid_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Maid"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Misc"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
+                    <ImageView
+                        android:id="@+id/misc_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/misc_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_misc"/>
 
-        </TableRow>
+                    <ImageButton
+                        android:id="@+id/misc_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-        <TableRow android:id="@+id/misc_row">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/misc_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Misc"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
+                </RelativeLayout>
+            </TableRow>
 
-            <LinearLayout
-                android:orientation="vertical"
-                >
+            <TableRow
+                android:id="@+id/misc_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
 
-                <ToggleButton
-                    android:id="@+id/bills_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_bills_icon"
-                    android:checked="false"
-                    android:gravity="center"
-                    android:textOff=""
-                    android:textOn=""/>
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Bills"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/bills_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bills_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_bills"/>
 
-            <LinearLayout
-                android:orientation="vertical"
-                >
+                    <ImageButton
+                        android:id="@+id/bills_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-                <ToggleButton
-                    android:id="@+id/grocery_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_grocery_icon"
-                    android:checked="false"
-                    android:gravity="center"
-                    android:textOff=""
-                    android:textOn=""/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bills_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Bills"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/grocery_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/grocery_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_groceries"/>
+
+                    <ImageButton
+                        android:id="@+id/grocery_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/grocery_icon"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:text="Grocery"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Grocery"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/vegetable_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/vegetables_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_restaurant"/>
 
-                <ToggleButton
-                    android:id="@+id/vegetable_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_vegetables_icon"
-                    android:checked="false"
-                    android:textOff=""
-                    android:textOn=""/>
+                    <ImageButton
+                        android:id="@+id/vegetable_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/vegetable_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Vegetables"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Vegetables"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <LinearLayout android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/others_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:background="@drawable/others_toggle"
+                        android:gravity="center"
+                        android:src="@drawable/ic_others"/>
 
-                <ToggleButton
-                    android:id="@+id/others_icon"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/roomies_others_icon"
-                    android:checked="true"
-                    android:textOff=""
-                    android:textOn=""/>
+                    <ImageButton
+                        android:id="@+id/others_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/unbounded_ripple"
+                        android:gravity="center"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Others"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/primary_home"/>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/others_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:gravity="center_horizontal"
+                        android:text="Others"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/primary_home"/>
+                </RelativeLayout>
+            </TableRow>
 
-
-        </TableRow>
-
-    </TableLayout>
+        </TableLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/description_layout"

@@ -1,22 +1,34 @@
 package com.phaseii.rxm.roomies.dialogs;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TableRow;
-import android.widget.ToggleButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.phaseii.rxm.roomies.R;
 import com.phaseii.rxm.roomies.fragments.HomeFragment;
@@ -29,7 +41,6 @@ import com.phaseii.rxm.roomies.tabs.DashboardTab;
 import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.DateUtils;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.SubCategory;
 
 import java.util.Date;
@@ -49,28 +60,26 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
  * Created by Snehankur on 4/5/2015.
  */
 public class AddExpenseDialog extends DialogFragment {
-
-    private static int pagerId;
+    
+    private static final int AMOUNTPAD = 0;
+    private static final int QUANTITYPAD = 1;
     private RoomiesLogger log;
-    private Context mContext;
+    private static Context mContext;
     private ArrayAdapter<CharSequence> mCategoryAdapter;
     private ArrayAdapter<CharSequence> mSubCategoryAdapter;
-    private EditText amount;
+    private TextView amount;
     private EditText description;
-    private EditText quantity;
-    private Button positive;
-    private Button negative;
-    private RadioGroup quantityRadio;
-    private ToggleButton rent;
-    private ToggleButton electricity;
-    private ToggleButton maid;
-    private ToggleButton miscellaneous;
-    private ToggleButton bills;
-    private ToggleButton grocery;
-    private ToggleButton vegetables;
-    private ToggleButton others;
-    private TableRow miscRow;
-    private AlertDialog dialog;
+    private TextView quantity;
+    private ImageView rent;
+    private ImageView electricity;
+    private ImageView maid;
+    private ImageView miscellaneous;
+    private ImageView bills;
+    private ImageView grocery;
+    private ImageView vegetables;
+    private ImageView others;
+    private LinearLayout miscRow;
+    private Dialog dialog;
     private View dialogView;
 
     private String username;
@@ -81,16 +90,26 @@ public class AddExpenseDialog extends DialogFragment {
     private RoomExpensesManager manager;
     private boolean isExceedConfirmed;
     private OnSubmitListener mOnSubmitListener;
-
+    private RelativeLayout descriptionLayout;
+    private RelativeLayout quantityLayout;
+    private TextView quantityUnit;
+    private RelativeLayout descriptionDivider;
+    
     /**
      * Creates a new instance of the Dialog for adding transaction.
      *
-     * @param pagerId
      * @return
      */
-    public static AddExpenseDialog getInstance(int pagerId) {
-        AddExpenseDialog.pagerId = pagerId;
+    public static AddExpenseDialog getInstance(Context context) {
+        mContext = context;
         return new AddExpenseDialog();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_FRAME, android.R.style
+                .Theme_Holo_Light);
     }
 
     public interface OnSubmitListener {
@@ -107,125 +126,325 @@ public class AddExpenseDialog extends DialogFragment {
         }
     }
 
-    /**
-     * @param savedInstanceState
-     * @return
-     */
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle
+            savedInstanceState) {
+        dialogView = inflater.inflate(R.layout.add_expense, container, false);
         log = RoomiesLogger.getInstance();
         log.createEntryLoggingMessage(AddExpenseDialog.class.getName(), "onCreateDialog", null);
 
-        mContext = getActivity().getApplicationContext();
         mSharedPref = mContext.getSharedPreferences(RoomiesConstants.PREF_ROOMIES_KEY,
-                Context.MODE_PRIVATE);
+                                                    Context.MODE_PRIVATE);
+
         mEditor = mSharedPref.edit();
         username = mSharedPref.getString(RoomiesConstants.PREF_USERNAME, null);
         manager = new RoomExpensesManager(mContext);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        dialogView = inflater.inflate(R.layout.add_expense_dilog, null);
-
         description = (EditText) dialogView.findViewById(R.id.description);
-        amount = (EditText) dialogView.findViewById(R.id.amount);
-        quantity = (EditText) dialogView.findViewById(R.id.quantity);
-        quantityRadio = (RadioGroup) dialogView.findViewById(R.id.quantity_radio);
 
-        rent = (ToggleButton) dialogView.findViewById(R.id.rent_icon);
-        electricity = (ToggleButton) dialogView.findViewById(
+        descriptionLayout = (RelativeLayout) dialogView.findViewById(R.id.description_layout);
+        descriptionDivider = (RelativeLayout) dialogView.findViewById(R.id.description_divider);
+        amount = (TextView) dialogView.findViewById(R.id.amount);
+        View amountLayout = dialogView.findViewById(R.id.amount_layout);
+        amountLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    showNumpad(AMOUNTPAD);
+                } else {
+                    hideNumpad(AMOUNTPAD);
+                }
+            }
+        });
+
+        quantity = (TextView) dialogView.findViewById(R.id.quantity);
+        quantityUnit = (TextView) dialogView.findViewById(R.id.quantity_unit);
+        quantityLayout = (RelativeLayout) dialogView.findViewById(R.id.quantity_number);
+
+        quantityLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    showNumpad(QUANTITYPAD);
+                } else {
+                    hideNumpad(QUANTITYPAD);
+                }
+            }
+        });
+
+        quantityUnit.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        showQuantityUnitDialog();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                }
+                return true;
+            }
+
+            private void showQuantityUnitDialog() {
+
+                final View quantityUnitDialog = dialogView.findViewById(R.id.quantity_unit_chooser);
+                quantityUnitDialog.setVisibility(View.VISIBLE);
+
+                quantityUnitDialog.findViewById(R.id.ltr).setOnClickListener(new View
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        quantityUnit.setText("LTR");
+                        quantityUnitDialog.setVisibility(View.INVISIBLE);
+                    }
+                });
+                quantityUnitDialog.findViewById(R.id.kg).setOnClickListener(new View
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        quantityUnit.setText("KG");
+                        quantityUnitDialog.setVisibility(View.INVISIBLE);
+                    }
+                });
+                quantityUnitDialog.findViewById(R.id.pcs).setOnClickListener(new View
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        quantityUnit.setText("PCS");
+                        quantityUnitDialog.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+        });
+
+        rent = (ImageView) dialogView.findViewById(R.id.rent_icon);
+        electricity = (ImageView) dialogView.findViewById(
                 R.id.electricity_icon);
-        maid = (ToggleButton) dialogView.findViewById(R.id.maid_icon);
-        miscellaneous = (ToggleButton) dialogView.findViewById(R.id.misc_icon);
+        maid = (ImageView) dialogView.findViewById(R.id.maid_icon);
+        miscellaneous = (ImageView) dialogView.findViewById(R.id.misc_icon);
 
-        bills = (ToggleButton) dialogView.findViewById(R.id.bills_icon);
-        grocery = (ToggleButton) dialogView.findViewById(R.id.grocery_icon);
-        vegetables = (ToggleButton) dialogView.findViewById(R.id.vegetable_icon);
-        others = (ToggleButton) dialogView.findViewById(R.id.others_icon);
-        miscRow = (TableRow) dialogView.findViewById(R.id.misc_row);
+        bills = (ImageView) dialogView.findViewById(R.id.bills_icon);
+        grocery = (ImageView) dialogView.findViewById(R.id.grocery_icon);
+        vegetables = (ImageView) dialogView.findViewById(R.id.vegetable_icon);
+        others = (ImageView) dialogView.findViewById(R.id.others_icon);
+        miscRow = (LinearLayout) dialogView.findViewById(R.id.misc_row);
         defaultSettings();
+        clearUI();
+        ShapeDrawable ovalShape = new ShapeDrawable();
+        ovalShape.setShape(new OvalShape());
+        ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
+        miscellaneous.setBackgroundDrawable(ovalShape);
+        Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+        miscIcon.clearColorFilter();
+        miscellaneous.setImageDrawable(miscIcon);
+        miscellaneous.setSelected(true);
+        ShapeDrawable oval = new ShapeDrawable();
+        oval.setShape(new OvalShape());
+        oval.getPaint().setColor(getResources().getColor(R.color.others));
+        others.setBackgroundDrawable(oval);
+        Drawable othersIcon = getResources().getDrawable(R.drawable.ic_others);
+        othersIcon.clearColorFilter();
+        others.setImageDrawable(othersIcon);
+        others.setSelected(true);
 
-        miscellaneous.setOnClickListener(new View.OnClickListener() {
+
+        dialogView.findViewById(R.id.grocery_btn).setOnClickListener(new View
+                .OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupOnClickListener(Controls.MISC);
-            }
-        });
-
-        rent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupOnClickListener(Controls.RENT);
-            }
-        });
-
-        electricity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupOnClickListener(Controls.ELEC);
-
-            }
-        });
-
-        maid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupOnClickListener(Controls.MAID);
-
-            }
-        });
-
-        bills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setupOnClickListener(Controls.BILLS);
-            }
-        });
-
-        grocery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.grocery));
+                grocery.setBackgroundDrawable(oval);
+                Drawable groceryIcon = getResources().getDrawable(R.drawable.ic_groceries);
+                groceryIcon.clearColorFilter();
+                grocery.setImageDrawable(groceryIcon);
+                ShapeDrawable ovalShape = new ShapeDrawable();
+                ovalShape.setShape(new OvalShape());
+                ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
+                miscellaneous.setBackgroundDrawable(ovalShape);
+                Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+                miscIcon.clearColorFilter();
+                miscellaneous.setImageDrawable(miscIcon);
+                miscellaneous.setSelected(true);
+                grocery.setSelected(true);
                 setupOnClickListener(Controls.GROCERY);
             }
         });
-
-        vegetables.setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.bills_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.bills));
+                bills.setBackgroundDrawable(oval);
+                Drawable billsIcon = getResources().getDrawable(R.drawable.ic_bills);
+                billsIcon.clearColorFilter();
+                bills.setImageDrawable(billsIcon);
+                ShapeDrawable ovalShape = new ShapeDrawable();
+                ovalShape.setShape(new OvalShape());
+                ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
+                miscellaneous.setBackgroundDrawable(ovalShape);
+                Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+                miscIcon.clearColorFilter();
+                miscellaneous.setImageDrawable(miscIcon);
+                miscellaneous.setSelected(true);
+                bills.setSelected(true);
+                setupOnClickListener(Controls.BILLS);
+            }
+        });
+        dialogView.findViewById(R.id.vegetable_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.food));
+                vegetables.setBackgroundDrawable(oval);
+                Drawable vegetableIcon = getResources().getDrawable(R.drawable.ic_restaurant);
+                vegetableIcon.clearColorFilter();
+                vegetables.setImageDrawable(vegetableIcon);
+                ShapeDrawable ovalShape = new ShapeDrawable();
+                ovalShape.setShape(new OvalShape());
+                ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
+                miscellaneous.setBackgroundDrawable(ovalShape);
+                Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+                miscIcon.clearColorFilter();
+                miscellaneous.setImageDrawable(miscIcon);
+                miscellaneous.setSelected(true);
+                vegetables.setSelected(true);
                 setupOnClickListener(Controls.VEGETABLES);
             }
-
         });
-
-        others.setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.others_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.others));
+                others.setBackgroundDrawable(oval);
+                Drawable othersIcon = getResources().getDrawable(R.drawable.ic_others);
+                othersIcon.clearColorFilter();
+                others.setImageDrawable(othersIcon);
+                ShapeDrawable ovalShape = new ShapeDrawable();
+                ovalShape.setShape(new OvalShape());
+                ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
+                miscellaneous.setBackgroundDrawable(ovalShape);
+                Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+                miscIcon.clearColorFilter();
+                miscellaneous.setImageDrawable(miscIcon);
+                miscellaneous.setSelected(true);
+                others.setSelected(true);
                 setupOnClickListener(Controls.OTHERS);
             }
-
+        });
+        dialogView.findViewById(R.id.rent_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.rent));
+                rent.setBackgroundDrawable(oval);
+                Drawable rentIcon = getResources().getDrawable(R.drawable.ic_rent);
+                rentIcon.clearColorFilter();
+                rent.setImageDrawable(rentIcon);
+                rent.setSelected(true);
+                setupOnClickListener(Controls.RENT);
+            }
+        });
+        dialogView.findViewById(R.id.electricity_btn).setOnClickListener(new View.OnClickListener
+                () {
+            @Override
+            public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.electricity));
+                electricity.setBackgroundDrawable(oval);
+                Drawable electricityIcon = getResources().getDrawable(R.drawable.ic_electricity);
+                electricityIcon.clearColorFilter();
+                electricity.setImageDrawable(electricityIcon);
+                electricity.setSelected(true);
+                setupOnClickListener(Controls.ELEC);
+            }
+        });
+        dialogView.findViewById(R.id.maid_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.maid));
+                maid.setBackgroundDrawable(oval);
+                Drawable maidIcon = getResources().getDrawable(R.drawable.ic_maid);
+                maidIcon.clearColorFilter();
+                maid.setImageDrawable(maidIcon);
+                maid.setSelected(true);
+                setupOnClickListener(Controls.MAID);
+            }
+        });
+        dialogView.findViewById(R.id.misc_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearUI();
+                dialogView.requestFocus();
+                ShapeDrawable ovalShape = new ShapeDrawable();
+                ovalShape.setShape(new OvalShape());
+                ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
+                miscellaneous.setBackgroundDrawable(ovalShape);
+                Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+                miscIcon.clearColorFilter();
+                miscellaneous.setImageDrawable(miscIcon);
+                miscellaneous.setSelected(true);
+                ShapeDrawable oval = new ShapeDrawable();
+                oval.setShape(new OvalShape());
+                oval.getPaint().setColor(getResources().getColor(R.color.others));
+                others.setBackgroundDrawable(oval);
+                Drawable othersIcon = getResources().getDrawable(R.drawable.ic_others);
+                othersIcon.clearColorFilter();
+                others.setImageDrawable(othersIcon);
+                others.setSelected(true);
+                setupOnClickListener(Controls.OTHERS);
+            }
         });
 
-        positive = (Button) dialogView.findViewById(R.id.positiveButton);
-        negative = (Button) dialogView.findViewById(R.id.negativeButton);
 
-        builder.setTitle("Add Expenses").setView(dialogView);
-        dialog = builder.create();
-        positive.setOnClickListener(new View.OnClickListener() {
+        /*Button positive = (Button) dialogView.findViewById(R.id.positiveButton);
+        Button negative = (Button) dialogView.findViewById(R.id.negativeButton);*/
+
+       /* builder.setTitle("Add Expenses").setView(dialogView);
+        dialog = builder.create();*/
+        /*positive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 boolean isValidDescription = true;
                 boolean isValidQuantity = false;
                 boolean isValidAmount = RoomiesHelper.setNumericError("amount",
-                        getActivity().getBaseContext(), dialogView);
+                                                                      getActivity()
+                                                                              .getBaseContext(),
+                                                                      dialogView);
                 if (description.getVisibility() == View.VISIBLE) {
                     isValidDescription = RoomiesHelper.setError("description", mContext,
-                            dialogView);
+                                                                dialogView);
                 }
                 if (quantity.getVisibility() == View.VISIBLE) {
                     isValidQuantity = RoomiesHelper.setNumericError("quantity",
-                            mContext, dialogView);
+                                                                    mContext, dialogView);
                 } else {
                     isValidQuantity = true;
                 }
@@ -239,9 +458,169 @@ public class AddExpenseDialog extends DialogFragment {
             public void onClick(View v) {
                 dialog.dismiss();
             }
-        });
+        });*/
 
         log.createExitLoggingMessage(AddExpenseDialog.class.getName(), "onCreateDialog", null);
+        return dialogView;
+    }
+
+    private void showNumpad(int numPadType) {
+        final View amountPad = dialogView.findViewById(R.id.amount_Pad);
+        View amountDivider = dialogView.findViewById(R.id.amount_divider);
+        View showAmountPad = dialogView.findViewById(R.id.show_amountpad);
+        final View quantitypad = dialogView.findViewById(R.id.quantity_Pad);
+        View showQuantityPad = dialogView.findViewById(R.id.show_quantitypad);
+        switch (numPadType) {
+            case AMOUNTPAD:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = amountDivider.getWidth() - showAmountPad.getWidth();
+                    int cy = amountDivider.getHeight();
+                    int finalRadius = Math.max(amountPad.getWidth(), amountPad.getHeight());
+                    Animator anim =
+                            ViewAnimationUtils.createCircularReveal(amountPad, cx, cy, 0,
+                                                                    finalRadius);
+                    anim.setDuration(200);
+                    amountPad.setVisibility(View.VISIBLE);
+                    anim.start();
+                } else {
+                    AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+                    alpha.setDuration(200);
+                    amountPad.setAnimation(alpha);
+                    alpha.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            amountPad.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
+                }
+                break;
+            case QUANTITYPAD:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = quantityLayout.getWidth() - showQuantityPad.getWidth();
+                    int cy = quantityLayout.getBottom();
+                    int finalRadius = Math.max(quantitypad.getWidth(), quantitypad.getHeight());
+                    Animator anim =
+                            ViewAnimationUtils.createCircularReveal(quantitypad, cx, cy, 0,
+                                                                    finalRadius);
+                    anim.setDuration(200);
+                    quantitypad.setVisibility(View.VISIBLE);
+                    anim.start();
+                } else {
+                    AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+                    alpha.setDuration(200);
+                    quantitypad.setAnimation(alpha);
+                    alpha.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            quantitypad.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
+                }
+                break;
+        }
+
+
+    }
+
+    private void hideNumpad(int numpadType) {
+        final View amountPad = dialogView.findViewById(R.id.amount_Pad);
+        View amountDivider = dialogView.findViewById(R.id.amount_divider);
+        View showAmountPad = dialogView.findViewById(R.id.show_amountpad);
+        final View quantitypad = dialogView.findViewById(R.id.quantity_Pad);
+        View showQuantityPad = dialogView.findViewById(R.id.show_quantitypad);
+        switch (numpadType) {
+            case AMOUNTPAD:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = amountDivider.getWidth() - showAmountPad.getWidth();
+                    int cy = amountDivider.getHeight();
+                    int finalRadius = Math.max(amountPad.getWidth(), amountPad.getHeight());
+                    Animator anim =
+                            ViewAnimationUtils.createCircularReveal(amountPad, cx, cy, finalRadius,
+                                                                    0);
+                    anim.setDuration(200);
+                    amountPad.setVisibility(View.INVISIBLE);
+                    anim.start();
+                } else {
+                    AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+                    alpha.setDuration(200);
+                    amountPad.setAnimation(alpha);
+                    alpha.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            amountPad.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
+                }
+                break;
+            case QUANTITYPAD:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    int cx = quantityLayout.getWidth() - showQuantityPad.getWidth();
+                    int cy = quantityLayout.getBottom();
+                    int finalRadius = Math.max(quantitypad.getWidth(), quantitypad.getHeight());
+                    Animator anim =
+                            ViewAnimationUtils.createCircularReveal(quantitypad, cx, cy,
+                                                                    finalRadius,
+                                                                    0);
+                    anim.setDuration(200);
+                    quantitypad.setVisibility(View.INVISIBLE);
+                    anim.start();
+                } else {
+                    AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+                    alpha.setDuration(200);
+                    quantitypad.setAnimation(alpha);
+                    alpha.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            quantitypad.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                        }
+                    });
+                }
+                break;
+        }
+
+    }
+
+    /**
+     * @param savedInstanceState
+     * @return
+     */
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }
 
@@ -251,15 +630,14 @@ public class AddExpenseDialog extends DialogFragment {
     public void submitExpenses() {
 
         log.createEntryLoggingMessage(AddExpenseDialog.class.getName(), "submitExpenses",
-                null);
+                                      null);
 
         float amountVal = Float.valueOf(amount.getText().toString());
         String quantityVal = null;
         String descriptionVal = null;
         if (View.VISIBLE == quantity.getVisibility()) {
             quantityVal = Float.valueOf(quantity.getText().toString())
-                    + ((RadioButton) dialogView.findViewById(quantityRadio
-                    .getCheckedRadioButtonId())).getText().toString();
+                          + "KG";
         }
         if (View.VISIBLE == description.getVisibility()) {
             descriptionVal = description.getText().toString();
@@ -274,18 +652,18 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_RENT_MARGIN, "0"));
                 if (amountVal + rentSpent > rentMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Rent", String.valueOf(rentMargin),
-                            String.valueOf(rentSpent));
+                                             String.valueOf(rentSpent));
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
-                            null, null, null, amountVal);
+                                                            null, null, null, amountVal);
                     if (isExpenseAdded) {
                         mEditor.putString(PREF_RENT_SPENT, String.valueOf(rentSpent + amountVal));
                         mEditor.apply();
                     }
 
                 }
-
+                
                 break;
             case MAID:
                 float maidSpent = Float.valueOf(
@@ -294,11 +672,11 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_MAID_MARGIN, "0"));
                 if (amountVal + maidSpent > maidMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Maid", String.valueOf(maidMargin),
-                            String.valueOf(maidSpent));
+                                             String.valueOf(maidSpent));
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
-                            null, null, null, amountVal);
+                                                            null, null, null, amountVal);
                     if (isExpenseAdded) {
                         mEditor.putString(PREF_MAID_SPENT, String.valueOf(maidSpent + amountVal));
                         mEditor.apply();
@@ -312,14 +690,14 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_ELECTRICITY_MARGIN, "0"));
                 if (amountVal + elecSpent > elecMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Electricity", String.valueOf(elecMargin),
-                            String.valueOf(elecSpent));
+                                             String.valueOf(elecSpent));
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
-                            null, null, null, amountVal);
+                                                            null, null, null, amountVal);
                     if (isExpenseAdded) {
                         mEditor.putString(PREF_ELECTRICITY_SPENT, String.valueOf(elecSpent +
-                                amountVal));
+                                                                                 amountVal));
                         mEditor.apply();
                     }
                 }
@@ -331,14 +709,15 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_MISCELLANEOUS_MARGIN, "0"));
                 if (amountVal + miscSpent > miscMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Miscellaneous", String.valueOf(miscMargin),
-                            String.valueOf(miscSpent));
+                                             String.valueOf(miscSpent));
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
-                            subCategory, descriptionVal, quantityVal, amountVal);
+                                                            subCategory, descriptionVal,
+                                                            quantityVal, amountVal);
                     if (isExpenseAdded) {
                         mEditor.putString(PREF_MISCELLANEOUS_SPENT, String.valueOf(miscSpent +
-                                amountVal));
+                                                                                   amountVal));
                         mEditor.apply();
                     }
                 }
@@ -358,7 +737,7 @@ public class AddExpenseDialog extends DialogFragment {
      *
      * @param dialog
      */
-    private void updateGraphs(AlertDialog dialog) {
+    private void updateGraphs(Dialog dialog) {
         RoomExpenses roomExpenses = new RoomExpenses();
         roomExpenses.setExpenseCategory(category.toString());
         if (null != subCategory) {
@@ -388,6 +767,7 @@ public class AddExpenseDialog extends DialogFragment {
         dialog.dismiss();
     }
 
+
     /**
      * set up the default setting for the options
      */
@@ -395,11 +775,59 @@ public class AddExpenseDialog extends DialogFragment {
 
         category = Category.MISCELLANEOUS;
         subCategory = SubCategory.OTHERS;
-        miscellaneous.setChecked(true);
+        miscellaneous.setSelected(true);
         miscRow.setVisibility(View.VISIBLE);
-        description.setVisibility(View.VISIBLE);
-        quantity.setVisibility(View.VISIBLE);
-        quantityRadio.setVisibility(View.VISIBLE);
+        quantityLayout.setVisibility(View.VISIBLE);
+        descriptionLayout.setVisibility(View.VISIBLE);
+        descriptionDivider.setVisibility(View.VISIBLE);
+        quantityUnit.setVisibility(View.VISIBLE);
+    }
+
+    private void clearUI() {
+        Drawable groceryIcon = getResources().getDrawable(R.drawable.ic_groceries);
+        groceryIcon.setColorFilter(getResources().getColor(R.color.grocery), PorterDuff.Mode
+                .MULTIPLY);
+        grocery.setImageDrawable(groceryIcon);
+        grocery.setBackgroundDrawable(getResources().getDrawable(R.drawable.grocery_toggle));
+
+        Drawable billsIcon = getResources().getDrawable(R.drawable.ic_bills);
+        billsIcon.setColorFilter(getResources().getColor(R.color.bills), PorterDuff.Mode.MULTIPLY);
+        bills.setImageDrawable(billsIcon);
+        bills.setBackgroundDrawable(getResources().getDrawable(R.drawable.bills_toggle));
+
+        Drawable vegetablesIcon = getResources().getDrawable(R.drawable.ic_restaurant);
+        vegetablesIcon.setColorFilter(getResources().getColor(R.color.food), PorterDuff.Mode
+                .MULTIPLY);
+        vegetables.setImageDrawable(vegetablesIcon);
+        vegetables.setBackgroundDrawable(getResources().getDrawable(R.drawable.vegetables_toggle));
+
+        Drawable othersIcon = getResources().getDrawable(R.drawable.ic_others);
+        othersIcon.setColorFilter(getResources().getColor(R.color.others), PorterDuff.Mode
+                .MULTIPLY);
+        others.setImageDrawable(othersIcon);
+        others.setBackgroundDrawable(getResources().getDrawable(R.drawable.others_toggle));
+
+        Drawable electricityIcon = getResources().getDrawable(R.drawable.ic_electricity);
+        electricityIcon.setColorFilter(getResources().getColor(R.color.electricity), PorterDuff
+                .Mode.MULTIPLY);
+        electricity.setImageDrawable(electricityIcon);
+        electricity.setBackgroundDrawable(getResources().getDrawable(R.drawable
+                                                                             .electricity_toggle));
+
+        Drawable rentIcon = getResources().getDrawable(R.drawable.ic_rent);
+        rentIcon.setColorFilter(getResources().getColor(R.color.rent), PorterDuff.Mode.MULTIPLY);
+        rent.setImageDrawable(rentIcon);
+        rent.setBackgroundDrawable(getResources().getDrawable(R.drawable.rent_toggle));
+
+        Drawable maidIcon = getResources().getDrawable(R.drawable.ic_maid);
+        maidIcon.setColorFilter(getResources().getColor(R.color.maid), PorterDuff.Mode.MULTIPLY);
+        maid.setImageDrawable(maidIcon);
+        maid.setBackgroundDrawable(getResources().getDrawable(R.drawable.maid_toggle));
+
+        Drawable miscIcon = getResources().getDrawable(R.drawable.ic_misc);
+        miscIcon.setColorFilter(getResources().getColor(R.color.misc), PorterDuff.Mode.MULTIPLY);
+        miscellaneous.setImageDrawable(miscIcon);
+        miscellaneous.setBackgroundDrawable(getResources().getDrawable(R.drawable.misc_toggle));
     }
 
     /**
@@ -411,77 +839,77 @@ public class AddExpenseDialog extends DialogFragment {
 
         category = null;
         subCategory = null;
-        rent.setChecked(false);
-        maid.setChecked(false);
-        electricity.setChecked(false);
-        miscellaneous.setChecked(false);
-        miscRow.setVisibility(View.GONE);
-        others.setChecked(true);
-        bills.setChecked(false);
-        vegetables.setChecked(false);
-        grocery.setChecked(false);
-        description.setVisibility(View.GONE);
-        quantity.setVisibility(View.GONE);
-        quantityRadio.setVisibility(View.GONE);
-        amount.setVisibility(View.VISIBLE);
+        rent.setSelected(false);
+        maid.setSelected(false);
+        electricity.setSelected(false);
+        miscellaneous.setSelected(false);
+        others.setSelected(true);
+        bills.setSelected(false);
+        vegetables.setSelected(false);
+        grocery.setSelected(false);
 
         switch (controls) {
             case RENT:
-                if (!rent.isChecked()) {
-                    rent.setChecked(true);
+                if (!rent.isSelected()) {
+                    rent.setSelected(true);
                     category = Category.RENT;
+                    miscRow.setVisibility(View.GONE);
+                    quantityLayout.setVisibility(View.GONE);
+                    quantityUnit.setVisibility(View.GONE);
+                    descriptionLayout.setVisibility(View.GONE);
+                    descriptionDivider.setVisibility(View.GONE);
                     break;
                 }
             case MAID:
-                if (!maid.isChecked()) {
-                    maid.setChecked(true);
+                if (!maid.isSelected()) {
+                    maid.setSelected(true);
                     category = Category.MAID;
+                    miscRow.setVisibility(View.GONE);
+                    quantityLayout.setVisibility(View.GONE);
+                    quantityUnit.setVisibility(View.GONE);
+                    descriptionLayout.setVisibility(View.GONE);
+                    descriptionDivider.setVisibility(View.GONE);
                     break;
                 }
             case ELEC:
-                if (!electricity.isChecked()) {
-                    electricity.setChecked(true);
+                if (!electricity.isSelected()) {
+                    electricity.setSelected(true);
                     category = Category.ELECTRICITY;
+                    miscRow.setVisibility(View.GONE);
+                    quantityLayout.setVisibility(View.GONE);
+                    quantityUnit.setVisibility(View.GONE);
+                    descriptionLayout.setVisibility(View.GONE);
+                    descriptionDivider.setVisibility(View.GONE);
                     break;
                 }
             case MISC:
                 defaultSettings();
                 break;
             case BILLS:
-                if (!bills.isChecked()) {
+                if (!bills.isSelected()) {
                     category = Category.MISCELLANEOUS;
                     subCategory = SubCategory.BILLS;
-                    miscellaneous.setChecked(true);
-                    miscRow.setVisibility(View.VISIBLE);
-                    others.setChecked(false);
-                    bills.setChecked(true);
-                    description.setVisibility(View.VISIBLE);
+                    miscellaneous.setSelected(true);
+                    others.setSelected(false);
+                    bills.setSelected(true);
                     break;
                 }
             case GROCERY:
-                if (!grocery.isChecked()) {
+                if (!grocery.isSelected()) {
                     category = Category.MISCELLANEOUS;
                     subCategory = SubCategory.GROCERY;
-                    miscellaneous.setChecked(true);
-                    miscRow.setVisibility(View.VISIBLE);
-                    others.setChecked(false);
-                    grocery.setChecked(true);
-                    description.setVisibility(View.VISIBLE);
-                    quantity.setVisibility(View.VISIBLE);
-                    quantityRadio.setVisibility(View.VISIBLE);
+                    miscellaneous.setSelected(true);
+                    others.setSelected(false);
+                    grocery.setSelected(true);
                     break;
                 }
             case VEGETABLES:
-                if (!vegetables.isChecked()) {
+                if (!vegetables.isSelected()) {
                     category = Category.MISCELLANEOUS;
                     subCategory = SubCategory.VEGETABLES;
-                    miscellaneous.setChecked(true);
-                    miscRow.setVisibility(View.VISIBLE);
-                    others.setChecked(false);
-                    vegetables.setChecked(true);
-                    description.setVisibility(View.VISIBLE);
-                    quantity.setVisibility(View.VISIBLE);
-                    quantityRadio.setVisibility(View.VISIBLE);
+                    miscellaneous.setSelected(true);
+                    others.setSelected(false);
+                    vegetables.setSelected(true);
                     break;
                 }
             case OTHERS:
@@ -508,23 +936,29 @@ public class AddExpenseDialog extends DialogFragment {
                 (getActivity());
         confirmBuilder.setMessage(
                 "You are exceeding the " + category + " limit (" + margin + " INR )" +
-                        " .You have already spent " + spent + " INR" +
-                        "on" + category + ". " +
-                        "Do you still want to continue ?").setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        isExceedConfirmed = true;
-                        dialogInterface.dismiss();
-                        submitExpenses();
-                    }
-                }).setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        dialogInterface.dismiss();
-                    }
-                }).create();
+                " .You have already spent " + spent + " INR" +
+                "on" + category + ". " +
+                "Do you still want to continue ?").setPositiveButton("Yes",
+                                                                     new DialogInterface
+                                                                             .OnClickListener() {
+                                                                         @Override
+                                                                         public void onClick
+                                                                                 (DialogInterface
+                                                                                          dialogInterface, int which) {
+                                                                             isExceedConfirmed =
+                                                                                     true;
+                                                                             dialogInterface
+                                                                                     .dismiss();
+                                                                             submitExpenses();
+                                                                         }
+                                                                     }).setNegativeButton("No",
+                                                                                          new DialogInterface.OnClickListener() {
+                                                                                              @Override
+                                                                                              public void onClick(DialogInterface dialogInterface, int which) {
+                                                                                                  dialogInterface.dismiss();
+                                                                                              }
+                                                                                          })
+                .create();
         confirmBuilder.show();
     }
 

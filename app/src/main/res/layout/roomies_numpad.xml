@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:roomies="http://schemas.android.com/apk/res-auto"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:elevation="10dp"
+              android:orientation="vertical"
+              android:visibility="invisible">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="1"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="2"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="3"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="4"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="5"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="6"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="7"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="8"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="9"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:rotation="90"
+            android:src="@drawable/ic_delete_shield_100"
+            android:tint="@android:color/black"/>
+
+        <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="0"
+            android:textStyle="bold"
+            roomies:typeface="latobold"/>
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/unbounded_ripple"
+            android:clickable="true"
+            android:gravity="center"
+            android:src="@drawable/ic_checkmark_100"
+            android:tint="@android:color/black"/>
+
+    </LinearLayout>
+
+</LinearLayout>

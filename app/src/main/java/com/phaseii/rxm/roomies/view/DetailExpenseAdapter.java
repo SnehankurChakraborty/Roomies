@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,6 +24,7 @@ import com.phaseii.rxm.roomies.model.RoomExpenses;
 import com.phaseii.rxm.roomies.model.SortType;
 import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.SubCategory;
+import com.phaseii.rxm.roomies.util.TypefaceUtils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -56,8 +56,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         this.roomExpensesList = roomExpensesList;
         this.mContext = mContext;
         this.sortType = sortType;
-        this.typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/VarelaRound-Regular" +
-                ".ttf");
+        this.typeface = TypefaceUtils.getInstance(mContext).getFont(TypefaceUtils.VARELAROUND);
     }
 
     @Override
@@ -65,10 +64,10 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         View view;
         if (viewType == HEADER) {
             view = LayoutInflater.from(mContext).inflate(R.layout.dashboard_header, parent,
-                    false);
+                                                         false);
         } else {
             view = LayoutInflater.from(mContext).inflate(R.layout.detail_expense_list, parent,
-                    false);
+                                                         false);
         }
         ViewHolder vhItem = new ViewHolder(view, viewType);
         return vhItem;
@@ -79,52 +78,54 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         if (holder.holderId == HEADER) {
             createLineChart(holder.lineChart);
             holder.month.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
-                    "fonts/VarelaRound-Regular.ttf"));
+                                                              "fonts/VarelaRound-Regular.ttf"));
             holder.month.setText(new DateFormatSymbols().getMonths()[Calendar
                     .getInstance().get(Calendar.MONTH)]);
         } else {
-            holder.amount.setText(String.valueOf(roomExpensesList.get(position - 1).getAmount()));
+            holder.amount.setText(mContext.getResources().getString(R.string.Rs) + String.valueOf
+                    (roomExpensesList.get(position - 1).getAmount()));
             holder.description.setText(roomExpensesList.get(position - 1).getDescription());
             holder.quantity.setText(roomExpensesList.get(position - 1).getQuantity());
             holder.date.setText(new SimpleDateFormat("dd MMM").format(roomExpensesList.get(position
-                    - 1).getExpenseDate()));
-            holder.time.setText(new SimpleDateFormat("HH:mm ").format(roomExpensesList.get
-                    (position - 1).getExpenseDate()));
-            holder.date.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
+                                                                                           - 1)
+                                                                              .getExpenseDate()));
+            /*holder.time.setText(new SimpleDateFormat("HH:mm ").format(roomExpensesList.get
+                    (position - 1).getExpenseDate()));*/
+            /*holder.date.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
                     "fonts/VarelaRound-Regular.ttf"));
             holder.description.setTypeface(Typeface.createFromAsset(mContext.getAssets(),
-                    "fonts/VarelaRound-Regular.ttf"));
+                    "fonts/VarelaRound-Regular.ttf"));*/
             ShapeDrawable shapeDrawable = new ShapeDrawable();
             Paint paint = shapeDrawable.getPaint();
             ShapeDrawable time = new ShapeDrawable(new OvalShape());
             Category category = Category.getCategory(roomExpensesList.get(position - 1)
-                    .getExpenseCategory());
+                                                             .getExpenseCategory());
             switch (category) {
                 case RENT:
-                    holder.expenseImage.setImageResource(R.drawable.ic_rent_selected);
+                    holder.expenseImage.setImageResource(R.drawable.ic_rent);
                     break;
                 case ELECTRICITY:
-                    holder.expenseImage.setImageResource(R.drawable.ic_electricity_selected);
+                    holder.expenseImage.setImageResource(R.drawable.ic_electricity);
                     break;
                 case MAID:
-                    holder.expenseImage.setImageResource(R.drawable.ic_maid_selected);
+                    holder.expenseImage.setImageResource(R.drawable.ic_maid);
                     break;
                 case MISCELLANEOUS:
                     SubCategory subCategory = SubCategory.getSubcategory(
                             roomExpensesList.get(position -
-                                    1).getExpenseSubcategory());
+                                                 1).getExpenseSubcategory());
                     switch (subCategory) {
                         case BILLS:
-                            holder.expenseImage.setImageResource(R.drawable.ic_bills_selected);
+                            holder.expenseImage.setImageResource(R.drawable.ic_bills);
                             break;
                         case GROCERY:
-                            holder.expenseImage.setImageResource(R.drawable.ic_grocery_selected);
+                            holder.expenseImage.setImageResource(R.drawable.ic_groceries);
                             break;
                         case VEGETABLES:
-                            holder.expenseImage.setImageResource(R.drawable.ic_vegetable_selected);
+                            holder.expenseImage.setImageResource(R.drawable.ic_restaurant);
                             break;
                         case OTHERS:
-                            holder.expenseImage.setImageResource(R.drawable.ic_others_selected);
+                            holder.expenseImage.setImageResource(R.drawable.ic_others);
                             break;
                     }
 
@@ -139,8 +140,7 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position))
-            return HEADER;
+        if (isPositionHeader(position)) { return HEADER; }
 
         return position % 2;
     }
@@ -237,8 +237,8 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
                             cal.setTime(roomExpensesList.get(i).getExpenseDate());
                             entries.add(new Entry(Float.valueOf(
                                     roomExpensesList.get(i).getQuantity().substring(0,
-                                            roomExpensesList.get(i).getQuantity().length() - 2)),
-                                    i));
+                                                                                    roomExpensesList.get(i).getQuantity().length() - 2)),
+                                                  i));
                             labels.add(String.valueOf(cal.get(Calendar.DAY_OF_MONTH)));
                         }
                     }
@@ -279,10 +279,8 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
         private TextView amount;
         private View itemView;
         private ImageView expenseImage;
-        private RelativeLayout timelineCard;
         private LineChart lineChart;
         private TextView month;
-        private TextView time;
 
         public ViewHolder(View itemView, int viewType) {
             super(itemView);
@@ -297,8 +295,8 @@ public class DetailExpenseAdapter extends RecyclerView.Adapter<DetailExpenseAdap
                 description = (TextView) itemView.findViewById(R.id.description);
                 amount = (TextView) itemView.findViewById(R.id.amount);
                 expenseImage = (ImageView) itemView.findViewById(R.id.expense_icon);
-                timelineCard = (RelativeLayout) itemView.findViewById(R.id.timeline_card);
-                time = (TextView) itemView.findViewById(R.id.time);
+                /*timelineCard = (RelativeLayout) itemView.findViewById(R.id.timeline_card);
+                time = (TextView) itemView.findViewById(R.id.time);*/
             }
         }
     }
