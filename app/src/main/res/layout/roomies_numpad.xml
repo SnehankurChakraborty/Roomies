@@ -14,6 +14,7 @@
         android:orientation="horizontal">
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/one"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -24,6 +25,7 @@
             roomies:typeface="latobold"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/two"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -34,6 +36,7 @@
             roomies:typeface="latobold"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/three"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -51,6 +54,7 @@
         android:orientation="horizontal">
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/four"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -61,6 +65,7 @@
             roomies:typeface="latobold"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/five"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -71,6 +76,7 @@
             roomies:typeface="latobold"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/six"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -88,6 +94,7 @@
         android:orientation="horizontal">
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/seven"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -98,6 +105,7 @@
             roomies:typeface="latobold"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/eight"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -108,6 +116,7 @@
             roomies:typeface="latobold"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/nine"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -124,6 +133,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/back"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -135,6 +145,7 @@
             android:tint="@android:color/black"/>
 
         <com.phaseii.rxm.roomies.view.RoomiesTextView
+            android:id="@+id/zero"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:background="@drawable/unbounded_ripple"
@@ -145,6 +156,7 @@
             roomies:typeface="latobold"/>
 
         <ImageButton
+            android:id="@+id/done"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_gravity="center"

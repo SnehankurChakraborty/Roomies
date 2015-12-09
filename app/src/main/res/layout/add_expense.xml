@@ -16,6 +16,7 @@
             android:layout_height="50dp">
 
             <com.phaseii.rxm.roomies.view.RoomiesTextView
+                android:id="@+id/positiveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -27,6 +28,7 @@
                 roomies:typeface="latosemibold"/>
 
             <ImageView
+                android:id="@+id/negativeButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
@@ -81,108 +83,11 @@
 
 
             <RelativeLayout
-                android:id="@+id/description_layout"
+                android:id="@+id/category_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/owner_layout"
                 android:layout_marginTop="-15dp"
-                android:animateLayoutChanges="true">
-
-                <ImageView
-                    android:id="@+id/description_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_document_filled_100"
-                    android:tint="@android:color/black"/>
-
-                <com.phaseii.rxm.roomies.view.RoomiesEditText
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/description_icon"
-                    android:background="@android:color/transparent"
-                    android:hint="Item Name"
-                    android:maxLength="20"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@color/secondary_text"
-                    android:textSize="7pt"
-                    roomies:typeface="latoregular"/>
-
-                <TextView
-                    android:id="@+id/description_error"
-                    style="@style/ErrorButton"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:visibility="visible"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/description_divider"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_below="@id/description_layout"
-                android:background="@color/grey"/>
-
-            <RelativeLayout
-                android:id="@+id/comments_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/description_layout"
-                android:layout_marginTop="1dp"
-                android:animateLayoutChanges="true">
-
-                <ImageView
-                    android:id="@+id/comments_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_align_justify_100"
-                    android:tint="@android:color/black"/>
-
-                <com.phaseii.rxm.roomies.view.RoomiesEditText
-                    android:id="@+id/comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/comments_icon"
-                    android:background="@android:color/transparent"
-                    android:hint="Additional Info (Optional)"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@color/secondary_text"
-                    android:textSize="7pt"
-                    roomies:typeface="latothin"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/comments_divider"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_below="@id/comments_layout"
-                android:background="@color/grey"/>
-
-            <RelativeLayout
-                android:id="@+id/category_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/comments_layout"
                 android:animateLayoutChanges="true">
 
                 <RelativeLayout
@@ -526,10 +431,107 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/category_divider"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:layout_below="@id/category_layout"
                 android:layout_marginTop="5dp"
+                android:background="@color/grey"/>
+
+            <RelativeLayout
+                android:id="@+id/description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/category_divider"
+                android:animateLayoutChanges="true">
+
+                <ImageView
+                    android:id="@+id/description_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_document_filled_100"
+                    android:tint="@android:color/black"/>
+
+                <com.phaseii.rxm.roomies.view.RoomiesEditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/description_icon"
+                    android:background="@android:color/transparent"
+                    android:hint="Item Name"
+                    android:maxLength="20"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/secondary_text"
+                    android:textSize="7pt"
+                    roomies:typeface="latoregular"/>
+
+                <TextView
+                    android:id="@+id/description_error"
+                    style="@style/ErrorButton"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="40dp"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/description_divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/description_layout"
+                android:background="@color/grey"/>
+
+            <RelativeLayout
+                android:id="@+id/comments_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description_layout"
+                android:animateLayoutChanges="true">
+
+                <ImageView
+                    android:id="@+id/comments_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_align_justify_100"
+                    android:tint="@android:color/black"/>
+
+                <com.phaseii.rxm.roomies.view.RoomiesEditText
+                    android:id="@+id/comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@id/comments_icon"
+                    android:background="@android:color/transparent"
+                    android:hint="Additional Info (Optional)"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/secondary_text"
+                    android:textSize="7pt"
+                    roomies:typeface="latothin"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/comments_divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/comments_layout"
                 android:background="@color/grey"/>
 
 
@@ -537,8 +539,7 @@
                 android:id="@+id/amount_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/category_layout"
-                android:layout_marginTop="6dp"
+                android:layout_below="@id/comments_layout"
                 android:animateLayoutChanges="true"
                 android:background="@drawable/bounded_ripple"
                 android:clickable="true"
@@ -563,7 +564,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/amount_icon"
-                    android:text="100"
+                    android:maxLength="6"
+                    android:text="0"
                     android:textColor="@android:color/black"
                     android:textSize="7pt"
                     roomies:typeface="latoregular"/>
@@ -589,7 +591,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="40dp"
                     android:gravity="center_horizontal|center_vertical"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
             </RelativeLayout>
 
@@ -686,7 +688,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/quantity_icon"
-                        android:maxLength="4"
+                        android:maxLength="3"
                         android:text="0"
                         android:textColor="@android:color/black"
                         android:textSize="7pt"
@@ -713,7 +715,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="40dp"
                         android:gravity="center_vertical|center_horizontal"
-                        android:visibility="visible"/>
+                        android:visibility="invisible"/>
                 </RelativeLayout>
 
                 <com.phaseii.rxm.roomies.view.RoomiesTextView
@@ -723,7 +725,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/quantity_number"
-                    android:background="@drawable/bounded_ripple"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="center_vertical"
                     android:text="LTR"
                     android:textColor="@android:color/black"
@@ -739,8 +743,8 @@
                 android:layout_below="@id/quantity_layout"
                 android:layout_marginLeft="234dp"
                 android:layout_marginTop="-48dp"
-                android:elevation="10dp"
                 android:background="@android:color/white"
+                android:elevation="10dp"
                 android:orientation="vertical"
                 android:visibility="invisible">
 

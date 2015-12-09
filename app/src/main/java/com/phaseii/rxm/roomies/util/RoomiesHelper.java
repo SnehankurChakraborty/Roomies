@@ -52,21 +52,21 @@ public class RoomiesHelper {
     public static final String TAG = "RoomiesHelper";
 
     /**
-     *
-     * @param editText
+     * @param view
      * @return
      */
-    public static boolean isFieldBlankOrEmpty(EditText editText) {
+    public static boolean isFieldBlankOrEmpty(View view) {
         boolean isBlankOrEmpty = false;
-        String editTextData = editText.getText().toString();
-        if (null == editTextData || editTextData.trim().equals("") || editTextData.length() == 0) {
+        String textViewData = ((TextView) view).getText().toString();
+        if (textViewData.trim().equals("") || textViewData.length
+                () == 0) {
             isBlankOrEmpty = true;
         }
+
         return isBlankOrEmpty;
     }
 
     /**
-     *
      * @param feildId
      * @param context
      * @param view
@@ -81,7 +81,7 @@ public class RoomiesHelper {
         int resId = resources.getIdentifier(feildId, "id", packageName);
         int resErrorId = resources.getIdentifier(errorId, "id", packageName);
         int resToggleId = resources.getIdentifier(togglId, "id", packageName);
-        EditText feild = (EditText) view.findViewById(resId);
+        View feild = view.findViewById(resId);
         TextView errorFeild = (TextView) view.findViewById(resErrorId);
         if (resToggleId > 0) {
             ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
@@ -107,7 +107,6 @@ public class RoomiesHelper {
     }
 
     /**
-     *
      * @param feildId
      * @param context
      * @param view
@@ -122,12 +121,13 @@ public class RoomiesHelper {
         int resId = resources.getIdentifier(feildId, "id", packageName);
         int resErrorId = resources.getIdentifier(errorId, "id", packageName);
         int resToggleId = resources.getIdentifier(togglId, "id", packageName);
-        EditText feild = (EditText) view.findViewById(resId);
+        View feild = view.findViewById(resId);
         TextView errorFeild = (TextView) view.findViewById(resErrorId);
         if (resToggleId > 0) {
             ToggleButton toggleButton = (ToggleButton) view.findViewById(resToggleId);
             if (toggleButton.isChecked()) {
-                if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
+                if (isFieldBlankOrEmpty(feild) || ((TextView) feild).getText().toString
+                        () == "" || Integer.valueOf(((TextView) feild).getText().toString()) <= 0) {
                     isValid = false;
                     errorFeild.setVisibility(View.VISIBLE);
                 } else {
@@ -137,7 +137,8 @@ public class RoomiesHelper {
                 errorFeild.setVisibility(View.INVISIBLE);
             }
         } else {
-            if (isFieldBlankOrEmpty(feild) || Float.valueOf(feild.getText().toString()) <= 0f) {
+            if (isFieldBlankOrEmpty(feild) || ((TextView) feild).getText().toString
+                    () == "" || Integer.valueOf(((TextView) feild).getText().toString()) <= 0) {
                 isValid = false;
                 errorFeild.setVisibility(View.VISIBLE);
             } else {
@@ -148,7 +149,6 @@ public class RoomiesHelper {
     }
 
     /**
-     *
      * @param context
      * @param roomUserStat
      * @param userDetails
@@ -162,7 +162,7 @@ public class RoomiesHelper {
                                                RoomDetails roomDetails, RoomStats roomStats,
                                                boolean isGoogleFBLogin) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_ROOMIES_KEY,
-                Context.MODE_PRIVATE);
+                                                                           Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPreferences.edit();
 
         mEditor.putBoolean(IS_LOGGED_IN, true);
@@ -179,18 +179,20 @@ public class RoomiesHelper {
             mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomUserStat.getRentMargin()));
             mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomUserStat.getMaidMargin()));
             mEditor.putString(PREF_ELECTRICITY_MARGIN,
-                    String.valueOf(roomUserStat.getElectricityMargin()));
+                              String.valueOf(roomUserStat.getElectricityMargin()));
             mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
-                    String.valueOf(roomUserStat.getMiscellaneousMargin()));
+                              String.valueOf(roomUserStat.getMiscellaneousMargin()));
             mEditor.putString(PREF_TOTAL_MARGIN,
-                    String.valueOf(roomUserStat.getRentMargin() + roomUserStat.getMaidMargin()
-                            + roomUserStat.getMiscellaneousMargin() + roomUserStat.getElectricityMargin()));
+                              String.valueOf(roomUserStat.getRentMargin() + roomUserStat
+                                      .getMaidMargin()
+                                             + roomUserStat.getMiscellaneousMargin() +
+                                             roomUserStat.getElectricityMargin()));
             mEditor.putString(PREF_RENT_SPENT, String.valueOf(roomUserStat.getRentSpent()));
             mEditor.putString(PREF_MAID_SPENT, String.valueOf(roomUserStat.getMaidSpent()));
             mEditor.putString(PREF_ELECTRICITY_SPENT,
-                    String.valueOf(roomUserStat.getElectricitySpent()));
+                              String.valueOf(roomUserStat.getElectricitySpent()));
             mEditor.putString(PREF_MISCELLANEOUS_SPENT,
-                    String.valueOf(roomUserStat.getMiscellaneousSpent()));
+                              String.valueOf(roomUserStat.getMiscellaneousSpent()));
             mEditor.putString(PREF_MONTH_YEAR, roomUserStat.getMonthYear());
             mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
 
@@ -214,13 +216,15 @@ public class RoomiesHelper {
                 mEditor.putString(PREF_RENT_MARGIN, String.valueOf(roomStats.getRentMargin()));
                 mEditor.putString(PREF_MAID_MARGIN, String.valueOf(roomStats.getMaidMargin()));
                 mEditor.putString(PREF_ELECTRICITY_MARGIN,
-                        String.valueOf(roomStats.getElectricityMargin()));
+                                  String.valueOf(roomStats.getElectricityMargin()));
                 mEditor.putString(PREF_MISCELLANEOUS_MARGIN,
-                        String.valueOf(roomStats.getMiscellaneousMargin()));
+                                  String.valueOf(roomStats.getMiscellaneousMargin()));
                 mEditor.putString(PREF_MONTH_YEAR, roomStats.getMonthYear());
                 mEditor.putString(PREF_TOTAL_MARGIN,
-                        String.valueOf(roomStats.getRentMargin() + roomStats.getMaidMargin()
-                                + roomStats.getMiscellaneousMargin() + roomStats.getElectricityMargin()));
+                                  String.valueOf(roomStats.getRentMargin() + roomStats
+                                          .getMaidMargin()
+                                                 + roomStats.getMiscellaneousMargin() + roomStats
+                                                         .getElectricityMargin()));
                 mEditor.putBoolean(PREF_SETUP_COMPLETED, true);
             }
         }
@@ -233,7 +237,6 @@ public class RoomiesHelper {
     }
 
     /**
-     *
      * @param array
      * @param element
      * @return
@@ -271,7 +274,6 @@ public class RoomiesHelper {
     }
 
     /**
-     *
      * @param mContext
      */
     public static void setupAlarm(Context mContext) {
@@ -279,18 +281,18 @@ public class RoomiesHelper {
         Intent intent = new Intent(mContext, RoomiesReceiver.class);
         intent.setAction(RoomiesReceiver.ROOMIES_ALARM);
         if (null == PendingIntent.getBroadcast(mContext, 1001, intent,
-                PendingIntent.FLAG_NO_CREATE)) {
+                                               PendingIntent.FLAG_NO_CREATE)) {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(
                     mContext, 1001, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.DAY_OF_MONTH,
-                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + 1);
+                         Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + 1);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 1);
             calendar.set(Calendar.SECOND, 0);
             AlarmManager alarm = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
             alarm.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY, pendingIntent);
+                               AlarmManager.INTERVAL_DAY, pendingIntent);
         }
     }
 }

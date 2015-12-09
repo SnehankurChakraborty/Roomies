@@ -15,15 +15,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +40,7 @@ import com.phaseii.rxm.roomies.tabs.DashboardTab;
 import com.phaseii.rxm.roomies.util.Category;
 import com.phaseii.rxm.roomies.util.DateUtils;
 import com.phaseii.rxm.roomies.util.RoomiesConstants;
+import com.phaseii.rxm.roomies.util.RoomiesHelper;
 import com.phaseii.rxm.roomies.util.SubCategory;
 
 import java.util.Date;
@@ -60,29 +60,11 @@ import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ID;
  * Created by Snehankur on 4/5/2015.
  */
 public class AddExpenseDialog extends DialogFragment {
-    
+
     private static final int AMOUNTPAD = 0;
     private static final int QUANTITYPAD = 1;
     private RoomiesLogger log;
     private static Context mContext;
-    private ArrayAdapter<CharSequence> mCategoryAdapter;
-    private ArrayAdapter<CharSequence> mSubCategoryAdapter;
-    private TextView amount;
-    private EditText description;
-    private TextView quantity;
-    private ImageView rent;
-    private ImageView electricity;
-    private ImageView maid;
-    private ImageView miscellaneous;
-    private ImageView bills;
-    private ImageView grocery;
-    private ImageView vegetables;
-    private ImageView others;
-    private LinearLayout miscRow;
-    private Dialog dialog;
-    private View dialogView;
-
-    private String username;
     private SharedPreferences mSharedPref;
     private SharedPreferences.Editor mEditor;
     private Category category;
@@ -90,11 +72,9 @@ public class AddExpenseDialog extends DialogFragment {
     private RoomExpensesManager manager;
     private boolean isExceedConfirmed;
     private OnSubmitListener mOnSubmitListener;
-    private RelativeLayout descriptionLayout;
-    private RelativeLayout quantityLayout;
-    private TextView quantityUnit;
-    private RelativeLayout descriptionDivider;
-    
+    private View amountPad;
+    private View quantitypad;
+
     /**
      * Creates a new instance of the Dialog for adding transaction.
      *
@@ -130,7 +110,7 @@ public class AddExpenseDialog extends DialogFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle
             savedInstanceState) {
-        dialogView = inflater.inflate(R.layout.add_expense, container, false);
+        final View dialogView = inflater.inflate(R.layout.add_expense, container, false);
         log = RoomiesLogger.getInstance();
         log.createEntryLoggingMessage(AddExpenseDialog.class.getName(), "onCreateDialog", null);
 
@@ -138,101 +118,92 @@ public class AddExpenseDialog extends DialogFragment {
                                                     Context.MODE_PRIVATE);
 
         mEditor = mSharedPref.edit();
-        username = mSharedPref.getString(RoomiesConstants.PREF_USERNAME, null);
         manager = new RoomExpensesManager(mContext);
 
-        description = (EditText) dialogView.findViewById(R.id.description);
-
-        descriptionLayout = (RelativeLayout) dialogView.findViewById(R.id.description_layout);
-        descriptionDivider = (RelativeLayout) dialogView.findViewById(R.id.description_divider);
-        amount = (TextView) dialogView.findViewById(R.id.amount);
+        final EditText description = (EditText) dialogView.findViewById(R.id.description);
+        amountPad = dialogView.findViewById(R.id.amount_Pad);
+        final RelativeLayout descriptionLayout = (RelativeLayout) dialogView.findViewById(R.id.description_layout);
+        quantitypad = dialogView.findViewById(R.id.quantity_Pad);
+        final RelativeLayout descriptionDivider = (RelativeLayout) dialogView.findViewById(R.id.description_divider);
+        final TextView amount = (TextView) dialogView.findViewById(R.id.amount);
+        final TextView quantity = (TextView) dialogView.findViewById(R.id.quantity);
         View amountLayout = dialogView.findViewById(R.id.amount_layout);
         amountLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    showNumpad(AMOUNTPAD);
+                    showNumpad(dialogView, AMOUNTPAD, amount, quantity);
                 } else {
-                    hideNumpad(AMOUNTPAD);
+                    hideNumpad(dialogView, AMOUNTPAD);
                 }
             }
         });
+        amountLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNumpad(dialogView, AMOUNTPAD, amount, quantity);
+            }
+        });
 
-        quantity = (TextView) dialogView.findViewById(R.id.quantity);
-        quantityUnit = (TextView) dialogView.findViewById(R.id.quantity_unit);
-        quantityLayout = (RelativeLayout) dialogView.findViewById(R.id.quantity_number);
+        final TextView quantityUnit = (TextView) dialogView.findViewById(R.id.quantity_unit);
+        final RelativeLayout quantityLayout = (RelativeLayout) dialogView.findViewById(R.id.quantity_number);
+
+        final View quantityUnitDialog = dialogView.findViewById(R.id.quantity_unit_chooser);
 
         quantityLayout.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    showNumpad(QUANTITYPAD);
+                    showNumpad(dialogView, QUANTITYPAD, amount, quantity);
                 } else {
-                    hideNumpad(QUANTITYPAD);
+                    hideNumpad(dialogView, QUANTITYPAD);
                 }
             }
         });
-
-        quantityUnit.setOnTouchListener(new View.OnTouchListener() {
+        quantityLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        showQuantityUnitDialog();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        break;
-                }
-                return true;
-            }
-
-            private void showQuantityUnitDialog() {
-
-                final View quantityUnitDialog = dialogView.findViewById(R.id.quantity_unit_chooser);
-                quantityUnitDialog.setVisibility(View.VISIBLE);
-
-                quantityUnitDialog.findViewById(R.id.ltr).setOnClickListener(new View
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        quantityUnit.setText("LTR");
-                        quantityUnitDialog.setVisibility(View.INVISIBLE);
-                    }
-                });
-                quantityUnitDialog.findViewById(R.id.kg).setOnClickListener(new View
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        quantityUnit.setText("KG");
-                        quantityUnitDialog.setVisibility(View.INVISIBLE);
-                    }
-                });
-                quantityUnitDialog.findViewById(R.id.pcs).setOnClickListener(new View
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        quantityUnit.setText("PCS");
-                        quantityUnitDialog.setVisibility(View.INVISIBLE);
-                    }
-                });
+            public void onClick(View v) {
+                showNumpad(dialogView, QUANTITYPAD, amount, quantity);
             }
         });
 
-        rent = (ImageView) dialogView.findViewById(R.id.rent_icon);
-        electricity = (ImageView) dialogView.findViewById(
-                R.id.electricity_icon);
-        maid = (ImageView) dialogView.findViewById(R.id.maid_icon);
-        miscellaneous = (ImageView) dialogView.findViewById(R.id.misc_icon);
 
-        bills = (ImageView) dialogView.findViewById(R.id.bills_icon);
-        grocery = (ImageView) dialogView.findViewById(R.id.grocery_icon);
-        vegetables = (ImageView) dialogView.findViewById(R.id.vegetable_icon);
-        others = (ImageView) dialogView.findViewById(R.id.others_icon);
-        miscRow = (LinearLayout) dialogView.findViewById(R.id.misc_row);
-        defaultSettings();
-        clearUI();
+        quantityUnit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    showQuantityUnitDialog(quantityUnitDialog, quantityUnit);
+                } else {
+                    dismissQuantityUnitDialog(quantityUnit);
+                }
+            }
+        });
+
+        quantityUnit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (View.INVISIBLE == quantityUnitDialog.getVisibility()) {
+                    showQuantityUnitDialog(quantityUnitDialog, quantityUnit);
+                }
+
+            }
+        });
+
+        final ImageView rent = (ImageView) dialogView.findViewById(R.id.rent_icon);
+        final ImageView electricity = (ImageView) dialogView.findViewById(
+                R.id.electricity_icon);
+        final ImageView maid = (ImageView) dialogView.findViewById(R.id.maid_icon);
+        final ImageView miscellaneous = (ImageView) dialogView.findViewById(R.id.misc_icon);
+
+        final ImageView bills = (ImageView) dialogView.findViewById(R.id.bills_icon);
+        final ImageView grocery = (ImageView) dialogView.findViewById(R.id.grocery_icon);
+        final ImageView vegetables = (ImageView) dialogView.findViewById(R.id.vegetable_icon);
+        final ImageView others = (ImageView) dialogView.findViewById(R.id.others_icon);
+        final LinearLayout miscRow = (LinearLayout) dialogView.findViewById(R.id.misc_row);
+        defaultSettings(miscellaneous, miscRow, quantityLayout, descriptionLayout,
+                        descriptionDivider, quantityUnit);
+        clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
         ShapeDrawable ovalShape = new ShapeDrawable();
         ovalShape.setShape(new OvalShape());
         ovalShape.getPaint().setColor(getResources().getColor(R.color.misc));
@@ -255,7 +226,7 @@ public class AddExpenseDialog extends DialogFragment {
                 .OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -273,13 +244,16 @@ public class AddExpenseDialog extends DialogFragment {
                 miscellaneous.setImageDrawable(miscIcon);
                 miscellaneous.setSelected(true);
                 grocery.setSelected(true);
-                setupOnClickListener(Controls.GROCERY);
+                setupOnClickListener(Controls.GROCERY, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.bills_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -297,13 +271,16 @@ public class AddExpenseDialog extends DialogFragment {
                 miscellaneous.setImageDrawable(miscIcon);
                 miscellaneous.setSelected(true);
                 bills.setSelected(true);
-                setupOnClickListener(Controls.BILLS);
+                setupOnClickListener(Controls.BILLS, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.vegetable_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -321,13 +298,16 @@ public class AddExpenseDialog extends DialogFragment {
                 miscellaneous.setImageDrawable(miscIcon);
                 miscellaneous.setSelected(true);
                 vegetables.setSelected(true);
-                setupOnClickListener(Controls.VEGETABLES);
+                setupOnClickListener(Controls.VEGETABLES, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.others_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -345,13 +325,16 @@ public class AddExpenseDialog extends DialogFragment {
                 miscellaneous.setImageDrawable(miscIcon);
                 miscellaneous.setSelected(true);
                 others.setSelected(true);
-                setupOnClickListener(Controls.OTHERS);
+                setupOnClickListener(Controls.OTHERS, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.rent_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -361,14 +344,17 @@ public class AddExpenseDialog extends DialogFragment {
                 rentIcon.clearColorFilter();
                 rent.setImageDrawable(rentIcon);
                 rent.setSelected(true);
-                setupOnClickListener(Controls.RENT);
+                setupOnClickListener(Controls.RENT, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.electricity_btn).setOnClickListener(new View.OnClickListener
                 () {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -378,13 +364,16 @@ public class AddExpenseDialog extends DialogFragment {
                 electricityIcon.clearColorFilter();
                 electricity.setImageDrawable(electricityIcon);
                 electricity.setSelected(true);
-                setupOnClickListener(Controls.ELEC);
+                setupOnClickListener(Controls.ELEC, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.maid_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable oval = new ShapeDrawable();
                 oval.setShape(new OvalShape());
@@ -394,13 +383,16 @@ public class AddExpenseDialog extends DialogFragment {
                 maidIcon.clearColorFilter();
                 maid.setImageDrawable(maidIcon);
                 maid.setSelected(true);
-                setupOnClickListener(Controls.MAID);
+                setupOnClickListener(Controls.MAID, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
         dialogView.findViewById(R.id.misc_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearUI();
+                clearUI(grocery, bills, vegetables, others, electricity, rent, maid, miscellaneous);
                 dialogView.requestFocus();
                 ShapeDrawable ovalShape = new ShapeDrawable();
                 ovalShape.setShape(new OvalShape());
@@ -418,119 +410,126 @@ public class AddExpenseDialog extends DialogFragment {
                 othersIcon.clearColorFilter();
                 others.setImageDrawable(othersIcon);
                 others.setSelected(true);
-                setupOnClickListener(Controls.OTHERS);
+                setupOnClickListener(Controls.OTHERS, grocery, bills, vegetables, others,
+                                     electricity, rent, maid, miscellaneous, miscRow,
+                                     quantityLayout, quantityUnit, descriptionLayout,
+                                     descriptionDivider);
             }
         });
 
 
-        /*Button positive = (Button) dialogView.findViewById(R.id.positiveButton);
-        Button negative = (Button) dialogView.findViewById(R.id.negativeButton);*/
+        TextView positive = (TextView) dialogView.findViewById(R.id.positiveButton);
+        ImageView negative = (ImageView) dialogView.findViewById(R.id.negativeButton);
 
        /* builder.setTitle("Add Expenses").setView(dialogView);
         dialog = builder.create();*/
-        /*positive.setOnClickListener(new View.OnClickListener() {
+        positive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 boolean isValidDescription = true;
                 boolean isValidQuantity = false;
-                boolean isValidAmount = RoomiesHelper.setNumericError("amount",
-                                                                      getActivity()
-                                                                              .getBaseContext(),
+                boolean isValidAmount = RoomiesHelper.setNumericError("amount", mContext,
                                                                       dialogView);
-                if (description.getVisibility() == View.VISIBLE) {
+                if (descriptionLayout.getVisibility() == View.VISIBLE) {
                     isValidDescription = RoomiesHelper.setError("description", mContext,
                                                                 dialogView);
                 }
-                if (quantity.getVisibility() == View.VISIBLE) {
+                if (quantityLayout.getVisibility() == View.VISIBLE) {
                     isValidQuantity = RoomiesHelper.setNumericError("quantity",
                                                                     mContext, dialogView);
                 } else {
                     isValidQuantity = true;
                 }
                 if (isValidAmount && isValidQuantity && isValidDescription) {
-                    submitExpenses();
+                    submitExpenses(amount, quantityLayout, quantity, descriptionLayout,
+                                   description);
                 }
             }
         });
         negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                dismiss();
             }
-        });*/
+        });
 
         log.createExitLoggingMessage(AddExpenseDialog.class.getName(), "onCreateDialog", null);
         return dialogView;
     }
 
-    private void showNumpad(int numPadType) {
-        final View amountPad = dialogView.findViewById(R.id.amount_Pad);
+    private void showNumpad(View dialogView, int numPadType, TextView amount, TextView quantity) {
         View amountDivider = dialogView.findViewById(R.id.amount_divider);
         View showAmountPad = dialogView.findViewById(R.id.show_amountpad);
-        final View quantitypad = dialogView.findViewById(R.id.quantity_Pad);
         View showQuantityPad = dialogView.findViewById(R.id.show_quantitypad);
+        View quantityLayout = dialogView.findViewById(R.id.quantity_layout);
         switch (numPadType) {
             case AMOUNTPAD:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    int cx = amountDivider.getWidth() - showAmountPad.getWidth();
-                    int cy = amountDivider.getHeight();
-                    int finalRadius = Math.max(amountPad.getWidth(), amountPad.getHeight());
-                    Animator anim =
-                            ViewAnimationUtils.createCircularReveal(amountPad, cx, cy, 0,
-                                                                    finalRadius);
-                    anim.setDuration(200);
-                    amountPad.setVisibility(View.VISIBLE);
-                    anim.start();
-                } else {
-                    AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
-                    alpha.setDuration(200);
-                    amountPad.setAnimation(alpha);
-                    alpha.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                if (View.INVISIBLE == amountPad.getVisibility()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int cx = amountDivider.getWidth() - showAmountPad.getWidth();
+                        int cy = amountDivider.getHeight();
+                        int finalRadius = Math.max(amountPad.getWidth(), amountPad.getHeight());
+                        Animator anim =
+                                ViewAnimationUtils.createCircularReveal(amountPad, cx, cy, 0,
+                                                                        finalRadius);
+                        anim.setDuration(200);
+                        amountPad.setVisibility(View.VISIBLE);
+                        anim.start();
+                    } else {
+                        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+                        alpha.setDuration(200);
+                        amountPad.setAnimation(alpha);
+                        alpha.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            amountPad.setVisibility(View.VISIBLE);
-                        }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                amountPad.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
+                    setupKeypad(amountPad, amount);
                 }
                 break;
             case QUANTITYPAD:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    int cx = quantityLayout.getWidth() - showQuantityPad.getWidth();
-                    int cy = quantityLayout.getBottom();
-                    int finalRadius = Math.max(quantitypad.getWidth(), quantitypad.getHeight());
-                    Animator anim =
-                            ViewAnimationUtils.createCircularReveal(quantitypad, cx, cy, 0,
-                                                                    finalRadius);
-                    anim.setDuration(200);
-                    quantitypad.setVisibility(View.VISIBLE);
-                    anim.start();
-                } else {
-                    AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
-                    alpha.setDuration(200);
-                    quantitypad.setAnimation(alpha);
-                    alpha.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                if (View.INVISIBLE == quantitypad.getVisibility()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int cx = quantityLayout.getWidth() - showQuantityPad.getWidth();
+                        int cy = quantityLayout.getBottom();
+                        int finalRadius = Math.max(quantitypad.getWidth(), quantitypad.getHeight());
+                        Animator anim =
+                                ViewAnimationUtils.createCircularReveal(quantitypad, cx, cy, 0,
+                                                                        finalRadius);
+                        anim.setDuration(200);
+                        quantitypad.setVisibility(View.VISIBLE);
+                        anim.start();
+                    } else {
+                        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+                        alpha.setDuration(200);
+                        quantitypad.setAnimation(alpha);
+                        alpha.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            quantitypad.setVisibility(View.VISIBLE);
-                        }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                quantitypad.setVisibility(View.VISIBLE);
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
+                    setupKeypad(quantitypad, quantity);
                 }
                 break;
         }
@@ -538,78 +537,124 @@ public class AddExpenseDialog extends DialogFragment {
 
     }
 
-    private void hideNumpad(int numpadType) {
+    private void hideNumpad(View dialogView, int numpadType) {
         final View amountPad = dialogView.findViewById(R.id.amount_Pad);
         View amountDivider = dialogView.findViewById(R.id.amount_divider);
         View showAmountPad = dialogView.findViewById(R.id.show_amountpad);
         final View quantitypad = dialogView.findViewById(R.id.quantity_Pad);
         View showQuantityPad = dialogView.findViewById(R.id.show_quantitypad);
+        View quantityLayout = dialogView.findViewById(R.id.quantity_layout);
         switch (numpadType) {
             case AMOUNTPAD:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    int cx = amountDivider.getWidth() - showAmountPad.getWidth();
-                    int cy = amountDivider.getHeight();
-                    int finalRadius = Math.max(amountPad.getWidth(), amountPad.getHeight());
-                    Animator anim =
-                            ViewAnimationUtils.createCircularReveal(amountPad, cx, cy, finalRadius,
-                                                                    0);
-                    anim.setDuration(200);
-                    amountPad.setVisibility(View.INVISIBLE);
-                    anim.start();
-                } else {
-                    AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
-                    alpha.setDuration(200);
-                    amountPad.setAnimation(alpha);
-                    alpha.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                if (View.VISIBLE == amountPad.getVisibility()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int cx = amountDivider.getWidth() - showAmountPad.getWidth();
+                        int cy = amountDivider.getHeight();
+                        int finalRadius = Math.max(amountPad.getWidth(), amountPad.getHeight());
+                        Animator anim =
+                                ViewAnimationUtils.createCircularReveal(amountPad, cx, cy,
+                                                                        finalRadius,
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            amountPad.setVisibility(View.INVISIBLE);
-                        }
+                                                                        0);
+                        anim.setDuration(200);
+                        amountPad.setVisibility(View.INVISIBLE);
+                        anim.start();
+                    } else {
+                        AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+                        alpha.setDuration(200);
+                        amountPad.setAnimation(alpha);
+                        alpha.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                amountPad.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
                 }
                 break;
             case QUANTITYPAD:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    int cx = quantityLayout.getWidth() - showQuantityPad.getWidth();
-                    int cy = quantityLayout.getBottom();
-                    int finalRadius = Math.max(quantitypad.getWidth(), quantitypad.getHeight());
-                    Animator anim =
-                            ViewAnimationUtils.createCircularReveal(quantitypad, cx, cy,
-                                                                    finalRadius,
-                                                                    0);
-                    anim.setDuration(200);
-                    quantitypad.setVisibility(View.INVISIBLE);
-                    anim.start();
-                } else {
-                    AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
-                    alpha.setDuration(200);
-                    quantitypad.setAnimation(alpha);
-                    alpha.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                        }
+                if (View.VISIBLE == quantitypad.getVisibility()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        int cx = quantityLayout.getWidth() - showQuantityPad.getWidth();
+                        int cy = quantityLayout.getBottom();
+                        int finalRadius = Math.max(quantitypad.getWidth(), quantitypad.getHeight());
+                        Animator anim =
+                                ViewAnimationUtils.createCircularReveal(quantitypad, cx, cy,
+                                                                        finalRadius,
+                                                                        0);
+                        anim.setDuration(200);
+                        quantitypad.setVisibility(View.INVISIBLE);
+                        anim.start();
+                    } else {
+                        AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+                        alpha.setDuration(200);
+                        quantitypad.setAnimation(alpha);
+                        alpha.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            quantitypad.setVisibility(View.INVISIBLE);
-                        }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                quantitypad.setVisibility(View.INVISIBLE);
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                        }
-                    });
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+                    }
                 }
                 break;
         }
 
+    }
+
+    private void showQuantityUnitDialog(final View quantityUnitDialog, final TextView
+            quantityUnit) {
+
+        if (View.INVISIBLE == quantityUnitDialog.getVisibility()) {
+            quantityUnitDialog.setVisibility(View.VISIBLE);
+
+            quantityUnitDialog.findViewById(R.id.ltr).setOnClickListener(new View
+                    .OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantityUnit.setText("LTR");
+                    quantityUnitDialog.setVisibility(View.INVISIBLE);
+                }
+            });
+            quantityUnitDialog.findViewById(R.id.kg).setOnClickListener(new View
+                    .OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantityUnit.setText("KG");
+                    quantityUnitDialog.setVisibility(View.INVISIBLE);
+                }
+            });
+            quantityUnitDialog.findViewById(R.id.pcs).setOnClickListener(new View
+                    .OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    quantityUnit.setText("PCS");
+                    quantityUnitDialog.setVisibility(View.INVISIBLE);
+                }
+            });
+        }
+    }
+
+    private void dismissQuantityUnitDialog(final View quantityUnitDialog) {
+        if (View.VISIBLE == quantityUnitDialog.getVisibility()) {
+            quantityUnitDialog.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
@@ -624,10 +669,35 @@ public class AddExpenseDialog extends DialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (View.VISIBLE == amountPad.getVisibility()) {
+                        amountPad.setVisibility(View.INVISIBLE);
+                        return false;
+                    } else if (View.VISIBLE == quantitypad.getVisibility()) {
+                        quantitypad.setVisibility(View.INVISIBLE);
+                        return true;
+                    } else {
+                        dismiss();
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
+
     /**
      * Submit expenses.
      */
-    public void submitExpenses() {
+    public void submitExpenses(TextView amount, View quantityLayout, TextView quantity, View
+            descriptionLayout, TextView description) {
 
         log.createEntryLoggingMessage(AddExpenseDialog.class.getName(), "submitExpenses",
                                       null);
@@ -635,11 +705,11 @@ public class AddExpenseDialog extends DialogFragment {
         float amountVal = Float.valueOf(amount.getText().toString());
         String quantityVal = null;
         String descriptionVal = null;
-        if (View.VISIBLE == quantity.getVisibility()) {
+        if (View.VISIBLE == quantityLayout.getVisibility()) {
             quantityVal = Float.valueOf(quantity.getText().toString())
                           + "KG";
         }
-        if (View.VISIBLE == description.getVisibility()) {
+        if (View.VISIBLE == descriptionLayout.getVisibility()) {
             descriptionVal = description.getText().toString();
         }
         boolean isExpenseAdded = false;
@@ -652,7 +722,8 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_RENT_MARGIN, "0"));
                 if (amountVal + rentSpent > rentMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Rent", String.valueOf(rentMargin),
-                                             String.valueOf(rentSpent));
+                                             String.valueOf(rentSpent), amount, quantityLayout,
+                                             quantity, descriptionLayout, description);
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
@@ -663,7 +734,7 @@ public class AddExpenseDialog extends DialogFragment {
                     }
 
                 }
-                
+
                 break;
             case MAID:
                 float maidSpent = Float.valueOf(
@@ -672,7 +743,8 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_MAID_MARGIN, "0"));
                 if (amountVal + maidSpent > maidMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Maid", String.valueOf(maidMargin),
-                                             String.valueOf(maidSpent));
+                                             String.valueOf(maidSpent), amount, quantityLayout,
+                                             quantity, descriptionLayout, description);
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
@@ -690,7 +762,8 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_ELECTRICITY_MARGIN, "0"));
                 if (amountVal + elecSpent > elecMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Electricity", String.valueOf(elecMargin),
-                                             String.valueOf(elecSpent));
+                                             String.valueOf(elecSpent), amount, quantityLayout,
+                                             quantity, descriptionLayout, description);
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
@@ -709,7 +782,8 @@ public class AddExpenseDialog extends DialogFragment {
                         mSharedPref.getString(PREF_MISCELLANEOUS_MARGIN, "0"));
                 if (amountVal + miscSpent > miscMargin && !isExceedConfirmed) {
                     confirmMarginExceedAlert("Miscellaneous", String.valueOf(miscMargin),
-                                             String.valueOf(miscSpent));
+                                             String.valueOf(miscSpent), amount, quantityLayout,
+                                             quantity, descriptionLayout, description);
                 } else {
                     isExceedConfirmed = false;
                     isExpenseAdded = manager.addRoomExpense(category,
@@ -723,10 +797,10 @@ public class AddExpenseDialog extends DialogFragment {
                 }
         }
 
-        if (isExpenseAdded && null != dialog) {
-            updateGraphs(dialog);
+        if (isExpenseAdded) {
+            updateGraphs(description, quantity, amount);
             mOnSubmitListener.onSubmit();
-            dialog.dismiss();
+            dismiss();
         }
         log.createExitLoggingMessage(AddExpenseDialog.class.getName(), "submitExpenses", null);
 
@@ -734,10 +808,8 @@ public class AddExpenseDialog extends DialogFragment {
 
     /**
      * Update the UI with the recently added expense.
-     *
-     * @param dialog
      */
-    private void updateGraphs(Dialog dialog) {
+    private void updateGraphs(TextView description, TextView quantity, TextView amount) {
         RoomExpenses roomExpenses = new RoomExpenses();
         roomExpenses.setExpenseCategory(category.toString());
         if (null != subCategory) {
@@ -764,14 +836,15 @@ public class AddExpenseDialog extends DialogFragment {
         } else if (fragment instanceof RoommatesFragment) {
 
         }
-        dialog.dismiss();
+        dismiss();
     }
 
 
     /**
      * set up the default setting for the options
      */
-    private void defaultSettings() {
+    private void defaultSettings(ImageView miscellaneous, View miscRow, View quantityLayout, View
+            descriptionLayout, View descriptionDivider, View quantityUnit) {
 
         category = Category.MISCELLANEOUS;
         subCategory = SubCategory.OTHERS;
@@ -783,7 +856,9 @@ public class AddExpenseDialog extends DialogFragment {
         quantityUnit.setVisibility(View.VISIBLE);
     }
 
-    private void clearUI() {
+    private void clearUI(ImageView grocery, ImageView bills, ImageView vegetables, ImageView
+            others, ImageView electricity, ImageView rent, ImageView maid, ImageView
+                                 miscellaneous) {
         Drawable groceryIcon = getResources().getDrawable(R.drawable.ic_groceries);
         groceryIcon.setColorFilter(getResources().getColor(R.color.grocery), PorterDuff.Mode
                 .MULTIPLY);
@@ -835,7 +910,12 @@ public class AddExpenseDialog extends DialogFragment {
      *
      * @param controls
      */
-    private void setupOnClickListener(Controls controls) {
+    private void setupOnClickListener(Controls controls, ImageView grocery, ImageView bills,
+                                      ImageView vegetables, ImageView others, ImageView
+                                              electricity, ImageView rent, ImageView maid,
+                                      ImageView miscellaneous, View miscRow, View quantityLayout,
+                                      View quantityUnit, View descriptionLayout, View
+                                              descriptionDivider) {
 
         category = null;
         subCategory = null;
@@ -883,7 +963,8 @@ public class AddExpenseDialog extends DialogFragment {
                     break;
                 }
             case MISC:
-                defaultSettings();
+                defaultSettings(miscellaneous, miscRow, quantityLayout, descriptionLayout,
+                                descriptionDivider, quantityUnit);
                 break;
             case BILLS:
                 if (!bills.isSelected()) {
@@ -913,13 +994,16 @@ public class AddExpenseDialog extends DialogFragment {
                     break;
                 }
             case OTHERS:
-                defaultSettings();
+                defaultSettings(miscellaneous, miscRow, quantityLayout, descriptionLayout,
+                                descriptionDivider, quantityUnit);
                 break;
             default:
-                defaultSettings();
+                defaultSettings(miscellaneous, miscRow, quantityLayout, descriptionLayout,
+                                descriptionDivider, quantityUnit);
         }
 
     }
+
 
     /**
      * Check if the expenses are within the pre defined range.
@@ -929,7 +1013,9 @@ public class AddExpenseDialog extends DialogFragment {
      * @param spent
      */
     private void confirmMarginExceedAlert(final String category, final String margin, final String
-            spent) {
+            spent, final TextView amount, final View quantityLayout, final TextView quantity,
+                                          final View descriptionLayout, final TextView
+                                                  description) {
 
         log.info(category.toString() + " margin: " + margin);
         final AlertDialog.Builder confirmBuilder = new AlertDialog.Builder
@@ -949,7 +1035,9 @@ public class AddExpenseDialog extends DialogFragment {
                                                                                      true;
                                                                              dialogInterface
                                                                                      .dismiss();
-                                                                             submitExpenses();
+                                                                             submitExpenses
+                                                                                     (amount,
+                                                                                      quantityLayout, quantity, descriptionLayout, description);
                                                                          }
                                                                      }).setNegativeButton("No",
                                                                                           new DialogInterface.OnClickListener() {
@@ -967,5 +1055,128 @@ public class AddExpenseDialog extends DialogFragment {
      */
     public enum Controls {
         RENT, MAID, ELEC, MISC, BILLS, GROCERY, VEGETABLES, OTHERS
+    }
+
+
+    private void setupKeypad(final View keypad, final TextView textView) {
+        keypad.findViewById(R.id.one).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(1, textView);
+            }
+        });
+        keypad.findViewById(R.id.two).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(2, textView);
+            }
+        });
+        keypad.findViewById(R.id.three).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(3, textView);
+            }
+        });
+        keypad.findViewById(R.id.four).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(4, textView);
+            }
+        });
+        keypad.findViewById(R.id.five).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(5, textView);
+            }
+        });
+        keypad.findViewById(R.id.six).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(6, textView);
+            }
+        });
+        keypad.findViewById(R.id.seven).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(7, textView);
+            }
+        });
+        keypad.findViewById(R.id.eight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(8, textView);
+            }
+        });
+        keypad.findViewById(R.id.nine).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(9, textView);
+            }
+        });
+        keypad.findViewById(R.id.zero).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(0, textView);
+            }
+        });
+        keypad.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyClicked(10, textView);
+            }
+        });
+        keypad.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                keypad.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private void onKeyClicked(int key, TextView textView) {
+        switch (key) {
+            case 0:
+                String str = textView.getText().toString();
+                if (!str.equals("")) {
+                    textView.append("0");
+                }
+                break;
+            case 1:
+                textView.append("1");
+                break;
+            case 2:
+                textView.append("2");
+                break;
+            case 3:
+                textView.append("3");
+                break;
+            case 4:
+                textView.append("4");
+                break;
+            case 5:
+                textView.append("5");
+                break;
+            case 6:
+                textView.append("6");
+                break;
+            case 7:
+                textView.append("7");
+                break;
+            case 8:
+                textView.append("8");
+                break;
+            case 9:
+                textView.append("9");
+                break;
+            case 10:
+                String text = textView.getText().toString();
+                if (text.length() > 0) {
+                    String textStr = new StringBuilder(text)
+                            .deleteCharAt(text.length() - 1).toString();
+                    textView.setText(textStr);
+                }
+                break;
+
+        }
     }
 }
