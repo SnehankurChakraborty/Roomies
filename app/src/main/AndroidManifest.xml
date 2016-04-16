@@ -1,107 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.phaseii.rxm.roomies"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto"
-    android:versionCode="1"
-    android:versionName="1.0.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.phaseii.rxm.roomies"
+          android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
-    <permission
-        android:name="com.phaseii.rxm.roomies.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
+    <uses-feature android:name="android.hardware.camera2"/>
 
     <uses-permission android:name="com.phaseii.rxm.roomies.permission.C2D_MESSAGE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
     <uses-permission android:name="comi.android.launcher.permission.UNINSTALL_SHORTCUT"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission
-        android:name="android.permission.ACCESS_WIFI_STATE"
-        android:required="true"/>
+            android:name="android.permission.ACCESS_WIFI_STATE"
+            android:required="true"/>
     <uses-permission
-        android:name="android.permission.CHANGE_WIFI_STATE"
-        android:required="true"/>
+            android:name="android.permission.CHANGE_WIFI_STATE"
+            android:required="true"/>
     <uses-permission
-        android:name="android.permission.INTERNET"
-        android:required="true"/>
+            android:name="android.permission.INTERNET"
+            android:required="true"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <permission
+            android:name="com.phaseii.rxm.roomies.permission.C2D_MESSAGE"
+            android:protectionLevel="signature"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@drawable/roomies_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Roomies">
-
-        <activity
-            android:name=".activity.GetStartedWizard"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-
-        <activity
-            android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
             android:theme="@style/Theme.Roomies">
+        <activity
+                android:name=".activity.AddRoomActivity"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.phaseii.rxm.roomies.activity.HomeScreenActivity"/>
+        </activity>
+        <activity
+                android:name=".activity.SplashActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Roomies">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".activity.HomeScreenActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Roomies"
-            android:windowSoftInputMode="adjustPan">
+                android:name=".activity.HomeScreenActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Roomies"
+                android:windowSoftInputMode="adjustPan">
         </activity>
-
         <activity
-            android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Roomies">
+                android:name=".activity.LoginActivity"
+                android:label="@string/title_activity_login"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Roomies">
         </activity>
-
         <activity
-            android:name=".activity.ProfileActivity"
-            android:label="@string/title_activity_profile"
-            android:parentActivityName=".activity.HomeScreenActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Roomies"
-            android:windowSoftInputMode="adjustPan">
+                android:name=".activity.ProfileActivity"
+                android:label="@string/title_activity_profile"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.Roomies"
+                android:windowSoftInputMode="adjustPan">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.HomeScreenActivity"/>
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.phaseii.rxm.roomies.activity.HomeScreenActivity"/>
         </activity>
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="com.phaseii.rxm.roomies"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-            </intent-filter>
-        </receiver>
-
 
         <receiver android:name=".background.RoomiesReceiver">
             <intent-filter>
-                <action
-                    android:name=".background.RoomiesReciever.ROOMIES_ALARM"/>
+                <action android:name=".background.RoomiesReciever.ROOMIES_ALARM"/>
             </intent-filter>
         </receiver>
         <receiver android:name=".background.BootAndUpdateReceiver">
@@ -112,54 +95,42 @@
         </receiver>
 
         <service
-            android:name=".background.AlarmService"
-            android:enabled="true"/>
-        <service
-            android:name="com.phaseii.rxm.roomies.gcm.RoomiesGcmListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name="com.phaseii.rxm.roomies.gcm.RoomiesInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name="com.phaseii.rxm.roomies.gcm.RegistrationIntentService"
-            android:exported="false">
-        </service>
+                android:name=".background.AlarmService"
+                android:enabled="true"/>
 
         <provider
-            android:name=".providers.RoomExpensesProvider"
-            android:authorities="com.phaseii.rxm.roomies.providers.RoomExpensesProvider"
-            android:exported="false"/>
+                android:name=".database.provider.RoomExpensesProvider"
+                android:authorities="com.phaseii.rxm.roomies.database.provider.RoomExpensesProvider"
+                android:exported="false"/>
         <provider
-            android:name=".providers.RoomDetailsProvider"
-            android:authorities="com.phaseii.rxm.roomies.providers.RoomDetailsProvider"
-            android:exported="false"/>
+                android:name=".database.provider.RoomDetailsProvider"
+                android:authorities="com.phaseii.rxm.roomies.database.provider.RoomDetailsProvider"
+                android:exported="false"/>
         <provider
-            android:name=".providers.RoomStatsProvider"
-            android:authorities="com.phaseii.rxm.roomies.providers.RoomStatsProvider"
-            android:exported="false"/>
+                android:name=".database.provider.RoomStatsProvider"
+                android:authorities="com.phaseii.rxm.roomies.database.provider.RoomStatsProvider"
+                android:exported="false"/>
         <provider
-            android:name=".providers.UserDetailsProvider"
-            android:authorities="com.phaseii.rxm.roomies.providers.UserDetailsProvider"
-            android:exported="false"/>
+                android:name=".database.provider.UserDetailsProvider"
+                android:authorities="com.phaseii.rxm.roomies.database.provider.UserDetailsProvider"
+                android:exported="false"/>
         <provider
-            android:name=".providers.RoomUserMapProvider"
-            android:authorities="com.phaseii.rxm.roomies.providers.RoomUserMapProvider"
-            android:exported="false"/>
+                android:name=".database.provider.RoomUserMapProvider"
+                android:authorities="com.phaseii.rxm.roomies.database.provider.RoomUserMapProvider"
+                android:exported="false"/>
 
         <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version"/>
+
+        <activity
+                android:name=".activity.ManageRoomActivity"
+                android:label="@string/title_activity_manage_room"
+                android:parentActivityName=".activity.HomeScreenActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.phaseii.rxm.roomies.activity.HomeScreenActivity"/>
+        </activity>
     </application>
 
 </manifest>

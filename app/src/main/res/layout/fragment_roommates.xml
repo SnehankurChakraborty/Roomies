@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-    <com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
+    <com.phaseii.rxm.roomies.ui.customviews.RoomiesSlidingTabLayout
         android:id="@+id/roommates_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

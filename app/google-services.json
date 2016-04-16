@@ -1,1 +1,51 @@
-{"project_info":{"project_id":"artful-mystery-95705","project_number":"803492808547","name":"Roomies"},"client":[{"client_info":{"client_id":"android:com.phaseii.rxm.roomies","client_type":1,"android_client_info":{"package_name":"com.phaseii.rxm.roomies"}},"oauth_client":[{"client_id":"803492808547-1q3tp2bprnvd29s9pdgoujlsoj9ruckk.apps.googleusercontent.com","client_type":1,"android_info":{"package_name":"com.phaseii.rxm.roomies","certificate_hash":"6945b54d42681b15d30cb8f3d217798830d0fd67"}}],"services":{"analytics_service":{"status":1},"cloud_messaging_service":{"status":2,"apns_config":[]},"appinvite_service":{"status":1,"other_platform_oauth_client":[]},"google_signin_service":{"status":1},"ads_service":{"status":1}}}]}
+{
+  "project_info": {
+    "project_id": "fiery-chess-94805",
+    "project_number": "185679165077",
+    "name": "Roomies"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185679165077:android:2dfad08935ae5859",
+        "client_id": "android:com.phaseii.rxm.roomies",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.phaseii.rxm.roomies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185679165077-oil5bn59scfl72a15d80ofdb57p9cno5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.phaseii.rxm.roomies",
+            "certificate_hash": "79B0AA5AE308C9B5F263A5F622682236B7A5F365"
+          }
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

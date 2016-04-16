@@ -5,8 +5,10 @@
 
     <string name="HomeScreen_Activity">com.phaseii.rxm.roomies.activity.HomeScreenActivity</string>
     <string name="GetStartedWizard">com.phaseii.rxm.roomies.activity.GetStartedWizard</string>
+    <string name="AddRoomActivity">com.phaseii.rxm.roomies.activity.AddRoomActivity</string>
     <string name="LoginActivity">com.phaseii.rxm.roomies.activity.LoginActivity</string>
     <string name="ProfileActivity">com.phaseii.rxm.roomies.activity.ProfileActivity</string>
+    <string name="ManageRoomActivity">com.phaseii.rxm.roomies.activity.ManageRoomActivity</string>
     <string name="DashboardActivity">com.phaseii.rxm.roomies.activity.DashboardActivity</string>
     <string name="RoomiesConnectActivity">com.phaseii.rxm.roomies.activity.RoomiesConnectActivity
     </string>
@@ -16,7 +18,7 @@
     <string name="signup">Signup</string>
     <string name="or">---------( or )---------</string>
     <string name="roomxpnsemngr">RoomXpnseManager</string>
-    <string name="roomies">Roomies </string>
+    <string name="roomies">Roomies</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_roomies_connect">RoomiesConnectActivity</string>
@@ -37,9 +39,14 @@
     <string name="empty"></string>
     <string name="yes">yes</string>
     <string name="no">no</string>
-    <string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
-    <string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action Bar</string>
-    <string name="p2p_off_warning">Enable P2P from action bar button above or system settings</string>
+    <string name="client_text">This device will act as a client. Click on Gallery button to pick a
+        local(stored) file
+    </string>
+    <string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action
+        Bar
+    </string>
+    <string name="p2p_off_warning">Enable P2P from action bar button above or system settings
+    </string>
     <string name="group_owner_text">"Am I the Group Owner? "</string>
     <string name="label_me">ME</string>
     <string name="label_peers">PEERS</string>
@@ -59,8 +66,6 @@
     <string name="maid">Maid</string>
     <string name="electricity">Electricity</string>
     <string name="miscellaneous">Miscellanous</string>
-    <string name="next"><![CDATA[Next >>]]></string>
-    <string name="specify_room_budget">Specify Room Budget</string>
     <string name="finish">FINISH</string>
     <string name="title_activity_get_started_wizard">GetStartedWizard</string>
     <string name="get_started">Get Started</string>
@@ -90,7 +95,6 @@
         <item>OTHERS</item>
     </string-array>
     <string name="Rs">\u20B9</string>
-    <string name="rs">\u20A8</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="into_your_room">into your room</string>
@@ -103,16 +107,89 @@
     <string name="title_activity_demo">DemoActivity</string>
     <string name="facebook_app_id">1447058975589912</string>
     <string name="cancelled">Cancelled</string>
-    <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
+    <string name="permission_not_granted">Unable to perform selected action because permissions were
+        not granted.
+    </string>
     <string name="ok">OK</string>
     <string name="hello_user">Hello %1$s!</string>
     <string name="success">Success</string>
-    <string name="join_message">We are currently working on this option. It would be available in the next update. For now please select "create a room option".</string>
+    <string name="join_message">We are currently working on this option. It would be available in
+        the next update. For now please select "create a room option".
+    </string>
     <string name="join_title">Available in next update</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="title_activity_roomies_connect">RoomiesConnectActivity</string>
     <string name="register">R E G I S T E R</string>
 
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+
+    <string name="title_activity_get_started">GetStartedActivity</string>
+    <!-- Roomies banner with leading and trailing space to provide enough spacing for R and s-->
+    <string name="roomies_banner">\u0020Roomies\u0020</string>
+    <string name="welcome_to_roomies">Welcome to Roomies</string>
+    <string name="we_will_set_you_up_in_seconds">We will set you up in seconds</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="previous">&lt;\u0020\u0020Previous</string>
+    <string name="next">Next\u0020\u0020></string>
+    <string name="label_room_details">Room Details</string>
+    <string name="label_room_name">Room Name</string>
+    <string name="label_room_budget">Room Budget</string>
+    <string name="label_rent">Rent</string>
+    <string name="save">Save</string>
+    <string name="label_maid">Maid</string>
+    <string name="label_elec">Electricity</string>
+    <string name="label_misc">Misc</string>
+    <string name="label_room_expense_category">Room Expense Categories</string>
+    <string name="label_room_budget_limit">Room Budget Limit per category</string>
+    <string name="rs">\u20B9</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="hint_room_budget_limit">10000</string>
+    <string name="enter_room_name">Enter Room Name</string>
+    <string name="continue_text">Continue</string>
+    <string name="skip">Skip</string>
+    <string name="select_room_expense_categories">Select Room Expense Categories</string>
+    <string name="enter_room_expense_limit">Enter Room Expense Limit</string>
+    <string name="specify_room_budget">Specify Room Budget</string>
+    <string name="back">Back</string>
+    <string name="firstname">First Name</string>
+    <string name="label_title">Title</string>
+    <string name="title_activity_login2">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="amount">Amount</string>
+    <string name="quantity">Quantity</string>
+    <string name="now">Now</string>
+    <string-array name="quantity_unit_array">
+        <item>n/a</item>
+        <item>kg</item>
+        <item>gm</item>
+        <item>ltr</item>
+        <item>ml</item>
+        <item>pcs</item>
+    </string-array>
+    <string name="title_activity_manage_room">ManageRoomActivity</string>
 
     <!-- P U S H  M E S S A G I N G -->
 

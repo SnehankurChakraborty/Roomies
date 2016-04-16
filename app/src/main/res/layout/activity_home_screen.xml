@@ -1,153 +1,246 @@
 <android.support.v4.widget.DrawerLayout
-    android:id="@+id/home_screen_drawer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.phaseii.rxm.roomies.activity.HomeScreenActivity">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:roomies="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/home_screen_drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.phaseii.rxm.roomies.activity.HomeScreenActivity">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/toolbar"
-            layout="@layout/roomies_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="100dip"/>
+                android:id="@+id/toolbar"
+                layout="@layout/roomies_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dip"/>
 
-
-        <com.phaseii.rxm.roomies.view.BannerView
-            android:id="@+id/toolbartitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:elevation="8dp"/>
-
+        <com.phaseii.rxm.roomies.ui.customviews.BannerView
+                android:id="@+id/toolbartitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/app_name"/>
 
         <FrameLayout
-            android:id="@+id/home_screen_fragment_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"/>
-
-
-        <FrameLayout
-            android:id="@+id/fab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:animateLayoutChanges="true">
-
-            <RelativeLayout
+                android:id="@+id/home_screen_fragment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white_translucent">
+                android:layout_below="@id/toolbar"/>
 
-                <LinearLayout
-                    android:id="@+id/add_roomies_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="170dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
+        <FrameLayout
+                android:id="@+id/fab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:animateLayoutChanges="true">
 
-                    <TextView
-                        android:id="@+id/add_roomies_label"
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white_translucent">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_alignParentBottom="true"
+                              android:layout_alignParentRight="true"
+                              android:layout_alignParentEnd="true"
+                              android:layout_marginBottom="90dp"
+                              android:layout_marginRight="18dp"
+                              android:layout_marginEnd="18dp">
+                    <LinearLayout android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:layout_gravity="end">
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/add_room_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                roomies:typeface="latobold"
+                                android:text="Add Room"
+                                android:padding="5dp"/>
+                        <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/add_room"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                roomies:fabSize="mini"
+                                roomies:backgroundTint="@color/accent"
+                                roomies:rippleColor="#FFF"
+                                android:src="@drawable/ic_home"
+                                android:visibility="visible"
+                                android:layout_margin="5dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:layout_gravity="end">
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/add_roomies_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                roomies:typeface="latobold"
+                                android:text="Add Roomies"
+                                android:padding="5dp"/>
+                        <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/add_roomies"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|center_horizontal"
+                                roomies:fabSize="mini"
+                                roomies:backgroundTint="@color/accent"
+                                roomies:rippleColor="#FFF"
+                                android:src="@drawable/add_roomies"
+                                android:layout_margin="5dp"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:orientation="horizontal"
+                                  android:layout_gravity="end">
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/add_expense_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                roomies:typeface="latobold"
+                                android:text="Add Expenses"
+                                android:padding="5dp"/>
+                        <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/add_expense"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/spends"
+                                android:scaleType="fitCenter"
+                                roomies:fabSize="mini"
+                                roomies:backgroundTint="@color/accent"
+                                roomies:rippleColor="#FFF"
+                                android:visibility="visible"
+                                android:layout_margin="5dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--<android.support.design.widget.FloatingActionButton
+                        android:id="@+id/add_expense"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="20dp"
-                        android:gravity="center"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="5dp"
-                        android:text="Add Roomies"/>
+                        android:src="@drawable/spends"
+                        android:scaleType="fitCenter"
+                        roomies:fabSize="mini"
+                        roomies:backgroundTint="@color/accent"
+                        roomies:rippleColor="#FFF"
+                        android:visibility="invisible"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="96dp"/>
 
-                    <ImageButton
+                <android.support.design.widget.FloatingActionButton
                         android:id="@+id/add_roomies"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center|center_horizontal"
-                        android:layout_weight="1"
-                        android:background="@drawable/add_expense"
-                        android:src="@drawable/add_roomies"/>
-                </LinearLayout>
+                        roomies:fabSize="mini"
+                        roomies:backgroundTint="@color/accent"
+                        roomies:rippleColor="#FFF"
+                        android:src="@drawable/add_roomies"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_above="@id/add_expense"
+                        android:layout_marginBottom="16dp"/>
 
-                <LinearLayout
-                    android:id="@+id/add_expense_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="100dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:orientation="horizontal"
-                    android:visibility="visible">
-
-                    <TextView
+                <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/add_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        roomies:fabSize="mini"
+                        roomies:backgroundTint="@color/accent"
+                        roomies:rippleColor="#FFF"
+                        android:src="@drawable/ic_home"
+                        android:visibility="visible"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_above="@id/add_roomies"
+                        android:layout_marginBottom="16dp"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
                         android:id="@+id/add_expense_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="20dp"
                         android:gravity="center"
-                        android:paddingBottom="5dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="5dp"
-                        android:text="Add Expenses"/>
-
-                    <ImageButton
-                        android:id="@+id/add_expense"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        roomies:typeface="latobold"
+                        android:text="Add Expenses"
+                        android:layout_alignBottom="@+id/add_expense"
+                        android:layout_toLeftOf="@+id/add_expense"
+                        android:layout_toStartOf="@+id/add_expense"
+                        android:visibility="invisible"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/add_roomies_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@drawable/add_expense"
-                        android:src="@drawable/spends"
-                        android:visibility="visible"/>
-                </LinearLayout>
+                        android:padding="10dp"
+                        android:gravity="center_vertical"
+                        roomies:typeface="latobold"
+                        android:text="Add Roomies"
+                        android:layout_alignBottom="@+id/add_roomies"
+                        android:layout_toLeftOf="@+id/add_roomies"
+                        android:layout_toStartOf="@+id/add_roomies"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/add_room_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        roomies:typeface="latobold"
+                        android:text="Add Room"
+                        android:layout_alignBottom="@+id/add_room"
+                        android:layout_alignRight="@+id/add_roomies_label"
+                        android:layout_alignEnd="@+id/add_roomies_label"/>-->
             </RelativeLayout>
-
         </FrameLayout>
 
-
-        <ImageButton
-            android:id="@+id/fab"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="left|bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:animateLayoutChanges="true"
-            android:background="@drawable/add_expense"
-            android:src="@drawable/ic_fab"/>
-
-
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_fab"
+                roomies:backgroundTint="@color/accent"
+                roomies:rippleColor="#FFF"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerView"
-        android:layout_width="320dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:background="@color/drawer"
-        android:scrollbars="vertical">
+            android:id="@+id/RecyclerView"
+            android:layout_width="320dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@color/drawer"
+            android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
 

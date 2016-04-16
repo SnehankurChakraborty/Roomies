@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:roomies="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingBottom="5dp"
+            android:gravity="top"
+            android:id="@+id/expense_details_layout">
+
+        <ImageButton
+                android:id="@+id/expense_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/food_drawable"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toRightOf="@id/expense_icon"
+                android:orientation="vertical">
+
+            <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    roomies:typeface="latoregular"
+                    android:text="Oct 31, 2:05PM"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="6pt"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginStart="5dp"
+                    android:orientation="horizontal">
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.75"
+                        roomies:typeface="latoregular"
+                        android:text="BHARTI AIRTEL"
+                        android:layout_gravity="center_vertical"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="6pt"
+                        android:textStyle="bold"/>
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        roomies:typeface="latoregular"
+                        android:gravity="end"
+                        android:text="250"
+                        android:textColor="@android:color/black"
+                        android:textSize="8pt"
+                        android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginStart="5dp"
+                    android:paddingBottom="5dp"
+                    android:orientation="horizontal">
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.75"
+                        roomies:typeface="latoregular"
+                        android:text="2 KG"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="6pt"
+                        android:visibility="visible"/>
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        roomies:typeface="latobold"
+                        android:gravity="end"
+                        android:text="#Snehankur"
+                        android:textColor="@color/primary_dark2_home"
+                        android:textSize="6pt"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

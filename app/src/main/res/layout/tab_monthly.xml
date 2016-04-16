@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:roomies="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.fragments.MonthlyTab">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/budget_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:elevation="8dp">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/expense_breakup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Expense Breakup"
+                        android:textColor="@color/secondary_text"
+                        roomies:typeface="latoheavy"
+                        android:textSize="7pt"/>
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/expense_breakup_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/expense_breakup"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:text="Displays breakup of expenses this month"
+                        roomies:typeface="latoregular"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="6pt"/>
+
+                <RelativeLayout android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/expense_breakup_desc"
+                                android:layout_margin="10dp">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pie_expense_report"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:layout_alignParentLeft="true"/>
+
+                    <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_toRightOf="@id/pie_expense_report"
+                            android:layout_toEndOf="@id/pie_expense_report"
+                            android:orientation="vertical">
+
+                        <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="5dp">
+
+                            <View
+                                    android:id="@+id/rent_mark"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:background="@drawable/pie_chart_index"/>
+
+                            <TextView
+                                    android:id="@+id/rent_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_toRightOf="@id/rent_mark"
+                                    android:layout_toEndOf="@id/rent_mark"
+                                    android:text="12000 Rent"
+                                    android:layout_centerVertical="true"
+                                    android:textSize="6pt"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="5dp">
+
+                            <View
+                                    android:id="@+id/maid_mark"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:background="@drawable/pie_chart_index"/>
+
+                            <TextView
+                                    android:id="@+id/maid_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_toRightOf="@id/maid_mark"
+                                    android:layout_toEndOf="@id/maid_mark"
+                                    android:text="12000 Maid"
+                                    android:layout_centerVertical="true"
+                                    android:textSize="6pt"/>
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="5dp">
+
+                            <View
+                                    android:id="@+id/electricity_mark"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:background="@drawable/pie_chart_index"/>
+
+                            <TextView
+                                    android:id="@+id/electricity_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_toRightOf="@id/electricity_mark"
+                                    android:layout_toEndOf="@id/electricity_mark"
+                                    android:text="1200 Electricity"
+                                    android:layout_centerVertical="true"
+                                    android:textSize="6pt"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="5dp">
+
+                            <View
+                                    android:id="@+id/misc_mark"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:background="@drawable/pie_chart_index"/>
+
+                            <TextView
+                                    android:id="@+id/misc_value"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_toRightOf="@id/misc_mark"
+                                    android:layout_toEndOf="@id/misc_mark"
+                                    android:text="12000 Misc"
+                                    android:layout_centerVertical="true"
+                                    android:textSize="6pt"/>
+                        </RelativeLayout>
+
+                    </TableLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/summary_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/budget_layout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:elevation="8dp">
+            <RelativeLayout android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/misc_breakup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Miscellaneous Breakup"
+                        android:textColor="@color/secondary_text"
+                        roomies:typeface="latoheavy"
+                        android:textSize="7pt"/>
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/misc_breakup_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@id/misc_breakup"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Displays breakup of miscellaneous expenses this month"
+                        roomies:typeface="latoregular"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="6pt"/>
+
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                        android:id="@+id/summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_below="@id/misc_breakup_desc"
+                        android:layout_margin="8dp"/>
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+</ScrollView>

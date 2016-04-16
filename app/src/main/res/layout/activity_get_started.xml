@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~
+  ~  Copyright 2015 Snehankur Chakraborty
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  ~
+  -->
+
+<RelativeLayout
+
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:roomies="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <include
+            android:id="@+id/toolbar_get_started"
+            layout="@layout/toolbar"/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar_get_started">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <RelativeLayout
+                        android:id="@+id/stepper_room_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:id="@+id/stepper_room_name_bubble"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:background="@drawable/stepper_bubble"
+                            android:gravity="center"
+                            android:text="@string/one"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            roomies:typeface="latobold"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:id="@+id/stepper_room_name_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@id/stepper_room_name_bubble"
+                            android:layout_toRightOf="@id/stepper_room_name_bubble"
+                            android:gravity="center_vertical"
+                            android:text="@string/enter_room_name"
+                            android:textSize="14sp"
+                            roomies:typeface="latobold"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/stepper_room_name_body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/stepper_room_name"
+                        android:layout_marginTop="8dp"
+                        android:visibility="visible">
+
+                    <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_layout_room_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="8dp"
+                            android:theme="@style/TextLabel"
+                            roomies:errorEnabled="true"
+                            roomies:errorTextAppearance="@style/ErrorText"
+                            roomies:hintAnimationEnabled="true">
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesEditText
+                                android:id="@+id/input_room_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/label_room_name"
+                                android:inputType="textPersonName"
+                                android:maxLength="10"
+                                android:singleLine="true"
+                                android:textColor="@android:color/black"
+                                android:textSize="22sp"
+                                roomies:typeface="latoregular"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_below="@id/input_layout_room_name"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="8dp">
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                                android:id="@+id/continue_room_name"
+                                style="?android:borderlessButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/rounded_corners_rectangle"
+                                android:gravity="center"
+
+                                android:text="@string/continue_text"
+                                android:textColor="@android:color/white"/>
+                    </RelativeLayout>
+
+                    <View
+                            android:layout_width="1dp"
+                            android:layout_height="148dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@android:color/darker_gray"/>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                    android:id="@+id/stepper_room_name_connector"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="gone"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                <RelativeLayout
+                        android:id="@+id/stepper_room_expense_categories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:id="@+id/stepper_room_expense_categories_bubble"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:background="@drawable/stepper_bubble"
+                            android:gravity="center"
+                            android:text="@string/two"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            roomies:typeface="latobold"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:id="@+id/stepper_room_categories_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@id/stepper_room_expense_categories_bubble"
+                            android:layout_toRightOf="@id/stepper_room_expense_categories_bubble"
+                            android:gravity="center_vertical"
+                            android:text="@string/select_room_expense_categories"
+                            android:textSize="14sp"
+                            roomies:typeface="latobold"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:id="@+id/stepper_room_expense_categories_body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/stepper_room_expense_categories"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone">
+
+                    <LinearLayout
+                            android:id="@+id/room_expense_categories"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="32dp"
+                            android:orientation="horizontal"
+                            android:paddingTop="8dp">
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                            <ImageButton
+                                    android:id="@+id/rent_button"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/rent_drawable"/>
+
+                            <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/label_rent"
+                                    android:textSize="12sp"
+                                    roomies:typeface="latoregular"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                            <ImageButton
+                                    android:id="@+id/maid_button"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/maid_drawable"/>
+
+                            <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/label_maid"
+                                    android:textSize="12sp"
+                                    roomies:typeface="latoregular"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                            <ImageButton
+                                    android:id="@+id/elec_button"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/electricity_drawable"/>
+
+                            <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/label_elec"
+                                    android:textSize="12sp"
+                                    roomies:typeface="latoregular"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                            <ImageButton
+                                    android:id="@+id/misc_button"
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:background="@drawable/misc_drawable"/>
+
+                            <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/label_misc"
+                                    android:textSize="12sp"
+                                    roomies:typeface="latoregular"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:layout_below="@id/room_expense_categories"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="8dp">
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                                android:id="@+id/continue_room_categories"
+                                style="?android:borderlessButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/rounded_corners_rectangle"
+                                android:text="@string/continue_text"
+                                android:textColor="@android:color/white"/>
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                                android:id="@+id/skip_room_categories"
+                                style="?android:borderlessButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_toEndOf="@id/continue_room_categories"
+                                android:layout_toRightOf="@id/continue_room_categories"
+                                android:text="@string/skip"/>
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                                android:id="@+id/back_to_room_name"
+                                style="?android:borderlessButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_toEndOf="@id/skip_room_categories"
+                                android:layout_toRightOf="@id/skip_room_categories"
+                                android:text="@string/back"/>
+                    </RelativeLayout>
+
+                    <View
+                            android:layout_width="1dp"
+                            android:layout_height="129dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="12dp"
+                            android:background="@android:color/darker_gray"/>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                    android:id="@+id/stepper_room_expense_categories_connector"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="visible"/>
+
+            <RelativeLayout
+                    android:id="@+id/stepper_room_expense_limit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/stepper_room_expense_limit_bubble"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="@drawable/stepper_bubble"
+                        android:gravity="center"
+                        android:text="@string/three"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        roomies:typeface="latobold"/>
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/stepper_room_expense_limit_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/stepper_room_expense_limit_bubble"
+                        android:layout_toRightOf="@id/stepper_room_expense_limit_bubble"
+                        android:gravity="center_vertical"
+                        android:text="@string/enter_room_expense_limit"
+                        android:textSize="14sp"
+                        roomies:typeface="latobold"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/stepper_room_expense_limit_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone">
+
+                <LinearLayout
+                        android:id="@+id/room_budget_limit_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:id="@+id/rupee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="60dp"
+                            android:text="@string/rs"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesEditText
+                            android:id="@+id/room_budget_limit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:hint="10000"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:singleLine="true"
+                            roomies:typeface="latoregular"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_below="@id/room_budget_limit_layout"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginTop="8dp">
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                            android:id="@+id/continue_room_budget_limit"
+                            style="?android:borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/rounded_corners_rectangle"
+                            android:text="@string/continue_text"
+                            android:textColor="@android:color/white"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                            android:id="@+id/back_to_room_categories"
+                            style="?android:borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@id/continue_room_budget_limit"
+                            android:layout_toRightOf="@id/continue_room_budget_limit"
+                            android:text="@string/back"/>
+                </RelativeLayout>
+
+                <View
+                        android:layout_width="1dp"
+                        android:layout_height="138dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="12dp"
+                        android:background="@android:color/darker_gray"/>
+
+            </RelativeLayout>
+
+            <View
+                    android:id="@+id/stepper_room_expense_limit_connector"
+                    android:layout_width="1dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/darker_gray"
+                    android:visibility="visible"/>
+
+            <RelativeLayout
+                    android:id="@+id/stepper_room_budget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/stepper_room_budget_bubble"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:background="@drawable/stepper_bubble"
+                        android:gravity="center"
+                        android:text="@string/four"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        roomies:typeface="latobold"/>
+
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/stepper_room_budget_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_toEndOf="@id/stepper_room_budget_bubble"
+                        android:layout_toRightOf="@id/stepper_room_budget_bubble"
+                        android:gravity="center_vertical"
+                        android:text="@string/specify_room_budget"
+                        android:textSize="14sp"
+                        roomies:typeface="latobold"/>
+            </RelativeLayout>
+
+
+            <LinearLayout
+                    android:id="@+id/stepper_room_budget_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                        <ImageButton
+                                android:id="@+id/rent_button_limit"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/rent_drawable"/>
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="@string/label_rent"
+                                android:textSize="12sp"
+                                roomies:typeface="latoregular"/>
+                    </LinearLayout>
+
+                    <SeekBar
+                            android:id="@+id/room_rent_slider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4"
+                            android:max="10000"
+                            android:progress="5000"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rs"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesEditText
+                            android:id="@+id/rent_budget"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:text="10000"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                        <ImageButton
+                                android:id="@+id/maid_button_limit"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/maid_drawable"/>
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="@string/label_maid"
+                                android:textSize="12sp"
+                                roomies:typeface="latoregular"/>
+                    </LinearLayout>
+
+                    <SeekBar
+                            android:id="@+id/room_maid_slider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4"
+                            android:max="10000"
+                            android:progress="5000"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rs"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesEditText
+                            android:id="@+id/maid_budget"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:text="10000"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                        <ImageButton
+                                android:id="@+id/elec_button_limit"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/electricity_drawable"/>
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="@string/label_elec"
+                                android:textSize="12sp"
+                                roomies:typeface="latoregular"/>
+                    </LinearLayout>
+
+                    <SeekBar
+                            android:id="@+id/room_elec_slider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4"
+                            android:max="10000"
+                            android:progress="5000"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rs"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesEditText
+                            android:id="@+id/elec_budget"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:text="10000"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                        <ImageButton
+                                android:id="@+id/misc_button_limit"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center_horizontal"
+                                android:background="@drawable/misc_drawable"/>
+
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="@string/label_misc"
+                                android:textSize="12sp"
+                                roomies:typeface="latoregular"/>
+                    </LinearLayout>
+
+                    <SeekBar
+                            android:id="@+id/room_misc_slider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="4"
+                            android:max="10000"
+                            android:progress="5000"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/rs"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesEditText
+                            android:id="@+id/misc_budget"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:text="10000"
+                            android:textSize="16sp"
+                            roomies:typeface="latoregular"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp">
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                            android:id="@+id/continue_budget"
+                            style="?android:borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/rounded_corners_rectangle"
+
+                            android:text="@string/continue_text"
+                            android:textColor="@android:color/white"/>
+
+                    <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                            android:id="@+id/back_to_room_expense_limit"
+                            style="?android:borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@id/continue_budget"
+                            android:layout_toRightOf="@id/continue_budget"
+                            android:text="@string/back"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

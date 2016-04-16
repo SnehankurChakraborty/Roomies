@@ -1,21 +1,28 @@
 package com.phaseii.rxm.roomies.activity;
 
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -34,50 +41,54 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.LoginResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.dialogs.AddExpenseDialog;
-import com.phaseii.rxm.roomies.fragments.BlankFragment;
-import com.phaseii.rxm.roomies.fragments.HomeFragment;
-import com.phaseii.rxm.roomies.model.RoomExpenses;
-import com.phaseii.rxm.roomies.model.RoomStats;
-import com.phaseii.rxm.roomies.model.UserDetails;
-import com.phaseii.rxm.roomies.util.ActivityUtils;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.ToastUtils;
-import com.phaseii.rxm.roomies.view.BannerView;
-import com.phaseii.rxm.roomies.view.RoomiesNavigationDrawerAdapter;
+import com.phaseii.rxm.roomies.database.model.RoomExpenses;
+import com.phaseii.rxm.roomies.database.model.RoomStats;
+import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
+import com.phaseii.rxm.roomies.factory.ViewBuilderFactory;
+import com.phaseii.rxm.roomies.google.ConnectClient;
+import com.phaseii.rxm.roomies.service.RoomUserStatManager;
+import com.phaseii.rxm.roomies.ui.customviews.BannerView;
+import com.phaseii.rxm.roomies.ui.customviews.RoomiesNavigationDrawerAdapter;
+import com.phaseii.rxm.roomies.ui.dialogs.AddExpenseDialog;
+import com.phaseii.rxm.roomies.ui.fragments.BlankFragment;
+import com.phaseii.rxm.roomies.ui.fragments.HomeFragment;
+import com.phaseii.rxm.roomies.utils.ActivityUtils;
+import com.phaseii.rxm.roomies.utils.Category;
+import com.phaseii.rxm.roomies.utils.Constants;
+import com.phaseii.rxm.roomies.utils.DateUtils;
+import com.phaseii.rxm.roomies.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.HOME_FRAGMENT;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ALIAS;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOM_ID;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USERNAME;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_USER_ALIAS;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PRESS_BACK_AGAIN_TO_EXIT;
+import static com.phaseii.rxm.roomies.utils.Constants.APP_ERROR;
+import static com.phaseii.rxm.roomies.utils.Constants.HOME_FRAGMENT;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_ROOM_ALIAS;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_ROOM_ID;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_USERNAME;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_USER_ALIAS;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_USER_ID;
+import static com.phaseii.rxm.roomies.utils.Constants.PRESS_BACK_AGAIN_TO_EXIT;
 
 /**
  * @author Snehankur
- * @since 23/03/2015
- * <p/>
- * This is the launcher activity for the application.
+ * @since 23/03/2015 <p/> This is the launcher activity for the application.
  */
-public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpenseDialog
-                                                                               .OnSubmitListener {
+public class HomeScreenActivity extends RoomiesBaseActivity
+        implements AddExpenseDialog.OnSubmitListener {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "HomeScreenActivity";
+    private static ArrayList<RoomExpenses> roomExpensesList;
+    private static ArrayList<RoomStats> roomStatsList;
     private Toast mToast;
     private ViewPager pager;
     private RecyclerView.Adapter mRecylerAdapter;
@@ -86,55 +97,51 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
     private DrawerLayout mDrawerLayout;
     private FrameLayout frameLayout;
     private int currentapiVersion;
+    private FloatingActionButton fabButton;
+    private FloatingActionButton addExpenseButton;
+    private FloatingActionButton addRoomButton;
+    private FloatingActionButton addRoomiesButton;
+    private TextView addExpenseLabel;
+    private TextView addRoomiesLabel;
+    private TextView addRoomLabel;
+    private ConnectClient connectClient;
 
     /**
      * on create
-     *
-     * @param savedInstanceState
      */
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void configureView(Bundle savedInstanceState) {
         setContentView(R.layout.activity_home_screen);
+        connectClient = ConnectClient.getInstance(this);
+        connectClient.loginGPlus();
+        builder = ViewBuilderFactory.newInstance(HomeScreenActivity.this)
+                .newViewBuilder();
 
-        ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Loading");
-        dialog.show();
-
-        Map<ActivityUtils.Extras, List<? extends Parcelable>> fragmentArgsMap = new HashMap<>();
-        List<RoomExpenses> roomExpensesList = getIntent().getParcelableArrayListExtra
-                (ActivityUtils.Extras.ROOM_EXPENSES.getValue());
-        List<RoomStats> roomStatsList = getIntent().getParcelableArrayListExtra(ActivityUtils
-                                                                                        .Extras
-                                                                                        .ROOM_STATS.getValue());
-        if (null != roomExpensesList) {
-            fragmentArgsMap.put(ActivityUtils.Extras.ROOM_EXPENSES, roomExpensesList);
-        }
-        if (null != roomStatsList) {
-            fragmentArgsMap.put(ActivityUtils.Extras.ROOM_STATS, roomStatsList);
+        if (getIntent()
+                .getBooleanExtra(ActivityUtils.Extras.IS_ROOM_DATA_UPDATED.getValue(), false)) {
+            roomExpensesList = getIntent().getParcelableArrayListExtra
+                    (ActivityUtils.Extras.ROOM_EXPENSES.getValue());
+            roomStatsList = getIntent().getParcelableArrayListExtra(ActivityUtils
+                    .Extras.ROOM_STATS.getValue());
         }
 
-        /**
-         * load details of the user currently logged in
-         */
-        String name = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).getString
-                (PREF_USER_ALIAS, null);
-        String email = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).getString
-                (PREF_USERNAME, null);
-        String roomId = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).getString
-                (PREF_ROOM_ID, null);
-
-        /**
-         * Setup Navigation Drawer
-         */
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
-        setupNavigationDrawer(fragmentArgsMap, name, email, null != roomId);
         /**
          * Setup toolbar
          */
         Toolbar mtoolbar = (Toolbar) findViewById(R.id.toolbar);
         mtoolbar.setTitle("");
+        setSupportActionBar(mtoolbar);
 
         currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
@@ -147,24 +154,21 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
              * greater than or equal to LOLLIPOP.
              */
             getWindow().setNavigationBarColor(
-                    getResources().getColor(R.color.primary_dark_home));
+                    getResources().getColor(R.color.primary_dark));
         }
-        if (mtoolbar != null) {
-            setSupportActionBar(mtoolbar);
-        }
+
         /**
          * set room alias as title
          */
-        BannerView title = (BannerView) findViewById(R.id.toolbartitle);
-        title.setText(" " + getSharedPreferences(PREF_ROOMIES_KEY,
-                                                 Context.MODE_PRIVATE).getString(PREF_ROOM_ALIAS,
-                                                                                 "Roomies") + " ");
+        BannerView title = (BannerView) builder.getView(R.id.toolbartitle);
+        String roomAlias = " " + getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE)
+                .getString(PREF_ROOM_ALIAS, "Roomies") + " ";
+        title.setText(roomAlias);
         title.setTextColor(Color.WHITE);
 
-
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.home_screen_drawer_layout);
         mDrawerTogggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                                                   mtoolbar
-                , R.string.open_drawer, R.string.close_drawer) {
+                mtoolbar, R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
@@ -177,12 +181,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
         mDrawerTogggle.syncState();
 
         /**
-         * connect to Google plus
-         */
-        mGoogleApiClient.connect();
-
-
-        /**
          * Setup FAB button
          */
         setupFAB();
@@ -191,39 +189,9 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
          * load home fragment
          */
         if (savedInstanceState == null) {
-
-            if (null != getSharedPreferences(PREF_ROOMIES_KEY, Context
-                    .MODE_PRIVATE).getString(RoomiesConstants.PREF_ROOM_ID, null)) {
-                Bundle fragmentBundle = new Bundle();
-                if (null != fragmentArgsMap.get(ActivityUtils.Extras.ROOM_EXPENSES)) {
-                    fragmentBundle.putParcelableArrayList(ActivityUtils.Extras.ROOM_EXPENSES
-                                                                  .getValue(), (ArrayList)
-                                                                  fragmentArgsMap.get
-                                                                          (ActivityUtils.Extras
-                                                                                   .ROOM_EXPENSES));
-                }
-                if (null != fragmentArgsMap.get(ActivityUtils.Extras.ROOM_STATS)) {
-                    fragmentBundle.putParcelableArrayList(ActivityUtils.Extras.ROOM_STATS
-                                                                  .getValue(), (ArrayList)
-                                                                  fragmentArgsMap.get
-                                                                          (ActivityUtils.Extras
-                                                                                   .ROOM_STATS));
-                }
-                HomeFragment fragment = new HomeFragment();
-                fragment.setParceableBundle(fragmentBundle);
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                transaction.add(R.id.home_screen_fragment_layout, fragment, HOME_FRAGMENT).commit();
-            } else {
-                BlankFragment fragment = new BlankFragment();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                transaction.add(R.id.home_screen_fragment_layout, fragment, HOME_FRAGMENT).commit();
-            }
+            setUpFragments(null);
         }
 
-        dialog.dismiss();
         /**
          * Register for google cloud messaging
          */
@@ -246,7 +214,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                                                      PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
                 Log.i(TAG, "This device is not supported.");
                 finish();
@@ -261,150 +229,60 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
      * sets up navigation drawer
      */
     private void setupNavigationDrawer(Map<ActivityUtils.Extras, List<? extends Parcelable>>
-                                               fragmentArgsMap, String name, String email,
-                                       boolean isRoomAdded) {
+            fragmentArgsMap, String name, String email,
+            boolean isRoomAdded) {
 
-        String drawerTitles[] = {"Home", "Roommates", "Profile", "Share", "Rate", "Contact me",
-                                 "Help Improve", "Logout"};
+        String drawerTitles[] = {"Home", "Roommates", "Manage Rooms", "Profile", "Share", "Rate",
+                "Contact me",
+                "Help Improve", "Logout"};
         int drawerIcons[] = {R.drawable.ic_home,
-                             R.drawable.ic_friends_white,
-                             R.drawable.ic_profile,
-                             R.drawable.ic_share_white,
-                             R.drawable.ic_play_store_logo,
-                             R.drawable.ic_mail_white,
-                             R.drawable.ic_idea_bulb,
-                             R.drawable.ic_logout};
+                R.drawable.ic_friends_white,
+                android.R.drawable.ic_menu_search,
+                R.drawable.ic_profile,
+                R.drawable.ic_share_white,
+                R.drawable.ic_play_store_logo,
+                R.drawable.ic_mail_white,
+                R.drawable.ic_idea_bulb,
+                R.drawable.ic_logout};
         int profile = R.drawable.ic_camera;
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecylerAdapter = new RoomiesNavigationDrawerAdapter(drawerTitles,
-                                                             drawerIcons, name, email, profile,
-                                                             this, mDrawerLayout,
-                                                             fragmentArgsMap);
+                drawerIcons, name, email, profile,
+                this, mDrawerLayout,
+                fragmentArgsMap);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.hasFixedSize();
         mRecyclerView.setAdapter(mRecylerAdapter);
-
     }
 
     /**
      * Sets up FAB button
      */
     private void setupFAB() {
-        final ImageButton fabButton = (ImageButton) findViewById(R.id.fab);
+        fabButton = (FloatingActionButton) builder.getView(R.id.fab);
         final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabButton
                 .getLayoutParams();
         frameLayout = (FrameLayout) findViewById(R.id.fab_layout);
+        addExpenseButton = (FloatingActionButton) builder.getView(R.id.add_expense);
+        addRoomButton = (FloatingActionButton) builder.getView(R.id.add_room);
+        addRoomiesButton = (FloatingActionButton) builder.getView(R.id.add_roomies);
+        addExpenseLabel = builder.getTextView(R.id.add_expense_label);
+        addRoomiesLabel = builder.getTextView(R.id.add_roomies_label);
+        addRoomLabel = builder.getTextView(R.id.add_room_label);
 
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (frameLayout.getVisibility() == View.INVISIBLE) {
-                    if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                        int cx = frameLayout.getWidth() - (fabButton.getWidth() / 2 + params
-                                .rightMargin);
-                        int cy = frameLayout.getHeight() - (fabButton.getHeight() / 2 + params
-                                .bottomMargin);
-                        int finalRadius = Math.max(frameLayout.getWidth(), frameLayout.getHeight());
-                        Animator anim =
-                                ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy, 0,
-                                                                        finalRadius);
-                        anim.setDuration(200);
-                        frameLayout.setVisibility(View.VISIBLE);
-                        anim.start();
-                    } else {
-                        AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
-                        alpha.setDuration(200);
-                        frameLayout.setAnimation(alpha);
-                        alpha.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                frameLayout.setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                    }
-                    RotateAnimation rotate = new RotateAnimation(0f, -135f,
-                                                                 Animation.RELATIVE_TO_SELF,
-                                                                 0.5f, Animation
-                                                                         .RELATIVE_TO_SELF, 0.5f);
-
-                    // prevents View from restoring to original direction.
-                    rotate.setDuration(200);
-                    rotate.setFillAfter(true);
-                    fabButton.startAnimation(rotate);
-                    ScaleAnimation scale = new ScaleAnimation(0f, 1f, 0f, 1f, Animation
-                            .RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 1f);
-                    scale.setDuration(300);
-                    TranslateAnimation slide = new TranslateAnimation(300, -20, 0, 0);
-                    slide.setDuration(300);
-                    findViewById(R.id.add_expense).startAnimation(scale);
-                    findViewById(R.id.add_roomies).startAnimation(scale);
-                    findViewById(R.id.add_roomies_label).startAnimation(slide);
-                    findViewById(R.id.add_expense_label).startAnimation(slide);
+                    animateUpFAB(params);
                 } else {
-                    if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                        int cx = frameLayout.getWidth() - (fabButton.getWidth() / 2 + params
-                                .rightMargin);
-                        int cy = frameLayout.getHeight() - (fabButton.getHeight() / 2 + params
-                                .bottomMargin);
-                        int initialRadius = frameLayout.getWidth();
-                        Animator anim =
-                                ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy,
-                                                                        initialRadius, 0);
-                        anim.setDuration(200);
-                        anim.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animation) {
-                                super.onAnimationEnd(animation);
-                                frameLayout.setVisibility(View.INVISIBLE);
-                            }
-                        });
-                        anim.start();
-                    } else {
-                        AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
-                        alpha.setDuration(200);
-                        frameLayout.setAnimation(alpha);
-                        alpha.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                frameLayout.setVisibility(View.INVISIBLE);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                    }
-                    RotateAnimation rotate = new RotateAnimation(-135f, 0f,
-                                                                 Animation.RELATIVE_TO_SELF,
-                                                                 0.5f, Animation
-                                                                         .RELATIVE_TO_SELF, 0.5f);
-
-                    // prevents View from restoring to original direction.
-                    rotate.setDuration(200);
-                    rotate.setFillAfter(true);
-                    fabButton.startAnimation(rotate);
+                    animateDownFAB();
                 }
             }
         });
 
-        ImageView addExpenseButton = (ImageView) findViewById(R.id.add_expense);
+
         addExpenseButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -412,24 +290,29 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
                 DialogFragment dialog = AddExpenseDialog.getInstance(HomeScreenActivity.this);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.addToBackStack(null);
-                dialog.show(transaction,"dialog");
+                dialog.show(transaction, "dialog");
             }
         });
 
-
-        ImageView addRoomiesButton = (ImageView) findViewById(R.id.add_roomies);
-        /*addRoomiesButton.setOnClickListener(new View.OnClickListener() {
+        addRoomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                frameLayout.setVisibility(View.GONE);
-                new GCMSender().execute("Hello", RoomiesConstants.getToken());
+                try {
+                    ActivityUtils.startActivityHelper(HomeScreenActivity.this,
+                            getString(R.string.AddRoomActivity), null, false, false);
+                } catch (RoomXpnseMngrException e) {
+                    e.printStackTrace();
+                }
             }
-        });*/
-    }
+        });
 
-    @Override
-    public void getProfileInformation(LoginResult loginResult) {
-
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                if (frameLayout.getVisibility() == View.VISIBLE) {
+                    animateDownFAB();
+                }
+            }
+        });
     }
 
     @Override
@@ -447,18 +330,17 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
     /**
      * sign out from google plus
      */
-    @Override
     public void signoutGplus() {
-        super.signoutGplus();
+        connectClient.signoutGplus();
     }
 
     /**
      * revoke google plus access to the user for this particular app
      */
-    @Override
     public void revokeGplusAccess() {
-        super.revokeGplusAccess();
+        connectClient.revokeGplusAccess();
     }
+
 
     public ViewPager getViewPager() {
         return pager;
@@ -473,15 +355,15 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
         // To count with Play market backstack, After pressing back button,
         // to taken back to our application, we need to add following flags to intent.
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                            Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                            Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         try {
             startActivity(goToMarket);
         } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW,
-                                     Uri.parse(
-                                             "http://play.google.com/store/apps/details?id=" +
-                                             getPackageName())));
+                    Uri.parse(
+                            "http://play.google.com/store/apps/details?id=" +
+                                    getPackageName())));
         }
         mDrawerLayout.closeDrawer(Gravity.LEFT);
     }
@@ -501,7 +383,7 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT,
-                        "Checkout the new Roomies app on play store. It's awesome. " +
+                "Checkout the new Roomies app on play store. It's awesome. " +
                         "http://play.google.com/store/apps/details?id=" + getPackageName());
         startActivity(Intent.createChooser(intent, "Share with"));
         mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -509,8 +391,6 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
 
     /**
      * Update the profile pic in the navigation drawer
-     *
-     * @param profilePicBitmap
      */
     public void updateProfilePic(Bitmap profilePicBitmap) {
         View headerView = ((RoomiesNavigationDrawerAdapter) mRecylerAdapter).getHeaderView();
@@ -527,63 +407,11 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
     public void onBackPressed() {
         if (!getSupportActionBar().isShowing()) {
             getSupportActionBar().show();
-            findViewById(R.id.toolbartitle).setVisibility(View.VISIBLE);
+            builder.getTextView(R.id.toolbartitle).setVisibility(View.VISIBLE);
             super.onBackPressed();
         } else {
-
             if (frameLayout.getVisibility() == View.VISIBLE) {
-                final ImageButton fabButton = (ImageButton) findViewById(R.id.fab);
-                if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                    final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)
-                            fabButton
-
-                                    .getLayoutParams();
-                    int cx = frameLayout.getWidth() - (fabButton.getWidth() / 2 + params
-                            .rightMargin);
-                    int cy = frameLayout.getHeight() - (fabButton.getHeight() / 2 + params
-                            .bottomMargin);
-                    int initialRadius = frameLayout.getWidth();
-                    Animator anim =
-                            ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy,
-                                                                    initialRadius, 0);
-                    anim.setDuration(200);
-                    anim.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            frameLayout.setVisibility(View.INVISIBLE);
-                        }
-                    });
-                    anim.start();
-                } else {
-                    AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
-                    alpha.setDuration(200);
-                    frameLayout.setAnimation(alpha);
-                    alpha.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            frameLayout.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-                }
-                RotateAnimation rotate = new RotateAnimation(-135f, 0f,
-                                                             Animation.RELATIVE_TO_SELF, 0.5f,
-                                                             Animation.RELATIVE_TO_SELF, 0.5f);
-
-                // prevents View from restoring to original direction.
-                rotate.setDuration(200);
-                rotate.setFillAfter(true);
-                fabButton.startAnimation(rotate);
+                animateDownFAB();
             } else {
                 if (doubleBackToExitPressedOnce) {
                     super.onBackPressed();
@@ -604,64 +432,246 @@ public class HomeScreenActivity extends RoomiesBaseActivity implements AddExpens
         }
     }
 
-    @Override
-    protected void getAllDetails(UserDetails userDetails, boolean isGoogleFBlogin) {
+    public void setUpFragments(RoomExpenses expense) {
+        Map<ActivityUtils.Extras, List<? extends Parcelable>> fragmentArgsMap = new HashMap<>();
+        if (null != roomExpensesList && null != expense) {
+            roomExpensesList.add(expense);
+        }
+        if (null != roomStatsList && null != expense) {
+            String month = DateUtils.getCurrentMonthYear();
+            Category category = Category.getCategory(expense.getExpenseCategory());
+            for (RoomStats roomStats : roomStatsList) {
+                if (month.equals(roomStats.getMonthYear())) {
+                    int spent = 0;
+                    if (category.equals(Category.RENT)) {
+                        spent = roomStats.getRentSpent();
+                        roomStats.setRentSpent(spent + (int) expense.getAmount());
+                    } else if (category.equals(Category.MAID)) {
+                        spent = roomStats.getMaidSpent();
+                        roomStats.setMaidSpent(spent + (int) expense.getAmount());
+                    } else if (category.equals(Category.ELECTRICITY)) {
+                        spent = roomStats.getElectricitySpent();
+                        roomStats.setElectricitySpent(spent + (int) expense.getAmount());
+                    } else if (category.equals(Category.MISCELLANEOUS)) {
+                        spent = roomStats.getMiscellaneousSpent();
+                        roomStats.setMiscellaneousSpent(spent + (int) expense.getAmount());
+                    }
+                }
+            }
+        }
+        Bundle fragmentBundle = new Bundle();
+        fragmentArgsMap.put(ActivityUtils.Extras.ROOM_STATS, roomStatsList);
+        fragmentArgsMap.put(ActivityUtils.Extras.ROOM_EXPENSES, roomExpensesList);
+        fragmentBundle.putParcelableArrayList(ActivityUtils.Extras.ROOM_EXPENSES
+                .getValue(), roomExpensesList);
+        fragmentBundle.putParcelableArrayList(ActivityUtils.Extras.ROOM_STATS
+                .getValue(), roomStatsList);
+
+        /**
+         * load details of the user currently logged in
+         */
+        String name = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).getString
+                (PREF_USER_ALIAS, null);
+        String email = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).getString
+                (PREF_USERNAME, null);
+        String roomId = getSharedPreferences(PREF_ROOMIES_KEY, Context.MODE_PRIVATE).getString
+                (PREF_ROOM_ID, null);
+        /**
+         * Setup Navigation Drawer
+         */
+        setupNavigationDrawer(fragmentArgsMap, name, email, null != roomId);
+        /**
+         * Setup home fragment
+         * */
+        if (null != getSharedPreferences(PREF_ROOMIES_KEY, Context
+                .MODE_PRIVATE).getString(Constants.PREF_ROOM_ID, null)) {
+            HomeFragment fragment = new HomeFragment();
+            fragment.setParceableBundle(fragmentBundle);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            transaction.add(R.id.home_screen_fragment_layout, fragment, HOME_FRAGMENT).commit();
+        } else {
+            addExpenseButton.setVisibility(View.GONE);
+            addRoomiesButton.setVisibility(View.GONE);
+            addExpenseLabel.setVisibility(View.GONE);
+            addRoomiesLabel.setVisibility(View.GONE);
+            BlankFragment fragment = new BlankFragment();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            transaction.add(R.id.home_screen_fragment_layout, fragment, HOME_FRAGMENT).commit();
+        }
 
     }
 
     @Override
-    public void onSubmit() {
-        if (frameLayout.getVisibility() == View.VISIBLE) {
-            final ImageButton fabButton = (ImageButton) findViewById(R.id.fab);
-            if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabButton
-                        .getLayoutParams();
-                int cx = frameLayout.getWidth() - (fabButton.getWidth() / 2 + params
-                        .rightMargin);
-                int cy = frameLayout.getHeight() - (fabButton.getHeight() / 2 + params
-                        .bottomMargin);
-                int initialRadius = frameLayout.getWidth();
-                Animator anim =
-                        ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy,
-                                                                initialRadius, 0);
-                anim.setDuration(200);
-                anim.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        frameLayout.setVisibility(View.INVISIBLE);
-                    }
-                });
-                anim.start();
-            } else {
-                AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
-                alpha.setDuration(200);
-                frameLayout.setAnimation(alpha);
-                alpha.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
+    public void onSubmit(RoomExpenses expense) {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment frag : fragments) {
+            getSupportFragmentManager().beginTransaction().remove(frag).commit();
+        }
+        setUpFragments(expense);
+        animateDownFAB();
+    }
 
-                    }
+    private void animateUpFAB(ViewGroup.MarginLayoutParams params) {
+        if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+            int cx = frameLayout.getWidth() - (fabButton.getWidth() / 2 + params.rightMargin);
+            int cy = frameLayout.getHeight() - (fabButton.getHeight() / 2 + params.bottomMargin);
+            int finalRadius = Math.max(frameLayout.getWidth(), frameLayout.getHeight());
+            Animator anim =
+                    ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy, 0, finalRadius);
+            anim.setDuration(200);
+            frameLayout.setVisibility(View.VISIBLE);
+            anim.start();
+        } else {
+            AlphaAnimation alpha = new AlphaAnimation(0.0f, 1.0f);
+            alpha.setDuration(200);
+            frameLayout.setAnimation(alpha);
+            alpha.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        frameLayout.setVisibility(View.INVISIBLE);
-                    }
+                }
 
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    frameLayout.setVisibility(View.VISIBLE);
+                }
 
-                    }
-                });
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+        }
+        RotateAnimation rotate = new RotateAnimation(0f, -135f, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+
+        // prevents View from restoring to original direction.
+        rotate.setDuration(200);
+        rotate.setFillAfter(true);
+        fabButton.startAnimation(rotate);
+        ScaleAnimation scale = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 1f);
+        scale.setDuration(300);
+        TranslateAnimation slide = new TranslateAnimation(300, -20, 0, 0);
+        slide.setDuration(300);
+        addExpenseButton.startAnimation(scale);
+        addRoomiesButton.startAnimation(scale);
+        addRoomButton.startAnimation(scale);
+        addExpenseLabel.startAnimation(slide);
+        addRoomiesLabel.startAnimation(slide);
+        addRoomLabel.startAnimation(slide);
+    }
+
+    private void animateDownFAB() {
+        if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+            final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) fabButton
+                    .getLayoutParams();
+            int cx = frameLayout.getWidth() - (fabButton.getWidth() / 2 + params.rightMargin);
+            int cy = frameLayout.getHeight() - (fabButton.getHeight() / 2 + params.bottomMargin);
+            int initialRadius = frameLayout.getWidth();
+            Animator anim =
+                    ViewAnimationUtils.createCircularReveal(frameLayout, cx, cy, initialRadius, 0);
+            anim.setDuration(200);
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    frameLayout.setVisibility(View.INVISIBLE);
+                }
+            });
+            anim.start();
+        } else {
+            AlphaAnimation alpha = new AlphaAnimation(1.0f, 0.0f);
+            alpha.setDuration(200);
+            frameLayout.setAnimation(alpha);
+            alpha.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    frameLayout.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+        }
+        RotateAnimation rotate = new RotateAnimation(-135f, 0f, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+
+        // prevents View from restoring to original direction.
+        rotate.setDuration(200);
+        rotate.setFillAfter(true);
+        fabButton.startAnimation(rotate);
+    }
+
+    public void deleteRoomDetails() {
+        new DeleteRoomDetails()
+                .execute(Integer.parseInt(getSharedPreferences(PREF_ROOMIES_KEY, MODE_PRIVATE)
+                        .getString(PREF_USER_ID, "0")));
+    }
+
+    private class DeleteRoomDetails extends AsyncTask<Integer, Void, Boolean> {
+
+        ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(HomeScreenActivity.this);
+            dialog.setMessage("Deleting room data");
+            dialog.show();
+        }
+
+        /**
+         * Override this method to perform a computation on a background thread. The specified
+         * parameters are the parameters passed to {@link #execute} by the caller of this task.
+         *
+         * This method can call {@link #publishProgress} to publish updates on the UI thread.
+         *
+         * @param params The parameters of the task.
+         * @return A result, defined by the subclass of this task.
+         * @see #onPreExecute()
+         * @see #onPostExecute
+         * @see #publishProgress
+         */
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            RoomUserStatManager manager = new RoomUserStatManager(HomeScreenActivity.this);
+            return manager.deleteRoomDetails(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean deleted) {
+            if (null != dialog) {
+                dialog.dismiss();
             }
-            RotateAnimation rotate = new RotateAnimation(-135f, 0f,
-                                                         Animation.RELATIVE_TO_SELF, 0.5f,
-                                                         Animation.RELATIVE_TO_SELF, 0.5f);
+            if (!deleted) {
+                ToastUtils.createToast(HomeScreenActivity.this,
+                        "Room could not be deleted due to technical error", mToast);
+            }
+            SharedPreferences mSharedPref = getSharedPreferences(
+                    PREF_ROOMIES_KEY, Context.MODE_PRIVATE);
+            SharedPreferences.Editor mEditor = mSharedPref.edit();
+            mEditor.clear();
+            mEditor.apply();
+            try {
+                revokeGplusAccess();
+                ActivityUtils.startActivityHelper(HomeScreenActivity.this,
+                        getResources()
+                                .getString(R.string.LoginActivity), null,
+                        true, false);
 
-            // prevents View from restoring to original direction.
-            rotate.setDuration(200);
-            rotate.setFillAfter(true);
-            fabButton.startAnimation(rotate);
+            } catch (RoomXpnseMngrException e) {
+                ToastUtils.createToast(HomeScreenActivity.this, APP_ERROR, mToast);
+                System.exit(0);
+            }
         }
     }
 }

@@ -4,15 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_NAME;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.DATABASE_VERSION;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomDetails;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomExpenses;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomStats;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.RoomUserMap;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.SQL_CREATE_VIEW;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.SQL_DROP_VIEW;
-import static com.phaseii.rxm.roomies.database.RoomiesContract.UserDetails;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.DATABASE_NAME;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.DATABASE_VERSION;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.RoomDetails;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.RoomExpenses;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.RoomStats;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.RoomUserMap;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.SQL_CREATE_VIEW;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.SQL_DROP_VIEW;
+import static com.phaseii.rxm.roomies.database.contract.RoomiesContract.UserDetails;
 
 /**
  * Created by Snehankur on 4/10/2015.

@@ -1,8 +1,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
+            xmlns:roomies="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.phaseii.rxm.roomies.fragments.HomeFragment">
+            tools:context=".ui.fragments.HomeFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -21,17 +22,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/this_month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="This Month Stats"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="10pt"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/expense_breakup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="This Month Stats"
+                        android:textColor="@color/secondary_text"
+                        roomies:typeface="latoheavy"
+                        android:textSize="9pt"/>
 
-                <Button
+                <!--<Button
                     android:id="@+id/refresh"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -49,19 +51,20 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_toLeftOf="@id/refresh"
-                    android:background="@drawable/ic_share"/>
+                    android:background="@drawable/ic_share"/>-->
 
-                <TextView
-                    android:id="@+id/remaining_days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/this_month"
-                    android:layout_gravity="end"
-                    android:layout_marginLeft="10dp"
-                    android:text="29 more days to go"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="6pt"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/remaining_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@id/expense_breakup"
+                        android:layout_gravity="end"
+                        android:layout_marginLeft="10dp"
+                        android:text="29 more days to go"
+                        roomies:typeface="latoregular"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="6pt"/>
 
 
                 <com.github.mikephil.charting.charts.PieChart
@@ -95,24 +98,26 @@
                             android:layout_width="15dp"
                             android:layout_height="15dp"/>
 
-                        <TextView
-                            android:id="@+id/spent_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/spent_index"
-                            android:text="Spent"
-                            android:textSize="6pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/spent_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/spent_index"
+                                android:text="Spent"
+                                roomies:typeface="latosemibold"
+                                android:textSize="6pt"/>
 
-                        <TextView
-                            android:id="@+id/spent_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/spent_label"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/spent_index"
-                            android:text="1000"
-                            android:textSize="8pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/spent_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/spent_label"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/spent_index"
+                                android:text="1000"
+                                roomies:typeface="latosemibold"
+                                android:textSize="8pt"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -126,38 +131,41 @@
                             android:layout_width="15dp"
                             android:layout_height="15dp"/>
 
-                        <TextView
-                            android:id="@+id/remaining_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/remaining_index"
-                            android:text="Remaining"
-                            android:textSize="6pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/remaining_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/remaining_index"
+                                android:text="Remaining"
+                                roomies:typeface="latosemibold"
+                                android:textSize="6pt"/>
 
-                        <TextView
-                            android:id="@+id/remaining_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/remaining_label"
-                            android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/remaining_index"
-                            android:text="30000"
-                            android:textSize="8pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/remaining_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/remaining_label"
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/remaining_index"
+                                android:text="30000"
+                                roomies:typeface="latosemibold"
+                                android:textSize="8pt"/>
                     </RelativeLayout>
                 </TableLayout>
 
 
-                <TextView
-                    android:id="@+id/last_update"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/pie_current_budget"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Update on 16.07.2015 23:15"
-                    android:textSize="5pt"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/last_update"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/pie_current_budget"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Update on 16.07.2015 23:15"
+                        roomies:typeface="latothin"
+                        android:textSize="5pt"/>
 
                 <Button
                     android:id="@+id/update"
@@ -189,70 +197,70 @@
                 android:layout_height="wrap_content"
                 android:background="@color/primary_home">
 
-                <TextView
-                    android:id="@+id/expense_header4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="Budget"
-                    android:textColor="@color/white"
-                    android:textSize="10pt"
-                    android:textStyle="bold"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/expense_header4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        roomies:typeface="latoheavy"
+                        android:text="Budget"
+                        android:textColor="@color/white"
+                        android:textSize="9pt"
+                        android:textStyle="bold"/>
 
                 <View
-                    android:id="@+id/divider4"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/expense_header4"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white"/>
+                        android:id="@+id/divider4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/expense_header4"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@color/white"/>
 
                 <LinearLayout
-                    android:id="@+id/budgets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/divider4"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                        android:id="@+id/budgets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/divider4"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.25">
 
-                        <TextView
-                            android:id="@+id/rent_budget"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-thin"
-                            android:gravity="center_horizontal"
-                            android:text="10000"
-                            android:textColor="@color/white"
-                            android:textSize="10pt"
-                            android:textStyle="bold"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/rent_budget"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="10000"
+                                android:textColor="@color/white"
+                                android:textSize="10pt"
+                                android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/rent_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/rent_budget"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:fontFamily="sans-serif"
-                            android:gravity="center_horizontal"
-                            android:text="rent"
-                            android:textColor="@color/white"
-                            android:textSize="5pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/rent_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/rent_budget"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="Rent"
+                                android:textColor="@color/white"
+                                android:textSize="5pt"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -260,30 +268,30 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.25">
 
-                        <TextView
-                            android:id="@+id/maid_budget"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-thin"
-                            android:gravity="center_horizontal"
-                            android:text="10000"
-                            android:textColor="@color/white"
-                            android:textSize="10pt"
-                            android:textStyle="bold"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/maid_budget"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="10000"
+                                android:textColor="@color/white"
+                                android:textSize="10pt"
+                                android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/maid_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/maid_budget"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:fontFamily="sans-serif"
-                            android:gravity="center_horizontal"
-                            android:text="maid"
-                            android:textColor="@color/white"
-                            android:textSize="5pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/maid_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/maid_budget"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="Maid"
+                                android:textColor="@color/white"
+                                android:textSize="5pt"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -291,30 +299,30 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.25">
 
-                        <TextView
-                            android:id="@+id/elec_budget"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-thin"
-                            android:gravity="center_horizontal"
-                            android:text="10000"
-                            android:textColor="@color/white"
-                            android:textSize="10pt"
-                            android:textStyle="bold"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/elec_budget"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="10000"
+                                android:textColor="@color/white"
+                                android:textSize="10pt"
+                                android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/elec_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/elec_budget"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:fontFamily="sans-serif"
-                            android:gravity="center_horizontal"
-                            android:text="electricity"
-                            android:textColor="@color/white"
-                            android:textSize="5pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/elec_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/elec_budget"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="Electricity"
+                                android:textColor="@color/white"
+                                android:textSize="5pt"/>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -322,57 +330,60 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.25">
 
-                        <TextView
-                            android:id="@+id/misc_budget"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-thin"
-                            android:gravity="center_horizontal"
-                            android:text="10000"
-                            android:textColor="@color/white"
-                            android:textSize="10pt"
-                            android:textStyle="bold"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/misc_budget"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="10000"
+                                android:textColor="@color/white"
+                                android:textSize="10pt"
+                                android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/misc_label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/misc_budget"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:fontFamily="sans-serif"
-                            android:gravity="center_horizontal"
-                            android:text="misc"
-                            android:textColor="@color/white"
-                            android:textSize="5pt"/>
+                        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                                android:id="@+id/misc_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/misc_budget"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center"
+                                roomies:typeface="latoregular"
+                                android:gravity="center_horizontal"
+                                android:text="Miscellaneous"
+                                android:textColor="@color/white"
+                                android:textSize="5pt"/>
                     </RelativeLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/set_for_this_month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/budgets"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="set for this month"
-                    android:textColor="@color/white"
-                    android:textSize="6pt"
-                    android:textStyle="bold"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                        android:id="@+id/set_for_this_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/budgets"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="set for this month"
+                        roomies:typeface="latoregular"
+                        android:textColor="@color/white"
+                        android:textSize="6pt"
+                        android:textStyle="bold"/>
 
 
-                <Button
-                    android:id="@+id/month_btn_budget"
-                    android:layout_width="50dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/round_rectangle_white"
-                    android:text="December"
-                    android:textColor="@color/primary_home"
-                    android:textSize="4pt"/>
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+                        android:id="@+id/month_btn_budget"
+                        android:layout_width="70dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:background="@drawable/round_rectangle_white"
+                        android:text="December"
+                        android:textColor="@color/primary_dark_home"
+                        android:textSize="4pt"
+                        roomies:typeface="latobold"/>
 
             </RelativeLayout>
         </android.support.v7.widget.CardView>

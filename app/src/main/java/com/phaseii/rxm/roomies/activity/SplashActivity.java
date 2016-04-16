@@ -1,6 +1,5 @@
 package com.phaseii.rxm.roomies.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -9,33 +8,31 @@ import android.os.Parcelable;
 import android.widget.Toast;
 
 import com.phaseii.rxm.roomies.R;
+import com.phaseii.rxm.roomies.database.model.RoomExpenses;
+import com.phaseii.rxm.roomies.database.model.RoomStats;
 import com.phaseii.rxm.roomies.exception.RoomXpnseMngrException;
 import com.phaseii.rxm.roomies.logging.RoomiesLogger;
-import com.phaseii.rxm.roomies.manager.RoomExpensesManager;
-import com.phaseii.rxm.roomies.manager.RoomStatManager;
-import com.phaseii.rxm.roomies.model.RoomExpenses;
-import com.phaseii.rxm.roomies.model.RoomStats;
-import com.phaseii.rxm.roomies.util.ActivityUtils;
-import com.phaseii.rxm.roomies.util.LogUtils;
-import com.phaseii.rxm.roomies.util.RoomiesConstants;
-import com.phaseii.rxm.roomies.util.ToastUtils;
+import com.phaseii.rxm.roomies.service.RoomExpensesManager;
+import com.phaseii.rxm.roomies.service.RoomStatManager;
+import com.phaseii.rxm.roomies.utils.ActivityUtils;
+import com.phaseii.rxm.roomies.utils.Constants;
+import com.phaseii.rxm.roomies.utils.DateUtils;
+import com.phaseii.rxm.roomies.utils.LogUtils;
+import com.phaseii.rxm.roomies.utils.ToastUtils;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.APP_ERROR;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.IS_LOGGED_IN;
-import static com.phaseii.rxm.roomies.util.RoomiesConstants.PREF_ROOMIES_KEY;
+import static com.phaseii.rxm.roomies.utils.Constants.APP_ERROR;
+import static com.phaseii.rxm.roomies.utils.Constants.IS_LOGGED_IN;
+import static com.phaseii.rxm.roomies.utils.Constants.PREF_ROOMIES_KEY;
 
 /**
- * Splash activity to load all the details from Database
- * Created by Snehankur on 10/29/2015.
+ * Splash activity to load all the details from Database Created by Snehankur on 10/29/2015.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends RoomiesBaseActivity {
 
     private Toast mToast;
     private String roomId;
@@ -45,12 +42,89 @@ public class SplashActivity extends Activity {
 
     /**
      * on create
-     *
-     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        logger.createEntryLoggingMessage("SplashActivity", "onResume", null);
+        SharedPreferences mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, Context
+                .MODE_PRIVATE);
+
+        /**
+         * If not logged in, send user to the LoginActivity
+         */
+        if (!mSharedPref.getBoolean(IS_LOGGED_IN, false)) {
+            try {
+                ActivityUtils.startActivityHelperWithoutAnim(this, getResources().getString(R.string
+                        .LoginActivity), null, true, false);
+            } catch (RoomXpnseMngrException e) {
+                ToastUtils.createToast(this, APP_ERROR, mToast);
+                System.exit(0);
+            }
+        } else {
+            roomId = mSharedPref.getString(Constants.PREF_ROOM_ID, null);
+            if (null != roomId) {
+                roomExpensesList = new ArrayList<>();
+                roomStatsList = new ArrayList<>();
+                new RetrieveRoomExpensesTask().execute(roomId);
+            } else {
+                try {
+                    ActivityUtils
+                            .startActivityHelperWithoutAnim(this, getResources().getString(R.string
+                                            .HomeScreen_Activity),
+                                    null, true, false);
+                } catch (RoomXpnseMngrException e) {
+                    ToastUtils.createToast(this, APP_ERROR, mToast);
+                    System.exit(0);
+                }
+            }
+
+        }
+        logger.createExitLoggingMessage("SplashActivity", "onResume", null);
+    }
+
+    /**
+     * Retrieve room expenses list corresponding to roomID of the current selected room
+     */
+    private void onRoomExpensesRetrieved(List<RoomExpenses> roomExpenses) {
+        logger.info("Room expenses retrieved for roomId : " + roomId + LogUtils.printObject
+                (roomExpenses));
+        new RetrieveRoomStatsTask().execute(roomId);
+        roomExpensesList.addAll(roomExpenses);
+    }
+
+    /**
+     * Retrieve list of room stats corresponding to last 3 months
+     */
+    private void onRoomStatsRetrieved(List<RoomStats> roomStats) {
+        logger.info("Room stats retrieved : " + LogUtils.printObject(roomStats));
+        roomStatsList.addAll(roomStats);
+        try {
+            Thread.sleep(2000);
+            Map<ActivityUtils.Extras, List<? extends Parcelable>> extrasMap = new HashMap<>();
+            extrasMap.put(ActivityUtils.Extras.ROOM_EXPENSES, roomExpensesList);
+            extrasMap.put(ActivityUtils.Extras.ROOM_STATS, roomStatsList);
+            ActivityUtils.startActivityHelperWithoutAnim(this, getResources().getString(R.string
+                    .HomeScreen_Activity), extrasMap, true, true);
+        } catch (RoomXpnseMngrException e) {
+            ToastUtils.createToast(this, APP_ERROR, mToast);
+            System.exit(0);
+        } catch (InterruptedException e) {
+            ToastUtils.createToast(this, APP_ERROR, mToast);
+            System.exit(0);
+        }
+
+    }
+
+    @Override public void configureView(Bundle savedInstanceState) {
         logger.createEntryLoggingMessage("SplashActivity", "onCreate", null);
 
         /**
@@ -71,79 +145,10 @@ public class SplashActivity extends Activity {
             e.printStackTrace();
         }*/
         logger.createExitLoggingMessage("SplashActivity", "onCreate", null);
-
     }
 
     /**
-     *
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        logger.createEntryLoggingMessage("SplashActivity", "onResume", null);
-        SharedPreferences mSharedPref = getSharedPreferences(PREF_ROOMIES_KEY, Context
-                .MODE_PRIVATE);
-
-        /**
-         * If not logged in, send user to the LoginActivity
-         */
-        if (!mSharedPref.getBoolean(IS_LOGGED_IN, false)) {
-            try {
-                ActivityUtils.startActivityHelper(this, getResources().getString(R.string
-                                .GetStartedWizard),
-                        null, true);
-            } catch (RoomXpnseMngrException e) {
-                ToastUtils.createToast(this, APP_ERROR, mToast);
-                System.exit(0);
-            }
-        } else {
-            roomId = mSharedPref.getString(RoomiesConstants.PREF_ROOM_ID, null);
-            roomExpensesList = new ArrayList<>();
-            roomStatsList = new ArrayList<>();
-            new RetrieveRoomExpensesTask().execute(roomId);
-        }
-        logger.createExitLoggingMessage("SplashActivity", "onResume", null);
-    }
-
-    /**
-     * Retrieve room expenses list corresponding to roomID of the current selected room
-     *
-     * @param roomExpenses
-     */
-    private void onRoomExpensesRetrieved(List<RoomExpenses> roomExpenses) {
-        logger.info("Room expenses retrieved for roomId : " + roomId + LogUtils.printObject
-                (roomExpenses));
-        new RetrieveRoomStatsTask().execute(roomId);
-        roomExpensesList.addAll(roomExpenses);
-    }
-
-    /**
-     * Retrieve list of room stats corresponding to last 3 months
-     *
-     * @param roomStats
-     */
-    private void onRoomStatsRetrieved(List<RoomStats> roomStats) {
-        logger.info("Room stats retrieved : " + LogUtils.printObject(roomStats));
-        roomStatsList.addAll(roomStats);
-        try {
-            Thread.sleep(2000);
-            Map<ActivityUtils.Extras, List<? extends Parcelable>> extrasMap = new HashMap<>();
-            extrasMap.put(ActivityUtils.Extras.ROOM_EXPENSES, roomExpensesList);
-            extrasMap.put(ActivityUtils.Extras.ROOM_STATS, roomStatsList);
-            ActivityUtils.startActivityHelper(this, getResources().getString(R.string
-                    .HomeScreen_Activity), extrasMap, true);
-        } catch (RoomXpnseMngrException e) {
-            ToastUtils.createToast(this, APP_ERROR, mToast);
-            System.exit(0);
-        } catch (InterruptedException e) {
-            ToastUtils.createToast(this, APP_ERROR, mToast);
-            System.exit(0);
-        }
-
-    }
-
-    /**
-     *
+     * Class to retrieve room expense in background
      */
     private class RetrieveRoomExpensesTask extends AsyncTask<String, Void, List<RoomExpenses>> {
 
@@ -164,7 +169,7 @@ public class SplashActivity extends Activity {
     }
 
     /**
-     *
+     * Class to retrieve room stats in background
      */
     private class RetrieveRoomStatsTask extends AsyncTask<String, Void, List<RoomStats>> {
 
@@ -173,26 +178,8 @@ public class SplashActivity extends Activity {
             String roomId = params[0];
             logger.info("Room stats being retrieved for room id : " + roomId);
             RoomStatManager manager = new RoomStatManager(SplashActivity.this);
-            List<String> months = new ArrayList<>();
-            int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-            int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+            List<String> months = DateUtils.getLastTwoMonths();
 
-            months.add(new DateFormatSymbols().getMonths()[currentMonth] + String.valueOf(
-                    currentYear));
-            if ((currentMonth - 1) >= 0) {
-                months.add(new DateFormatSymbols().getMonths()[currentMonth - 1] + String.valueOf(
-                        currentYear));
-            } else {
-                months.add(new DateFormatSymbols().getMonths()[11] + String.valueOf(currentYear -
-                        1));
-            }
-            if ((currentMonth - 2) >= 0) {
-                months.add(new DateFormatSymbols().getMonths()[currentMonth - 2] + String.valueOf(
-                        currentYear));
-            } else {
-                months.add(new DateFormatSymbols().getMonths()[11] + String.valueOf(
-                        currentYear - 1));
-            }
             logger.info("Room stats being retrieved for months : " + months.get(0) + "," + months
                     .get(1) + " & " + months.get(2));
             List<RoomStats> roomStatsList = manager.getRoomStatsTrend(months, roomId);

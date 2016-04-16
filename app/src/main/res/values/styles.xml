@@ -3,6 +3,14 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <style name="Theme.Roomies2" parent="@style/Theme.AppCompat">
+        <!--<item name="colorPrimary">@color/primary_home</item>
+        <item name="colorPrimaryDark">@color/primary_dark_home</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+    </style>
+
     <style name="ErrorButton">
         <item name="android:visibility">invisible</item>
         <item name="android:color">#f2f2f2</item>
@@ -27,17 +35,18 @@
     <!-- ACTION BAR STYLES -->
     <style name="ProfileTheme.ActionBar"
            parent="Theme.AppCompat.Light">
-        <item name="android:background">@drawable/ab_background_textured_roomies</item>
+
         <item name="android:windowActionBarOverlay"
               tools:ignore="NewApi">true
         </item>
 
         <!-- Support library compatibility -->
-        <item name="background">@drawable/ab_background_textured_roomies</item>
+
         <item name="windowActionBarOverlay">true</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen"
+           parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -59,18 +68,17 @@
 
         <item name="actionBarItemBackground">@drawable/selectable_background_roomies</item>
         <item name="popupMenuStyle">@style/PopupMenu.Roomies</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Roomies</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Roomies</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Roomies</item>
+        <!--<item name="dropDownListViewStyle">@style/DropDownListView.Roomies</item>-->
+        <!--<item name="actionBarTabStyle">@style/ActionBarTabStyle.Roomies</item>-->
         <item name="actionBarStyle">@style/ActionBar.Solid.Roomies</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_roomies</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_roomies</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Roomies</item>
+
         <item name="homeAsUpIndicator">@drawable/ic_action_roomies_home</item>
         <item name="colorAccent">@color/accent1</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Roomies</item>
+    </style>
 
-
+    <style name="Spinner.Roomies" parent="Base.Widget.AppCompat.Spinner.Underlined">
+        <item name="android:dividerHeight">0dp</item>
     </style>
 
     <style name="DrawerArrowStyle"
@@ -84,26 +92,19 @@
            tools:ignore="NewApi">
 
         <!--S U P P O R T  L I B R A R Y  C O M P A T I B L I T Y-->
-        <item name="background">@drawable/ab_solid_roomies</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_roomies</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_roomies</item>
-        <item name="progressBarStyle">@style/ProgressBar.Roomies</item>
 
-        <item name="android:background">@drawable/ab_background_textured_roomies</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_roomies</item>
-        <item name="android:backgroundSplit">@drawable/ab_background_textured_roomies</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.Roomies</item>
+        <!--<item name="android:progressBarStyle">@style/ProgressBar.Roomies</item>-->
     </style>
 
-    <style name="ActionBar.Transparent.Roomies"
+    <!--<style name="ActionBar.Transparent.Roomies"
            parent="@style/Widget.AppCompat.Light.ActionBar">
-        <!--S U P P O R T  L I B R A R Y  C O M P A T I B L I T Y-->
-        <item name="background">@drawable/ab_transparent_roomies</item>
+        &lt;!&ndash;S U P P O R T  L I B R A R Y  C O M P A T I B L I T Y&ndash;&gt;
+
         <item name="progressBarStyle">@style/ProgressBar.Roomies</item>
 
-        <item name="android:background">@drawable/ab_transparent_roomies</item>
+
         <item name="android:progressBarStyle">@style/ProgressBar.Roomies</item>
-    </style>
+    </style>-->
 
     <style name="PopupMenu.Roomies"
            parent="@style/Widget.AppCompat.Light.PopupMenu">
@@ -115,27 +116,22 @@
         <item name="android:listSelector">@drawable/selectable_background_roomies</item>
     </style>
 
-    <style name="ActionBarTabStyle.Roomies"
+    <!--<style name="ActionBarTabStyle.Roomies"
            parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_roomies</item>
-    </style>
+    </style>-->
 
     <style name="DropDownNav.Roomies"
            parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
-        <item name="android:background">@drawable/spinner_background_ab_roomies</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_roomies</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_roomies</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:dividerHeight">0dp</item>
     </style>
 
-    <style name="ProgressBar.Roomies"
+    <!--<style name="ProgressBar.Roomies"
            parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_roomies</item>
-    </style>
-
-    <style name="ActionButton.CloseMode.Roomies"
-           parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
-        <item name="android:background">@drawable/btn_cab_done_roomies</item>
-    </style>
+    </style>-->
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Roomies.Widget"
@@ -148,63 +144,19 @@
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Roomies</item>
     </style>
 
-    <style name="EditTextRoomies"
+    <!--<style name="EditTextRoomies"
            parent="android:Widget.EditText">
         <item name="android:background">@drawable/roomies_edit_text_holo_light</item>
         <item name="android:textColor">#000000</item>
-    </style>
+    </style>-->
 
-    <style name="AutoCompleteTextViewRoomies"
+    <!--<style name="AutoCompleteTextViewRoomies"
            parent="android:Widget.AutoCompleteTextView">
         <item name="android:dropDownSelector">@drawable/roomies_list_selector_holo_light</item>
         <item name="android:background">@drawable/roomies_edit_text_holo_light</item>
         <item name="android:textColor">#000000</item>
-    </style>
+    </style>-->
 
-    <style name="CheckBoxRoomies"
-           parent="android:Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/roomies_btn_check_holo_light</item>
-    </style>
-
-    <style name="RadioButtonRoomies"
-           parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@drawable/roomies_btn_radio_holo_light</item>
-    </style>
-
-    <style name="ButtonRoomies"
-           parent="android:Widget.Button">
-        <item name="android:background">@drawable/roomies_btn_default_holo_light</item>
-        <item name="android:minHeight">48dip</item>
-        <item name="android:minWidth">64dip</item>
-        <item name="android:textColor">#000000</item>
-        <item name="android:radius">14dp</item>
-    </style>
-
-    <style name="ImageButtonRoomies"
-           parent="android:Widget.ImageButton">
-        <item name="android:background">@drawable/roomies_btn_default_holo_light</item>
-    </style>
-
-    <style name="SpinnerRoomies"
-           parent="android:Widget.Spinner">
-        <item name="android:background">@drawable/roomies_spinner_background_holo_light</item>
-        <item name="android:dropDownSelector">@drawable/roomies_list_selector_holo_light</item>
-    </style>
-
-    <style name="SpinnerDropDownItemRoomies"
-           parent="android:Widget.DropDownItem.Spinner">
-        <item name="android:checkMark">@drawable/roomies_btn_radio_holo_light</item>
-    </style>
-
-    <style name="TabRoomies">
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:paddingLeft">16dip</item>
-        <item name="android:paddingRight">16dip</item>
-        <item name="android:background">@drawable/roomies_tab_indicator_holo</item>
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:minWidth">80dip</item>
-    </style>
 
     <style name="TabTextRoomies">
         <item name="android:textColor">#000000</item>
@@ -216,7 +168,7 @@
         <item name="android:maxWidth">180dip</item>
     </style>
 
-    <style name="ProgressBarRoomies"
+    <!--<style name="ProgressBarRoomies"
            parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/roomies_progress_horizontal_holo_light
         </item>
@@ -225,9 +177,9 @@
         </item>
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
-    </style>
+    </style>-->
 
-    <style name="SeekBarRoomies"
+    <!--<style name="SeekBarRoomies"
            parent="android:Widget.SeekBar">
         <item name="android:progressDrawable">
             @drawable/roomies_scrubber_progress_horizontal_holo_light
@@ -241,41 +193,41 @@
         <item name="android:thumbOffset">16dip</item>
         <item name="android:paddingLeft">16dip</item>
         <item name="android:paddingRight">16dip</item>
-    </style>
+    </style>-->
 
-    <style name="RatingBarRoomies"
+    <!--<style name="RatingBarRoomies"
            parent="android:Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/roomies_ratingbar_full_holo_light</item>
         <item name="android:indeterminateDrawable">@drawable/roomies_ratingbar_full_holo_light
         </item>
-    </style>
+    </style>-->
 
-    <style name="RatingBarBigRoomies"
-           parent="android:Widget.RatingBar">
-        <item name="android:progressDrawable">@drawable/roomies_ratingbar_holo_light</item>
-        <item name="android:indeterminateDrawable">@drawable/roomies_ratingbar_holo_light</item>
-        <item name="android:minHeight">35dip</item>
-        <item name="android:maxHeight">35dip</item>
-    </style>
+    <!--<style name="RatingBarBigRoomies"-->
+    <!--parent="android:Widget.RatingBar">-->
+    <!--<item name="android:progressDrawable">@drawable/roomies_ratingbar_holo_light</item>-->
+    <!--<item name="android:indeterminateDrawable">@drawable/roomies_ratingbar_holo_light</item>-->
+    <!--<item name="android:minHeight">35dip</item>-->
+    <!--<item name="android:maxHeight">35dip</item>-->
+    <!--</style>-->
 
-    <style name="RatingBarSmallRoomies"
+    <!--<style name="RatingBarSmallRoomies"
            parent="android:Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/roomies_ratingbar_small_holo_light</item>
         <item name="android:indeterminateDrawable">@drawable/roomies_ratingbar_small_holo_light
         </item>
         <item name="android:minHeight">16dip</item>
         <item name="android:maxHeight">16dip</item>
-    </style>
+    </style>-->
 
-    <style name="ToggleRoomies"
+    <!--<style name="ToggleRoomies"
            parent="android:Widget.Button.Toggle">
         <item name="android:background">@drawable/roomies_btn_toggle_holo_light</item>
         <item name="android:minHeight">42dip</item>
         <item name="android:minWidth">28dip</item>
         <item name="android:textColor">#000000</item>
-    </style>
+    </style>-->
 
-    <style name="ListViewRoomies"
+    <!--<style name="ListViewRoomies"
            parent="android:Widget.ListView">
         <item name="android:listSelector">@drawable/roomies_list_selector_holo_light</item>
     </style>
@@ -288,7 +240,7 @@
     <style name="SpinnerItemRoomies"
            parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:textColor">#000000</item>
-    </style>
+    </style>-->
 
     <style name="Roomies.full_screen_dialog"
            parent="Base.Theme.AppCompat.Dialog">
@@ -296,6 +248,22 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsFloating">false</item>
     </style>
+
+    <style name="TextLabel" parent="Theme.AppCompat">
+        //hint color And Label Color in False State
+        <item name="android:textColorHint">@color/accent</item>
+        <item name="android:textSize">8sp</item>
+        //Label color in True State And Bar Color False And True State
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorControlNormal">@color/accent</item>
+        <item name="colorControlActivated">@color/primary</item>
+    </style>
+
+    <style name="ErrorText" parent="Theme.AppCompat">
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
 </resources>
 

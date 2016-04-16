@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:roomies="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary_dark2_home"
-        android:paddingBottom="40dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dashboard_chart"
+            android:background="@color/primary_dark2_home">
 
         <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/trend_chart"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:paddingTop="50dp"/>
+                android:id="@+id/trend_chart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingTop="50dp"/>
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/month_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:layout_marginLeft="75dp">
-
-        <TextView
-            android:id="@+id/month"
-            android:layout_width="wrap_content"
+            android:id="@+id/month_indicator"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="DECEMBER"
-            android:textSize="14pt"
-            android:fontFamily="sans-serif-thin"
-            android:textColor="@color/white"/>
+            android:layout_below="@id/dashboard_chart"
+            android:background="@color/primary2_home"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
 
-        <View
-            android:id="@+id/line"
-            android:layout_width="2dp"
-            android:layout_height="20dp"
-            android:layout_below="@id/month"
-            android:layout_marginLeft="9dp"
-            android:background="@color/secondary_text"/>
+        <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+                android:id="@+id/month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="DECEMBER 2016"
+                android:textSize="10pt"
+                android:paddingLeft="16dp"
+                android:paddingEnd="16dp"
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:layout_centerVertical="true"
+                roomies:typeface="latoheavy"
+                android:textColor="@color/white"/>
     </RelativeLayout>
 
 </RelativeLayout>

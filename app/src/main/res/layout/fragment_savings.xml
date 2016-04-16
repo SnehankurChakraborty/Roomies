@@ -1,11 +1,11 @@
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.phaseii.rxm.roomies.tabs.DetailExpenseTab">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.DetailExpenseTab">
 
-    <com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
+    <com.phaseii.rxm.roomies.ui.customviews.RoomiesSlidingTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

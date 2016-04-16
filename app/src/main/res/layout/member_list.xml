@@ -50,7 +50,7 @@
                     android:textSize="5pt"/>
 
 
-                <com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesCircularImageView
                     android:id="@+id/user_image1"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -100,7 +100,7 @@
                     android:textColor="@color/white"
                     android:textSize="5pt"/>
 
-                <com.phaseii.rxm.roomies.view.RoomiesSlidingTabLayout
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesSlidingTabLayout
                     android:id="@+id/tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                     android:textSize="5pt"/>
 
 
-                <com.phaseii.rxm.roomies.view.RoomiesCircularImageView
+                <com.phaseii.rxm.roomies.ui.customviews.RoomiesCircularImageView
                     android:id="@+id/user_image2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"

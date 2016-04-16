@@ -1,49 +1,78 @@
+<!--
+  ~
+  ~  Copyright 2015 Snehankur Chakraborty
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  ~
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:roomies="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:background="@drawable/ab_background_textured_roomies"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context="com.phaseii.rxm.roomies.activity.GetStartedWizard.StartFragment">
+                android:background="@color/primary_dark"
+                android:paddingBottom="@dimen/vertical_margin"
+                android:paddingLeft="@dimen/horizontal_margin"
+                android:paddingRight="@dimen/horizontal_margin"
+                android:paddingTop="@dimen/vertical_margin"
+                tools:context="com.phaseii.rxm.roomies.ui.fragments.StartFragment">
 
+    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+            android:id="@+id/welcome_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/welcome_to_roomies"
+            android:textColor="@android:color/white"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            roomies:typeface="lilyscriptone"/>
 
-    <com.phaseii.rxm.roomies.view.BannerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:layout_alignParentTop="true"
-        android:text="@string/roomies"
-        android:textColor="@color/white"/>
+    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+            android:id="@+id/subtitle_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/welcome_banner"
+            android:layout_marginTop="10dp"
+            android:text="@string/we_will_set_you_up_in_seconds"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            roomies:typeface="latoregular"/>
 
-    <Button
-        android:id="@+id/get_started_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/register_btn"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:onClick="onRegister"
-        android:text="@string/register"
-        android:textColor="@color/white"
-        android:textStyle="bold"/>
+    <com.phaseii.rxm.roomies.ui.customviews.RoomiesButton
+            android:id="@+id/btn_get_started"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            roomies:typeface="latoregular"
+            android:background="@color/primary"
+            android:text="@string/get_started"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Already a member? Login here"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:onClick="onLogin"/>
+    <com.phaseii.rxm.roomies.ui.customviews.RoomiesTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:text="@string/skip"
+            android:textSize="10sp"
+            roomies:typeface="latoregular"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"/>
 
 </RelativeLayout>

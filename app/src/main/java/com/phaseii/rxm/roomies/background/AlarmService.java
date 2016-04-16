@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.phaseii.rxm.roomies.R;
-import com.phaseii.rxm.roomies.manager.RoomStatManager;
+import com.phaseii.rxm.roomies.service.RoomStatManager;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;

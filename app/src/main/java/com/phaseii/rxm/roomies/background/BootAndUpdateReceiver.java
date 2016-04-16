@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.phaseii.rxm.roomies.util.RoomiesHelper;
+import com.phaseii.rxm.roomies.utils.RoomiesHelper;
 
 /**
  * Created by Snehankur on 9/6/2015.
