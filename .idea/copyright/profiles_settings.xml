@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="Roomies">
+    <module2copyright>
+      <element module="Project Files" copyright="Roomies" />
+    </module2copyright>
+  </settings>
 </component>
